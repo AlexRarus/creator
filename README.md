@@ -35,7 +35,7 @@ python manage.py createsuperuser
 
 ## Сборка полного проекта для тестирования (front+back+postgres+nginx)
 ```shell
-docker-compose -f ./infra/docker-compose.yml up --build
+docker-compose -f ./test/docker-compose.yml up --build
 ```
 Список контейнеров
 ```shell
