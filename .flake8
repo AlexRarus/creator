@@ -1,0 +1,9 @@
+[flake8]
+ignore = E211, E999, F401, F821, W503, R503, R504
+exclude =
+    */tests/*,
+    */migrations/*,
+    venv/,
+    env/
+per-file-ignores =
+    backend/*/settings.py:E501
