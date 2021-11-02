@@ -1,0 +1,22 @@
+export { red } from './red';
+export { pink } from './pink';
+export { purple } from './purple';
+export { deepPurple } from './deepPurple';
+export { indigo } from './indigo';
+export { blue } from './blue';
+export { lightBlue } from './lightBlue';
+export { cyan } from './cyan';
+export { teal } from './teal';
+export { green } from './green';
+export { lightGreen } from './lightGreen';
+export { lime } from './lime';
+export { yellow } from './yellow';
+export { amber } from './amber';
+export { orange } from './orange';
+export { deepOrange } from './deepOrange';
+export { brown } from './brown';
+export { grey } from './grey';
+export { blueGrey } from './blueGrey';
+
+export const white = '#ffffff';
+export const black = '#000000';

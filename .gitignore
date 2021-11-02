@@ -132,3 +132,5 @@ dmypy.json
 .idea
 
 media/
+docs/
+node_modules/

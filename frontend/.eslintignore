@@ -1,0 +1,7 @@
+**/node_modules/*
+**/public
+**/build
+**/dist
+
+**/*.js
+**/src/components/icons/*

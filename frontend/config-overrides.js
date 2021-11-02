@@ -1,0 +1,83 @@
+const {
+  override,
+  disableEsLint,
+  addBabelPlugin,
+  addBundleVisualizer,
+  addWebpackAlias,
+  addWebpackPlugin,
+  overrideDevServer,
+} = require('customize-cra');
+const path = require('path');
+const { GitRevisionPlugin } = require('git-revision-webpack-plugin')
+const webpack = require('webpack');
+const packagejson = require('./package.json');
+
+const gitRevisionPlugin = new GitRevisionPlugin({
+  versionCommand: "log -n 1 --pretty='format:%cd' --date=format:'%d.%m.%Y'", // commit date
+});
+
+const LOCAL_API_URL = 'http://127.0.0.1:8000';
+const SERVICE_API_URL = 'http://127.0.0.1:8000';
+
+const devServerConfig = () => config => {
+  return {
+    ...config,
+    proxy: {
+      '/api': {
+        target: LOCAL_API_URL,
+        changeOrigin: true,
+        ws: false,
+        pathRewrite: {
+          '^/api': '/api',
+        },
+        secure: false,
+      },
+      '/staticfiles': {
+        target: LOCAL_API_URL,
+        changeOrigin: true,
+        ws: false,
+        pathRewrite: {
+          '^/staticfiles': '/staticfiles',
+        },
+        secure: false,
+      },
+      '/mediafiles': {
+        target: LOCAL_API_URL,
+        changeOrigin: true,
+        ws: false,
+        pathRewrite: {
+          '^/mediafiles': '/mediafiles',
+        },
+        secure: false,
+      },
+    },
+  }
+}
+
+module.exports = {
+  webpack: override(
+    disableEsLint(),
+    addBabelPlugin(['styled-components', { displayName: true }]),
+    (config) => (process.env.BUNDLE_VISUALIZE == 1 ? addBundleVisualizer()(config) : config),
+    addWebpackAlias({
+      src: path.resolve(__dirname, 'src'),
+      // при обновлении на styled-components ^5.0.0 поднимается несколько instance-ов приложений и предложено решение
+      // по ссылке https://styled-components.com/docs/faqs
+      // cмотреть заголовок "Why am I getting a warning about several instances of module on the page?"
+      'styled-components': path.resolve('./node_modules/styled-components'),
+    }),
+    addWebpackPlugin(
+      new webpack.DefinePlugin({
+        'process.env.COMMITDATE': JSON.stringify(gitRevisionPlugin.version()),
+        'process.env.COMMITHASH': JSON.stringify(gitRevisionPlugin.commithash()),
+        'process.env.BRANCH': JSON.stringify(gitRevisionPlugin.branch()),
+        'process.env.VERSION': JSON.stringify(packagejson.version),
+      })
+    )
+  ),
+
+  // proxy для интеграции с сервисами
+  devServer: overrideDevServer(
+    devServerConfig()
+  ),
+};

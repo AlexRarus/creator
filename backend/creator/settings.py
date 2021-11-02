@@ -1,5 +1,6 @@
 import json
 import os
+from datetime import timedelta
 
 import environ
 
@@ -143,6 +144,13 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "api.pagination.CustomPagination",
 }
 
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=30),
+    'TOKEN_REFRESH_LIFETIME': timedelta(days=45),
+}
+
 DJOSER = {
     "LOGIN_FIELD": "email",
 }
+
+ADMIN_EMPTY_VALUE_DISPLAY = "-пусто-"
