@@ -17,9 +17,6 @@ import { useMapStoreToProps } from './selectors';
 
 type FormInputs = {
   email: string;
-  username: string;
-  firstName: string;
-  lastName: string;
   password: string;
   repeatPassword: string;
 };
@@ -27,7 +24,7 @@ type FormInputs = {
 export const RegistrationPageContainer = observer(() => {
   const { registrationAction } = useMapStoreToProps();
   const { search, next } = useQuery({
-    next: '/',
+    next: '/auth/message?type=registration-confirm&email=',
   });
   const { watch, handleSubmit, formState, control } = useForm<FormInputs>({
     mode: 'onBlur',
@@ -40,10 +37,10 @@ export const RegistrationPageContainer = observer(() => {
     setHasErrors(!checkEmptyObject(formState.errors));
   }, [formState]);
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: FormInputs) => {
     await registrationAction({
       ...data,
-      next,
+      next: next + data.email,
     });
   };
 
@@ -63,21 +60,6 @@ export const RegistrationPageContainer = observer(() => {
                 ...email(),
               }}>
               <InputText label='Введите почту' />
-            </ControlledField>
-          </GridColumn>
-          <GridColumn>
-            <ControlledField name='username' control={control} rules={required()}>
-              <InputText label='Придумайте логин' />
-            </ControlledField>
-          </GridColumn>
-          <GridColumn>
-            <ControlledField name='firstName' control={control}>
-              <InputText label='Имя' />
-            </ControlledField>
-          </GridColumn>
-          <GridColumn>
-            <ControlledField name='lastName' control={control}>
-              <InputText label='Фамилия' />
             </ControlledField>
           </GridColumn>
           <GridColumn>

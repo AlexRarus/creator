@@ -7,7 +7,7 @@ import InputText from 'src/components/input-text';
 import Button, { ButtonsList } from 'src/components/button';
 import ButtonLink from 'src/components/button-link';
 import { checkEmptyObject } from 'src/utils/checkEmptyObject';
-import { required, email } from 'src/utils/validators';
+import { required, email as emailValidator } from 'src/utils/validators';
 import { useQuery } from 'src/hooks/useQuery';
 
 import { AuthPageWrapper, AuthFormWrapper, FormTitle } from '../style';
@@ -20,13 +20,17 @@ type FormInputs = {
 
 export const ResetPasswordPageContainer = observer(() => {
   const { resetPasswordAction } = useMapStoreToProps();
-  const { search, next } = useQuery({
-    next: '/',
+  const { search, next, email } = useQuery({
+    email: '',
+    next: '/auth/message?type=reset-password-check-email',
   });
 
   const { handleSubmit, formState, control } = useForm<FormInputs>({
     mode: 'onTouched',
     reValidateMode: 'onChange',
+    defaultValues: {
+      email,
+    },
   });
   const [hasErrors, setHasErrors] = useState(!checkEmptyObject(formState.errors));
 
@@ -34,7 +38,7 @@ export const ResetPasswordPageContainer = observer(() => {
     setHasErrors(!checkEmptyObject(formState.errors));
   }, [formState]);
 
-  const onSubmit = (data: any) =>
+  const onSubmit = (data: FormInputs) =>
     resetPasswordAction({
       ...data,
       next,
@@ -53,7 +57,7 @@ export const ResetPasswordPageContainer = observer(() => {
               control={control}
               rules={{
                 ...required(),
-                ...email(),
+                ...emailValidator(),
               }}>
               <InputText label='Введите адрес электронной почты' />
             </ControlledField>

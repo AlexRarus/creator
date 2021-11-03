@@ -4,8 +4,8 @@ export interface IAuthAPI {
   getMe(): AxiosResponse<any>; // запрос пользователя
   login(data: ILoginData): AxiosResponse<any>; // запрос токена
   registration(data: IRegistrationData): AxiosResponse<any>; // создание пользователя
-  activation(data: IActivationData): AxiosResponse<any>; // подтверждение email адреса
-  resendActivation(data: IResendActivationData): AxiosResponse<any>;
+  registrationConfirm(data: IRegistrationConfirmData): AxiosResponse<any>; // подтверждение email адреса
+  resendRegistrationConfirm(data: IResendRegistrationConfirmData): AxiosResponse<any>;
   logout(data: ILogoutData): AxiosResponse<any>; // прибиваем токен
   logoutAll(): AxiosResponse<any>; // прибиваем все токены
   resetPassword(data: IResetPasswordData): AxiosResponse<any>; // отправляем код для восстановления пароля на email
@@ -18,17 +18,16 @@ export interface ILoginData {
 }
 
 export interface IRegistrationData extends ILoginData {
-  username: string;
   first_name?: string;
   last_name?: string;
 }
 
-export interface IActivationData {
+export interface IRegistrationConfirmData {
   uid: string;
   token: string;
 }
 
-export interface IResendActivationData {
+export interface IResendRegistrationConfirmData {
   email: string;
 }
 
@@ -61,12 +60,12 @@ const getConfig = () => ({
     method: 'POST',
     data,
   }),
-  activation: (data: IActivationData) => ({
+  registrationConfirm: (data: IRegistrationConfirmData) => ({
     url: `/auth/users/activation/`,
     method: 'POST',
     data,
   }),
-  resendActivation: (data: IResendActivationData) => ({
+  resendRegistrationConfirm: (data: IResendRegistrationConfirmData) => ({
     url: `/auth/users/resend_activation/`,
     method: 'POST',
     data,

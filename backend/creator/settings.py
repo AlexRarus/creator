@@ -66,10 +66,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "creator.urls"
 
+TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [TEMPLATES_DIR],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -96,18 +97,18 @@ DATABASES = {
 }
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+    # {
+    #     "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+    # },
+    # {
+    #     "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+    # },
+    # {
+    #     "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    # },
+    # {
+    #     "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    # },
 ]
 
 LANGUAGE_CODE = "ru-RU"
@@ -151,6 +152,21 @@ SIMPLE_JWT = {
 
 DJOSER = {
     "LOGIN_FIELD": "email",
+    'SEND_ACTIVATION_EMAIL': True,
+    'ACTIVATION_URL': "http://localhost:9000/auth/registration-confirm/{uid}/{token}/",
+    "PASSWORD_RESET_CONFIRM_URL": "http://localhost:9000/auth/reset-password-confirm/{uid}/{token}/",
+    "EMAIL": {
+        "password_reset": "users.email.PasswordReset",
+        "activation": "users.email.ActivationEmail",
+    }
 }
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'alexserebryakov0892@gmail.com'
+EMAIL_HOST_PASSWORD = "gohsmbpgmauhmptn"
 
 ADMIN_EMPTY_VALUE_DISPLAY = "-пусто-"

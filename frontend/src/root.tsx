@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { observer } from 'mobx-react';
 import { Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import AuthApp from 'src/apps/auth-app';
@@ -11,7 +12,7 @@ import API from 'src/api';
 import { useMapStoreToProps } from './selectors';
 import { GlobalStyleApp } from './style';
 
-export default function Root(props: any) {
+const Root = observer((props: any) => {
   const { initAction, getMeAction, logoutAction, access } = useMapStoreToProps();
 
   useEffect(() => {
@@ -40,9 +41,9 @@ export default function Root(props: any) {
 
   useEffect(() => {
     if (access) {
+      initAction();
       getMeAction();
     }
-    initAction();
   }, [access]);
 
   return (
@@ -56,4 +57,6 @@ export default function Root(props: any) {
       </Switch>
     </ThemeProvider>
   );
-}
+});
+
+export default Root;

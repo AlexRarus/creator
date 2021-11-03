@@ -22,7 +22,7 @@ const authRoutes: IRoute[] = [
   },
   {
     exact: true,
-    path: `/auth/registration/confirm`,
+    path: `/auth/registration-confirm/:uid/:token`,
     component: lazy(() =>
       import(
         /* webpackChunkName: "page_auth_registration_confirm" */ 'src/containers/auth/registration-confirm'
@@ -31,7 +31,7 @@ const authRoutes: IRoute[] = [
   },
   {
     exact: true,
-    path: `/auth/forgot-password`,
+    path: `/auth/reset-password`,
     component: lazy(() =>
       import(
         /* webpackChunkName: "page_auth_reset_password" */ 'src/containers/auth/reset-password'
@@ -40,7 +40,7 @@ const authRoutes: IRoute[] = [
   },
   {
     exact: true,
-    path: `/auth/set-password`,
+    path: `/auth/reset-password-confirm/:uid/:token`,
     component: lazy(() =>
       import(
         /* webpackChunkName: "page_auth_reset_password_confiem" */ 'src/containers/auth/reset-password-confirm'

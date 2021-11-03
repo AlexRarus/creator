@@ -1,72 +1,49 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
-import { useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 import { Grid, GridColumn } from 'src/components/grid';
-import { ControlledField } from 'src/components/controlled-field';
-import InputText from 'src/components/input-text';
-import Button, { ButtonsList } from 'src/components/button';
-import { checkEmptyObject } from 'src/utils/checkEmptyObject';
-import { required } from 'src/utils/validators';
+import { ButtonsList } from 'src/components/button';
 import { useQuery } from 'src/hooks/useQuery';
-import { useTranslation } from 'react-i18next';
 
-import { AuthPageWrapper, AuthFormWrapper, FormTitle } from '../style';
+import { AuthPageWrapper } from '../style';
 
-import { Message } from './style';
+import { Message, AuthMessageWrapper, MenuLink } from './style';
 import { useMapStoreToProps } from './selectors';
 
-type FormInputs = {
+interface IParams {
+  uid: string;
   token: string;
-};
+}
 
 export const RegistrationConfirmPageContainer = observer(() => {
-  const { activationAction } = useMapStoreToProps();
+  const { registrationConfirmAction } = useMapStoreToProps();
+  const params = useParams<IParams>();
   const { next } = useQuery({
-    next: '/',
+    next: `/auth/login`,
   });
-  const { t } = useTranslation('auth');
-
-  const { handleSubmit, formState, control } = useForm<FormInputs>({
-    mode: 'onTouched',
-    reValidateMode: 'onChange',
-  });
-  const [hasErrors, setHasErrors] = useState(!checkEmptyObject(formState.errors));
 
   useEffect(() => {
-    setHasErrors(!checkEmptyObject(formState.errors));
-  }, [formState]);
+    registrationConfirmAction({ ...params, next });
+  }, []);
 
-  const onSubmit = (data: FormInputs) =>
-    activationAction({
-      ...data,
-      uid: '', // todo не знаю что это (страницу доработать)
-      next,
-    });
-
+  // TODO здесь можно вывести лоадер запроса registrationConfirmAction и в случае неудачи показать информативное сообщение
+  // TODO (в успешном случаем пользователя перекидывает на страницу логина)
   return (
     <AuthPageWrapper>
-      <AuthFormWrapper onSubmit={handleSubmit(onSubmit)}>
+      <AuthMessageWrapper>
         <Grid verticalGap={24}>
           <GridColumn>
-            <FormTitle>Подтверждение регистрации</FormTitle>
+            <Message>Подтверждение email адреса...</Message>
           </GridColumn>
           <GridColumn>
-            <ControlledField name='confirmation_code' control={control} rules={required()}>
-              <InputText label='Введите код подтверждения' />
-            </ControlledField>
-          </GridColumn>
-          <GridColumn>
-            <ButtonsList marginTop={20}>
-              <Button block={true} type='submit' disabled={hasErrors}>
-                Подтвердить
-              </Button>
+            <ButtonsList>
+              <MenuLink to='/'>Главная</MenuLink>
+              <MenuLink to='/auth/login'>Вход</MenuLink>
+              <MenuLink to='/auth/registration'>Регистрация</MenuLink>
             </ButtonsList>
           </GridColumn>
-          <GridColumn>
-            <Message>{t('message.registration-confirm')}</Message>
-          </GridColumn>
         </Grid>
-      </AuthFormWrapper>
+      </AuthMessageWrapper>
     </AuthPageWrapper>
   );
 });

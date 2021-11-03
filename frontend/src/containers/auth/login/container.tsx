@@ -56,7 +56,7 @@ export const LoginPageContainer = observer(() => {
               <InputPassword label='Пароль' />
             </ControlledField>
             <ForgotPasswordLink
-              to={`/auth/forgot-password${search}${search.length ? '&' : '?'}username=${username}`}>
+              to={`/auth/reset-password${search}${search.length ? '&' : '?'}email=${username}`}>
               Не помню пароль
             </ForgotPasswordLink>
           </GridColumn>

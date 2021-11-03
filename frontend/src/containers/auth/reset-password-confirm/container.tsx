@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 import { useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 import { Grid, GridColumn } from 'src/components/grid';
 import { ControlledField } from 'src/components/controlled-field';
 import InputPassword from 'src/components/input-password';
@@ -13,6 +14,11 @@ import { AuthPageWrapper, AuthFormWrapper, FormTitle } from '../style';
 
 import { useMapStoreToProps } from './selectors';
 
+interface IParams {
+  uid: string;
+  token: string;
+}
+
 type FormInputs = {
   newPassword: string;
   repeatNewPassword: string;
@@ -20,7 +26,8 @@ type FormInputs = {
 
 export const ResetPasswordConfirmPageContainer = observer(() => {
   const { resetPasswordConfirmAction } = useMapStoreToProps();
-  const { token } = useQuery({ next: '/' });
+  const params = useParams<IParams>();
+  const { next } = useQuery({ next: '/auth/login' });
 
   const { watch, handleSubmit, formState, control } = useForm<FormInputs>({
     mode: 'onTouched',
@@ -36,8 +43,8 @@ export const ResetPasswordConfirmPageContainer = observer(() => {
   const onSubmit = (data: FormInputs) =>
     resetPasswordConfirmAction({
       new_password: data.newPassword,
-      token,
-      uid: '', // todo пока не знаю что это (сраницу нужно переделать)
+      ...params,
+      next,
     });
 
   return (

@@ -3,13 +3,14 @@ import API from 'src/api';
 import {
   ILoginData,
   IRegistrationData,
-  IActivationData,
-  IResendActivationData,
+  IRegistrationConfirmData,
+  IResendRegistrationConfirmData,
   IResetPasswordData,
   IResetPasswordConfirmData,
 } from 'src/api/endpoints/auth';
 import { AxiosResponse } from 'axios';
 import { History } from 'history';
+import { addNotificationItem } from 'src/components/notification';
 
 import { IUser } from './interfaces';
 
@@ -19,7 +20,8 @@ interface ILoginActionData extends ILoginData {
 interface IRegistrationActionData extends IRegistrationData {
   next?: string;
 }
-interface IActivationActionData extends IActivationData {
+
+interface IRegistrationConfirmActionData extends IRegistrationConfirmData {
   next?: string;
 }
 interface IResetPasswordActionData extends IResetPasswordData {
@@ -50,8 +52,8 @@ export default class DalAuthStore {
       getMeAction: action.bound,
       loginAction: action.bound,
       registrationAction: action.bound,
-      activationAction: action.bound,
-      resendActivationAction: action.bound,
+      registrationConfirmAction: action.bound,
+      resendRegistrationConfirmAction: action.bound,
       logoutAction: action.bound,
       logoutAllAction: action.bound,
       clientLogoutAction: action.bound,
@@ -61,7 +63,9 @@ export default class DalAuthStore {
   }
 
   public initAction = () => {
-    API.setDefaultHeaders({ Authorization: `Bearer ${this.access}` });
+    if (this.access) {
+      API.setDefaultHeaders({ Authorization: `Bearer ${this.access}` });
+    }
   };
 
   public getMeAction = flow(function* (this: DalAuthStore) {
@@ -71,6 +75,10 @@ export default class DalAuthStore {
       return this.user;
     } catch (err) {
       console.log(err, 'DalAuthStore');
+      addNotificationItem({
+        level: 'error',
+        message: 'Произошла ошибка на сервере',
+      });
       return null;
     }
   });
@@ -83,35 +91,77 @@ export default class DalAuthStore {
       this.refresh = token?.refresh;
       localStorage.setItem('access', token?.access);
       localStorage.setItem('refresh', token?.refresh);
+      API.setDefaultHeaders({ Authorization: `Bearer ${this.access}` });
 
       this.routerStore.push(data?.next || '/');
     } catch (err) {
       console.log(err, 'DalAuthStore');
+      addNotificationItem({
+        level: 'error',
+        message: 'Произошла ошибка на сервере',
+      });
     }
   });
 
   public registrationAction = flow(function* (this: DalAuthStore, data: IRegistrationActionData) {
     try {
-      yield this.API.registration(data); // регистрируемся
-      yield this.loginAction(data); // получаем токен
+      const { next, ...registrationData } = data;
+      yield this.API.registration(registrationData); // регистрируемся
+      addNotificationItem({
+        level: 'success',
+        message: 'Подтвердите адрес электронной почты',
+      });
+      if (next) {
+        this.routerStore.push(next);
+      }
     } catch (err) {
       console.log(err, 'DalAuthStore');
+      addNotificationItem({
+        level: 'error',
+        message: 'Произошла ошибка на сервере',
+      });
     }
   });
 
-  public activationAction = flow(function* (this: DalAuthStore, data: IActivationActionData) {
+  public registrationConfirmAction = flow(function* (
+    this: DalAuthStore,
+    data: IRegistrationConfirmActionData
+  ) {
     try {
-      yield this.API.activation(data);
+      const { next, ...registrationConfirmData } = data;
+      yield this.API.registrationConfirm(registrationConfirmData);
+      addNotificationItem({
+        level: 'success',
+        message: 'Зегистрация завершена',
+      });
+      if (next) {
+        this.routerStore.push(next);
+      }
     } catch (err) {
       console.log(err, 'DalAuthStore');
+      addNotificationItem({
+        level: 'error',
+        message: 'Произошла ошибка на сервере',
+      });
     }
   });
 
-  public resendActivationAction = flow(function* (this: DalAuthStore, data: IResendActivationData) {
+  public resendRegistrationConfirmAction = flow(function* (
+    this: DalAuthStore,
+    data: IResendRegistrationConfirmData
+  ) {
     try {
-      yield this.API.resendActivation(data);
+      yield this.API.resendRegistrationConfirm(data);
+      addNotificationItem({
+        level: 'success',
+        message: 'На ваш email отправленно еще одно письмо подтверждения.',
+      });
     } catch (err) {
       console.log(err, 'DalAuthStore');
+      addNotificationItem({
+        level: 'error',
+        message: 'Произошла ошибка на сервере',
+      });
     }
   });
 
@@ -123,6 +173,10 @@ export default class DalAuthStore {
       this.clientLogoutAction();
     } catch (err) {
       console.log(err, 'DalAuthStore');
+      addNotificationItem({
+        level: 'error',
+        message: 'Произошла ошибка на сервере',
+      });
     }
   });
 
@@ -132,6 +186,10 @@ export default class DalAuthStore {
       this.clientLogoutAction();
     } catch (err) {
       console.log(err, 'DalAuthStore');
+      addNotificationItem({
+        level: 'error',
+        message: 'Произошла ошибка на сервере',
+      });
     }
   });
 
@@ -146,10 +204,18 @@ export default class DalAuthStore {
   };
 
   public resetPasswordAction = flow(function* (this: DalAuthStore, data: IResetPasswordActionData) {
+    const { next, ...resetPasswordData } = data;
     try {
-      yield this.API.resetPassword(data);
+      yield this.API.resetPassword(resetPasswordData);
+      if (next) {
+        this.routerStore.push(next);
+      }
     } catch (err) {
       console.log(err, 'DalAuthStore');
+      addNotificationItem({
+        level: 'error',
+        message: 'Произошла ошибка на сервере',
+      });
     }
   });
 
@@ -157,10 +223,22 @@ export default class DalAuthStore {
     this: DalAuthStore,
     data: IResetPasswordConfirmActionData
   ) {
+    const { next, ...resetPasswordConfirmData } = data;
     try {
-      yield this.API.resetPasswordConfirm(data);
+      yield this.API.resetPasswordConfirm(resetPasswordConfirmData);
+      addNotificationItem({
+        level: 'success',
+        message: 'Пароль успешно восстановлен',
+      });
+      if (next) {
+        this.routerStore.push(next);
+      }
     } catch (err) {
       console.log(err, 'DalAuthStore');
+      addNotificationItem({
+        level: 'error',
+        message: 'Произошла ошибка на сервере',
+      });
     }
   });
 }
