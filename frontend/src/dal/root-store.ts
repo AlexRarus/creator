@@ -2,6 +2,7 @@ import { History } from 'history';
 
 import { IRootStore } from './interfaces';
 import DalAuthStore from './auth/store';
+import DalPagesStore from './pages/store';
 import BrowserHistoryStore from './browser-history-store';
 
 class RootStore implements IRootStore {
@@ -11,6 +12,7 @@ class RootStore implements IRootStore {
   public routing: History;
 
   dalAuthStore: DalAuthStore;
+  dalPagesStore: DalPagesStore;
 
   init() {
     if (!this.isInit) {
@@ -23,6 +25,7 @@ class RootStore implements IRootStore {
     this.routing = BrowserHistoryStore.routing;
 
     this.dalAuthStore = new DalAuthStore(this.routing);
+    this.dalPagesStore = new DalPagesStore(this.routing);
 
     return this;
   }

@@ -20,5 +20,5 @@ export const Timer = (props: IProps) => {
     return () => window.clearTimeout(timerId);
   }, [value]);
 
-  return <span style={style}>{value}</span>;
+  return <span style={style}>{value} c</span>;
 };

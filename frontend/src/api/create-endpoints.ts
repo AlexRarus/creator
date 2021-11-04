@@ -2,6 +2,7 @@ import { AxiosRequestConfig } from 'axios';
 
 import { IAPI } from './interfaces';
 import auth from './endpoints/auth';
+import pages from './endpoints/pages';
 import media from './endpoints/media';
 import { axiosInstance } from './axios-instance';
 
@@ -9,6 +10,7 @@ import { axiosInstance } from './axios-instance';
 // все методы запросов должны присутствовать в `domains`
 const domains = {
   auth,
+  pages,
   media,
 };
 

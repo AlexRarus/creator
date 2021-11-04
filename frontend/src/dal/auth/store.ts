@@ -1,35 +1,18 @@
 import { action, flow, makeObservable, observable } from 'mobx';
 import API from 'src/api';
-import {
-  ILoginData,
-  IRegistrationData,
-  IRegistrationConfirmData,
-  IResendRegistrationConfirmData,
-  IResetPasswordData,
-  IResetPasswordConfirmData,
-} from 'src/api/endpoints/auth';
+import { IResendRegistrationConfirmData } from 'src/api/endpoints/auth';
 import { AxiosResponse } from 'axios';
 import { History } from 'history';
 import { addNotificationItem } from 'src/components/notification';
 
-import { IUser } from './interfaces';
-
-interface ILoginActionData extends ILoginData {
-  next?: string;
-}
-interface IRegistrationActionData extends IRegistrationData {
-  next?: string;
-}
-
-interface IRegistrationConfirmActionData extends IRegistrationConfirmData {
-  next?: string;
-}
-interface IResetPasswordActionData extends IResetPasswordData {
-  next?: string;
-}
-interface IResetPasswordConfirmActionData extends IResetPasswordConfirmData {
-  next?: string;
-}
+import {
+  IUser,
+  ILoginActionData,
+  IRegistrationActionData,
+  IRegistrationConfirmActionData,
+  IResetPasswordActionData,
+  IResetPasswordConfirmActionData,
+} from './interfaces';
 
 export default class DalAuthStore {
   get API() {
@@ -107,6 +90,8 @@ export default class DalAuthStore {
     try {
       const { next, ...registrationData } = data;
       yield this.API.registration(registrationData); // регистрируемся
+      // после регистрации нужно активировать аккаунт через почту
+      // todo возможно лучше отключить "подтверждение" почты, этот шаг усложнаяет вхождение в проект
       addNotificationItem({
         level: 'success',
         message: 'Подтвердите адрес электронной почты',

@@ -39,13 +39,7 @@ export const MessagePageContainer = observer(() => {
                   повторно
                 </span>
                 {timerId !== null && (
-                  <>
-                    <Timer
-                      time={TIMER_MS / 1000}
-                      style={{ marginLeft: '5px', marginRight: '5px' }}
-                    />
-                    с
-                  </>
+                  <Timer time={TIMER_MS / 1000} style={{ marginLeft: '5px', marginRight: '5px' }} />
                 )}
                 .
               </div>
