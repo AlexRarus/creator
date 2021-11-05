@@ -10,8 +10,7 @@ User = get_user_model()
 
 class Page(models.Model):
     slug = models.SlugField(
-        verbose_name='Идентификатор',
-        unique=True,
+        verbose_name='Строковый идентификатор (задает пользователь)',
         null=True,
     )
     author = models.ForeignKey(
@@ -34,12 +33,17 @@ class Page(models.Model):
         verbose_name = 'Страница'
         verbose_name_plural = 'Страницы'
         ordering = ('id',)
+        constraints = [
+            models.UniqueConstraint(
+                fields=("slug", "author"), name="author_slug_constraint"
+            )
+        ]
 
 
 @receiver(pre_save, sender=Page)
 def set_slug(sender, instance, **kwargs):
     if not instance.slug:
         slug = uuid.uuid4().hex[:30]
-        while Page.objects.filter(slug=slug):
+        while Page.objects.filter(author=instance.author, slug=slug):
             slug = uuid.uuid4().hex[:30]
         instance.slug = slug
