@@ -137,7 +137,7 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-        "rest_framework.authentication.SessionAuthentication",
+        # "rest_framework.authentication.SessionAuthentication",
     ],
     "DEFAULT_FILTER_BACKENDS": [
         "django_filters.rest_framework.DjangoFilterBackend",
@@ -152,12 +152,16 @@ SIMPLE_JWT = {
 
 DJOSER = {
     "LOGIN_FIELD": "email",
-    'SEND_ACTIVATION_EMAIL': True,
-    'ACTIVATION_URL': "http://localhost:9000/auth/registration-confirm/{uid}/{token}/",
+    "SEND_ACTIVATION_EMAIL": False,
+    "ACTIVATION_URL": "http://localhost:9000/auth/registration-confirm/{uid}/{token}/",
     "PASSWORD_RESET_CONFIRM_URL": "http://localhost:9000/auth/reset-password-confirm/{uid}/{token}/",
     "EMAIL": {
         "password_reset": "users.email.PasswordReset",
         "activation": "users.email.ActivationEmail",
+    },
+    "SERIALIZERS": {
+        "user": "users.serializers.UserSerializer",
+        "current_user": "users.serializers.UserSerializer",
     }
 }
 

@@ -1,14 +1,16 @@
 import { action, flow, makeObservable, observable } from 'mobx';
 import API from 'src/api';
-import { IResendRegistrationConfirmData } from 'src/api/endpoints/auth';
+import {
+  ILoginData,
+  IRegistrationData,
+  IResendRegistrationConfirmData,
+} from 'src/api/endpoints/auth';
 import { AxiosResponse } from 'axios';
 import { History } from 'history';
 import { addNotificationItem } from 'src/components/notification';
 
 import {
   IUser,
-  ILoginActionData,
-  IRegistrationActionData,
   IRegistrationConfirmActionData,
   IResetPasswordActionData,
   IResetPasswordConfirmActionData,
@@ -45,11 +47,15 @@ export default class DalAuthStore {
     });
   }
 
-  public initAction = () => {
+  public initAction = flow(function* (this: DalAuthStore) {
     if (this.access) {
       API.setDefaultHeaders({ Authorization: `Bearer ${this.access}` });
+
+      if (!this.user) {
+        yield this.getMeAction(); // получаем авторизованного пользователя (в случае перезагрузки страницы)
+      }
     }
-  };
+  });
 
   public getMeAction = flow(function* (this: DalAuthStore) {
     try {
@@ -66,7 +72,7 @@ export default class DalAuthStore {
     }
   });
 
-  public loginAction = flow(function* (this: DalAuthStore, data: ILoginActionData) {
+  public loginAction = flow(function* (this: DalAuthStore, data: ILoginData) {
     try {
       const response: AxiosResponse<any> = yield this.API.login(data);
       const token = response && response.data;
@@ -75,8 +81,8 @@ export default class DalAuthStore {
       localStorage.setItem('access', token?.access);
       localStorage.setItem('refresh', token?.refresh);
       API.setDefaultHeaders({ Authorization: `Bearer ${this.access}` });
-
-      this.routerStore.push(data?.next || '/');
+      yield this.getMeAction(); // получаем авторизованного пользователя
+      this.routerStore.push(`/${this.user?.username}`); // редирект на страницу пользователя
     } catch (err) {
       console.log(err, 'DalAuthStore');
       addNotificationItem({
@@ -86,19 +92,10 @@ export default class DalAuthStore {
     }
   });
 
-  public registrationAction = flow(function* (this: DalAuthStore, data: IRegistrationActionData) {
+  public registrationAction = flow(function* (this: DalAuthStore, data: IRegistrationData) {
     try {
-      const { next, ...registrationData } = data;
-      yield this.API.registration(registrationData); // регистрируемся
-      // после регистрации нужно активировать аккаунт через почту
-      // todo возможно лучше отключить "подтверждение" почты, этот шаг усложнаяет вхождение в проект
-      addNotificationItem({
-        level: 'success',
-        message: 'Подтвердите адрес электронной почты',
-      });
-      if (next) {
-        this.routerStore.push(next);
-      }
+      yield this.API.registration(data); // регистрируемся
+      yield this.loginAction(data); // получаем токены для запросов и пользователя
     } catch (err) {
       console.log(err, 'DalAuthStore');
       addNotificationItem({

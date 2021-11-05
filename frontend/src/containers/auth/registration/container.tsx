@@ -23,7 +23,7 @@ type FormInputs = {
 
 export const RegistrationPageContainer = observer(() => {
   const { registrationAction } = useMapStoreToProps();
-  const { search, next } = useQuery({
+  const { search } = useQuery({
     next: '/auth/message?type=registration-confirm&email=',
   });
   const { watch, handleSubmit, formState, control } = useForm<FormInputs>({
@@ -40,7 +40,7 @@ export const RegistrationPageContainer = observer(() => {
   const onSubmit = async (data: FormInputs) => {
     await registrationAction({
       ...data,
-      next: next + data.email,
+      // next: next + data.email,
     });
   };
 

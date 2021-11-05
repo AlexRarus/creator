@@ -13,7 +13,7 @@ import { useMapStoreToProps } from './selectors';
 import { GlobalStyleApp } from './style';
 
 const Root = observer((props: any) => {
-  const { initAction, getMeAction, logoutAction, access } = useMapStoreToProps();
+  const { initAction, logoutAction, access } = useMapStoreToProps();
 
   useEffect(() => {
     const responseSuccess = (response: any) => {
@@ -42,7 +42,6 @@ const Root = observer((props: any) => {
   useEffect(() => {
     if (access) {
       initAction();
-      getMeAction();
     }
   }, [access]);
 

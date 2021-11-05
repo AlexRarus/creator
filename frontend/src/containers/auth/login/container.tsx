@@ -23,7 +23,7 @@ type FormInputs = {
 
 export const LoginPageContainer = observer(() => {
   const { loginAction } = useMapStoreToProps();
-  const { search, next } = useQuery({
+  const { search } = useQuery({
     next: '/',
   });
   const { watch, handleSubmit, formState, control } = useForm<FormInputs>({
@@ -37,7 +37,7 @@ export const LoginPageContainer = observer(() => {
     setHasErrors(!checkEmptyObject(formState.errors));
   }, [formState]);
 
-  const onSubmit = (data: FormInputs) => loginAction({ ...data, next });
+  const onSubmit = (data: FormInputs) => loginAction({ ...data });
 
   return (
     <AuthPageWrapper>

@@ -12,6 +12,7 @@ class UserAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "email",
+        "username",
     )
     empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
 

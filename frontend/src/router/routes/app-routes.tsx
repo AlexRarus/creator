@@ -14,6 +14,20 @@ const appRoutes: IRoute[] = [
     ),
   },
   {
+    exact: true,
+    path: `/:username/:page_slug`,
+    component: lazy(() =>
+      import(/* webpackChunkName: "page_landing_main" */ 'src/containers/app/pages/item')
+    ),
+  },
+  {
+    exact: true,
+    path: `/:username`,
+    component: lazy(() =>
+      import(/* webpackChunkName: "page_landing_main" */ 'src/containers/app/pages/list')
+    ),
+  },
+  {
     path: `*`,
     component: lazy(() => import(/* webpackChunkName: "page_404" */ 'src/containers/404')),
   },
