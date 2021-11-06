@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
-import uuid
 
 
 User = get_user_model()
@@ -43,7 +42,9 @@ class Page(models.Model):
 @receiver(pre_save, sender=Page)
 def set_slug(sender, instance, **kwargs):
     if not instance.slug:
-        slug = uuid.uuid4().hex[:30]
+        counter = 1
+        slug = f'new_page_{counter}'
         while Page.objects.filter(author=instance.author, slug=slug):
-            slug = uuid.uuid4().hex[:30]
+            counter += 1
+            slug = f'new_page_{counter}'
         instance.slug = slug

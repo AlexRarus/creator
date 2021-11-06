@@ -4,7 +4,7 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
-import uuid
+from django.utils.text import slugify
 
 
 class CustomUserManager(BaseUserManager):
@@ -46,7 +46,7 @@ class CustomUser(AbstractUser):
     last_name = models.CharField(
         max_length=50, blank=True, verbose_name="Last name"
     )
-    username = models.EmailField(
+    username = models.SlugField(
         max_length=254, unique=True, blank=True, null=True)
     email = models.EmailField(max_length=254, unique=True)
     USERNAME_FIELD = "email"
@@ -66,7 +66,10 @@ class CustomUser(AbstractUser):
 @receiver(pre_save, sender=CustomUser)
 def set_username(sender, instance, **kwargs):
     if not instance.username:
-        username = uuid.uuid4().hex[:30]
+        counter = 1
+        slug = slugify(instance.email)
+        username = slug
         while CustomUser.objects.filter(username=username):
-            username = uuid.uuid4().hex[:30]
+            username = f'{slug}{counter}'
+            counter += 1
         instance.username = username
