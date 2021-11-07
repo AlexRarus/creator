@@ -1,0 +1,58 @@
+version: '3.9'
+
+volumes:
+  postgres_data:
+  frontend_static_volume:
+  backend_static_volume:
+  backend_media_volume:
+
+services:
+  db:
+    image: postgres:12.4
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env
+    depends_on:
+      - frontend
+
+  django:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+#    image: rarus/creator:latest
+    restart: always
+    depends_on:
+      - db
+    command: gunicorn creator.wsgi:application --bind 0.0.0.0:8000
+    env_file:
+      - ./.env
+    volumes:
+      - backend_static_volume:/code/static/
+      - backend_media_volume:/code/media/
+
+  frontend:
+    build:
+      context: ../ # нужно для того что-бы подцепить репозиторий .git
+      dockerfile: ./frontend/Dockerfile
+#    image: rarus/creator-frontend:latest
+    volumes:
+      - frontend_static_volume:/app/result_build/build/
+
+  redoc:
+    image: redocly/redoc
+    env_file:
+      - ./.env
+
+  nginx:
+    image: library/nginx:1.20.1
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - frontend_static_volume:/usr/share/nginx/html/
+      - backend_static_volume:/usr/share/nginx/html/backend/static/
+      - backend_media_volume:/usr/share/nginx/html/backend/media/
+    depends_on:
+      - django
+      - redoc

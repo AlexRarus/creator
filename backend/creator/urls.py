@@ -2,10 +2,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-from rest_framework.schemas import get_schema_view
 
 urlpatterns = [
-    path("schema/", get_schema_view()),
     path("api/", include("users.urls")),
     path("api/", include("api.urls")),
     path("admin/", admin.site.urls),

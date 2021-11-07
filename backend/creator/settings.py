@@ -10,13 +10,15 @@ env = environ.Env(
     DEVELOP=(bool, False),
     DEBUG=(bool, False),
     SECRET_KEY=(str, "SUP3R-S3CR3T-K3Y-F0R-MY-PR0J3CT"),
-    ALLOWED_HOSTS=(str, f'["127.0.0.1", "{LOCAL_MACHINE_IP}"]'),
+    ALLOWED_HOSTS=(str, f'["localhost", "127.0.0.1", "{LOCAL_MACHINE_IP}"]'),
     DB_ENGINE=(str, "django.db.backends.postgresql"),
     DB_NAME=(str, "postgres"),
     POSTGRES_USER=(str, "postgres"),
     POSTGRES_PASSWORD=(str, "postgres"),
     DB_HOST=(str, "db"),
     DB_PORT=(str, "5432"),
+    EMAIL_HOST_USER=(str, "someuser@gmail.com"),
+    EMAIL_HOST_PASSWORD=(str, "password"),
 )
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -31,6 +33,10 @@ ALLOWED_HOSTS = json.loads(env("ALLOWED_HOSTS"))
 
 INTERNAL_IPS = [
     "127.0.0.1",
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8080',
 ]
 
 INSTALLED_APPS = [
@@ -165,12 +171,11 @@ DJOSER = {
     }
 }
 
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'alexserebryakov0892@gmail.com'
-EMAIL_HOST_PASSWORD = "gohsmbpgmauhmptn"
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 
 ADMIN_EMPTY_VALUE_DISPLAY = "-пусто-"

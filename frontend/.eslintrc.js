@@ -29,7 +29,7 @@ module.exports = {
     'react/no-unescaped-entities': 0,
     'react/display-name': 0,
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 0,
-    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 0,
+    'no-console': 0,
     'sort-keys': 0,
     'sort-imports': 0,
     'import/order': [
