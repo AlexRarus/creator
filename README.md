@@ -55,3 +55,14 @@ docker push rarus/creator_frontend:latest
 docker build -f ./backend/Dockerfile -t rarus/creator_backend:latest ./backend
 docker push rarus/creator_backend:latest
 ```
+
+## Подготовка удаленного сервера к деплою
+> **Внимание:** Для запуска проекта необходим docker-compose версии не ниже *1.29.1*
+### Копирование директории ./deploy на удаленный сервер
+```shell
+scp -r ./deploy user@example.com:/home/user/
+```
+### Подключиться к серверу и проверить наличие директории ./deploy
+```shell
+ssh user@example.com
+```
