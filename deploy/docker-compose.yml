@@ -9,6 +9,7 @@ volumes:
 services:
   db:
     image: postgres:12.4
+    container_name: db
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
@@ -43,11 +44,13 @@ services:
 
   redoc:
     image: redocly/redoc
+    container_name: redoc
     environment:
         SPEC_URL: ${PUBLIC_URL}static/api/docs/openapi-schema.yml
 
   nginx:
     image: library/nginx:1.20.1
+    container_name: nginx
     ports:
       - 80:80
     volumes:
