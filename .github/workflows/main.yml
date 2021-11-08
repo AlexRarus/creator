@@ -92,7 +92,7 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME_BACKEND }}:latest
   deploy:
       runs-on: ubuntu-latest
-      needs: build_and_push_to_docker_hub
+      needs: build_and_push_to_docker_hub_backend
       steps:
         - name: executing remote ssh commands to deploy
           uses: appleboy/ssh-action@master
