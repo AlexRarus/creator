@@ -19,6 +19,7 @@ env = environ.Env(
     DB_PORT=(str, "5432"),
     EMAIL_HOST_USER=(str, "someuser@gmail.com"),
     EMAIL_HOST_PASSWORD=(str, "password"),
+    PUBLIC_URL=(str, "http://localhost/"),
 )
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -159,8 +160,8 @@ SIMPLE_JWT = {
 DJOSER = {
     "LOGIN_FIELD": "email",
     "SEND_ACTIVATION_EMAIL": False,
-    "ACTIVATION_URL": "http://localhost:9000/auth/registration-confirm/{uid}/{token}/",
-    "PASSWORD_RESET_CONFIRM_URL": "http://localhost:9000/auth/reset-password-confirm/{uid}/{token}/",
+    "ACTIVATION_URL": env("PUBLIC_URL") + "auth/registration-confirm/{uid}/{token}/",
+    "PASSWORD_RESET_CONFIRM_URL": env("PUBLIC_URL") + "auth/reset-password-confirm/{uid}/{token}/",
     "EMAIL": {
         "password_reset": "users.email.PasswordReset",
         "activation": "users.email.ActivationEmail",

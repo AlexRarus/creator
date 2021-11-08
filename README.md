@@ -2,9 +2,9 @@
 
 ## Project Status
 
-[![GithubActionWorkflow](https://github.com/AlexRarus/foodgram-project-react/actions/workflows/main.yml/badge.svg)](https://github.com/AlexRarus/foodgram-project-react/actions)
+[![GithubActionWorkflow](https://github.com/AlexRarus/creator/actions/workflows/main.yml/badge.svg)](https://github.com/AlexRarus/creator/actions)
 
-## Настройка окружения для разработки
+## Настройка окружения для разработки бэка
 Установка pre-commit
 ```shell
 pip install pre-commit
@@ -17,6 +17,7 @@ pre-commit install
 ```shell
 pre-commit run --all-files
 ```
+
 ## Сборка проекта backend для разработки
 ### Запуск БД
 > **Внимание:** Для запуска БД нужен docker-compose версии не ниже *1.29.1*
@@ -33,15 +34,22 @@ docker-compose -f ./backend/docker-compose.dev.yml up --build
 python manage.py createsuperuser
 ```
 
-## Сборка полного проекта для тестирования (front+back+postgres+nginx)
+## Сборка проекта frontend для разработки
+### Запуск сборки
 ```shell
-docker-compose -f ./test/docker-compose.yml up --build
+cd ./frontend
+npm run start
 ```
-> Документация API доступна на: [http://localhost/api/docs/openapi-schema.yml](http://localhost/api/docs/openapi-schema.yml)
+
+## Сборка полного проекта для тестирования (front+back+postgres+nginx+redoc)
+```shell
+docker-compose -f ./deploy/docker-compose.yml up --build
+```
+> Документация API доступна на: [http://localhost/redoc/](http://localhost/redoc/)
 > 
 > Админка на: [http://localhost/admin/](http://localhost/admin/)
 
-> **Внимание:** Проект запускается на адресе: [http://178.154.216.28/](http://178.154.216.28/)
+> **Внимание:** Проект запускается на адресе: [http://localhost/](http://localhost/)
 
 
 ## Отдельная сборка image фронта
@@ -49,7 +57,7 @@ docker-compose -f ./test/docker-compose.yml up --build
 docker build -f ./frontend/Dockerfile -t rarus/creator_frontend:latest .
 docker push rarus/creator_frontend:latest
 ```
-
+alexserebryakov92@mail.ru
 ## Отдельная сборка image бэка
 ```shell
 docker build -f ./backend/Dockerfile -t rarus/creator_backend:latest ./backend
@@ -57,7 +65,11 @@ docker push rarus/creator_backend:latest
 ```
 
 ## Подготовка удаленного сервера к деплою
-> **Внимание:** Для запуска проекта необходим docker-compose версии не ниже *1.29.1*
+> **Внимание:** Для запуска проекта необходим Docker и docker-compose версии не ниже *1.29.1*
+> 
+> [Установка docker на ubuntu18.04](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04)
+> 
+> [Установка docker-compose на ubuntu18.04](https://www.digitalocean.com/community/tutorials/how-to-install-docker-compose-on-ubuntu-18-04-ru)
 ### Копирование директории ./deploy на удаленный сервер
 ```shell
 scp -r ./deploy user@example.com:/home/user/
@@ -66,3 +78,11 @@ scp -r ./deploy user@example.com:/home/user/
 ```shell
 ssh user@example.com
 ```
+
+> Документация API доступна на: [http://178.154.216.28/redoc/](http://178.154.216.28/redoc/)
+> 
+> Админка на: [http://178.154.216.28/admin/](http://178.154.216.28/admin/)
+> 
+> API доступно на: [http://178.154.216.28/api/](http://178.154.216.28/api/)
+
+> **Внимание:** Проект запускается на адресе: [http://178.154.216.28/](http://178.154.216.28/)
