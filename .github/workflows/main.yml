@@ -27,6 +27,7 @@ jobs:
       - name: Test with flake8 and django tests
         run: |
           # запуск проверки проекта по flake8
+          ls -la
           python -m flake8 --config ./.flake8
           # Создаст файл для переменных окружения
           cd ./backend
