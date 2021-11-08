@@ -64,6 +64,7 @@ docker build -f ./backend/Dockerfile -t rarus/creator_backend:latest ./backend
 docker push rarus/creator_backend:latest
 ```
 
+
 ## Подготовка удаленного сервера к деплою
 > **Внимание:** Для запуска проекта необходим Docker и docker-compose версии не ниже *1.29.1*
 > 
