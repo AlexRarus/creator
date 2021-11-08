@@ -21,6 +21,7 @@ services:
 #      context: ../backend
 #      dockerfile: Dockerfile
     image: rarus/creator_backend:latest
+    container_name: django
     restart: always
     depends_on:
       - db
@@ -35,6 +36,7 @@ services:
 #    build:
 #      context: ../ # нужно для того что-бы подцепить репозиторий .git
 #      dockerfile: ./frontend/Dockerfile
+    container_name: frontend
     image: rarus/creator_frontend:latest
     volumes:
       - frontend_static_volume:/app/result_build/build/
