@@ -6,12 +6,14 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0003_page_slug'),
+        ("api", "0003_page_slug"),
     ]
 
     operations = [
         migrations.AddConstraint(
-            model_name='page',
-            constraint=models.UniqueConstraint(fields=('slug', 'author'), name='author_slug_constraint'),
+            model_name="page",
+            constraint=models.UniqueConstraint(
+                fields=("slug", "author"), name="author_slug_constraint"
+            ),
         ),
     ]

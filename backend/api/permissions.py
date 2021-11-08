@@ -6,7 +6,7 @@ class IsAuthorPermission(BasePermission):
         return request.method in SAFE_METHODS or request.user.is_authenticated
 
     def has_object_permission(self, request, view, obj):
-        print('request.method', request.method)
+        print("request.method", request.method)
         if request.method == "DELETE":
             return request.user.is_staff or request.user == obj.author
         return request.method in SAFE_METHODS or request.user.is_authenticated

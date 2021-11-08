@@ -1,20 +1,20 @@
 from django.db.models import Prefetch
 from rest_framework import viewsets
 
-from .permissions import IsAuthorPermission
-from .models.page import Page
 from .models.block import Block
+from .models.page import Page
 from .models.section import Section
-from .serializers.page import PageSerializer
+from .permissions import IsAuthorPermission
 from .serializers.block import BlockSerializer
+from .serializers.page import PageSerializer
 from .serializers.section import SectionSerializer
 
 
 class PageViewSet(viewsets.ModelViewSet):
     queryset = Page.objects.prefetch_related(
         Prefetch(
-            'blocks',
-            queryset=Block.objects.order_by('pageblockrelation__order')
+            "blocks",
+            queryset=Block.objects.order_by("pageblockrelation__order"),
         ),
     ).all()
     permission_classes = (IsAuthorPermission,)

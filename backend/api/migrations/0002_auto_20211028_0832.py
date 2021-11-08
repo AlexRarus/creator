@@ -6,20 +6,32 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0001_initial'),
+        ("api", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='block',
-            options={'ordering': ('id',), 'verbose_name': 'Блок', 'verbose_name_plural': 'Блоки'},
+            name="block",
+            options={
+                "ordering": ("id",),
+                "verbose_name": "Блок",
+                "verbose_name_plural": "Блоки",
+            },
         ),
         migrations.AlterModelOptions(
-            name='section',
-            options={'ordering': ('id',), 'verbose_name': 'Секция', 'verbose_name_plural': 'Секции'},
+            name="section",
+            options={
+                "ordering": ("id",),
+                "verbose_name": "Секция",
+                "verbose_name_plural": "Секции",
+            },
         ),
         migrations.AlterModelOptions(
-            name='text',
-            options={'ordering': ('id',), 'verbose_name': 'Текст (тип блока)', 'verbose_name_plural': 'Текст (тип блока)'},
+            name="text",
+            options={
+                "ordering": ("id",),
+                "verbose_name": "Текст (тип блока)",
+                "verbose_name_plural": "Текст (тип блока)",
+            },
         ),
     ]

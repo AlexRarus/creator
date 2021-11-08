@@ -3,7 +3,6 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.token_blacklist.models import OutstandingToken
 
-
 User = get_user_model()
 
 

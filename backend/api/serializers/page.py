@@ -1,19 +1,18 @@
+from api.models.block import Block
+from api.models.page import Page
+from api.models.relations import PageBlockRelation
 from django.db.models import Prefetch
 from rest_framework import serializers
-from api.models.page import Page
-from api.models.block import Block
-from api.models.relations import PageBlockRelation
 
 
 class PageSerializer(serializers.ModelSerializer):
     author = serializers.PrimaryKeyRelatedField(read_only=True)
     blocks = serializers.PrimaryKeyRelatedField(
-        many=True,
-        queryset=Block.objects.all()
+        many=True, queryset=Block.objects.all()
     )
 
     def create(self, validated_data):
-        blocks = validated_data.pop('blocks')
+        blocks = validated_data.pop("blocks")
         page = Page.objects.create(**validated_data)
 
         for order, block in enumerate(blocks):
@@ -25,13 +24,13 @@ class PageSerializer(serializers.ModelSerializer):
         return page
 
     def update(self, page, validated_data):
-        blocks = validated_data.pop('blocks')
+        blocks = validated_data.pop("blocks")
 
         # page.slug = validated_data.get('slug', page.slug)
         # page.save()
 
         for order, block in enumerate(blocks):
-            print(block, '-', order)
+            print(block, "-", order)
             PageBlockRelation.objects.update_or_create(
                 page=page,
                 block=block,
@@ -41,11 +40,16 @@ class PageSerializer(serializers.ModelSerializer):
         # для того чтобы возвращалась нужная сортировка
         return Page.objects.prefetch_related(
             Prefetch(
-                'blocks',
-                queryset=Block.objects.order_by('pageblockrelation__order')
+                "blocks",
+                queryset=Block.objects.order_by("pageblockrelation__order"),
             ),
         ).get(id=page.id)
 
     class Meta:
         model = Page
-        fields = ('id', 'author', 'blocks', 'slug',)
+        fields = (
+            "id",
+            "author",
+            "blocks",
+            "slug",
+        )

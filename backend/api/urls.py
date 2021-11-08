@@ -1,6 +1,6 @@
 from rest_framework.routers import DefaultRouter
 
-from .views import PageViewSet, BlockViewSet, SectionViewSet
+from .views import BlockViewSet, PageViewSet, SectionViewSet
 
 router_v1 = DefaultRouter()
 

@@ -1,8 +1,8 @@
-from django.contrib import admin
 from django.conf import settings
+from django.contrib import admin
 
-from .models.page import Page
 from .models.block import Block
+from .models.page import Page
 from .models.relations import PageBlockRelation
 from .models.section import Section
 from .models.types.text import Text

@@ -1,5 +1,5 @@
-from rest_framework import serializers
 from api.models.section import Section
+from rest_framework import serializers
 
 
 class SectionSerializer(serializers.ModelSerializer):
@@ -7,4 +7,8 @@ class SectionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Section
-        fields = ('id', 'author', 'name',)
+        fields = (
+            "id",
+            "author",
+            "name",
+        )

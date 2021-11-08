@@ -36,7 +36,7 @@ INTERNAL_IPS = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8080',
+    "http://localhost:8080",
 ]
 
 INSTALLED_APPS = [
@@ -152,8 +152,8 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=30),
-    'TOKEN_REFRESH_LIFETIME': timedelta(days=45),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
+    "TOKEN_REFRESH_LIFETIME": timedelta(days=45),
 }
 
 DJOSER = {
@@ -168,11 +168,11 @@ DJOSER = {
     "SERIALIZERS": {
         "user": "users.serializers.UserSerializer",
         "current_user": "users.serializers.UserSerializer",
-    }
+    },
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = env("EMAIL_HOST_USER")
