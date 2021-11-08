@@ -12,11 +12,11 @@ from .serializers.section import SectionSerializer
 
 class PageViewSet(viewsets.ModelViewSet):
     queryset = Page.objects.prefetch_related(
-                Prefetch(
-                    'blocks',
-                    queryset=Block.objects.order_by('pageblockrelation__order')
-                ),
-            ).all()
+        Prefetch(
+            'blocks',
+            queryset=Block.objects.order_by('pageblockrelation__order')
+        ),
+    ).all()
     permission_classes = (IsAuthorPermission,)
     serializer_class = PageSerializer
 

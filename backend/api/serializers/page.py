@@ -40,11 +40,11 @@ class PageSerializer(serializers.ModelSerializer):
 
         # для того чтобы возвращалась нужная сортировка
         return Page.objects.prefetch_related(
-                Prefetch(
-                    'blocks',
-                    queryset=Block.objects.order_by('pageblockrelation__order')
-                ),
-            ).get(id=page.id)
+            Prefetch(
+                'blocks',
+                queryset=Block.objects.order_by('pageblockrelation__order')
+            ),
+        ).get(id=page.id)
 
     class Meta:
         model = Page
