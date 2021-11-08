@@ -26,12 +26,16 @@ jobs:
           pip install -r ./backend/requirements.txt
       - name: Test with flake8 and django tests
         run: |
-          # запуск проверки проекта по flake8
-          ls -la
+          # Запуск проверки проекта по flake8
+          echo 'Запуск проверки проекта по flake8'
           python -m flake8 --config ./.flake8
-          # Создаст файл для переменных окружения
+          # Перейти в папу с кодом бэка
+          echo 'Перейти в папу с кодом бэка'
           cd ./backend
+          # Создаст файл для переменных окружения
+          echo 'Создаст файл для переменных окружения'
           touch .env
+          echo 'Наполнит файл переменными окружения из секретов GitHub'
           # Наполнит файл переменными окружения из секретов GitHub
           echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
           echo DB_NAME=${{ secrets.DB_NAME }} >> .env
