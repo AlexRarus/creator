@@ -15,9 +15,9 @@ class UserAdmin(admin.ModelAdmin):
     )
     empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
 
-    def BE_AWARE_NO_WARNING_clear_tokens_and_delete(self, request, queryset):
+    def be_aware_no_warning_clear_tokens_and_delete(self, request, queryset):
         users = queryset.values("id")
         OutstandingToken.objects.filter(user__id__in=users).delete()
         queryset.delete()
 
-    actions = ["BE_AWARE_NO_WARNING_clear_tokens_and_delete"]
+    actions = ["be_aware_no_warning_clear_tokens_and_delete"]
