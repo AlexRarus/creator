@@ -42,3 +42,16 @@ docker-compose -f ./test/docker-compose.yml up --build
 > Админка на: [http://localhost/admin/](http://localhost/admin/)
 
 > **Внимание:** Проект запускается на адресе: [http://178.154.216.28/](http://178.154.216.28/)
+
+
+## Отдельная сборка image фронта
+```shell
+docker build -f ./frontend/Dockerfile -t rarus/creator_frontend:latest .
+docker push rarus/creator_frontend:latest
+```
+
+## Отдельная сборка image бэка
+```shell
+docker build -f ./backend/Dockerfile -t rarus/creator_backend:latest ./backend
+docker push rarus/creator_backend:latest
+```

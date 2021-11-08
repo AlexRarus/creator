@@ -17,10 +17,10 @@ services:
       - frontend
 
   django:
-    build:
-      context: ../backend
-      dockerfile: Dockerfile
-#    image: rarus/creator:latest
+#    build:
+#      context: ../backend
+#      dockerfile: Dockerfile
+    image: rarus/creator_backend:latest
     restart: always
     depends_on:
       - db
@@ -32,17 +32,17 @@ services:
       - backend_media_volume:/code/media/
 
   frontend:
-    build:
-      context: ../ # нужно для того что-бы подцепить репозиторий .git
-      dockerfile: ./frontend/Dockerfile
-#    image: rarus/creator-frontend:latest
+#    build:
+#      context: ../ # нужно для того что-бы подцепить репозиторий .git
+#      dockerfile: ./frontend/Dockerfile
+    image: rarus/creator_frontend:latest
     volumes:
       - frontend_static_volume:/app/result_build/build/
 
   redoc:
     image: redocly/redoc
-    env_file:
-      - ./.env
+    environment:
+        SPEC_URL: ${PUBLIC_URL}static/api/docs/openapi-schema.yml
 
   nginx:
     image: library/nginx:1.20.1
