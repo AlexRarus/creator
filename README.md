@@ -4,6 +4,21 @@
 
 [![GithubActionWorkflow](https://github.com/AlexRarus/creator/actions/workflows/main.yml/badge.svg)](https://github.com/AlexRarus/creator/actions)
 
+## Сборка проекта FRONTEND для РАЗРАБОТКИ
+### Переходим в дирректорию frontend
+```shell
+cd ./frontend
+```
+### Копируем и переименовываем файл с переменными окружения
+```shell
+cp .env.template .env
+```
+### Устанавливаем зависимости и запускаем проект
+```shell
+npm install
+npm run start
+```
+
 ## Настройка окружения для разработки бэка
 Установка pre-commit
 ```shell
@@ -32,13 +47,6 @@ docker-compose -f ./backend/docker-compose.dev.yml up --build
 Создание суперпользователя
 ```shell
 python manage.py createsuperuser
-```
-
-## Сборка проекта frontend для разработки
-### Запуск сборки
-```shell
-cd ./frontend
-npm run start
 ```
 
 ## Сборка полного проекта для тестирования (front+back+postgres+nginx+redoc)

@@ -17,14 +17,14 @@ const gitRevisionPlugin = new GitRevisionPlugin({
 });
 
 const LOCAL_API_URL = 'http://127.0.0.1:8000';
-const SERVICE_API_URL = 'http://127.0.0.1:8000';
+const SERVICE_API_URL = process.env.PUBLIC_URL || LOCAL_API_URL;
 
 const devServerConfig = () => config => {
   return {
     ...config,
     proxy: {
       '/api': {
-        target: LOCAL_API_URL,
+        target: SERVICE_API_URL,
         changeOrigin: true,
         ws: false,
         pathRewrite: {
@@ -32,21 +32,21 @@ const devServerConfig = () => config => {
         },
         secure: false,
       },
-      '/staticfiles': {
-        target: LOCAL_API_URL,
+      '/static': {
+        target: SERVICE_API_URL,
         changeOrigin: true,
         ws: false,
         pathRewrite: {
-          '^/staticfiles': '/staticfiles',
+          '^/static': '/static',
         },
         secure: false,
       },
-      '/mediafiles': {
-        target: LOCAL_API_URL,
+      '/media': {
+        target: SERVICE_API_URL,
         changeOrigin: true,
         ws: false,
         pathRewrite: {
-          '^/mediafiles': '/mediafiles',
+          '^/media': '/media',
         },
         secure: false,
       },

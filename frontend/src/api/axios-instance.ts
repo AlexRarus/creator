@@ -5,7 +5,7 @@ import { GlobalEventEmitter } from './event-emitter';
 export type { AxiosResponse, AxiosError, AxiosRequestConfig } from 'axios';
 
 export const axiosInstance: AxiosInstance = axios.create({
-  baseURL: '/api/v1/',
+  baseURL: `/api/v1/`,
   validateStatus: (status) => status >= 200 && status < 400,
   timeout: 60000,
 });
