@@ -65,7 +65,7 @@ docker-compose -f ./deploy/docker-compose.yml up --build
 docker build -f ./frontend/Dockerfile -t rarus/creator_frontend:latest .
 docker push rarus/creator_frontend:latest
 ```
-alexserebryakov92@mail.ru
+
 ## Отдельная сборка image бэка
 ```shell
 docker build -f ./backend/Dockerfile -t rarus/creator_backend:latest ./backend
