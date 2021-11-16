@@ -2,11 +2,11 @@ from django.db.models import Prefetch
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
-from .pagination import CustomPagination
 from .models.block import Block
 from .models.page import Page
 from .models.section import Section
-from .permissions import IsPagePermission, IsAuthorPermission
+from .pagination import CustomPagination
+from .permissions import IsAuthorPermission, IsPagePermission
 from .serializers.block import BlockSerializer
 from .serializers.page import PageReadSerializer, PageWriteSerializer
 from .serializers.section import SectionSerializer
@@ -14,20 +14,20 @@ from .serializers.section import SectionSerializer
 
 class PageViewSet(viewsets.ModelViewSet):
     pagination_class = CustomPagination
-    lookup_field = 'slug'
+    lookup_field = "slug"
 
     def get_permissions(self):
-        if self.action in ['retrieve']:
+        if self.action in ["retrieve"]:
             return [AllowAny()]
-        elif self.action in ['create']:
+        elif self.action in ["create"]:
             return [IsAuthenticated()]
-        elif self.action in ['update', 'partial_update', 'destroy', 'list']:
+        elif self.action in ["update", "partial_update", "destroy", "list"]:
             return [IsPagePermission()]
         else:
             return [AllowAny()]
 
     def get_queryset(self):
-        author_username = self.kwargs.get('author_username')
+        author_username = self.kwargs.get("author_username")
         if author_username == "my":
             author_username = self.request.user.username
         return Page.objects.prefetch_related(

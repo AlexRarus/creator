@@ -1,7 +1,6 @@
 from rest_framework.routers import DefaultRouter
 
-from .views import (
-    BlockViewSet, PageViewSet, SectionViewSet)
+from .views import BlockViewSet, PageViewSet, SectionViewSet
 
 router_v1 = DefaultRouter()
 
@@ -10,7 +9,8 @@ router_v1 = DefaultRouter()
 # /pages/username/:slug -> retrieve
 
 router_v1.register(
-    r'v1/pages/(?P<author_username>[^/.]+)', PageViewSet, 'PageViewSet')
+    r"v1/pages/(?P<author_username>[^/.]+)", PageViewSet, "PageViewSet"
+)
 
 router_v1.register("v1/blocks", BlockViewSet)
 router_v1.register("v1/sections", SectionViewSet)

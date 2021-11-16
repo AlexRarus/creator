@@ -28,11 +28,10 @@ class PageWriteSerializer(serializers.ModelSerializer):
     def update(self, page, validated_data):
         blocks = validated_data.pop("blocks")
 
-        # page.slug = validated_data.get('slug', page.slug)
-        # page.save()
+        page.slug = validated_data.get("slug", page.slug)
+        page.save()
 
         for order, block in enumerate(blocks):
-            print(block, "-", order)
             PageBlockRelation.objects.update_or_create(
                 page=page,
                 block=block,

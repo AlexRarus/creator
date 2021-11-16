@@ -41,9 +41,9 @@ class CustomUserManager(BaseUserManager):
 
 
 class UserRoles(models.TextChoices):
-    USER = 'user'
-    MODERATOR = 'moderator'
-    ADMIN = 'admin'
+    USER = "user"
+    MODERATOR = "moderator"
+    ADMIN = "admin"
 
 
 class CustomUser(AbstractUser):
@@ -61,15 +61,16 @@ class CustomUser(AbstractUser):
         max_length=10,
         blank=True,
         choices=UserRoles.choices,
-        default=UserRoles.USER
+        default=UserRoles.USER,
     )
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
     @property
     def is_admin(self):
-        return (self.role == UserRoles.ADMIN
-                or self.is_staff or self.is_superuser)
+        return (
+            self.role == UserRoles.ADMIN or self.is_staff or self.is_superuser
+        )
 
     @property
     def is_moderator(self):
