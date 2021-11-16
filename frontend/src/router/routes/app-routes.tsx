@@ -15,16 +15,23 @@ const appRoutes: IRoute[] = [
   },
   {
     exact: true,
-    path: `/:username/:page_slug`,
+    path: `/profile/:username/pages/:pageSlug`,
     component: lazy(() =>
-      import(/* webpackChunkName: "page_landing_main" */ 'src/containers/app/pages/item')
+      import(/* webpackChunkName: "page_landing_main" */ 'src/containers/app/pages/form')
     ),
   },
   {
     exact: true,
-    path: `/:username`,
+    path: `/profile/:username/pages/`,
     component: lazy(() =>
       import(/* webpackChunkName: "page_landing_main" */ 'src/containers/app/pages/list')
+    ),
+  },
+  {
+    exact: true,
+    path: `/:username/:pageSlug`,
+    component: lazy(() =>
+      import(/* webpackChunkName: "page_landing_main" */ 'src/containers/app/pages/preview')
     ),
   },
   {

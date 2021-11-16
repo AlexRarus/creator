@@ -7,8 +7,8 @@ export function useMapStoreToProps() {
 
   return {
     isLoading: store.isLoading,
-    pages: store.pages,
-    getMyPagesAction: store.getMyPagesAction,
+    data: store.data,
+    getMyPageBySlugAction: store.getMyPageBySlugAction,
     user: dalAuthStore.user,
   };
 }

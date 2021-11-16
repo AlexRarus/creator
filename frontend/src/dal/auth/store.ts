@@ -1,4 +1,4 @@
-import { action, flow, makeObservable, observable } from 'mobx';
+import { flow, makeAutoObservable } from 'mobx';
 import API from 'src/api';
 import {
   ILoginData,
@@ -29,22 +29,7 @@ export default class DalAuthStore {
   constructor(routerStore: History) {
     this.routerStore = routerStore;
 
-    makeObservable(this, {
-      user: observable,
-      access: observable,
-      refresh: observable,
-      initAction: action.bound,
-      getMeAction: action.bound,
-      loginAction: action.bound,
-      registrationAction: action.bound,
-      registrationConfirmAction: action.bound,
-      resendRegistrationConfirmAction: action.bound,
-      logoutAction: action.bound,
-      logoutAllAction: action.bound,
-      clientLogoutAction: action.bound,
-      resetPasswordAction: action.bound,
-      resetPasswordConfirmAction: action.bound,
-    });
+    makeAutoObservable(this, {}, { autoBind: true });
   }
 
   public initAction = flow(function* (this: DalAuthStore) {
@@ -76,13 +61,13 @@ export default class DalAuthStore {
     try {
       const response: AxiosResponse<any> = yield this.API.login(data);
       const token = response && response.data;
+      API.setDefaultHeaders({ Authorization: `Bearer ${token?.access}` });
+      yield this.getMeAction(); // получаем авторизованного пользователя
       this.access = token?.access;
       this.refresh = token?.refresh;
       localStorage.setItem('access', token?.access);
       localStorage.setItem('refresh', token?.refresh);
-      API.setDefaultHeaders({ Authorization: `Bearer ${this.access}` });
-      yield this.getMeAction(); // получаем авторизованного пользователя
-      this.routerStore.push(`/${this.user?.username}`); // редирект на страницу пользователя
+      this.routerStore.push(`/profile/${this.user?.username}/pages/`); // редирект на страницу пользователя
     } catch (err) {
       console.log(err, 'DalAuthStore');
       addNotificationItem({

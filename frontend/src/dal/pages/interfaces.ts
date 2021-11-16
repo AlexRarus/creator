@@ -5,8 +5,3 @@ export interface IPage {
   slug: string; // строковый идентификатор страницы, который может задавать пользователь
   blocks: IBlock[];
 }
-
-export interface IWritePage {
-  blocks: number[]; // id блоков в том порядке в котором они должны сохраниться
-  slug?: string;
-}

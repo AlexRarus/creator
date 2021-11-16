@@ -1,4 +1,4 @@
-import { action, flow, makeObservable } from 'mobx';
+import { flow, makeAutoObservable } from 'mobx';
 import { History } from 'history';
 import { IRootStore } from 'src/dal/interfaces';
 
@@ -7,9 +7,7 @@ export class RegistrationPageStore {
   routerStore!: History;
 
   constructor(RootStore: IRootStore) {
-    makeObservable(this, {
-      initAction: action.bound,
-    });
+    makeAutoObservable(this, {}, { autoBind: true });
 
     this.rootStore = RootStore;
     this.routerStore = RootStore.routing;

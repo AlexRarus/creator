@@ -1,24 +1,46 @@
 from django.db.models import Prefetch
 from rest_framework import viewsets
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
+from .pagination import CustomPagination
 from .models.block import Block
 from .models.page import Page
 from .models.section import Section
-from .permissions import IsAuthorPermission
+from .permissions import IsPagePermission, IsAuthorPermission
 from .serializers.block import BlockSerializer
-from .serializers.page import PageSerializer
+from .serializers.page import PageReadSerializer, PageWriteSerializer
 from .serializers.section import SectionSerializer
 
 
 class PageViewSet(viewsets.ModelViewSet):
-    queryset = Page.objects.prefetch_related(
-        Prefetch(
-            "blocks",
-            queryset=Block.objects.order_by("pageblockrelation__order"),
-        ),
-    ).all()
-    permission_classes = (IsAuthorPermission,)
-    serializer_class = PageSerializer
+    pagination_class = CustomPagination
+    lookup_field = 'slug'
+
+    def get_permissions(self):
+        if self.action in ['retrieve']:
+            return [AllowAny()]
+        elif self.action in ['create']:
+            return [IsAuthenticated()]
+        elif self.action in ['update', 'partial_update', 'destroy', 'list']:
+            return [IsPagePermission()]
+        else:
+            return [AllowAny()]
+
+    def get_queryset(self):
+        author_username = self.kwargs.get('author_username')
+        if author_username == "my":
+            author_username = self.request.user.username
+        return Page.objects.prefetch_related(
+            Prefetch(
+                "blocks",
+                queryset=Block.objects.order_by("pageblockrelation__order"),
+            ),
+        ).filter(author__username=author_username)
+
+    def get_serializer_class(self):
+        if self.action == "retrieve" or self.action == "list":
+            return PageReadSerializer
+        return PageWriteSerializer
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)

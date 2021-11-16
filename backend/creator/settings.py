@@ -150,6 +150,7 @@ REST_FRAMEWORK = {
         "django_filters.rest_framework.DjangoFilterBackend",
     ],
     "DEFAULT_PAGINATION_CLASS": "api.pagination.CustomPagination",
+    "PAGE_SIZE": 20,  # если убрать то ВСЕ запросы СПИСКОВ должны иметь limit
 }
 
 SIMPLE_JWT = {

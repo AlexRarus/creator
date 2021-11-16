@@ -1,4 +1,4 @@
-from django.contrib.auth import get_user_model, logout
+from django.contrib.auth import logout
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import AllowAny

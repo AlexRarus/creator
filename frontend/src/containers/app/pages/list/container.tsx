@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { Grid, GridColumn } from 'src/components/grid';
+import { useIsAuthor } from 'src/utils/useIsAuthor';
+import { IPage } from 'src/dal/pages/interfaces';
 
 import { useMapStoreToProps } from './selectors';
 import { PagesListPageWrapper } from './style';
@@ -11,20 +13,29 @@ interface IParams {
 }
 
 export const PagesListPageContainer = observer(() => {
-  const { user, getPagesListByUsernameAction } = useMapStoreToProps();
+  const { isLoading, pages, user, getMyPagesAction } = useMapStoreToProps();
   const { username } = useParams<IParams>();
+  const isAuthor = useIsAuthor(username);
 
   useEffect(() => {
-    getPagesListByUsernameAction(username);
-  }, [username]);
+    if (isAuthor) {
+      getMyPagesAction(username);
+    }
+  }, [username, isAuthor]);
 
   return (
     <PagesListPageWrapper>
-      <Grid>
-        <GridColumn direction='row' alignItems='center'>
-          Hello {user?.username}
-        </GridColumn>
-      </Grid>
+      {!isAuthor && 'Error...'}
+      {isLoading && isAuthor && 'Loading...'}
+      {!isLoading && pages !== null && (
+        <Grid>
+          {pages.map((page: IPage) => (
+            <GridColumn size={12} direction='row' alignItems='center' key={page.slug}>
+              <Link to={`${page.slug}`}>Страница "{page.slug}"</Link>
+            </GridColumn>
+          ))}
+        </Grid>
+      )}
     </PagesListPageWrapper>
   );
 });

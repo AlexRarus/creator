@@ -1,4 +1,4 @@
-import { action, flow, makeObservable, observable } from 'mobx';
+import { flow, makeAutoObservable } from 'mobx';
 import API from 'src/api';
 import { History } from 'history';
 import { AxiosResponse } from 'axios';
@@ -18,10 +18,7 @@ export default class DalPagesStore {
   constructor(routerStore: History) {
     this.routerStore = routerStore;
 
-    makeObservable(this, {
-      list: observable,
-      getMyPagesAction: action.bound,
-    });
+    makeAutoObservable(this, {}, { autoBind: true });
   }
 
   public getMyPagesAction = flow(function* (this: DalPagesStore) {

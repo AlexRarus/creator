@@ -40,6 +40,12 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 
+class UserRoles(models.TextChoices):
+    USER = 'user'
+    MODERATOR = 'moderator'
+    ADMIN = 'admin'
+
+
 class CustomUser(AbstractUser):
     first_name = models.CharField(
         max_length=50, blank=True, verbose_name="First name"
@@ -51,8 +57,23 @@ class CustomUser(AbstractUser):
         max_length=254, unique=True, blank=True, null=True
     )
     email = models.EmailField(max_length=254, unique=True)
+    role = models.CharField(
+        max_length=10,
+        blank=True,
+        choices=UserRoles.choices,
+        default=UserRoles.USER
+    )
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
+
+    @property
+    def is_admin(self):
+        return (self.role == UserRoles.ADMIN
+                or self.is_staff or self.is_superuser)
+
+    @property
+    def is_moderator(self):
+        return self.role == UserRoles.MODERATOR
 
     objects = CustomUserManager()
 
