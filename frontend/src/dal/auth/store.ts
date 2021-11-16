@@ -67,7 +67,7 @@ export default class DalAuthStore {
       this.refresh = token?.refresh;
       localStorage.setItem('access', token?.access);
       localStorage.setItem('refresh', token?.refresh);
-      this.routerStore.push(`/profile/${this.user?.username}/pages/`); // редирект на страницу пользователя
+      this.routerStore.push(`/profile/${this.user?.username}/pages/?redirectFrom=login`); // редирект на страницу пользователя
     } catch (err) {
       console.log(err, 'DalAuthStore');
       addNotificationItem({

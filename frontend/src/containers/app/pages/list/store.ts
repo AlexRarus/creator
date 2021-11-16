@@ -23,7 +23,11 @@ export class PagesListStore {
     this.routerStore = RootStore.routing;
   }
 
-  getMyPagesAction = flow(function* (this: PagesListStore, username: string) {
+  getMyPagesAction = flow(function* (
+    this: PagesListStore,
+    username: string,
+    redirectFrom?: string
+  ) {
     try {
       this.isLoading = true;
       const responsePages = yield this.API.getMyPages();
@@ -35,7 +39,7 @@ export class PagesListStore {
         const responseFirstPage = yield this.API.createPage();
         const firstPageSlug = responseFirstPage.data.slug;
         this.routerStore.push(`/${username}/${firstPageSlug}/`); // редирект на первую страницу пользователя
-      } else if (this.total === 1) {
+      } else if (this.total === 1 && redirectFrom === 'login') {
         // если у пользователя только ОДНА созданная страница, то перенаправляем его сразу на эту страницу
         const pageSlug = this.pages && this.pages[0]?.slug;
         // todo тут можно перед редиректом заполнить стор детальной страницы данными чтобы не запрашивать второй раз

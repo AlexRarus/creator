@@ -4,6 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Grid, GridColumn } from 'src/components/grid';
 import { useIsAuthor } from 'src/utils/useIsAuthor';
 import { IPage } from 'src/dal/pages/interfaces';
+import { useQuery } from 'src/hooks/useQuery';
 
 import { useMapStoreToProps } from './selectors';
 import { PagesListPageWrapper } from './style';
@@ -13,15 +14,16 @@ interface IParams {
 }
 
 export const PagesListPageContainer = observer(() => {
-  const { isLoading, pages, user, getMyPagesAction } = useMapStoreToProps();
+  const { isLoading, pages, getMyPagesAction } = useMapStoreToProps();
   const { username } = useParams<IParams>();
+  const { redirectFrom } = useQuery();
   const isAuthor = useIsAuthor(username);
 
   useEffect(() => {
     if (isAuthor) {
-      getMyPagesAction(username);
+      getMyPagesAction(username, redirectFrom);
     }
-  }, [username, isAuthor]);
+  }, [username, isAuthor, redirectFrom]);
 
   return (
     <PagesListPageWrapper>
