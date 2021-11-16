@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { Grid, GridColumn } from 'src/components/grid';
 import { useIsAuthor } from 'src/utils/useIsAuthor';
 import ButtonLink from 'src/components/button-link';
+import { IBlock } from 'src/dal/blocks/interfaces';
 
 import { useMapStoreToProps } from './selectors';
 import { PagesFormWrapper } from './style';
@@ -29,10 +30,23 @@ export const PagesFormContainer = observer(() => {
       {!isAuthor && 'Error...'}
       {isLoading && isAuthor && 'Loading...'}
       {!isLoading && data !== null && (
-        <Grid>
+        <Grid verticalGap={32}>
           <GridColumn size={12} direction='row' alignItems='center'>
-            <div>Form "{data.slug}"</div>
-            <ButtonLink to={`/${username}/${data.slug}`} style={{ marginLeft: '10px' }}>
+            <Grid>
+              {data.blocks.map((block: IBlock) => (
+                <GridColumn key={block.id} size={12}>
+                  {block.id} - {block.type}
+                </GridColumn>
+              ))}
+            </Grid>
+          </GridColumn>
+          <GridColumn>
+            <ButtonLink to={`blocks/`} style={{ marginLeft: '10px' }}>
+              Add Block
+            </ButtonLink>
+          </GridColumn>
+          <GridColumn>
+            <ButtonLink to={`/${username}/${data.slug}/`} style={{ marginLeft: '10px' }}>
               Show Preview
             </ButtonLink>
           </GridColumn>

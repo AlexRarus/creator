@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib import admin
 
 from .models.block import Block
+from .models.block_type import BlockType
 from .models.page import Page
 from .models.relations import PageBlockRelation
 from .models.section import Section
@@ -16,6 +17,22 @@ class PageAdmin(admin.ModelAdmin):
         # "blocks",
     )
     search_fields = ("id",)
+    empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
+
+
+@admin.register(BlockType)
+class BlockTypeAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "author",
+        "slug",
+        "label",
+    )
+    search_fields = (
+        "id",
+        "slug",
+        "label",
+    )
     empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
 
 

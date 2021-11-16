@@ -15,6 +15,20 @@ const appRoutes: IRoute[] = [
   },
   {
     exact: true,
+    path: `/profile/:username/pages/:pageSlug/blocks/`,
+    component: lazy(() =>
+      import(/* webpackChunkName: "page_landing_main" */ 'src/containers/app/blocks/types-list/')
+    ),
+  },
+  {
+    exact: true,
+    path: `/profile/:username/pages/:pageSlug/blocks/:blockType/:blockId`,
+    component: lazy(() =>
+      import(/* webpackChunkName: "page_landing_main" */ 'src/containers/app/blocks/form/')
+    ),
+  },
+  {
+    exact: true,
     path: `/profile/:username/pages/:pageSlug`,
     component: lazy(() =>
       import(/* webpackChunkName: "page_landing_main" */ 'src/containers/app/pages/form')

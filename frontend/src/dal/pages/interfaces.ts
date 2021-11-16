@@ -1,4 +1,4 @@
-import { IBlock } from 'src/dal/block/interfaces';
+import { IBlock } from 'src/dal/blocks/interfaces';
 
 export interface IPage {
   id: number;

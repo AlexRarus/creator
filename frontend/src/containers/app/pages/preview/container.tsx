@@ -33,7 +33,7 @@ export const PagesPreviewContainer = observer(() => {
             </div>
             {isAuthor && (
               <ButtonLink
-                to={`/profile/${username}/pages/${data.slug}`}
+                to={`/profile/${username}/pages/${data.slug}/`}
                 style={{ marginLeft: '10px' }}>
                 Edit Page
               </ButtonLink>

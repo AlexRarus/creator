@@ -4,3 +4,9 @@ export interface IBlock {
   section: number;
   data: any; // в зависимости от типа
 }
+
+export interface IBlockType {
+  id: number;
+  slug: string;
+  label: string;
+}
