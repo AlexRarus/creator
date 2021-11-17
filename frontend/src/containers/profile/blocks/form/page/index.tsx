@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 import { BlocksFormContainer } from '../container';
 
@@ -12,9 +12,19 @@ interface IParams {
 
 // страница создания блока для страницы, показываем на мобилке
 const BlocksFormPage = (props: any) => {
+  const { push } = useHistory();
   const params = useParams<IParams>();
+  const { username, pageSlug } = params;
+  const onSuccess = () => {
+    console.log('onSuccess from PAGE');
+    push(`/profile/${username}/pages/${pageSlug}/`);
+  };
+  const onCancel = () => {
+    console.log('onCancel from PAGE');
+    push(`/profile/${username}/pages/${pageSlug}/`);
+  };
 
-  return <BlocksFormContainer {...props} {...params} />;
+  return <BlocksFormContainer {...props} {...params} onSuccess={onSuccess} onCancel={onCancel} />;
 };
 
 export default BlocksFormPage;

@@ -1,8 +1,8 @@
-export interface IBlock {
+export interface IBlock<TData> {
   id: number;
   type: string;
   section: number;
-  data: any; // в зависимости от типа
+  data: TData;
 }
 
 export interface IBlockType {

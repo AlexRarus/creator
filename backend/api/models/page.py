@@ -19,8 +19,8 @@ class Page(models.Model):
     )
     blocks = models.ManyToManyField(
         "api.Block",
-        related_name="Блоки",
-        verbose_name="pages",
+        verbose_name="Блоки>",
+        related_name="pages",
         through="api.PageBlockRelation",
     )
 

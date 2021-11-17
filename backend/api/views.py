@@ -1,4 +1,5 @@
 from django.db.models import Prefetch
+from django.shortcuts import get_object_or_404
 from rest_framework import mixins, viewsets
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.viewsets import GenericViewSet
@@ -9,7 +10,7 @@ from .models.page import Page
 from .models.section import Section
 from .pagination import CustomPagination
 from .permissions import IsAuthorPermission, IsPagePermission
-from .serializers.block import BlockSerializer
+from .serializers.block import BlockReadSerializer, BlockWriteSerializer
 from .serializers.block_type import BlockTypeSerializer
 from .serializers.page import PageReadSerializer, PageWriteSerializer
 from .serializers.section import SectionSerializer
@@ -57,10 +58,17 @@ class PageViewSet(viewsets.ModelViewSet):
 class BlockViewSet(viewsets.ModelViewSet):
     queryset = Block.objects.all()
     permission_classes = (IsAuthorPermission,)
-    serializer_class = BlockSerializer
+
+    def get_serializer_class(self):
+        if self.action == "retrieve" or self.action == "list":
+            return BlockReadSerializer
+        return BlockWriteSerializer
 
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+        page = get_object_or_404(
+            Page, author=self.request.user, slug=self.request.data["page_slug"]
+        )
+        serializer.save(author=self.request.user, page=page)
 
 
 class BlockTypesViewSet(mixins.ListModelMixin, GenericViewSet):

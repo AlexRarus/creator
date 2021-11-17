@@ -2,10 +2,21 @@ import { AxiosResponse } from 'axios';
 
 export interface IBlocksAPI {
   getBlockById(blockId: string): AxiosResponse<any>; // запрос одного блока (для редактирования)
-  createBlock(pageSlug: string, type: string, data: any): AxiosResponse<any>; // создание блока
-  updateBlock(blockId: string, data: any): AxiosResponse<any>; // обновление блока
+  createBlock(data: ICreateBlock): AxiosResponse<any>; // создание блока
+  updateBlock(data: IUpdateBlock): AxiosResponse<any>; // обновление блока
   deleteBlock(blockId: string): AxiosResponse<any>;
   getTypesList(): AxiosResponse<any>;
+}
+
+export interface ICreateBlock {
+  page_slug: string;
+  type: string;
+  data: any;
+}
+
+export interface IUpdateBlock {
+  id: string;
+  data: any;
 }
 
 const getConfig = () => ({
@@ -13,23 +24,15 @@ const getConfig = () => ({
     url: `/blocks/${blockId}/`,
     method: 'GET',
   }),
-  createBlock: (pageSlug: string, type: string, data: any) => ({
+  createBlock: (data: ICreateBlock) => ({
     url: `/blocks/`,
     method: 'POST',
-    data: {
-      pageSlug,
-      type,
-      data,
-    },
+    data,
   }),
-  updateBlock: (blockId: string, data: any) => ({
-    url: `/blocks/${blockId}/`,
+  updateBlock: ({ id, ...data }: IUpdateBlock) => ({
+    url: `/blocks/${id}/`,
     method: 'PUT',
-    data: {
-      // pageSlug нельзя изменить
-      // type нельзя изменить
-      data,
-    },
+    data,
   }),
   deleteBlock: (blockId: string) => ({
     url: `/blocks/${blockId}/`,

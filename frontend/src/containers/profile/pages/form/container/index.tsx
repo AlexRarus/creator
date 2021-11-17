@@ -28,6 +28,8 @@ export const PagesFormContainer = observer((props: IProps) => {
     }
   }, [isAuthor, pageSlug]);
 
+  const updatePageData = () => getMyPageBySlugAction(pageSlug);
+
   const openAddBlockModal = () => setIsOpenAddBlockModal(true);
   const closeAddBlockModal = () => setIsOpenAddBlockModal(false);
 
@@ -39,9 +41,10 @@ export const PagesFormContainer = observer((props: IProps) => {
         <Grid verticalGap={32}>
           <GridColumn size={12} direction='row' alignItems='center'>
             <Grid>
-              {data.blocks.map((block: IBlock) => (
+              {data.blocks.map((block: IBlock<any>) => (
                 <GridColumn key={block.id} size={12}>
-                  {block.id} - {block.type}
+                  {/*TODO ПОКА ТОЛЬКО ОДИН ТИП БЛОКОВ ТЕКСТ*/}
+                  <div dangerouslySetInnerHTML={{ __html: block.data?.text }} />
                 </GridColumn>
               ))}
             </Grid>
@@ -59,7 +62,12 @@ export const PagesFormContainer = observer((props: IProps) => {
         </Grid>
       )}
       {isOpenAddBlockModal && (
-        <BlockFormModal onClose={closeAddBlockModal} username={username} pageSlug={pageSlug} />
+        <BlockFormModal
+          onSuccess={updatePageData}
+          onClose={closeAddBlockModal}
+          username={username}
+          pageSlug={pageSlug}
+        />
       )}
     </PagesFormWrapper>
   );

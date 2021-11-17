@@ -6,8 +6,8 @@ import { BlocksTypesContainer } from 'src/containers/profile/blocks/types-list/c
 import { BlocksFormContainer } from '../container';
 
 interface IProps {
+  onSuccess(): void;
   onClose(): void;
-
   username: string;
   pageSlug: string;
   blockType?: string;
@@ -16,14 +16,20 @@ interface IProps {
 
 // модалка создания блока для страницы, показываем на десктопе
 export const BlockFormModal = (props: IProps) => {
-  const { onClose, blockType: initBlockType, blockId = 'new', ...restProps } = props;
+  const { onSuccess, onClose, blockType: initBlockType, blockId = 'new', ...restProps } = props;
   const [blockType, setBlockType] = useState<string | undefined>(initBlockType);
 
   const onSetBlockType = (blockType: IBlockType) => setBlockType(blockType.slug);
   const onResetBlockType = () => setBlockType(undefined);
-  const onSuccess = () => {
-    console.log('send success');
+
+  const onSuccessHandler = () => {
+    console.log('onSuccess from MODAL');
+    onSuccess();
     onClose();
+  };
+  const onCancel = () => {
+    console.log('onCancel from MODAL');
+    onResetBlockType();
   };
 
   return (
@@ -34,8 +40,8 @@ export const BlockFormModal = (props: IProps) => {
           {...restProps}
           blockId={blockId}
           blockType={blockType}
-          onSuccess={onSuccess}
-          onCancel={onResetBlockType}
+          onSuccess={onSuccessHandler}
+          onCancel={onCancel}
         />
       )}
     </Modal>

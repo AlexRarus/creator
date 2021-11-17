@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 
 export { InnerHTMLBlockByTinyEditor } from './style';
@@ -20,13 +20,7 @@ export function prepareImgSrc(html: string): string {
 
 const TinyEditor = React.forwardRef((props: IProps, ref: any) => {
   const { height = 500, imageUploadAction, value = '', onChange, ...inputProps } = props;
-  const [innerValue, setInnerValue] = useState(value);
-
-  useEffect(() => {
-    if (!innerValue && value) {
-      setInnerValue(value);
-    }
-  }, [value]);
+  const [innerValue] = useState(value); // на момент загрузки редактора предполагается что исходные данные уже доступны
 
   const imageUploadHandler = (blobInfo: any, success: (imgUrl: string) => void, failure: any) => {
     const formData = new FormData();
