@@ -1,14 +1,17 @@
 import { useStores } from 'src/dal/use-stores';
+import RootStore from 'src/dal/root-store';
 
-import { store } from './index';
+import { PageStore } from './store';
+
+export const store = new PageStore(RootStore);
 
 export function useMapStoreToProps() {
   const { dalAuthStore } = useStores();
 
   return {
     isLoading: store.isLoading,
-    pages: store.pages,
-    getMyPagesAction: store.getMyPagesAction,
+    data: store.data,
+    getPageBySlugAction: store.getPageBySlugAction,
     user: dalAuthStore.user,
   };
 }

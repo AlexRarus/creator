@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
-import { useParams, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Grid, GridColumn } from 'src/components/grid';
 import { useIsAuthor } from 'src/utils/useIsAuthor';
 import { IPage } from 'src/dal/pages/interfaces';
@@ -9,13 +9,13 @@ import { useQuery } from 'src/hooks/useQuery';
 import { useMapStoreToProps } from './selectors';
 import { PagesListPageWrapper } from './style';
 
-interface IParams {
+interface IProps {
   username: string;
 }
 
-export const PagesListPageContainer = observer(() => {
+export const PagesListPageContainer = observer((props: IProps) => {
   const { isLoading, pages, getMyPagesAction } = useMapStoreToProps();
-  const { username } = useParams<IParams>();
+  const { username } = props;
   const { redirectFrom } = useQuery();
   const isAuthor = useIsAuthor(username);
 

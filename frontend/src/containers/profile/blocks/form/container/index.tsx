@@ -1,19 +1,21 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
-import { useParams } from 'react-router-dom';
 
 import { useMapStoreToProps } from './selectors';
 import { BlocksFormContainerWrapper } from './style';
 
-interface IParams {
+interface IProps {
+  onSuccess(): void;
+  onCancel(): void;
   username: string;
   pageSlug: string;
   blockType: string;
   blockId: string;
 }
 
-export const BlocksFormContainer = observer(() => {
-  const { username, pageSlug, blockType, blockId } = useParams<IParams>();
+// контейнер форма создания блока, можно нарисовать в любом месте приложения (в модалке или на отдельной странице)
+export const BlocksFormContainer = observer((props: IProps) => {
+  const { username, pageSlug, blockType, blockId } = props;
   const { isLoading, getBlockByIdAction } = useMapStoreToProps();
 
   useEffect(() => {

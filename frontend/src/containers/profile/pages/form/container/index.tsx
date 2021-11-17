@@ -1,29 +1,35 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
-import { useParams } from 'react-router-dom';
+import { BrowserView, MobileView } from 'react-device-detect';
 import { Grid, GridColumn } from 'src/components/grid';
 import { useIsAuthor } from 'src/utils/useIsAuthor';
+import Button from 'src/components/button';
 import ButtonLink from 'src/components/button-link';
 import { IBlock } from 'src/dal/blocks/interfaces';
+import { BlockFormModal } from 'src/containers/profile/blocks/form/modal';
 
 import { useMapStoreToProps } from './selectors';
 import { PagesFormWrapper } from './style';
 
-interface IParams {
+interface IProps {
   username: string;
   pageSlug: string;
 }
 
-export const PagesFormContainer = observer(() => {
+export const PagesFormContainer = observer((props: IProps) => {
   const { isLoading, getMyPageBySlugAction, data } = useMapStoreToProps();
-  const { username, pageSlug } = useParams<IParams>();
+  const { username, pageSlug } = props;
   const isAuthor = useIsAuthor(username); // show 404 page
+  const [isOpenAddBlockModal, setIsOpenAddBlockModal] = useState(false);
 
   useEffect(() => {
     if (isAuthor) {
       getMyPageBySlugAction(pageSlug);
     }
   }, [isAuthor, pageSlug]);
+
+  const openAddBlockModal = () => setIsOpenAddBlockModal(true);
+  const closeAddBlockModal = () => setIsOpenAddBlockModal(false);
 
   return (
     <PagesFormWrapper>
@@ -41,16 +47,19 @@ export const PagesFormContainer = observer(() => {
             </Grid>
           </GridColumn>
           <GridColumn>
-            <ButtonLink to={`blocks/`} style={{ marginLeft: '10px' }}>
-              Add Block
-            </ButtonLink>
-          </GridColumn>
-          <GridColumn>
-            <ButtonLink to={`/${username}/${data.slug}/`} style={{ marginLeft: '10px' }}>
-              Show Preview
-            </ButtonLink>
+            <BrowserView>
+              <Button onClick={openAddBlockModal}>Add block</Button>
+            </BrowserView>
+            <MobileView>
+              <ButtonLink to={`blocks/`} style={{ marginLeft: '10px' }}>
+                Add Block
+              </ButtonLink>
+            </MobileView>
           </GridColumn>
         </Grid>
+      )}
+      {isOpenAddBlockModal && (
+        <BlockFormModal onClose={closeAddBlockModal} username={username} pageSlug={pageSlug} />
       )}
     </PagesFormWrapper>
   );

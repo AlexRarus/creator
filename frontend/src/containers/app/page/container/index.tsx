@@ -1,21 +1,20 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
-import { useParams } from 'react-router-dom';
 import { Grid, GridColumn } from 'src/components/grid';
 import { useIsAuthor } from 'src/utils/useIsAuthor';
 import ButtonLink from 'src/components/button-link';
 
 import { useMapStoreToProps } from './selectors';
-import { PagesPreviewWrapper } from './style';
+import { PageWrapper } from './style';
 
-interface IParams {
+interface IProps {
   username: string;
   pageSlug: string;
 }
 
-export const PagesPreviewContainer = observer(() => {
+export const PageContainer = observer((props: IProps) => {
   const { isLoading, getPageBySlugAction, data } = useMapStoreToProps();
-  const { username, pageSlug } = useParams<IParams>();
+  const { username, pageSlug } = props;
   const isAuthor = useIsAuthor(username);
 
   useEffect(() => {
@@ -23,7 +22,7 @@ export const PagesPreviewContainer = observer(() => {
   }, [isAuthor, pageSlug]);
 
   return (
-    <PagesPreviewWrapper>
+    <PageWrapper>
       {isLoading && 'Loading...'}
       {!isLoading && data !== null && (
         <Grid>
@@ -41,6 +40,6 @@ export const PagesPreviewContainer = observer(() => {
           </GridColumn>
         </Grid>
       )}
-    </PagesPreviewWrapper>
+    </PageWrapper>
   );
 });

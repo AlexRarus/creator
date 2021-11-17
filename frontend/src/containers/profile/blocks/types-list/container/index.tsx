@@ -3,9 +3,16 @@ import { observer } from 'mobx-react';
 import { IBlockType } from 'src/dal/blocks/interfaces';
 
 import { useMapStoreToProps } from './selectors';
-import { BlocksTypesContainerWrapper, TypeItem } from './style';
+import { BlocksTypesContainerWrapper } from './style';
+import { BlockTypeItem } from './type-item';
 
-export const BlocksTypesContainer = observer(() => {
+interface IProps {
+  onSelectBlockType(type: IBlockType): void;
+}
+
+// контейнер выбора типа блока, можно отрендерить в любом месте приложения
+export const BlocksTypesContainer = observer((props: IProps) => {
+  const { onSelectBlockType } = props;
   const { types, getTypesListAction } = useMapStoreToProps();
 
   useEffect(() => {
@@ -16,9 +23,7 @@ export const BlocksTypesContainer = observer(() => {
     <BlocksTypesContainerWrapper>
       {types.length > 0 &&
         types.map((type: IBlockType) => (
-          <TypeItem key={type.slug} to={`${type.slug}/new/`}>
-            {type.label}
-          </TypeItem>
+          <BlockTypeItem key={type.slug} type={type} onClick={onSelectBlockType} />
         ))}
       {types.length === 0 && 'Нет типов в БД'}
     </BlocksTypesContainerWrapper>

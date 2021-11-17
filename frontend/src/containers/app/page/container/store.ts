@@ -4,7 +4,7 @@ import { IRootStore } from 'src/dal/interfaces';
 import { IPage } from 'src/dal/pages/interfaces';
 import API from 'src/api';
 
-export class PagesPreviewStore {
+export class PageStore {
   rootStore!: IRootStore;
   routerStore!: History;
 
@@ -22,11 +22,7 @@ export class PagesPreviewStore {
     this.routerStore = RootStore.routing;
   }
 
-  getPageBySlugAction = flow(function* (
-    this: PagesPreviewStore,
-    username: string,
-    pageSlug: string
-  ) {
+  getPageBySlugAction = flow(function* (this: PageStore, username: string, pageSlug: string) {
     try {
       this.isLoading = true;
       const response = yield this.API.getPageBySlug(username, pageSlug);

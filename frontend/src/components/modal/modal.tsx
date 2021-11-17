@@ -76,8 +76,7 @@ export default function Modal(props: IPropsModal) {
       zIndex={zIndex}
       data-test-id={dataTestId || ''}
       isMounted={isMounted}
-      onClick={handleOutside}
-    >
+      onClick={handleOutside}>
       <ModalWrapper ref={modalRef} className={props.className || ''} size={size}>
         {hasCloseButton && (
           <CloseButton onClick={onClose}>
