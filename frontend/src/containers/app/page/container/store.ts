@@ -3,8 +3,9 @@ import { History } from 'history';
 import { IRootStore } from 'src/dal/interfaces';
 import { IPage } from 'src/dal/pages/interfaces';
 import API from 'src/api';
+import RootStore from 'src/dal/root-store';
 
-export class PageStore {
+class PageStore {
   rootStore!: IRootStore;
   routerStore!: History;
 
@@ -34,3 +35,5 @@ export class PageStore {
     }
   });
 }
+
+export const store = new PageStore(RootStore);

@@ -1,8 +1,9 @@
 import { flow, makeAutoObservable } from 'mobx';
 import { History } from 'history';
 import { IRootStore } from 'src/dal/interfaces';
+import RootStore from 'src/dal/root-store';
 
-export class RegistrationConfirmPageStore {
+class RegistrationConfirmPageStore {
   rootStore!: IRootStore;
   routerStore!: History;
 
@@ -17,3 +18,5 @@ export class RegistrationConfirmPageStore {
     yield console.log('initAction RegistrationConfirmPageStore');
   });
 }
+
+export const store = new RegistrationConfirmPageStore(RootStore);

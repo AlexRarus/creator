@@ -8,6 +8,8 @@ import ButtonLink from 'src/components/button-link';
 import { IBlock } from 'src/dal/blocks/interfaces';
 import { BlockFormModal } from 'src/containers/profile/blocks/form/modal';
 
+import { TargetBlockTypePreview } from '../../../blocks/preview';
+
 import { useMapStoreToProps } from './selectors';
 import { PagesFormWrapper } from './style';
 
@@ -43,8 +45,7 @@ export const PagesFormContainer = observer((props: IProps) => {
             <Grid>
               {data.blocks.map((block: IBlock<any>) => (
                 <GridColumn key={block.id} size={12}>
-                  {/*TODO ПОКА ТОЛЬКО ОДИН ТИП БЛОКОВ ТЕКСТ*/}
-                  <div dangerouslySetInnerHTML={{ __html: block.data?.text }} />
+                  <TargetBlockTypePreview block={block} />
                 </GridColumn>
               ))}
             </Grid>

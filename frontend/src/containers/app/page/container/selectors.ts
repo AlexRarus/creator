@@ -1,9 +1,6 @@
 import { useStores } from 'src/dal/use-stores';
-import RootStore from 'src/dal/root-store';
 
-import { PageStore } from './store';
-
-export const store = new PageStore(RootStore);
+import { store } from './store';
 
 export function useMapStoreToProps() {
   const { dalAuthStore } = useStores();

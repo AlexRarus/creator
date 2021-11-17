@@ -1,8 +1,9 @@
 import { flow, makeAutoObservable } from 'mobx';
 import { History } from 'history';
 import { IRootStore } from 'src/dal/interfaces';
+import RootStore from 'src/dal/root-store';
 
-export class ResetPasswordPageStore {
+class ResetPasswordPageStore {
   rootStore!: IRootStore;
   routerStore!: History;
 
@@ -17,3 +18,5 @@ export class ResetPasswordPageStore {
     yield console.log('initAction');
   });
 }
+
+export const store = new ResetPasswordPageStore(RootStore);

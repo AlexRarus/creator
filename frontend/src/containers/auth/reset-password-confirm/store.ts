@@ -1,8 +1,9 @@
 import { flow, makeAutoObservable } from 'mobx';
 import { History } from 'history';
 import { IRootStore } from 'src/dal/interfaces';
+import RootStore from 'src/dal/root-store';
 
-export class ResetPasswordConfirmStore {
+class ResetPasswordConfirmStore {
   rootStore!: IRootStore;
   routerStore!: History;
 
@@ -17,3 +18,5 @@ export class ResetPasswordConfirmStore {
     yield console.log('initAction ResetPasswordConfirmStore');
   });
 }
+
+export const store = new ResetPasswordConfirmStore(RootStore);

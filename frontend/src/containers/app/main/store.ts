@@ -1,6 +1,7 @@
 import { flow, makeAutoObservable } from 'mobx';
 import { History } from 'history';
 import { IRootStore } from 'src/dal/interfaces';
+import RootStore from 'src/dal/root-store';
 
 export class MainPageStore {
   rootStore!: IRootStore;
@@ -17,3 +18,5 @@ export class MainPageStore {
     yield console.log('initAction MainPageStore');
   });
 }
+
+export const store = new MainPageStore(RootStore);

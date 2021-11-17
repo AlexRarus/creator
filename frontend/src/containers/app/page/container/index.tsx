@@ -3,6 +3,8 @@ import { observer } from 'mobx-react';
 import { Grid, GridColumn } from 'src/components/grid';
 import { useIsAuthor } from 'src/utils/useIsAuthor';
 import ButtonLink from 'src/components/button-link';
+import { TargetBlockTypePreview } from 'src/containers/profile/blocks/preview';
+import { IBlock } from 'src/dal/blocks/interfaces';
 
 import { useMapStoreToProps } from './selectors';
 import { PageWrapper } from './style';
@@ -26,10 +28,12 @@ export const PageContainer = observer((props: IProps) => {
       {isLoading && 'Loading...'}
       {!isLoading && data !== null && (
         <Grid>
-          <GridColumn size={12} direction='row' alignItems='center'>
-            <div>
-              Preview page "{data.id}" - "{data.slug}"
-            </div>
+          {data.blocks.map((block: IBlock<any>) => (
+            <GridColumn key={block.id} size={12}>
+              <TargetBlockTypePreview block={block} />
+            </GridColumn>
+          ))}
+          <GridColumn size={12}>
             {isAuthor && (
               <ButtonLink
                 to={`/profile/${username}/pages/${data.slug}/`}

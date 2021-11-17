@@ -1,8 +1,9 @@
 import { flow, makeAutoObservable } from 'mobx';
 import { History } from 'history';
 import { IRootStore } from 'src/dal/interfaces';
+import RootStore from 'src/dal/root-store';
 
-export class LoginPageStore {
+class LoginPageStore {
   rootStore!: IRootStore;
   routerStore!: History;
 
@@ -17,3 +18,5 @@ export class LoginPageStore {
     yield console.log('initAction LoginPageStore');
   });
 }
+
+export const store = new LoginPageStore(RootStore);
