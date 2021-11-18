@@ -27,24 +27,33 @@ class PagesListStore {
   getMyPagesAction = flow(function* (
     this: PagesListStore,
     username: string,
-    redirectFrom?: string
+    selectPageSlug?: string
   ) {
     try {
       this.isLoading = true;
       const responsePages = yield this.API.getMyPages();
       this.total = responsePages.data?.total || 0;
       this.pages = responsePages.data?.list || null;
+      const hasSelectedPage = Boolean(this.rootStore.dalPagesStore.selectedPage);
 
       if (!this.total) {
-        // если у пользователя еще НЕТ созданных страниц, то создаем новую страницу автоматически за него (упрощенный вход)
+        // если у пользователя еще НЕТ созданных страниц, то создаем новую страницу автоматически за него (упрощаем вход)
         const responseFirstPage = yield this.API.createPage();
-        const firstPageSlug = responseFirstPage.data.slug;
-        this.routerStore.push(`/${username}/${firstPageSlug}/`); // редирект на первую страницу пользователя
-      } else if (this.total === 1 && redirectFrom === 'login') {
-        // если у пользователя только ОДНА созданная страница, то перенаправляем его сразу на эту страницу
-        const pageSlug = this.pages && this.pages[0]?.slug;
-        // todo тут можно перед редиректом заполнить стор детальной страницы данными чтобы не запрашивать второй раз
-        this.routerStore.push(`/profile/${username}/pages/${pageSlug}/`); // редирект на ЕДИНСТВЕННУЮ страницу пользователя
+        const firstPage = responseFirstPage.data;
+        this.pages = [firstPage];
+        this.total = 1;
+        this.rootStore.dalPagesStore.selectPageAction(firstPage); // выбираем эту страницу активной
+      } else if (this.pages) {
+        const selectedPage =
+          this.pages?.find((page: IPage) => page.slug === selectPageSlug) || this.pages[0];
+        this.rootStore.dalPagesStore.selectPageAction(selectedPage); // выбираем эту страницу активной
+      }
+
+      // если небыло выбранной страницы и мы ее установили тут, то редиректим на нее
+      if (!hasSelectedPage && this.rootStore.dalPagesStore.selectedPage) {
+        this.routerStore.replace(
+          `/profile/${username}/pages/${this.rootStore.dalPagesStore.selectedPage.slug}/`
+        ); // редирект на первую страницу пользователя
       }
 
       this.isLoading = false;

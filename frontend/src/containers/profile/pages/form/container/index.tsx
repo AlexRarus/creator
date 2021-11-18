@@ -3,15 +3,15 @@ import { observer } from 'mobx-react';
 import { BrowserView, MobileView } from 'react-device-detect';
 import { Grid, GridColumn } from 'src/components/grid';
 import { useIsAuthor } from 'src/utils/useIsAuthor';
-import Button from 'src/components/button';
 import ButtonLink from 'src/components/button-link';
-import { IBlock } from 'src/dal/blocks/interfaces';
 import { BlockFormModal } from 'src/containers/profile/blocks/form/modal';
 
-import { TargetBlockTypePreview } from '../../../blocks/preview';
-
+import { PageList } from './page-list';
+import { PageForm } from './page-form';
+import { PagePreview } from './page-preview';
+import { LikePhoneWrapper } from './like-phone-wrapper';
 import { useMapStoreToProps } from './selectors';
-import { PagesFormWrapper } from './style';
+import { BlockWrapper } from './style';
 
 interface IProps {
   username: string;
@@ -19,7 +19,7 @@ interface IProps {
 }
 
 export const PagesFormContainer = observer((props: IProps) => {
-  const { isLoading, getMyPageBySlugAction, data } = useMapStoreToProps();
+  const { isLoading, getMyPageBySlugAction, data, selectPageAction } = useMapStoreToProps();
   const { username, pageSlug } = props;
   const isAuthor = useIsAuthor(username); // show 404 page
   const [isOpenAddBlockModal, setIsOpenAddBlockModal] = useState(false);
@@ -30,37 +30,64 @@ export const PagesFormContainer = observer((props: IProps) => {
     }
   }, [isAuthor, pageSlug]);
 
+  useEffect(() => {
+    if (!isLoading && data) {
+      selectPageAction(data);
+    }
+  }, [pageSlug, data]);
+
   const updatePageData = () => getMyPageBySlugAction(pageSlug);
 
   const openAddBlockModal = () => setIsOpenAddBlockModal(true);
   const closeAddBlockModal = () => setIsOpenAddBlockModal(false);
 
   return (
-    <PagesFormWrapper>
+    <>
       {!isAuthor && 'PagesFormContainer Error...'}
       {isLoading && isAuthor && 'Loading...'}
       {!isLoading && data !== null && (
-        <Grid verticalGap={32}>
-          <GridColumn size={12} direction='row' alignItems='center'>
-            <Grid>
-              {data.blocks.map((block: IBlock<any>) => (
-                <GridColumn key={block.id} size={12}>
-                  <TargetBlockTypePreview block={block} />
-                </GridColumn>
-              ))}
+        <>
+          <BrowserView>
+            <Grid verticalGap={32}>
+              <GridColumn size={4}>
+                <BlockWrapper>
+                  <PageList username={username} pageSlug={pageSlug} />
+                </BlockWrapper>
+              </GridColumn>
+              <GridColumn size={4}>
+                <BlockWrapper>
+                  <LikePhoneWrapper>
+                    <PageForm
+                      data={data}
+                      username={username}
+                      pageSlug={pageSlug}
+                      onClickAddBlock={openAddBlockModal}
+                    />
+                  </LikePhoneWrapper>
+                </BlockWrapper>
+              </GridColumn>
+              <GridColumn size={4}>
+                <BlockWrapper>
+                  <LikePhoneWrapper>
+                    <PagePreview username={username} pageSlug={pageSlug} />
+                  </LikePhoneWrapper>
+                </BlockWrapper>
+              </GridColumn>
             </Grid>
-          </GridColumn>
-          <GridColumn>
-            <BrowserView>
-              <Button onClick={openAddBlockModal}>Add block</Button>
-            </BrowserView>
-            <MobileView>
-              <ButtonLink to={`blocks/`} style={{ marginLeft: '10px' }}>
-                Add Block
-              </ButtonLink>
-            </MobileView>
-          </GridColumn>
-        </Grid>
+          </BrowserView>
+          <MobileView>
+            <Grid verticalGap={32}>
+              <GridColumn size={12} direction='row' alignItems='center'>
+                <PageForm data={data} username={username} pageSlug={pageSlug} />
+              </GridColumn>
+              <GridColumn>
+                <ButtonLink to={`blocks/`} style={{ marginLeft: '10px' }}>
+                  Add Block
+                </ButtonLink>
+              </GridColumn>
+            </Grid>
+          </MobileView>
+        </>
       )}
       {isOpenAddBlockModal && (
         <BlockFormModal
@@ -70,6 +97,6 @@ export const PagesFormContainer = observer((props: IProps) => {
           pageSlug={pageSlug}
         />
       )}
-    </PagesFormWrapper>
+    </>
   );
 });

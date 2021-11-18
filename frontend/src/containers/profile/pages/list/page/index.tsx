@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 
 import { PagesListPageContainer } from '../container';
 
@@ -10,7 +10,7 @@ interface IParams {
 const PagesListPage = (props: any) => {
   const params = useParams<IParams>();
 
-  return <PagesListPageContainer {...props} {...params} />;
+  return <PagesListPageContainer {...props} {...params} isPage={true} />;
 };
 
 export default PagesListPage;

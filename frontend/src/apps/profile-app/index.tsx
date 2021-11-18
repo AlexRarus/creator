@@ -3,11 +3,13 @@ import { observer } from 'mobx-react';
 import Router from 'src/router';
 import routes from 'src/router/routes/profile-routes';
 
+import { ProfileLayout } from './layout';
+
 const ProfileApp = observer(() => {
   return (
-    <div>
+    <ProfileLayout>
       <Router routes={routes} />
-    </div>
+    </ProfileLayout>
   );
 });
 

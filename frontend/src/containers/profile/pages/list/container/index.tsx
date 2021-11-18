@@ -1,29 +1,35 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Grid, GridColumn } from 'src/components/grid';
 import { useIsAuthor } from 'src/utils/useIsAuthor';
 import { IPage } from 'src/dal/pages/interfaces';
-import { useQuery } from 'src/hooks/useQuery';
+import { isBrowser } from 'react-device-detect';
 
 import { useMapStoreToProps } from './selectors';
 import { PagesListPageWrapper } from './style';
 
 interface IProps {
   username: string;
+  pageSlug?: string; // передается на десктопе в profile/pages/form/container
+  isPage?: boolean;
 }
 
 export const PagesListPageContainer = observer((props: IProps) => {
-  const { isLoading, pages, getMyPagesAction } = useMapStoreToProps();
-  const { username } = props;
-  const { redirectFrom } = useQuery();
+  const { isLoading, pages, getMyPagesAction, selectedPage } = useMapStoreToProps();
+  const { username, pageSlug, isPage } = props;
   const isAuthor = useIsAuthor(username);
 
   useEffect(() => {
     if (isAuthor) {
-      getMyPagesAction(username, redirectFrom);
+      getMyPagesAction(username, pageSlug);
     }
-  }, [username, isAuthor, redirectFrom]);
+  }, [username, isAuthor]);
+
+  // если зашли на отдельную страницу в браузере, редиректим на форму выбранной страницы
+  if (isPage && isBrowser && selectedPage) {
+    return <Redirect to={`/profile/${username}/pages/${selectedPage.slug}/`} />;
+  }
 
   return (
     <PagesListPageWrapper>
