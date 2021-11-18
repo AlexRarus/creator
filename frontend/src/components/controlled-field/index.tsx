@@ -10,7 +10,7 @@ interface IProps {
   formDefaultValues?: any;
 }
 
-// обертка для любых полей формы
+// обертка для регистрации полей в форме формы
 // принимает ПОЛЕ в качестве children и передает в него onChange, value и error
 // поле контролировать НЕ нужно, просто получать информацио о состоянии ВСЕЙ формы сразу
 export function ControlledField(props: IProps) {
