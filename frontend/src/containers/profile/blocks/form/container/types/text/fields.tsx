@@ -13,7 +13,7 @@ interface IProps {
 
 export const TextBlockFields = (props: IProps) => {
   const { formDefaultValues } = props;
-  const { control } = useFormContext(); // retrieve all hook methods
+  const { control } = useFormContext(); // так как Fields рендерятся внутри FormProvider, в контексте доступны значения формы
 
   return (
     <Grid verticalGap={24}>

@@ -23,6 +23,9 @@ interface IProps {
 export const TextForm = observer((props: IProps) => {
   const { pageSlug, blockType, blockId, onSuccess, onCancel } = props;
   const { formDefaultValues } = useMapStoreToProps();
+  // todo хук useForm создает форму и возвращает методы и состояние формы
+  // todo все поля зарегистрированные в форме управляются этой формой
+  // todo поле можно зарегистрировать (например) при помощи обертки <ControlledField> и "methods.control"
   const methods = useForm<FormInputs>({
     mode: 'onChange',
     reValidateMode: 'onChange',

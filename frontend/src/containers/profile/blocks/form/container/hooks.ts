@@ -5,12 +5,7 @@ import API from 'src/api';
 import { DataForServer } from './interfaces';
 
 // отправка формы создания/обновления блока
-export const useSubmitBlockForm = <FormInputs>(): [
-  (dataForServer: DataForServer<FormInputs>) => Promise<any>,
-  boolean,
-  DataForServer<FormInputs> | null,
-  FormInputs | null
-] => {
+export const useSubmitBlockForm = <FormInputs>() => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<FormInputs | null>(null);
   const [data, setData] = useState<DataForServer<FormInputs> | null>(null);
@@ -33,5 +28,11 @@ export const useSubmitBlockForm = <FormInputs>(): [
     setIsLoading(false);
   }, []);
 
-  return [sendRequest, isLoading, data, errors];
+  // todo здесь просто добавил типы чтобы были подсказки в IDE
+  return [sendRequest, isLoading, data, errors] as [
+    (dataForServer: DataForServer<FormInputs>) => Promise<any>,
+    boolean,
+    DataForServer<FormInputs> | null,
+    FormInputs | null
+  ];
 };

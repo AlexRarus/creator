@@ -10,6 +10,9 @@ interface IProps {
   formDefaultValues?: any;
 }
 
+// обертка для любых полей формы
+// принимает ПОЛЕ в качестве children и передает в него onChange, value и error
+// поле контролировать НЕ нужно, просто получать информацио о состоянии ВСЕЙ формы сразу
 export function ControlledField(props: IProps) {
   const { children, control, name, rules, defaultValue, formDefaultValues } = props;
   const defValue = defaultValue || (formDefaultValues && formDefaultValues[name]);
