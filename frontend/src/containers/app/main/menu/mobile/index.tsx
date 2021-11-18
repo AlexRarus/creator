@@ -11,7 +11,7 @@ interface IProps {
 }
 
 export const MobileMenu = (props: IProps) => {
-  const { user, logoutAction } = props;
+  const { user, selectedPage } = props;
 
   return (
     <MobileMenuWrapper>
@@ -20,7 +20,11 @@ export const MobileMenu = (props: IProps) => {
       </LeftSide>
       <RightSide>
         {!user && <ButtonLink to={`/auth/login/`}>Авторизоваться</ButtonLink>}
-        {user && <ButtonLink to={`/profile/${user.username}/pages/`}>В кабинет</ButtonLink>}
+        {user && (
+          <ButtonLink to={`/profile/${user.username}/pages/${selectedPage?.slug}/`}>
+            В кабинет
+          </ButtonLink>
+        )}
       </RightSide>
     </MobileMenuWrapper>
   );

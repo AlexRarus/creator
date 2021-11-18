@@ -67,8 +67,8 @@ const close = (height: number) => keyframes`
   100% {
     left: calc(-100% - ${HORIZONTAL_PADDING * 2}px);
     opacity: 0;
-    height: 0px;
-    margin-bottom: 0px;
+    height: 0;
+    margin-bottom: 0;
   }
 `;
 

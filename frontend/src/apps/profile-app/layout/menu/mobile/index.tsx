@@ -1,8 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { IUser } from 'src/dal/auth/interfaces';
 import { IPage } from 'src/dal/pages/interfaces';
+import MenuIcon from '@material-ui/icons/Menu';
 
-import { MobileMenuWrapper, LeftSide, RightSide, Logo, MenuItem, LogoutButton } from './style';
+import {
+  MobileMenuWrapper,
+  BackPlate,
+  MenuOpener,
+  MenuList,
+  Logo,
+  MenuItem,
+  LogoutButton,
+} from './style';
 
 interface IProps {
   user: IUser | null;
@@ -12,10 +21,18 @@ interface IProps {
 
 export const MobileMenu = (props: IProps) => {
   const { user, logoutAction, selectedPage } = props;
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openMenu = () => setIsOpen(true);
+  const closeMenu = () => setIsOpen(false);
 
   return (
     <MobileMenuWrapper>
-      <LeftSide>
+      <BackPlate isOpen={isOpen} onClick={closeMenu} />
+      <MenuOpener onClick={openMenu}>
+        <MenuIcon />
+      </MenuOpener>
+      <MenuList isOpen={isOpen} onClick={closeMenu}>
         <Logo to='/'>LOGO</Logo>
         <MenuItem activeClassName='selected' exact={true} to={`/profile/${user?.username}/pages/`}>
           Мои страницы
@@ -31,10 +48,8 @@ export const MobileMenu = (props: IProps) => {
         <MenuItem activeClassName='selected' to={`/profile/${user?.username}/themes/`}>
           Темы
         </MenuItem>
-      </LeftSide>
-      <RightSide>
         <LogoutButton onClick={logoutAction}>Выйти</LogoutButton>
-      </RightSide>
+      </MenuList>
     </MobileMenuWrapper>
   );
 };

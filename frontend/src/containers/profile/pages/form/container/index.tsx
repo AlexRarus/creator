@@ -3,7 +3,6 @@ import { observer } from 'mobx-react';
 import { BrowserView, MobileView } from 'react-device-detect';
 import { Grid, GridColumn } from 'src/components/grid';
 import { useIsAuthor } from 'src/utils/useIsAuthor';
-import ButtonLink from 'src/components/button-link';
 import { BlockFormModal } from 'src/containers/profile/blocks/form/modal';
 
 import { PageList } from './page-list';
@@ -89,11 +88,6 @@ export const PagesFormContainer = observer((props: IProps) => {
             <Grid verticalGap={32}>
               <GridColumn size={12} direction='row' alignItems='center'>
                 <PageForm data={data} username={username} pageSlug={pageSlug} />
-              </GridColumn>
-              <GridColumn>
-                <ButtonLink to={`blocks/`} style={{ marginLeft: '10px' }}>
-                  Add Block
-                </ButtonLink>
               </GridColumn>
             </Grid>
           </MobileView>

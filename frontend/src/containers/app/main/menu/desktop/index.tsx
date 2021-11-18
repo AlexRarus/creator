@@ -11,7 +11,7 @@ interface IProps {
 }
 
 export const DesktopMenu = (props: IProps) => {
-  const { user, logoutAction } = props;
+  const { user, selectedPage } = props;
 
   return (
     <DesktopMenuWrapper>
@@ -20,7 +20,11 @@ export const DesktopMenu = (props: IProps) => {
       </LeftSide>
       <RightSide>
         {!user && <ButtonLink to={`/auth/login/`}>Авторизоваться</ButtonLink>}
-        {user && <ButtonLink to={`/profile/${user.username}/pages/`}>В кабинет</ButtonLink>}
+        {user && (
+          <ButtonLink to={`/profile/${user.username}/pages/${selectedPage?.slug}/`}>
+            В кабинет
+          </ButtonLink>
+        )}
       </RightSide>
     </DesktopMenuWrapper>
   );
