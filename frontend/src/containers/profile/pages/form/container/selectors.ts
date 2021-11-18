@@ -11,5 +11,6 @@ export function useMapStoreToProps() {
     getMyPageBySlugAction: store.getMyPageBySlugAction,
     user: dalAuthStore.user,
     selectPageAction: dalPagesStore.selectPageAction,
+    resetAction: store.resetAction,
   };
 }

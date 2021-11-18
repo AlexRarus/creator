@@ -16,10 +16,20 @@ export const MobileMenu = (props: IProps) => {
   return (
     <MobileMenuWrapper>
       <LeftSide>
-        <MenuItem to={`/profile/${user?.username}/pages/`}>Мои страницы</MenuItem>
-        <MenuItem to={`/profile/${user?.username}/pages/${selectedPage?.slug}/`}>Страница</MenuItem>
-        <MenuItem to={`/profile/${user?.username}/requests/`}>Заявки</MenuItem>
-        <MenuItem to={`/profile/${user?.username}/themes/`}>Темы</MenuItem>
+        <MenuItem activeClassName='selected' exact={true} to={`/profile/${user?.username}/pages/`}>
+          Мои страницы
+        </MenuItem>
+        <MenuItem
+          activeClassName='selected'
+          to={`/profile/${user?.username}/pages/${selectedPage?.slug}/`}>
+          Страница
+        </MenuItem>
+        <MenuItem activeClassName='selected' to={`/profile/${user?.username}/requests/`}>
+          Заявки
+        </MenuItem>
+        <MenuItem activeClassName='selected' to={`/profile/${user?.username}/themes/`}>
+          Темы
+        </MenuItem>
       </LeftSide>
       <RightSide>
         <LogoutButton onClick={logoutAction}>Выйти</LogoutButton>

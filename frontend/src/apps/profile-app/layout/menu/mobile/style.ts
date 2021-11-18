@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { COLORS, defaultTheme } from 'src/components/theme';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 export const MobileMenuWrapper = styled.div`
   display: flex;
@@ -36,13 +36,25 @@ RightSide.defaultProps = {
   theme: defaultTheme,
 };
 
-export const MenuItem = styled(Link)`
+export const MenuItem = styled(NavLink)`
+  padding: 15px 0 14px 0;
+  border-bottom: 1px solid transparent;
   text-decoration: none;
   color: ${COLORS.grey[500]};
+  margin-right: 30px;
+
+  :last-child {
+    margin-right: 0;
+  }
 
   :visited,
   :active {
     color: ${COLORS.grey[500]};
+  }
+
+  &.selected {
+    color: ${COLORS.blue[600]};
+    border-bottom: 1px solid ${COLORS.blue[600]};
   }
 `;
 

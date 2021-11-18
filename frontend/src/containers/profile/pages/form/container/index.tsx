@@ -19,10 +19,20 @@ interface IProps {
 }
 
 export const PagesFormContainer = observer((props: IProps) => {
-  const { isLoading, getMyPageBySlugAction, data, selectPageAction } = useMapStoreToProps();
+  const {
+    isLoading,
+    getMyPageBySlugAction,
+    data,
+    selectPageAction,
+    resetAction,
+  } = useMapStoreToProps();
   const { username, pageSlug } = props;
   const isAuthor = useIsAuthor(username); // show 404 page
   const [isOpenAddBlockModal, setIsOpenAddBlockModal] = useState(false);
+
+  useEffect(() => {
+    return () => resetAction();
+  }, []);
 
   useEffect(() => {
     if (isAuthor) {
@@ -69,7 +79,7 @@ export const PagesFormContainer = observer((props: IProps) => {
               <GridColumn size={4}>
                 <BlockWrapper>
                   <LikePhoneWrapper>
-                    <PagePreview username={username} pageSlug={pageSlug} />
+                    <PagePreview data={data} username={username} pageSlug={pageSlug} />
                   </LikePhoneWrapper>
                 </BlockWrapper>
               </GridColumn>

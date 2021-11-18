@@ -7,7 +7,9 @@ export const useIsAuthor = (username: string) => {
   const [isAuthor, setIsAuthor] = useState(username === user?.username);
 
   useEffect(() => {
-    setIsAuthor(username === user?.username);
+    if ((username === user?.username) !== isAuthor) {
+      setIsAuthor(username === user?.username);
+    }
   }, [username, user]);
 
   return isAuthor;

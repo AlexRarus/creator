@@ -34,6 +34,11 @@ class PagesFormStore {
       this.isLoading = false;
     }
   });
+
+  resetAction = () => {
+    this.isLoading = true;
+    this.data = null;
+  };
 }
 
 export const store = new PagesFormStore(RootStore);

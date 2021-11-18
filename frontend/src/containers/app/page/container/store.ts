@@ -9,7 +9,7 @@ class PageStore {
   rootStore!: IRootStore;
   routerStore!: History;
 
-  isLoading = true;
+  isLoading = false;
   data: IPage | null = null;
 
   get API() {

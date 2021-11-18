@@ -39,7 +39,7 @@ export const PagesListPageContainer = observer((props: IProps) => {
         <Grid>
           {pages.map((page: IPage) => (
             <GridColumn size={12} direction='row' alignItems='center' key={page.slug}>
-              <Link to={`${page.slug}/`}>Страница "{page.slug}"</Link>
+              <Link to={`/profile/${username}/pages/${page.slug}/`}>Страница "{page.slug}"</Link>
             </GridColumn>
           ))}
         </Grid>
