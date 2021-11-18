@@ -27,7 +27,7 @@ export const PagesListPageContainer = observer((props: IProps) => {
 
   return (
     <PagesListPageWrapper>
-      {!isAuthor && 'Error...'}
+      {!isAuthor && 'PagesListPageContainer Error...'}
       {isLoading && isAuthor && 'Loading...'}
       {!isLoading && pages !== null && (
         <Grid>

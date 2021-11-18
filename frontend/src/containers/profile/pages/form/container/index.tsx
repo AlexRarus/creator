@@ -37,7 +37,7 @@ export const PagesFormContainer = observer((props: IProps) => {
 
   return (
     <PagesFormWrapper>
-      {!isAuthor && 'Error...'}
+      {!isAuthor && 'PagesFormContainer Error...'}
       {isLoading && isAuthor && 'Loading...'}
       {!isLoading && data !== null && (
         <Grid verticalGap={32}>

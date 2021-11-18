@@ -3,6 +3,7 @@ import { observer } from 'mobx-react';
 import { Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import AuthApp from 'src/apps/auth-app';
+import ProfileApp from 'src/apps/profile-app';
 import App from 'src/apps/app';
 import Notification from 'src/components/notification';
 import { defaultTheme } from 'src/components/theme';
@@ -52,6 +53,7 @@ const Root = observer((props: any) => {
       <Notification maxShowItems={5} />
       <Switch>
         {!access && <Route path='/auth' render={() => <AuthApp />} />}
+        {access && <Route path='/profile' render={() => <ProfileApp />} />}
         <Route path='/' render={() => <App />} />
       </Switch>
     </ThemeProvider>
