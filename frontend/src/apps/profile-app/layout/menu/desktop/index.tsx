@@ -2,7 +2,7 @@ import React from 'react';
 import { IUser } from 'src/dal/auth/interfaces';
 import { IPage } from 'src/dal/pages/interfaces';
 
-import { DesktopMenuWrapper, LeftSide, RightSide, MenuItem, LogoutButton } from './style';
+import { DesktopMenuWrapper, LeftSide, RightSide, Logo, MenuItem, LogoutButton } from './style';
 
 interface IProps {
   user: IUser | null;
@@ -16,6 +16,7 @@ export const DesktopMenu = (props: IProps) => {
   return (
     <DesktopMenuWrapper>
       <LeftSide>
+        <Logo to='/'>LOGO</Logo>
         <MenuItem
           activeClassName='selected'
           to={`/profile/${user?.username}/pages/${selectedPage?.slug}/`}>

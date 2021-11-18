@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import { COLORS, defaultTheme } from 'src/components/theme';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export const MobileMenuWrapper = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-  padding: 15px 30px;
+  padding: 0 30px;
   background: ${COLORS.white};
   color: ${COLORS.black};
   justify-content: space-between;
@@ -40,7 +40,6 @@ export const Logo = styled(Link)`
   padding: 15px 0;
   text-decoration: none;
   color: ${COLORS.grey[500]};
-  margin-right: 20px;
   border: 1px solid ${COLORS.black};
 
   :visited,
@@ -49,32 +48,16 @@ export const Logo = styled(Link)`
   }
 `;
 
-export const MenuItem = styled(NavLink)`
-  padding: 15px 0 14px 0;
-  border-bottom: 1px solid transparent;
+export const ButtonLink = styled(Link)`
   text-decoration: none;
-  color: ${COLORS.grey[500]};
-  margin-right: 30px;
-
-  :last-child {
-    margin-right: 0;
-  }
-
-  :visited,
-  :active {
-    color: ${COLORS.grey[500]};
-  }
-
-  &.selected {
-    color: ${COLORS.blue[600]};
-    border-bottom: 1px solid ${COLORS.blue[600]};
-  }
-`;
-
-export const LogoutButton = styled.div`
   padding: 5px 10px;
   color: ${COLORS.grey[500]};
   border: 1px solid ${COLORS.grey[500]};
   border-radius: 4px;
   cursor: pointer;
+
+  :visited,
+  :active {
+    color: ${COLORS.grey[500]};
+  }
 `;

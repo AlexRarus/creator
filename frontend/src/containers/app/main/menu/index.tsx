@@ -6,7 +6,7 @@ import { DesktopMenu } from './desktop';
 import { MobileMenu } from './mobile';
 import { useMapStoreToProps } from './selectors';
 
-export const ProfileMenu = observer(() => {
+export const MainPageMenu = observer(() => {
   const { user, logoutAction, selectedPage } = useMapStoreToProps();
 
   return (

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { COLORS, defaultTheme } from 'src/components/theme';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 export const DesktopMenuWrapper = styled.div`
   display: flex;
@@ -35,6 +35,19 @@ export const RightSide = styled.div`
 RightSide.defaultProps = {
   theme: defaultTheme,
 };
+
+export const Logo = styled(Link)`
+  padding: 15px 0;
+  text-decoration: none;
+  color: ${COLORS.grey[500]};
+  margin-right: 50px;
+  border: 1px solid ${COLORS.black};
+
+  :visited,
+  :active {
+    color: ${COLORS.grey[500]};
+  }
+`;
 
 export const MenuItem = styled(NavLink)`
   padding: 15px 0 14px 0;

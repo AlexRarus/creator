@@ -2,7 +2,7 @@ import React from 'react';
 import { IUser } from 'src/dal/auth/interfaces';
 import { IPage } from 'src/dal/pages/interfaces';
 
-import { MobileMenuWrapper, LeftSide, RightSide, MenuItem, LogoutButton } from './style';
+import { MobileMenuWrapper, LeftSide, RightSide, Logo, MenuItem, LogoutButton } from './style';
 
 interface IProps {
   user: IUser | null;
@@ -16,6 +16,7 @@ export const MobileMenu = (props: IProps) => {
   return (
     <MobileMenuWrapper>
       <LeftSide>
+        <Logo to='/'>LOGO</Logo>
         <MenuItem activeClassName='selected' exact={true} to={`/profile/${user?.username}/pages/`}>
           Мои страницы
         </MenuItem>
