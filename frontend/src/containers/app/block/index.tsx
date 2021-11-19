@@ -7,6 +7,7 @@ interface IProps {
   block: IBlock<any>;
 }
 
+// Отображение блоков на пользовательской странице
 export const TargetBlockTypePreview = (props: IProps) => {
   switch (props.block.type) {
     case 'text':

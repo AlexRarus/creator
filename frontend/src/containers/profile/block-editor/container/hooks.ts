@@ -5,7 +5,7 @@ import API from 'src/api';
 import { DataForServer } from './interfaces';
 
 // отправка формы создания/обновления блока
-export const useSubmitBlockForm = <FormInputs>() => {
+export const useSubmitBlockEditor = <FormInputs>() => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<FormInputs | null>(null);
   const [data, setData] = useState<DataForServer<FormInputs> | null>(null);

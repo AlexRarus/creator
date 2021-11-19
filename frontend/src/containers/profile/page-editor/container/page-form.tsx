@@ -1,10 +1,8 @@
 import React from 'react';
-import { BrowserView, MobileView } from 'react-device-detect';
 import { Grid, GridColumn } from 'src/components/grid';
 import { IBlock } from 'src/dal/blocks/interfaces';
-import { TargetBlockTypePreview } from 'src/containers/profile/blocks/preview';
+import { TargetBlockTypePreview } from 'src/containers/app/block';
 import Button from 'src/components/button';
-import ButtonLink from 'src/components/button-link';
 import { IPage } from 'src/dal/pages/interfaces';
 
 import { PageFormWrapper } from './style';
@@ -32,14 +30,7 @@ export const PageForm = (props: IProps) => {
           </Grid>
         </GridColumn>
         <GridColumn>
-          <BrowserView>
-            <Button onClick={onClickAddBlock}>Add Block Modal</Button>
-          </BrowserView>
-          <MobileView>
-            <ButtonLink to={`blocks/`} style={{ marginLeft: '10px' }}>
-              Add Block Page
-            </ButtonLink>
-          </MobileView>
+          <Button onClick={onClickAddBlock}>Add Block Modal</Button>
         </GridColumn>
       </Grid>
     </PageFormWrapper>

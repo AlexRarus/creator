@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import Modal from 'src/components/modal';
 import { IBlockType } from 'src/dal/blocks/interfaces';
-import { BlocksTypesContainer } from 'src/containers/profile/blocks/types-list/container';
 
-import { BlocksFormContainer } from '../container';
+import { BlocksTypesContainer } from './types-list/container';
+import { BlocksFormContainer } from './container';
 
 interface IProps {
   onSuccess(): void;
@@ -14,8 +14,8 @@ interface IProps {
   blockId?: string;
 }
 
-// модалка создания блока для страницы, показываем на десктопе
-export const BlockFormModal = (props: IProps) => {
+// модалка создания блока для страницы
+export const BlockEditorModal = (props: IProps) => {
   const { onSuccess, onClose, blockType: initBlockType, blockId = 'new', ...restProps } = props;
   const [blockType, setBlockType] = useState<string | undefined>(initBlockType);
 

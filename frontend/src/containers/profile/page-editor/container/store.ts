@@ -5,7 +5,7 @@ import { IPage } from 'src/dal/pages/interfaces';
 import API from 'src/api';
 import RootStore from 'src/dal/root-store';
 
-class PagesFormStore {
+class PageEditorStore {
   rootStore!: IRootStore;
   routerStore!: History;
 
@@ -23,7 +23,7 @@ class PagesFormStore {
     this.routerStore = RootStore.routing;
   }
 
-  getMyPageBySlugAction = flow(function* (this: PagesFormStore, pageSlug: string) {
+  getMyPageBySlugAction = flow(function* (this: PageEditorStore, pageSlug: string) {
     try {
       this.isLoading = true;
       const response = yield this.API.getMyPageBySlug(pageSlug);
@@ -41,4 +41,4 @@ class PagesFormStore {
   };
 }
 
-export const store = new PagesFormStore(RootStore);
+export const store = new PageEditorStore(RootStore);

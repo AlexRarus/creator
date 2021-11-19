@@ -3,9 +3,12 @@ import API from 'src/api';
 import { History } from 'history';
 import { AxiosResponse } from 'axios';
 
+import { IRootStore } from '../interfaces';
+
 import { IBlockType } from './interfaces';
 
 export default class DalBlocksStore {
+  rootStore!: IRootStore;
   routerStore!: History;
 
   types: IBlockType[] = [];
@@ -15,7 +18,8 @@ export default class DalBlocksStore {
     return API.endpoints.blocks;
   }
 
-  constructor(routerStore: History) {
+  constructor(RootStore: IRootStore, routerStore: History) {
+    this.rootStore = RootStore;
     this.routerStore = routerStore;
 
     makeAutoObservable(this, {}, { autoBind: true });

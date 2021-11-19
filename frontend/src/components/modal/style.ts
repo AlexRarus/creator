@@ -43,8 +43,7 @@ export const ModalWrapper = styled.div<Pick<{ size: ModalSize }, any>>`
 
   ${({ size }) => (size ? `width: ${size};` : '')};
 
-  max-width: 950px;
-  min-width: 488px;
+  max-width: 100%;
 
   border-radius: 8px;
 `;

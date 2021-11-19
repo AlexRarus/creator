@@ -9,6 +9,8 @@ import { AxiosResponse } from 'axios';
 import { History } from 'history';
 import { addNotificationItem } from 'src/components/notification';
 
+import { IRootStore } from '../interfaces';
+
 import {
   IUser,
   IRegistrationConfirmActionData,
@@ -20,13 +22,15 @@ export default class DalAuthStore {
   get API() {
     return API.endpoints.auth;
   }
+  rootStore!: IRootStore;
   routerStore!: History;
 
   user: IUser | null = null;
   access: string | null = localStorage.getItem('access');
   refresh: string | null = localStorage.getItem('refresh');
 
-  constructor(routerStore: History) {
+  constructor(RootStore: IRootStore, routerStore: History) {
+    this.rootStore = RootStore;
     this.routerStore = routerStore;
 
     makeAutoObservable(this, {}, { autoBind: true });
@@ -46,14 +50,14 @@ export default class DalAuthStore {
     try {
       const response: AxiosResponse<any> = yield this.API.getMe();
       this.user = (response && response.data) || null;
-      return this.user;
+      // после получения пользователя инициализируем dalPagesStore что бы узнать его страницы
+      yield this.rootStore.dalPagesStore.initAction();
     } catch (err) {
       console.log(err, 'DalAuthStore');
       addNotificationItem({
         level: 'error',
         message: 'Произошла ошибка на сервере',
       });
-      return null;
     }
   });
 
@@ -67,7 +71,8 @@ export default class DalAuthStore {
       this.refresh = token?.refresh;
       localStorage.setItem('access', token?.access);
       localStorage.setItem('refresh', token?.refresh);
-      this.routerStore.push(`/profile/${this.user?.username}/pages/`); // редирект на страницу пользователя
+      const selectedPageSlug = this.rootStore.dalPagesStore.selectedPage?.slug;
+      this.routerStore.push(`/profile/${this.user?.username}/pages/${selectedPageSlug}/`); // редирект на страницу пользователя
     } catch (err) {
       console.log(err, 'DalAuthStore');
       addNotificationItem({

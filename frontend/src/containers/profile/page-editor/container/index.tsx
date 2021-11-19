@@ -3,9 +3,11 @@ import { observer } from 'mobx-react';
 import { BrowserView, MobileView } from 'react-device-detect';
 import { Grid, GridColumn } from 'src/components/grid';
 import { useIsAuthor } from 'src/utils/useIsAuthor';
-import { BlockFormModal } from 'src/containers/profile/blocks/form/modal';
+import { BlockEditorModal } from 'src/containers/profile/block-editor';
+import Button from 'src/components/button';
 
-import { PageList } from './page-list';
+import { PagesListModal } from '../pages-list-modal';
+
 import { PageForm } from './page-form';
 import { PagePreview } from './page-preview';
 import { LikePhoneWrapper } from './like-phone-wrapper';
@@ -17,7 +19,7 @@ interface IProps {
   pageSlug: string;
 }
 
-export const PagesFormContainer = observer((props: IProps) => {
+export const PageEditorContainer = observer((props: IProps) => {
   const {
     isLoading,
     getMyPageBySlugAction,
@@ -26,8 +28,9 @@ export const PagesFormContainer = observer((props: IProps) => {
     resetAction,
   } = useMapStoreToProps();
   const { username, pageSlug } = props;
-  const isAuthor = useIsAuthor(username); // show 404 page
+  const isAuthor = useIsAuthor(username);
   const [isOpenAddBlockModal, setIsOpenAddBlockModal] = useState(false);
+  const [isOpenPagesListModal, setIsOpenPagesListModal] = useState(false);
 
   useEffect(() => {
     return () => resetAction();
@@ -50,9 +53,12 @@ export const PagesFormContainer = observer((props: IProps) => {
   const openAddBlockModal = () => setIsOpenAddBlockModal(true);
   const closeAddBlockModal = () => setIsOpenAddBlockModal(false);
 
+  const openPagesListModal = () => setIsOpenPagesListModal(true);
+  const closePagesListModal = () => setIsOpenPagesListModal(false);
+
   return (
     <>
-      {!isAuthor && 'PagesFormContainer Error...'}
+      {!isAuthor && 'PageEditorContainer Error...'}
       {isLoading && isAuthor && 'Loading...'}
       {!isLoading && data !== null && (
         <>
@@ -60,7 +66,7 @@ export const PagesFormContainer = observer((props: IProps) => {
             <Grid verticalGap={32}>
               <GridColumn size={4}>
                 <BlockWrapper>
-                  <PageList username={username} pageSlug={pageSlug} />
+                  <Button onClick={openPagesListModal}>Мои страницы</Button>
                 </BlockWrapper>
               </GridColumn>
               <GridColumn size={4}>
@@ -87,19 +93,30 @@ export const PagesFormContainer = observer((props: IProps) => {
           <MobileView>
             <Grid verticalGap={32}>
               <GridColumn size={12} direction='row' alignItems='center'>
-                <PageForm data={data} username={username} pageSlug={pageSlug} />
+                <PageForm
+                  data={data}
+                  username={username}
+                  pageSlug={pageSlug}
+                  onClickAddBlock={openAddBlockModal}
+                />
+              </GridColumn>
+              <GridColumn size={4}>
+                <Button onClick={openPagesListModal}>Мои страницы</Button>
               </GridColumn>
             </Grid>
           </MobileView>
         </>
       )}
       {isOpenAddBlockModal && (
-        <BlockFormModal
+        <BlockEditorModal
           onSuccess={updatePageData}
           onClose={closeAddBlockModal}
           username={username}
           pageSlug={pageSlug}
         />
+      )}
+      {isOpenPagesListModal && (
+        <PagesListModal onClose={closePagesListModal} username={username} pageSlug={pageSlug} />
       )}
     </>
   );

@@ -8,6 +8,7 @@ interface IParams {
   pageSlug: string;
 }
 
+// отображение пользовательской страницы
 const Page = (props: any) => {
   const params = useParams<IParams>();
 

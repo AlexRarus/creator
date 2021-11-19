@@ -4,7 +4,7 @@ export function useMapStoreToProps() {
   const { dalAuthStore } = useStores();
 
   return {
-    initAction: dalAuthStore.initAction,
+    initAuthAction: dalAuthStore.initAction,
     logoutAction: dalAuthStore.logoutAction,
     access: dalAuthStore.access,
   };

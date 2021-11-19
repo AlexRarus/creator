@@ -4,7 +4,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 import Button, { ButtonsList } from 'src/components/button';
 
 import { FormWrapper, FormTitle } from '../../style';
-import { useSubmitBlockForm } from '../../hooks';
+import { useSubmitBlockEditor } from '../../hooks';
 
 import { useMapStoreToProps } from './selectors';
 import { FormInputs } from './interfaces';
@@ -32,7 +32,7 @@ export const TextForm = observer((props: IProps) => {
   });
   const { formState, setError, handleSubmit } = methods;
   const { isValid } = formState;
-  const [submitBlockForm, isLoading, data, errors] = useSubmitBlockForm<FormInputs>();
+  const [submitBlockEditor, isLoading, data, errors] = useSubmitBlockEditor<FormInputs>();
 
   const submit = async (data: FormInputs) => {
     const rawData: any = { data, pageSlug, blockType };
@@ -41,7 +41,7 @@ export const TextForm = observer((props: IProps) => {
       rawData.blockId = blockId;
     }
 
-    await submitBlockForm(prepareDataForServer(rawData));
+    await submitBlockEditor(prepareDataForServer(rawData));
   };
   const onSubmit = () => handleSubmit(submit)();
 

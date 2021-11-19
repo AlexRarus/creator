@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import { Grid, GridColumn } from 'src/components/grid';
 import { useIsAuthor } from 'src/utils/useIsAuthor';
 import ButtonLink from 'src/components/button-link';
-import { TargetBlockTypePreview } from 'src/containers/profile/blocks/preview';
+import { TargetBlockTypePreview } from 'src/containers/app/block';
 import { IBlock } from 'src/dal/blocks/interfaces';
 import { IPage } from 'src/dal/pages/interfaces';
 

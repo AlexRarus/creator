@@ -26,9 +26,9 @@ class RootStore implements IRootStore {
 
     this.routing = BrowserHistoryStore.routing;
 
-    this.dalAuthStore = new DalAuthStore(this.routing);
-    this.dalPagesStore = new DalPagesStore(this.routing);
-    this.dalBlocksStore = new DalBlocksStore(this.routing);
+    this.dalAuthStore = new DalAuthStore(this, this.routing);
+    this.dalPagesStore = new DalPagesStore(this, this.routing);
+    this.dalBlocksStore = new DalBlocksStore(this, this.routing);
 
     return this;
   }
