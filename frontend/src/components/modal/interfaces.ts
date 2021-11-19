@@ -6,33 +6,25 @@ export interface IProps extends Partial<IPropsModal> {
   [key: string]: any;
 }
 
-export enum ModalSize {
-  S = 'S',
-  M = 'M',
-  L = 'L',
+export enum MobileSize {
+  S = '40%', // от высоты экрана (ширина всегда 100%)
+  M = '60%',
+  L = '90%',
 }
-
-export const mobileSize = {
-  S: '40%',
-  M: '60%',
-  L: '90%',
-};
-export const desktopSize = {
-  S: '480px',
-  M: '640px',
-  L: '920px',
-};
+export enum DesktopSize {
+  S = '480px', // ширина модалки
+  M = '640px',
+  L = '920px',
+}
 
 export interface IPropsModal {
   onClose(event: React.MouseEvent<HTMLDivElement>): void;
-  // если мы заранее знаем что окно высокое, то будет scroll
-  // сбрасываем центрирование
-  isCenter?: boolean;
   isCloseOutside?: boolean;
   padding?: string | null;
   children?: ReactNode;
   title?: string;
   className?: string;
-  size?: ModalSize;
+  mobileSize?: MobileSize;
+  desktopSize?: DesktopSize;
   zIndex?: number;
 }

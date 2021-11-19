@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import { useForm, FormProvider } from 'react-hook-form';
 import Button, { ButtonsList } from 'src/components/button';
 
-import { FormWrapper, FormTitle } from '../../style';
+import { FormWrapper } from '../../style';
 import { useSubmitBlockEditor } from '../../hooks';
 
 import { useMapStoreToProps } from './selectors';
@@ -68,7 +68,6 @@ export const TextForm = observer((props: IProps) => {
   return (
     <FormProvider {...methods}>
       <FormWrapper>
-        <FormTitle>Создание текстового блока</FormTitle>
         <TextBlockFields formDefaultValues={formDefaultValues} />
         <ButtonsList marginTop={20}>
           <Button onClick={onSubmit} disabled={!isValid}>

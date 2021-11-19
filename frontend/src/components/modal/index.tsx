@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 
 import Modal from './modal';
 import { IProps } from './interfaces';
-export { ModalSize } from './interfaces';
+export { MobileSize, DesktopSize } from './interfaces';
 
 export default class ModalComponent extends Component<IProps> {
   modalsWrapper: HTMLDivElement;

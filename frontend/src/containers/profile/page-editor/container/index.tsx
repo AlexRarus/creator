@@ -50,7 +50,10 @@ export const PageEditorContainer = observer((props: IProps) => {
 
   const updatePageData = () => getMyPageBySlugAction(pageSlug);
 
-  const openAddBlockModal = () => setIsOpenAddBlockModal(true);
+  const openAddBlockModal = () => {
+    console.log('openAddBlockModal');
+    setIsOpenAddBlockModal(true);
+  };
   const closeAddBlockModal = () => setIsOpenAddBlockModal(false);
 
   const openPagesListModal = () => setIsOpenPagesListModal(true);

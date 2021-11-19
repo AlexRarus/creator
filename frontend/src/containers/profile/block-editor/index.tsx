@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Modal from 'src/components/modal';
+import Modal, { MobileSize } from 'src/components/modal';
 import { IBlockType } from 'src/dal/blocks/interfaces';
 
 import { BlocksTypesContainer } from './types-list/container';
@@ -33,7 +33,7 @@ export const BlockEditorModal = (props: IProps) => {
   };
 
   return (
-    <Modal onClose={onClose}>
+    <Modal onClose={onClose} mobileSize={MobileSize.L} title='Создание блока'>
       {!blockType && <BlocksTypesContainer onSelectBlockType={onSetBlockType} />}
       {blockType && (
         <BlocksFormContainer

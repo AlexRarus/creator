@@ -1,5 +1,5 @@
 import React from 'react';
-import Modal from 'src/components/modal';
+import Modal, { MobileSize } from 'src/components/modal';
 
 import { PagesListContainer } from './container';
 
@@ -13,7 +13,7 @@ export const PagesListModal = (props: IProps) => {
   const { onClose, username, pageSlug } = props;
 
   return (
-    <Modal onClose={onClose}>
+    <Modal onClose={onClose} title='Ваши страницы' mobileSize={MobileSize.L}>
       <PagesListContainer username={username} pageSlug={pageSlug} />
     </Modal>
   );

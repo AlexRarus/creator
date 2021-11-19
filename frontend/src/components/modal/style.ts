@@ -2,33 +2,25 @@ import styled, { css } from 'styled-components';
 import { COLORS } from 'src/components/theme';
 import { rgba } from 'polished';
 
-import { ModalSize, desktopSize, mobileSize } from './interfaces';
+import { MobileSize, DesktopSize } from './interfaces';
 import { getDesktopAnimation, getMobileAnimation } from './style-animations';
 
 interface IModalBackPlateProps {
   isMounted: boolean;
   modalHeight: number;
-  modalBackPlateHeight: number;
   isMobile: boolean;
   zIndex?: number;
-  isCenter?: boolean;
 }
 
 interface IModalWrapperProps {
   isMobile: boolean;
+  hasTitle: boolean;
   animation: 'open' | 'close';
   animationTime: number;
   modalHeight: number;
-  size?: ModalSize;
+  mobileSize: MobileSize;
+  desktopSize: DesktopSize;
 }
-
-const getJustifyContent = ({
-  isCenter,
-  modalHeight,
-  modalBackPlateHeight,
-}: IModalBackPlateProps) => {
-  return isCenter && modalHeight < modalBackPlateHeight ? 'center' : 'flex-start';
-};
 
 export const ModalBackPlate = styled.div<IModalBackPlateProps>`
   position: fixed;
@@ -37,7 +29,7 @@ export const ModalBackPlate = styled.div<IModalBackPlateProps>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: ${getJustifyContent};
+  justify-content: center;
   top: 0;
   left: 0;
   z-index: ${({ zIndex }) => zIndex || '999'};
@@ -52,19 +44,23 @@ export const ModalWrapper = styled.div<IModalWrapperProps>`
   flex-direction: column;
   position: absolute;
   background: ${COLORS.white};
-  border-radius: 8px;
-  ${({ size, isMobile }) => {
+  border-radius: ${({ isMobile }) => (isMobile ? '8px 8px 0 0' : '8px')};
+  padding-top: ${({ isMobile, hasTitle }) => {
+    if (!hasTitle) {
+      return isMobile ? '44px' : '58px';
+    }
+    return 0;
+  }};
+  ${({ mobileSize, desktopSize, isMobile }) => {
     if (isMobile) {
       // на мобилке size влияет на высоту модалки (не может быть больше экрана)
-      return size
-        ? css`
-            width: 100%;
-            height: ${mobileSize[size]};
-          `
-        : '';
+      return css`
+        width: 100%;
+        height: ${mobileSize};
+      `;
     } else {
       // на десктопе size влияет на ширину модалки (не может быть больше экрана)
-      return size ? `width: ${desktopSize[size]};` : '';
+      return `width: ${desktopSize};`;
     }
   }};
   max-height: 100%;
@@ -77,46 +73,55 @@ export const ModalWrapper = styled.div<IModalWrapperProps>`
     ${({ animationTime }) => animationTime}ms ease-out forwards;
 `;
 
-export const ModalHeader = styled.div`
+export const ModalHeader = styled.div<{ isMobile: boolean }>`
   display: flex;
   flex-direction: row;
   width: 100%;
   justify-content: space-between;
-  padding: 24px 80px 0 32px;
+  padding: ${({ isMobile }) => (isMobile ? `10px 50px 10px 10px` : `24px 65px 24px 24px`)};
 `;
 
-export const ModalTitle = styled.div`
+export const ModalTitle = styled.div<{ isMobile: boolean }>`
   font-weight: bold;
-  letter-spacing: 0.5px;
-  font-size: 20px;
-  line-height: 24px;
-  margin-right: 20px;
+  font-size: ${({ isMobile }) => (isMobile ? 16 : 20)}px;
+  line-height: ${({ isMobile }) => (isMobile ? 20 : 24)}px;
 `;
 
 export const ModalContent = styled.div<{
-  padding: string | null;
+  padding?: string | null;
   isMobile: boolean;
   headerHeight: number;
 }>`
-  padding: ${({ padding }) => padding || '0px'};
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: ${({ padding, isMobile }) => {
+    if (padding) {
+      return padding;
+    } else if (isMobile) {
+      return '0 10px 10px';
+    }
+
+    return '0 24px 24px';
+  }};
 
   ${({ isMobile, headerHeight }) =>
     isMobile &&
     css`
-      overflow-y: auto;
-      overflow-x: hidden;
       height: calc(100% - ${headerHeight}px);
       max-height: calc(100% - ${headerHeight}px);
     `}
 `;
 
-export const CloseButton = styled.div`
+export const CloseButton = styled.div<{ isMobile: boolean; hasTitle: boolean }>`
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
   will-change: transform;
   z-index: 1;
   position: absolute;
   top: 0;
   right: 0;
-  padding: 24px 24px 0 0;
+  padding: ${({ isMobile }) => (isMobile ? '10px 10px 0 0' : '24px 24px 0 0')};
   cursor: pointer;
   background-color: ${COLORS.white};
   border-top-right-radius: 8px;
