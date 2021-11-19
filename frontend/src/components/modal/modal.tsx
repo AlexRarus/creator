@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useRef, RefObject } from 'react';
-import ResizeObserver from 'resize-observer-polyfill';
-import debounce from 'lodash/debounce';
+import React, { useState, useEffect, MouseEvent } from 'react';
 import CloseIcon from '@material-ui/icons/Close';
+import { isMobile } from 'react-device-detect';
 
-import { IPropsModal } from './interfaces';
+import { IPropsModal, ModalSize } from './interfaces';
 import {
-  ModalScrollWrapper,
+  ModalBackPlate,
   ModalWrapper,
   ModalHeader,
   ModalTitle,
@@ -13,85 +12,89 @@ import {
   ModalContent,
 } from './style';
 
+const ANIMATION_TIME = 200;
+
 export default function Modal(props: IPropsModal) {
   const {
     title,
     onClose,
     children,
-    isCloseOutside,
-    hasHeader,
-    hasCloseButton,
-    isPadding,
-    padding,
-    isCenter,
-    size,
-    dataTestId,
+    isCloseOutside = true,
+    padding = '24px 32px',
+    isCenter = true,
+    size = ModalSize.S,
     zIndex,
-    isHideModalCss,
   } = props;
   const [isMounted, setMounted] = useState(false);
+  const [animation, setAnimation] = useState<'open' | 'close'>('open');
+  const [headerHeight, setHeaderHeight] = useState<number>(0);
   const [modalHeight, setModalHeight] = useState<number>(0);
-  const [modalWrapperHeight, setModalWrapperHeight] = useState<number>(0);
-  const modalRef: RefObject<HTMLDivElement> = useRef(null);
-  const modalWrapperRef: RefObject<HTMLDivElement> = useRef(null);
-  const resizeModalHandler = debounce(setModalHeight, 10);
-  const resizeObserverRef = useRef(
-    new ResizeObserver((entries: any) => {
-      for (const entry of entries) {
-        if (entry.target === modalRef.current) {
-          resizeModalHandler(entry.contentRect.height);
-        }
-      }
-    })
-  );
+  const [modalBackPlateHeight, setModalBackPlateHeight] = useState<number>(0);
+  const [modalElement, modalRefCallback] = useState<HTMLDivElement | null>(null);
+  const [headerElement, headerRefCallback] = useState<HTMLDivElement | null>(null);
+  const [modalBackPlateElement, modalBackPlateRefCallback] = useState<HTMLDivElement | null>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   useEffect(() => {
-    const modalElement: HTMLDivElement | null = modalRef.current;
-    const modalWrapperElement: HTMLDivElement | null = modalWrapperRef.current;
-    const resizeObserver = resizeObserverRef.current;
-
-    if (modalElement && modalWrapperElement && resizeObserver) {
+    if (modalElement && modalBackPlateElement) {
+      const initHeaderHeight: number = headerElement?.getBoundingClientRect().height || 0;
       const initModalHeight: number = modalElement.getBoundingClientRect().height;
-      const initModalWrapperHeight: number = modalWrapperElement.getBoundingClientRect().height;
+      const initModalBackPlateHeight: number = modalBackPlateElement.getBoundingClientRect().height;
 
+      setHeaderHeight(initHeaderHeight);
       setModalHeight(initModalHeight);
-      setModalWrapperHeight(initModalWrapperHeight);
-      resizeObserver.observe(modalElement);
+      setModalBackPlateHeight(initModalBackPlateHeight);
     }
-  }, []);
+  }, [modalElement, modalBackPlateHeight]);
 
-  const handleOutside = isCloseOutside ? onClose : () => null;
+  useEffect(() => {
+    if (animation === 'close') {
+      setTimeout(onClose, ANIMATION_TIME);
+    }
+  }, [animation]);
+
+  const closeModal = (e: MouseEvent) => {
+    if (!e.isDefaultPrevented()) {
+      setAnimation('close');
+    }
+  };
+
+  const handleOutside = isCloseOutside ? closeModal : () => null;
 
   return (
-    <ModalScrollWrapper
-      ref={modalWrapperRef}
+    <ModalBackPlate
+      ref={modalBackPlateRefCallback}
       isCenter={isCenter}
       modalHeight={modalHeight}
-      isHideModalCss={isHideModalCss}
-      modalWrapperHeight={modalWrapperHeight}
+      modalBackPlateHeight={modalBackPlateHeight}
       zIndex={zIndex}
-      data-test-id={dataTestId || ''}
       isMounted={isMounted}
-      onClick={handleOutside}>
-      <ModalWrapper ref={modalRef} className={props.className || ''} size={size}>
-        {hasCloseButton && (
-          <CloseButton onClick={onClose}>
-            <CloseIcon />
-          </CloseButton>
-        )}
-        {hasHeader && (
-          <ModalHeader>
+      onClick={handleOutside}
+      isMobile={isMobile}>
+      <ModalWrapper
+        ref={modalRefCallback}
+        className={props.className || ''}
+        size={size}
+        isMobile={isMobile}
+        modalHeight={modalHeight}
+        animationTime={ANIMATION_TIME}
+        animation={animation}
+        onClick={(e: MouseEvent) => e.preventDefault()}>
+        <CloseButton onClick={closeModal}>
+          <CloseIcon />
+        </CloseButton>
+        {title && (
+          <ModalHeader ref={headerRefCallback}>
             <ModalTitle>{title}</ModalTitle>
           </ModalHeader>
         )}
-        <ModalContent padding={padding} isPadding={isPadding}>
+        <ModalContent padding={padding} isMobile={isMobile} headerHeight={headerHeight}>
           {children}
         </ModalContent>
       </ModalWrapper>
-    </ModalScrollWrapper>
+    </ModalBackPlate>
   );
 }

@@ -1,23 +1,36 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { COLORS } from 'src/components/theme';
 import { rgba } from 'polished';
 
-import { IPropsModal, ModalSize } from './interfaces';
+import { ModalSize, desktopSize, mobileSize } from './interfaces';
+import { getDesktopAnimation, getMobileAnimation } from './style-animations';
 
-interface IModalWrapperProps {
+interface IModalBackPlateProps {
   isMounted: boolean;
   modalHeight: number;
-  modalWrapperHeight: number;
+  modalBackPlateHeight: number;
+  isMobile: boolean;
   zIndex?: number;
   isCenter?: boolean;
-  isHideModalCss?: boolean;
 }
 
-const getJustifyContent = ({ isCenter, modalHeight, modalWrapperHeight }: IModalWrapperProps) => {
-  return isCenter && modalHeight < modalWrapperHeight ? 'center' : 'flex-start';
+interface IModalWrapperProps {
+  isMobile: boolean;
+  animation: 'open' | 'close';
+  animationTime: number;
+  modalHeight: number;
+  size?: ModalSize;
+}
+
+const getJustifyContent = ({
+  isCenter,
+  modalHeight,
+  modalBackPlateHeight,
+}: IModalBackPlateProps) => {
+  return isCenter && modalHeight < modalBackPlateHeight ? 'center' : 'flex-start';
 };
 
-export const ModalScrollWrapper = styled.div<IModalWrapperProps>`
+export const ModalBackPlate = styled.div<IModalBackPlateProps>`
   position: fixed;
   width: 100%;
   height: 100%;
@@ -34,18 +47,34 @@ export const ModalScrollWrapper = styled.div<IModalWrapperProps>`
   overflow-x: auto;
 `;
 
-export const ModalWrapper = styled.div<Pick<{ size: ModalSize }, any>>`
+export const ModalWrapper = styled.div<IModalWrapperProps>`
   display: flex;
   flex-direction: column;
-  position: relative;
-  margin: 40px 0;
+  position: absolute;
   background: ${COLORS.white};
-
-  ${({ size }) => (size ? `width: ${size};` : '')};
-
+  border-radius: 8px;
+  ${({ size, isMobile }) => {
+    if (isMobile) {
+      // на мобилке size влияет на высоту модалки (не может быть больше экрана)
+      return size
+        ? css`
+            width: 100%;
+            height: ${mobileSize[size]};
+          `
+        : '';
+    } else {
+      // на десктопе size влияет на ширину модалки (не может быть больше экрана)
+      return size ? `width: ${desktopSize[size]};` : '';
+    }
+  }};
+  max-height: 100%;
   max-width: 100%;
 
-  border-radius: 8px;
+  animation: ${({ isMobile, animation, modalHeight }) =>
+      isMobile
+        ? getMobileAnimation(animation, modalHeight)
+        : getDesktopAnimation(animation, modalHeight)}
+    ${({ animationTime }) => animationTime}ms ease-out forwards;
 `;
 
 export const ModalHeader = styled.div`
@@ -64,13 +93,21 @@ export const ModalTitle = styled.div`
   margin-right: 20px;
 `;
 
-export const ModalContent = styled.div<Pick<Partial<IPropsModal>, any>>`
-  ${({ isPadding, padding }) => {
-    if (isPadding) {
-      return `padding: ${padding.top}px ${padding.right}px ${padding.bottom}px ${padding.left}px`;
-    }
-    return '';
-  }}
+export const ModalContent = styled.div<{
+  padding: string | null;
+  isMobile: boolean;
+  headerHeight: number;
+}>`
+  padding: ${({ padding }) => padding || '0px'};
+
+  ${({ isMobile, headerHeight }) =>
+    isMobile &&
+    css`
+      overflow-y: auto;
+      overflow-x: hidden;
+      height: calc(100% - ${headerHeight}px);
+      max-height: calc(100% - ${headerHeight}px);
+    `}
 `;
 
 export const CloseButton = styled.div`
@@ -79,7 +116,7 @@ export const CloseButton = styled.div`
   position: absolute;
   top: 0;
   right: 0;
-  padding: 24px;
+  padding: 24px 24px 0 0;
   cursor: pointer;
   background-color: ${COLORS.white};
   border-top-right-radius: 8px;

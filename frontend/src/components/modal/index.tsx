@@ -1,30 +1,13 @@
-import React, { Component, GetDerivedStateFromProps } from 'react';
+import React, { Component } from 'react';
 import { createPortal } from 'react-dom';
 
 import Modal from './modal';
-import { IProps, IState, ModalSize } from './interfaces';
+import { IProps } from './interfaces';
 export { ModalSize } from './interfaces';
 
-export default class ModalComponent extends Component<IProps, IState> {
+export default class ModalComponent extends Component<IProps> {
   modalsWrapper: HTMLDivElement;
   element: HTMLDivElement;
-
-  static defaultProps = {
-    hasHeader: true,
-    hasCloseButton: true,
-    isCenter: true,
-    isPadding: true,
-    size: ModalSize.MIDDLE,
-  };
-
-  state = {
-    padding: {
-      top: 24,
-      right: 32,
-      bottom: 24,
-      left: 32,
-    },
-  };
 
   constructor(props: IProps) {
     super(props);
@@ -38,24 +21,6 @@ export default class ModalComponent extends Component<IProps, IState> {
 
     this.element = document.createElement('div');
   }
-
-  // такой формат типизации обязателен
-  public static getDerivedStateFromProps: GetDerivedStateFromProps<IProps, IState> = (
-    nextProps: IProps,
-    prevState: IState
-  ) => {
-    if (nextProps && nextProps.padding) {
-      return {
-        ...nextProps,
-        padding: {
-          ...prevState.padding,
-          ...nextProps.padding,
-        },
-      };
-    }
-
-    return nextProps;
-  };
 
   componentDidMount(): void {
     this.modalsWrapper.append(this.element);
@@ -72,6 +37,6 @@ export default class ModalComponent extends Component<IProps, IState> {
   }
 
   render() {
-    return createPortal(<Modal {...this.props} {...this.state} />, this.element);
+    return createPortal(<Modal {...this.props} />, this.element);
   }
 }
