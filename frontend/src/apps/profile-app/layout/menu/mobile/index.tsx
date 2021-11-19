@@ -34,9 +34,6 @@ export const MobileMenu = (props: IProps) => {
       </MenuOpener>
       <MenuList isOpen={isOpen} onClick={closeMenu}>
         <Logo to='/'>LOGO</Logo>
-        <MenuItem activeClassName='selected' exact={true} to={`/profile/${user?.username}/pages/`}>
-          Мои страницы
-        </MenuItem>
         <MenuItem
           activeClassName='selected'
           to={`/profile/${user?.username}/pages/${selectedPage?.slug}/`}>

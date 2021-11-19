@@ -13,6 +13,10 @@ const appRoutes: IRoute[] = [
       import(/* webpackChunkName: "page_landing_main" */ 'src/containers/profile/page-editor/')
     ),
   },
+  {
+    path: `*`,
+    component: lazy(() => import(/* webpackChunkName: "page_404" */ 'src/containers/404')),
+  },
 ];
 
 export default appRoutes;

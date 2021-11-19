@@ -10,7 +10,6 @@ export const DesktopMenuWrapper = styled.div`
   background: ${COLORS.white};
   color: ${COLORS.black};
   justify-content: space-between;
-  height: 64px;
   user-select: none;
 `;
 DesktopMenuWrapper.defaultProps = {
