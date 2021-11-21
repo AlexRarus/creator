@@ -1,3 +1,11 @@
 export { Error } from './error';
-export { getInputFontSize, getInputHeight, getLabelTransform, Label, StatusBar } from './style';
+export {
+  getInputFontSize,
+  getInputHeight,
+  getLabelTransform,
+  getInputStyles,
+  Label,
+  StatusBar,
+  Placeholder,
+} from './style';
 export type { TDimension } from './interfaces';

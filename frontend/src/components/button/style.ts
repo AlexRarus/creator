@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { defaultTheme, getThemeProps, ITheme } from 'src/components/theme';
 import { Link } from 'react-router-dom';
 
@@ -14,6 +14,7 @@ interface IButtonStyledProps {
 
 interface ILabelProps {
   dimension: TDimension;
+  kind?: TKind;
 }
 
 const getButtonBackground = (props: IButtonStyledProps) => {
@@ -32,13 +33,54 @@ const getButtonBorder = (props: IButtonStyledProps) => {
 const getButtonPadding = (props: ILabelProps) => {
   switch (props.dimension) {
     case 's':
-      return '8px 16px';
+      return '0 16px';
     case 'm':
-      return '10px 18px';
+      return '0 18px';
     case 'l':
-      return '12px 20px';
+      return '0 20px';
+    case 'xxl':
+      return '0 30px';
     default:
-      return '12px 20px';
+      return '0 20px';
+  }
+};
+
+const getButtonHeight = (props: ILabelProps) => {
+  switch (props.dimension) {
+    case 's':
+      return '24px';
+    case 'm':
+      return '32px';
+    case 'l':
+      return '40px';
+    case 'xxl':
+      return '60px';
+    default:
+      return '40px';
+  }
+};
+
+const getButtonStyles = (props: IButtonStyledProps) => {
+  switch (props.kind) {
+    case 'air':
+      return css`
+        border-radius: 8px;
+      `;
+    default:
+      return css`
+        border-radius: 4px;
+      `;
+  }
+};
+
+const getLabelStyles = (props: ILabelProps) => {
+  switch (props.kind) {
+    case 'air':
+      return css`
+        white-space: nowrap;
+      `;
+    default:
+      return '';
   }
 };
 
@@ -65,6 +107,7 @@ export const ButtonStyledLink = styled(Link)<IButtonStyledProps>`
   background: ${getButtonBackground};
   color: ${getButtonColor};
   border: 1px solid ${getButtonBorder};
+  height: ${getButtonHeight};
   cursor: pointer;
   width: ${({ block }) => (block ? '100%' : 'auto')};
   border-radius: 4px;
@@ -90,9 +133,10 @@ export const ButtonStyled = styled.button<IButtonStyledProps>`
   background: ${getButtonBackground};
   color: ${getButtonColor};
   border: 1px solid ${getButtonBorder};
+  height: ${getButtonHeight};
   cursor: pointer;
   width: ${({ block }) => (block ? '100%' : 'auto')};
-  border-radius: 4px;
+  ${getButtonStyles};
 `;
 ButtonStyled.defaultProps = {
   theme: defaultTheme,
@@ -101,6 +145,7 @@ ButtonStyled.defaultProps = {
 export const Label = styled.div<ILabelProps>`
   font-size: ${getLabelFontSize};
   font-weight: bold;
+  ${getLabelStyles}
 `;
 Label.defaultProps = {
   theme: defaultTheme,

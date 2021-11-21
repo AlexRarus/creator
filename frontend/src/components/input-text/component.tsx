@@ -1,6 +1,6 @@
 import React, { FocusEvent, useEffect, useState } from 'react';
 
-import { Error, StatusBar, Label } from '../input-components';
+import { Error, StatusBar, Label, Placeholder } from '../input-components';
 
 import { IProps } from './interfaces';
 import { ComponentWrapper, InputStyled, IconWrapper } from './style';
@@ -14,6 +14,7 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
     type = 'text',
     icon: Icon = '',
     value = '',
+    placeholder = '',
     ...inputProps
   } = props;
   const [componentElement, componentRefCallback] = useState<HTMLElement | null>(null);
@@ -61,6 +62,11 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
           {label}
         </Label>
       )}
+      {placeholder && (
+        <Placeholder isFocused={isFocused} dimension={dimension}>
+          {placeholder}
+        </Placeholder>
+      )}
       <InputStyled
         id={`input-text-${inputProps.name}-${uniqId}`}
         ref={ref}
@@ -77,7 +83,7 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
       <IconWrapper ref={iconWrapperRefCallback} dimension={dimension}>
         {Icon && <Icon />}
       </IconWrapper>
-      <StatusBar markError={markError} isFocused={isFocused} />
+      <StatusBar type={type} markError={markError} isFocused={isFocused} />
       <Error isOpen={isOpenError} openerElement={componentElement}>
         {error}
       </Error>

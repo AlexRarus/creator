@@ -46,7 +46,9 @@ export function Button(props: IProps) {
       type={type}
       to={to}
       {...otherProps}>
-      <Label dimension={dimension}>{children}</Label>
+      <Label kind={kind} dimension={dimension}>
+        {children}
+      </Label>
       <Replies disabled={disabled} />
     </ButtonStyledComponent>
   );
