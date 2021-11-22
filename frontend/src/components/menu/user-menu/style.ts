@@ -39,8 +39,12 @@ export const MenuItem = css`
 export const MenuItemLink = styled(Link)`
   display: block;
   text-decoration: none;
+  cursor: pointer;
+  user-select: none;
   ${MenuItem}
 `;
 export const MenuItemButton = styled.div`
+  cursor: pointer;
+  user-select: none;
   ${MenuItem}
 `;

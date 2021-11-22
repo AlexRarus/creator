@@ -32,6 +32,7 @@ export const MobileMenu = (props: IProps) => {
   const { user, logoutAction, selectedPage, isProfile, menuItems } = props;
   const [isOpenNavigation, setIsOpenNavigation] = useState(false);
   const isHideMenu: boolean = useScrollDirection(false, 30, 15);
+  const hasMenuItems = Boolean(menuItems.length);
 
   const openNavigation = () => setIsOpenNavigation(true);
   const closeNavigation = () => setIsOpenNavigation(false);
@@ -40,12 +41,12 @@ export const MobileMenu = (props: IProps) => {
     <MobileMenuWrapper>
       <VerticalSlide duration={200} state={isHideMenu} value={MENU_HEIGHT} direction={-1}>
         <MobileMenuHeader>
-          {Boolean(menuItems.length) && (
+          {hasMenuItems && (
             <NavigationOpener onClick={openNavigation}>
               <NavigationIcon />
             </NavigationOpener>
           )}
-          {!menuItems.length && <Logo to='/'>LOGO</Logo>}
+          {!hasMenuItems && <Logo to='/'>LOGO</Logo>}
           {isProfile && <UserMenu user={user} logoutAction={logoutAction} />}
           {!isProfile && (
             <>
