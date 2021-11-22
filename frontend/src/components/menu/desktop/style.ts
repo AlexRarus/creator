@@ -16,6 +16,7 @@ export const DesktopMenuWrapper = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
+  height: ${MENU_HEIGHT}px;
   padding: 0 100px;
   background: ${COLORS.white};
   color: ${COLORS.black};
