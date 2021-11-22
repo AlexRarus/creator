@@ -27,9 +27,11 @@ export interface IProps {
   color?: string;
   background?: string;
   className?: string;
-  borderRadius?: number;
+  borderRadius?: string;
   borderColor?: string;
   isFixed?: boolean; // position: fixed
+  hasBorder?: boolean;
+  hasShadow?: boolean;
 }
 
 export interface IOpenerPosition {

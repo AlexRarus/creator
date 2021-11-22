@@ -69,11 +69,3 @@ export const MenuItem = styled(NavLink)`
     border-bottom: 1px solid ${COLORS.blue[600]};
   }
 `;
-
-export const LogoutButton = styled.div`
-  padding: 5px 10px;
-  color: ${COLORS.grey[500]};
-  border: 1px solid ${COLORS.grey[500]};
-  border-radius: 4px;
-  cursor: pointer;
-`;

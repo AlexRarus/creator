@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { IUser } from 'src/dal/auth/interfaces';
 import { IPage } from 'src/dal/pages/interfaces';
-import MenuIcon from '@material-ui/icons/Menu';
+import NavigationIcon from '@material-ui/icons/Menu';
+
+import { UserMenu } from '../user-menu';
 
 import {
   MobileMenuWrapper,
+  MobileMenuHeader,
   BackPlate,
-  MenuOpener,
-  MenuList,
+  NavigationOpener,
+  NavigationList,
   Logo,
-  MenuItem,
-  LogoutButton,
+  NavigationItem,
 } from './style';
 
 interface IProps {
@@ -21,32 +23,34 @@ interface IProps {
 
 export const MobileMenu = (props: IProps) => {
   const { user, logoutAction, selectedPage } = props;
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenNavigation, setIsOpenNavigation] = useState(false);
 
-  const openMenu = () => setIsOpen(true);
-  const closeMenu = () => setIsOpen(false);
+  const openNavigation = () => setIsOpenNavigation(true);
+  const closeNavigation = () => setIsOpenNavigation(false);
 
   return (
     <MobileMenuWrapper>
-      <BackPlate isOpen={isOpen} onClick={closeMenu} />
-      <MenuOpener onClick={openMenu}>
-        <MenuIcon />
-      </MenuOpener>
-      <MenuList isOpen={isOpen} onClick={closeMenu}>
+      <MobileMenuHeader>
+        <NavigationOpener onClick={openNavigation}>
+          <NavigationIcon />
+        </NavigationOpener>
+        <UserMenu user={user} logoutAction={logoutAction} />
+      </MobileMenuHeader>
+      <BackPlate isOpen={isOpenNavigation} onClick={closeNavigation} />
+      <NavigationList isOpen={isOpenNavigation} onClick={closeNavigation}>
         <Logo to='/'>LOGO</Logo>
-        <MenuItem
+        <NavigationItem
           activeClassName='selected'
           to={`/profile/${user?.username}/pages/${selectedPage?.slug}/`}>
           Страница
-        </MenuItem>
-        <MenuItem activeClassName='selected' to={`/profile/${user?.username}/requests/`}>
+        </NavigationItem>
+        <NavigationItem activeClassName='selected' to={`/profile/${user?.username}/requests/`}>
           Заявки
-        </MenuItem>
-        <MenuItem activeClassName='selected' to={`/profile/${user?.username}/themes/`}>
+        </NavigationItem>
+        <NavigationItem activeClassName='selected' to={`/profile/${user?.username}/themes/`}>
           Темы
-        </MenuItem>
-        <LogoutButton onClick={logoutAction}>Выйти</LogoutButton>
-      </MenuList>
+        </NavigationItem>
+      </NavigationList>
     </MobileMenuWrapper>
   );
 };

@@ -2,7 +2,9 @@ import React from 'react';
 import { IUser } from 'src/dal/auth/interfaces';
 import { IPage } from 'src/dal/pages/interfaces';
 
-import { DesktopMenuWrapper, LeftSide, RightSide, Logo, MenuItem, LogoutButton } from './style';
+import { UserMenu } from '../user-menu';
+
+import { DesktopMenuWrapper, LeftSide, RightSide, Logo, MenuItem } from './style';
 
 interface IProps {
   user: IUser | null;
@@ -20,7 +22,7 @@ export const DesktopMenu = (props: IProps) => {
         <MenuItem
           activeClassName='selected'
           to={`/profile/${user?.username}/pages/${selectedPage?.slug}/`}>
-          Страницы
+          Страница
         </MenuItem>
         <MenuItem activeClassName='selected' to={`/profile/${user?.username}/requests/`}>
           Заявки
@@ -30,7 +32,7 @@ export const DesktopMenu = (props: IProps) => {
         </MenuItem>
       </LeftSide>
       <RightSide>
-        <LogoutButton onClick={logoutAction}>Выйти</LogoutButton>
+        <UserMenu user={user} logoutAction={logoutAction} />
       </RightSide>
     </DesktopMenuWrapper>
   );

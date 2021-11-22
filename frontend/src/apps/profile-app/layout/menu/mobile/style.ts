@@ -11,6 +11,7 @@ export const MobileMenuWrapper = styled.div`
   top: 0;
   left: 0;
   z-index: 99;
+  width: 100%;
 `;
 MobileMenuWrapper.defaultProps = {
   theme: defaultTheme,
@@ -26,21 +27,36 @@ export const BackPlate = styled.div<{ isOpen: boolean }>`
   transition: all ease-out 3000ms;
 `;
 
-export const MenuOpener = styled.div`
-  position: fixed;
+export const MobileMenuHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  user-select: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  height: 60px;
+  width: 100%;
+  padding: 5px;
+  background: ${COLORS.white};
+`;
+MobileMenuHeader.defaultProps = {
+  theme: defaultTheme,
+};
+
+export const NavigationOpener = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 10px;
-  border-radius: 100%;
-  top: 10px;
-  right: 10px;
+  width: 50px;
+  height: 50px;
   background: ${COLORS.white};
   color: ${COLORS.black};
-  box-shadow: 0 0 4px ${rgba(COLORS.black, 0.2)};
 `;
 
-export const MenuList = styled.div<{ isOpen: boolean }>`
+export const NavigationList = styled.div<{ isOpen: boolean }>`
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -49,7 +65,7 @@ export const MenuList = styled.div<{ isOpen: boolean }>`
   width: 280px;
   height: 100%;
   top: 0;
-  right: ${({ isOpen }) => (isOpen ? 0 : -280)}px;
+  left: ${({ isOpen }) => (isOpen ? 0 : -280)}px;
   transition: all ease-out 300ms;
 `;
 
@@ -65,7 +81,7 @@ export const Logo = styled(Link)`
   }
 `;
 
-export const MenuItem = styled(NavLink)`
+export const NavigationItem = styled(NavLink)`
   padding: 15px 20px 14px 20px;
   border-bottom: 1px solid transparent;
   text-decoration: none;
@@ -84,13 +100,4 @@ export const MenuItem = styled(NavLink)`
     color: ${COLORS.blue[600]};
     border-bottom: 1px solid ${COLORS.blue[600]};
   }
-`;
-
-export const LogoutButton = styled.div`
-  margin: 20px;
-  padding: 5px 10px;
-  color: ${COLORS.grey[500]};
-  border: 1px solid ${COLORS.grey[500]};
-  border-radius: 4px;
-  cursor: pointer;
 `;
