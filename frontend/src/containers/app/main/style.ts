@@ -9,6 +9,18 @@ export interface IMobile {
   isMobile?: boolean;
 }
 
+export interface ICarousel {
+  width: number;
+  isMobile?: boolean;
+  order?: number;
+  length?: number;
+}
+
+export interface ICarouselItem {
+  width: number;
+  isMobile?: boolean;
+}
+
 const getMobileStyles = (props: IMobile) => {
   if (props.isMobile) {
     return css`
@@ -86,31 +98,63 @@ export const StartRow = styled.div<IMobile>`
   ${getMobileStyles}
 `;
 
-export const ScreenOfPhone = styled.div<IMobile>`
+export const ScreenOfPhone = styled.div<ICarouselItem>`
   position: absolute;
   right: ${({ isMobile }) => (isMobile ? 14 : 40)}px;
   bottom: ${({ isMobile }) => (isMobile ? 140 : -40)}px;
   border-radius: 16px;
   display: flex;
-  width: ${({ isMobile }) => (isMobile ? 200 : 280)}px;
-  height: ${({ isMobile }) => (isMobile ? 405 : 567)}px;
-  background-image: url(${MobilePhone});
-  background-repeat: no-repeat;
-  background-size: cover;
+  width: ${({ isMobile, width }) => (isMobile ? (width / 7) * 5 : width)}px;
+  height: ${({ isMobile, width }) => (isMobile ? ((width * 2) / 7) * 5 : width * 2)}px;
+  overflow: hidden;
   z-index: 1;
 `;
 
-export const SecondScreen = styled.div<IMobile>`
+export const SecondScreen = styled.div<ICarouselItem>`
   position: absolute;
   right: 224px;
   bottom: ${({ isMobile }) => (isMobile ? 220 : -100)}px;
   border-radius: 16px;
   display: flex;
-  width: ${({ isMobile }) => (isMobile ? 170 : 236)}px;
-  height: ${({ isMobile }) => (isMobile ? 306 : 429)}px;
+  width: ${({ isMobile, width }) => (isMobile ? (width / 7) * 5 : width)}px;
+  height: ${({ isMobile, width }) => (isMobile ? ((width * 2) / 7) * 5 : width * 2)}px;
+  overflow: hidden;
+`;
+
+export const ScreenImage = styled.div<ICarouselItem>`
+  width: ${({ isMobile, width }) => (isMobile ? (width / 7) * 5 : width)}px;
+  height: ${({ isMobile, width }) => (isMobile ? ((width * 2) / 7) * 5 : width * 2)}px;
+  background-image: url(${MobilePhone});
+  background-repeat: no-repeat;
+  background-size: cover;
+`;
+
+export const ScreenImage1 = styled.div<ICarousel>`
+  width: ${({ isMobile, width }) => (isMobile ? (width / 7) * 5 : width)}px;
+  height: ${({ isMobile, width }) => (isMobile ? ((width * 2) / 7) * 5 : width * 2)}px;
   background-image: url(${MobilePhone1});
   background-repeat: no-repeat;
   background-size: cover;
+`;
+
+export const ScreensList = styled.div<ICarousel>`
+  position: absolute;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  left: ${({ order, width, isMobile }) =>
+    order ? -(isMobile ? (width / 7) * 5 : width) * order : 0}px;
+  width: calc(
+    ${({ length, width, isMobile }) =>
+      length
+        ? isMobile
+          ? (width / 7) * 5 * length
+          : width * length
+        : isMobile
+        ? (width / 7) * 5
+        : width}px
+  );
+  transition: all 0.3s;
 `;
 
 export const LandingExamplesBlock = styled.div<IMobile>`
@@ -196,4 +240,68 @@ export const ExamplesContent = styled.div`
   line-height: 1.6;
   color: ${COLORS.grey[700]};
   margin-bottom: 28px;
+`;
+
+export const LandingFooter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 40px 40px;
+  background: ${COLORS.blueGrey[700]};
+`;
+
+export const FooterItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 0 14px;
+  margin-bottom: 12px;
+  height: 100px;
+
+  :last-child {
+    justify-content: space-between;
+  }
+`;
+
+export const ItemHeader = styled.div`
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 16px;
+  margin: 4px 0;
+  color: ${COLORS.white};
+`;
+
+export const ItemRow = styled.div`
+  display: flex;
+  align-items: center;
+  color: ${COLORS.grey[400]};
+  font-size: 14px;
+  padding: 4px 0;
+  cursor: pointer;
+`;
+
+export const LangRow = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: ${COLORS.grey[400]};
+`;
+
+export const Flag = styled.div`
+  display: flex;
+  width: 20px;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  height: 20px;
+  margin-right: 6px;
+`;
+
+export const FooterIconBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin-right: 4px;
 `;
