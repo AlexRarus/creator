@@ -9,12 +9,13 @@ import { getDifference } from './getDifference';
  * @param initState
  * @param minDownScroll - минимальное смещение в 'px' при скроле вниз при котором будет переключаться стейт
  * @param minUpScroll - минимальное смещение в 'px' при скроле вверх при котором будет переключаться стейт
+ * @param wait - debounce time
  */
 export const useScrollDirection = (
   initState = false,
   minDownScroll = Infinity,
   minUpScroll = Infinity,
-  wait = 100
+  wait = 0
 ): boolean => {
   const [state, setState] = useState(initState);
   const [scrollValue, setScrollValue] = useState(0);
@@ -38,7 +39,9 @@ export const useScrollDirection = (
   }, []);
 
   const updateScrollValue = useCallback(
-    debounce(() => setScrollValue(window.pageYOffset), wait),
+    wait
+      ? debounce(() => setScrollValue(window.pageYOffset), wait)
+      : () => setScrollValue(window.pageYOffset),
     []
   );
 

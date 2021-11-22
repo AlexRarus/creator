@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
+import { Menu } from 'src/components/menu';
 
-import { ProfileMenu } from './menu';
+import { menuItems } from './menu-items';
 import { Footer } from './footer';
 import { ProfileLayoutWrapper, PageWrapper } from './style';
 
@@ -13,7 +14,7 @@ export function ProfileLayout(props: IProps) {
 
   return (
     <ProfileLayoutWrapper>
-      <ProfileMenu />
+      <Menu isProfile={true} menuItems={menuItems} />
       <PageWrapper>{children}</PageWrapper>
       <Footer />
     </ProfileLayoutWrapper>

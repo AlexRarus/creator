@@ -1,19 +1,30 @@
 import styled from 'styled-components';
 import { COLORS, defaultTheme } from 'src/components/theme';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
-export const MobileMenuWrapper = styled.div`
+import { MENU_HEIGHT } from '../constants';
+
+export const DesktopHeaderWrapper = styled.div`
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 99;
+`;
+
+export const DesktopMenuWrapper = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-  padding: 0 30px;
+  height: ${MENU_HEIGHT}px;
+  padding: 0 100px;
   background: ${COLORS.white};
   color: ${COLORS.black};
   justify-content: space-between;
-  height: 64px;
+  align-items: center;
   user-select: none;
 `;
-MobileMenuWrapper.defaultProps = {
+DesktopMenuWrapper.defaultProps = {
   theme: defaultTheme,
 };
 
@@ -40,6 +51,7 @@ export const Logo = styled(Link)`
   padding: 15px 0;
   text-decoration: none;
   color: ${COLORS.grey[500]};
+  margin-right: 50px;
   border: 1px solid ${COLORS.black};
 
   :visited,
@@ -48,16 +60,26 @@ export const Logo = styled(Link)`
   }
 `;
 
-export const ButtonLink = styled(Link)`
+export const MenuItem = styled(NavLink)`
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid transparent;
   text-decoration: none;
-  padding: 5px 10px;
   color: ${COLORS.grey[500]};
-  border: 1px solid ${COLORS.grey[500]};
-  border-radius: 4px;
-  cursor: pointer;
+  margin-right: 30px;
+  height: ${MENU_HEIGHT}px;
+
+  :last-child {
+    margin-right: 0;
+  }
 
   :visited,
   :active {
     color: ${COLORS.grey[500]};
+  }
+
+  &.selected {
+    color: ${COLORS.blue[600]};
+    border-bottom: 1px solid ${COLORS.blue[600]};
   }
 `;

@@ -65,9 +65,11 @@ export default function Popup(props: IProps) {
     color = COLORS.black,
     background = COLORS.white,
     className,
-    borderRadius = 2,
+    borderRadius = '2px',
     borderColor = COLORS.grey[300],
     isFixed = false,
+    hasBorder = true,
+    hasShadow = true,
   } = props;
   const isWin = navigator?.appVersion.toLowerCase().includes('win');
   const prevIsOpen: boolean = usePrev(isOpen);
@@ -505,7 +507,9 @@ export default function Popup(props: IProps) {
           isScrolling={scrolling}
           scrollBarWidth={0}
           borderColor={borderColor}
-          borderRadius={borderRadius}>
+          borderRadius={borderRadius}
+          hasBorder={hasBorder}
+          hasShadow={hasShadow}>
           <ChildrenWrapper>
             <PopupContext.Provider value={{ maxHeight }}>{children}</PopupContext.Provider>
           </ChildrenWrapper>
