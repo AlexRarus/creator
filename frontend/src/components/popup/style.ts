@@ -347,9 +347,9 @@ export const PlateWrapper = styled.div<IPlateProps>`
 export const PlateContent = styled.div<IPlateContentProps>`
   position: relative;
   background: ${COLORS.white};
-  box-shadow: 0 0 6px 0 ${rgba(COLORS.black, 0.2)};
-  border: 1px solid ${({ borderColor }) => borderColor};
-  border-radius: ${({ borderRadius }) => borderRadius}px;
+  box-shadow: ${({ hasShadow }) => (hasShadow ? `0 0 6px 0 ${rgba(COLORS.black, 0.2)}` : 'none')};
+  border: ${({ hasBorder, borderColor }) => (hasBorder ? `1px solid ${borderColor}` : 'none')};
+  border-radius: ${({ borderRadius }) => borderRadius};
   ${({ overflow }) => (overflow ? `overflow: ${overflow}` : 'overflow-y: auto;')};
   ${({ maxHeight }) => maxHeight && `max-height: ${maxHeight}px`};
   width: max-content;
