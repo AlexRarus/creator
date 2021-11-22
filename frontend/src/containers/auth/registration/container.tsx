@@ -8,7 +8,7 @@ import InputPassword from 'src/components/input-password';
 import Button, { ButtonsList } from 'src/components/button';
 import ButtonLink from 'src/components/button-link';
 import { checkEmptyObject } from 'src/utils/checkEmptyObject';
-import { email, required } from 'src/utils/validators';
+import { email as emailVal, required } from 'src/utils/validators';
 import { useQuery } from 'src/hooks/useQuery';
 
 import { AuthPageWrapper, AuthFormWrapper, FormTitle } from '../style';
@@ -23,7 +23,7 @@ type FormInputs = {
 
 export const RegistrationPageContainer = observer(() => {
   const { registrationAction } = useMapStoreToProps();
-  const { search } = useQuery({
+  const { search, email } = useQuery({
     next: '/auth/message?type=registration-confirm&email=',
   });
   const { watch, handleSubmit, formState, control } = useForm<FormInputs>({
@@ -55,9 +55,10 @@ export const RegistrationPageContainer = observer(() => {
             <ControlledField
               name='email'
               control={control}
+              defaultValue={email}
               rules={{
                 ...required(),
-                ...email(),
+                ...emailVal(),
               }}>
               <InputText label='Введите почту' />
             </ControlledField>

@@ -17,6 +17,7 @@ interface IThemePalette {
   warning?: string;
   error?: string;
   link?: string;
+  air?: string;
 }
 interface IThemeBase {
   color: IThemePalette;

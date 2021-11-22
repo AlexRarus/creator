@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { COLORS, defaultTheme, ITheme } from 'src/components/theme';
 
 import { TDimension } from './interfaces';
@@ -6,7 +6,54 @@ import { TDimension } from './interfaces';
 interface IComponentWrapperProps {
   dimension: TDimension;
   theme: ITheme;
+  type?: string;
 }
+
+interface IStatus {
+  markError: boolean;
+  isFocused: boolean;
+  type?: string;
+}
+
+export const getStatusBarStyles = (props: IStatus) => {
+  switch (props.type) {
+    case 'air':
+      return css`
+        display: none;
+      `;
+    default:
+      return '';
+  }
+};
+
+export const getInputStyles = (props: IComponentWrapperProps) => {
+  switch (props.type) {
+    case 'air':
+      return css`
+        border-radius: 8px;
+        padding: 0 24px;
+        box-shadow: 0 15px 45px rgb(40 67 79 / 15%);
+        font-weight: 700;
+      `;
+    default:
+      return '';
+  }
+};
+
+export const getPlaceholderHeight = (props: IComponentWrapperProps) => {
+  switch (props.dimension) {
+    case 'xxl':
+      return css`
+        left: 24px;
+        font-size: 22px;
+      `;
+    default:
+      return css`
+        left: 12px;
+        font-size: 14px;
+      `;
+  }
+};
 
 export const getInputHeight = (props: IComponentWrapperProps) => {
   switch (props.dimension) {
@@ -16,6 +63,8 @@ export const getInputHeight = (props: IComponentWrapperProps) => {
       return '28px';
     case 'l':
       return '32px';
+    case 'xxl':
+      return '60px';
     default:
       return '32px';
   }
@@ -42,10 +91,28 @@ export const getInputFontSize = (props: IComponentWrapperProps) => {
       return '14px';
     case 'l':
       return '16px';
+    case 'xxl':
+      return '22px';
     default:
       return '14px';
   }
 };
+
+export const Placeholder = styled.label<{
+  isFocused: boolean;
+  dimension: TDimension;
+}>`
+  display: ${({ isFocused }) => (isFocused ? 'none' : 'flex')};
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 100%;
+  cursor: text;
+  color: ${({ theme }) => theme.textColor.secondary};
+  z-index: 99;
+  ${getPlaceholderHeight}
+`;
 
 export const Label = styled.label<{
   isEmpty: boolean;
@@ -63,10 +130,7 @@ Label.defaultProps = {
   theme: defaultTheme,
 };
 
-export const StatusBar = styled.div<{
-  markError: boolean;
-  isFocused: boolean;
-}>`
+export const StatusBar = styled.div<IStatus>`
   width: 100%;
   height: ${({ isFocused }) => (isFocused ? 2 : 1)}px;
   background: ${({ isFocused, theme }) => (isFocused ? theme.color.primary : COLORS.grey[400])};
@@ -84,6 +148,8 @@ export const StatusBar = styled.div<{
     background: ${({ theme }) => theme.color.error};
     transition: all 300ms;
   }
+
+  ${getStatusBarStyles}
 `;
 StatusBar.defaultProps = {
   theme: defaultTheme,

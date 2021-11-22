@@ -27,16 +27,19 @@ export const defaultTheme: ITheme = {
         primary: COLORS.white,
         secondary: COLORS.white,
         disabled: COLORS.grey[700],
+        air: COLORS.white,
       },
       background: {
         primary: COLORS.blue[500],
         secondary: COLORS.grey[500],
         disabled: COLORS.grey[400],
+        air: COLORS.indigo[900],
       },
       borderColor: {
         primary: COLORS.blue[500],
         secondary: COLORS.grey[500],
         disabled: COLORS.grey[400],
+        air: COLORS.indigo[900],
       },
     },
     input: {
@@ -44,11 +47,13 @@ export const defaultTheme: ITheme = {
         primary: COLORS.black,
         secondary: COLORS.white,
         disabled: COLORS.grey[700],
+        air: COLORS.grey[900],
       },
       background: {
         primary: 'inherit',
         secondary: COLORS.grey[500],
         disabled: COLORS.grey[400],
+        air: COLORS.white,
       },
       borderColor: {
         primary: COLORS.black,

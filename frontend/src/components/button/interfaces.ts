@@ -1,2 +1,2 @@
-export type TKind = 'primary' | 'secondary';
-export type TDimension = 's' | 'm' | 'l';
+export type TKind = 'primary' | 'secondary' | 'air';
+export type TDimension = 's' | 'm' | 'l' | 'xxl';

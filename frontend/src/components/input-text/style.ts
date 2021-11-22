@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { defaultTheme, getThemeProps, ITheme } from 'src/components/theme';
 
-import { getInputHeight, getInputFontSize } from '../input-components';
+import { getInputHeight, getInputFontSize, getInputStyles } from '../input-components';
 
 import { TDimension } from './interfaces';
 
@@ -13,14 +13,31 @@ interface IComponentWrapperProps {
 interface IInputStyledProps extends IComponentWrapperProps {
   disabled: boolean;
   iconWrapperWidth: number;
+  type?: string;
 }
 
 const getInputBackground = (props: IInputStyledProps) => {
-  const propKey = props.disabled ? 'disabled' : 'primary';
+  const { disabled, type } = props;
+  let propKey = 'primary';
+  if (type === 'air') {
+    propKey = 'air';
+  }
+  if (disabled) {
+    propKey = 'disabled';
+  }
+
   return getThemeProps(`component.input.background.${propKey}`)(props);
 };
 const getInputColor = (props: IInputStyledProps) => {
-  const propKey = props.disabled ? 'disabled' : 'primary';
+  const { type, disabled } = props;
+  let propKey = 'primary';
+
+  if (type) {
+    propKey = type;
+  }
+  if (disabled) {
+    propKey = 'disabled';
+  }
   return getThemeProps(`component.input.color.${propKey}`)(props);
 };
 
@@ -32,6 +49,7 @@ export const InputStyled = styled.input<IInputStyledProps>`
   outline: none;
   border: none;
   padding-right: ${({ iconWrapperWidth }) => iconWrapperWidth}px;
+  ${getInputStyles}
 `;
 InputStyled.defaultProps = {
   theme: defaultTheme,

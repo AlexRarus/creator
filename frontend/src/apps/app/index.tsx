@@ -5,9 +5,9 @@ import routes from 'src/router/routes/app-routes';
 
 const App = observer(() => {
   return (
-    <div>
+    <>
       <Router routes={routes} />
-    </div>
+    </>
   );
 });
 
