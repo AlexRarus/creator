@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
-// import { rgba } from 'polished';
 import { COLORS } from 'src/components/theme';
+import { MENU_HEIGHT } from 'src/components/menu/constants';
 
 import MobilePhone from './assets/test-image.jpg';
 import MobilePhone1 from './assets/test-image1.jpg';
@@ -30,6 +30,7 @@ export const MainPageWrapper = styled.div`
   display: flex;
   flex-grow: 1;
   flex-direction: column;
+  padding-top: ${MENU_HEIGHT}px;
 `;
 
 export const LandingWrapper = styled.div`

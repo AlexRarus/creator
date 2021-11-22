@@ -3,11 +3,13 @@ import { COLORS, defaultTheme } from 'src/components/theme';
 import { Link, NavLink } from 'react-router-dom';
 import { rgba } from 'polished';
 
+import { MENU_HEIGHT } from '../constants';
+
 export const MobileMenuWrapper = styled.div`
   display: flex;
   flex-direction: column;
   user-select: none;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 99;
@@ -31,12 +33,13 @@ export const MobileMenuHeader = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   user-select: none;
   position: absolute;
   top: 0;
   left: 0;
   z-index: 99;
-  height: 60px;
+  height: ${MENU_HEIGHT}px;
   width: 100%;
   padding: 5px;
   background: ${COLORS.white};
