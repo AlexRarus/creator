@@ -96,8 +96,10 @@ const verticalAlign = ({
         : openerPositionBottom - platePosition.height;
 
     if (hasPointer && openerBiggerThenPlate) {
-      maxTopPosition = center;
-      maxBottomPosition = center;
+      const openerHalfHeight = openerPosition.height / 2;
+      maxTopPosition = openerPosition.left + openerHalfHeight - shiftHidePointer;
+      maxBottomPosition =
+        openerPositionBottom + -openerHalfHeight + shiftHidePointer - platePosition.height;
     }
 
     const targetBottomCoordinate =
@@ -178,6 +180,7 @@ export const topPosition = (props: ICalcPositionProp) => {
     verticalShift = 0,
     floatPosition,
   } = props;
+
   if (openerPosition && platePosition && fieldCoordinates) {
     switch (position) {
       case 'top':
@@ -229,7 +232,7 @@ const pointerLeftPosition = (props: IPlateProps) => {
       case 'left':
         return (
           openerPosition.left -
-          pointerSize / 3 -
+          pointerSize * 0.7 - // выведено имперически
           (fieldCoordinates.left - plateMargin < 0 && floatPosition
             ? openerPosition.left
             : openerPosition.left - platePosition.width)
@@ -237,7 +240,7 @@ const pointerLeftPosition = (props: IPlateProps) => {
       case 'right':
         return (
           openerPosition.left -
-          pointerSize / 3 -
+          pointerSize * 0.4 - // выведено имперически
           (fieldCoordinates.right - plateMargin < 0 && floatPosition
             ? openerPosition.left - platePosition.width
             : openerPosition.left)
@@ -245,7 +248,7 @@ const pointerLeftPosition = (props: IPlateProps) => {
       default:
         return (
           pointerTargetPosition.left -
-          pointerSize / 3 -
+          pointerSize / 2 -
           (openerPosition.left + openerPosition.width - platePosition.width)
         );
     }
@@ -271,7 +274,7 @@ const pointerTopPosition = (props: IPlateProps) => {
       case 'top':
         return (
           openerPosition.top -
-          pointerSize / 2 -
+          pointerSize * 0.7 -
           (fieldCoordinates.top - plateMargin < 0 && floatPosition
             ? openerPosition.top
             : openerPosition.top - platePosition.height)
@@ -279,7 +282,7 @@ const pointerTopPosition = (props: IPlateProps) => {
       case 'bottom':
         return (
           openerPosition.top -
-          pointerSize / 2 -
+          pointerSize * 0.4 -
           (fieldCoordinates.bottom - plateMargin < 0 && floatPosition
             ? openerPosition.top - platePosition.height
             : openerPosition.top)
@@ -289,14 +292,14 @@ const pointerTopPosition = (props: IPlateProps) => {
           pointerTargetPosition.top +
           pointerTargetPosition.height / 2 -
           pointerSize / 2 -
-          topPosition(props as ICalcPositionProp)
+          verticalAlign(props as ICalcPositionProp)
         );
       case 'right':
         return (
           pointerTargetPosition.top +
           pointerTargetPosition.height / 2 -
           pointerSize / 2 -
-          topPosition(props as ICalcPositionProp)
+          verticalAlign(props as ICalcPositionProp)
         );
       default:
         return (

@@ -3,7 +3,7 @@ import { defaultTheme, getThemeProps, ITheme } from 'src/components/theme';
 
 import { getInputHeight, getInputFontSize, getInputStyles } from '../input-components';
 
-import { TDimension } from './interfaces';
+import { TDimension, TKind } from './interfaces';
 
 interface IComponentWrapperProps {
   dimension: TDimension;
@@ -14,14 +14,17 @@ interface IInputStyledProps extends IComponentWrapperProps {
   disabled: boolean;
   iconWrapperWidth: number;
   type?: string;
+  kind?: TKind;
 }
 
 const getInputBackground = (props: IInputStyledProps) => {
-  const { disabled, type } = props;
+  const { disabled, kind } = props;
   let propKey = 'primary';
-  if (type === 'air') {
+
+  if (kind === 'air') {
     propKey = 'air';
   }
+
   if (disabled) {
     propKey = 'disabled';
   }
@@ -29,12 +32,13 @@ const getInputBackground = (props: IInputStyledProps) => {
   return getThemeProps(`component.input.background.${propKey}`)(props);
 };
 const getInputColor = (props: IInputStyledProps) => {
-  const { type, disabled } = props;
+  const { kind, disabled } = props;
   let propKey = 'primary';
 
-  if (type) {
-    propKey = type;
+  if (kind) {
+    propKey = kind;
   }
+
   if (disabled) {
     propKey = 'disabled';
   }

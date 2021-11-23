@@ -1,4 +1,5 @@
-import React, { FocusEvent, useEffect, useState } from 'react';
+import React, { FocusEvent, useEffect, useState, useRef } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 import { Error, StatusBar, Label, Placeholder } from '../input-components';
 
@@ -12,6 +13,7 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
     dimension = 'l',
     disabled = false,
     type = 'text',
+    kind = 'primary',
     icon: Icon = '',
     value = '',
     placeholder = '',
@@ -23,7 +25,9 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
   const [isFocused, setIsFocused] = useState(false);
   const [isOpenError, setIsOpenError] = useState(false);
   const [markError, setMarkError] = useState(Boolean(error));
-  const [uniqId] = useState(Math.random().toString());
+  const [uniqId] = useState(uuidv4());
+  const innerRef = useRef();
+  const currentRef = ref || innerRef;
 
   useEffect(() => {
     if (Icon && iconWrapperElement) {
@@ -58,19 +62,24 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
         <Label
           htmlFor={`input-text-${inputProps.name}-${uniqId}`}
           isEmpty={!value && !isFocused}
-          dimension={dimension}>
+          dimension={dimension}
+          onClick={() => currentRef?.current?.focus()}>
           {label}
         </Label>
       )}
       {placeholder && (
-        <Placeholder isFocused={isFocused} dimension={dimension}>
+        <Placeholder
+          isFocused={isFocused}
+          dimension={dimension}
+          onClick={() => currentRef?.current?.focus()}>
           {placeholder}
         </Placeholder>
       )}
       <InputStyled
         id={`input-text-${inputProps.name}-${uniqId}`}
-        ref={ref}
+        ref={currentRef}
         type={type}
+        kind={kind}
         value={value}
         {...inputProps}
         onChange={changeHandler}
@@ -83,7 +92,7 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
       <IconWrapper ref={iconWrapperRefCallback} dimension={dimension}>
         {Icon && <Icon />}
       </IconWrapper>
-      <StatusBar type={type} markError={markError} isFocused={isFocused} />
+      <StatusBar kind={kind} markError={markError} isFocused={isFocused} />
       <Error isOpen={isOpenError} openerElement={componentElement}>
         {error}
       </Error>

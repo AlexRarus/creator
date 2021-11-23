@@ -6,17 +6,17 @@ import { TDimension } from './interfaces';
 interface IComponentWrapperProps {
   dimension: TDimension;
   theme: ITheme;
-  type?: string;
+  kind?: string;
 }
 
 interface IStatus {
   markError: boolean;
   isFocused: boolean;
-  type?: string;
+  kind?: string;
 }
 
 export const getStatusBarStyles = (props: IStatus) => {
-  switch (props.type) {
+  switch (props.kind) {
     case 'air':
       return css`
         display: none;
@@ -27,7 +27,7 @@ export const getStatusBarStyles = (props: IStatus) => {
 };
 
 export const getInputStyles = (props: IComponentWrapperProps) => {
-  switch (props.type) {
+  switch (props.kind) {
     case 'air':
       return css`
         border-radius: 8px;

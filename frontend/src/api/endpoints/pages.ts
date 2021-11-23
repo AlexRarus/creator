@@ -10,7 +10,8 @@ export interface IPagesAPI {
 }
 
 export interface IWritePage {
-  blocks: number[]; // id блоков в том порядке в котором они должны сохраниться
+  blocks?: number[]; // id блоков в том порядке в котором они должны сохраниться
+  label?: string;
   slug?: string;
   id?: number;
 }
@@ -28,15 +29,21 @@ const getConfig = () => ({
     url: `/pages/${username}/${pageSlug}/`,
     method: 'GET',
   }),
-  createPage: (data: IWritePage = { blocks: [] }) => ({
+  createPage: (data: IWritePage) => ({
     url: `/pages/my/`,
     method: 'POST',
-    data,
+    data: {
+      blocks: [],
+      ...data,
+    },
   }),
-  updatePage: ({ id, ...data }: IWritePage = { blocks: [] }) => ({
+  updatePage: ({ id, ...data }: IWritePage) => ({
     url: `/pages/my/${id}`,
     method: 'PUT',
-    data,
+    data: {
+      blocks: [],
+      ...data,
+    },
   }),
   deletePage: (id: number) => ({
     url: `/pages/my/${id}`,

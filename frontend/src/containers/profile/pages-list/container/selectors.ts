@@ -7,6 +7,7 @@ export function useMapStoreToProps() {
     isLoading: dalPagesStore.isLoading,
     pages: dalPagesStore.pages,
     getMyPagesAction: dalPagesStore.getMyPagesAction,
+    createPageAction: dalPagesStore.createPageAction,
     selectedPage: dalPagesStore.selectedPage,
     user: dalAuthStore.user,
   };

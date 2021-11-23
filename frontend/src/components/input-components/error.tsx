@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import Popup from 'src/components/popup';
+import { isMobile } from 'react-device-detect';
 
 import { ErrorStyled } from './style';
 
@@ -16,9 +17,10 @@ export function Error(props: IProps) {
     <Popup
       isOpen={isOpen}
       openerElement={openerElement}
-      position='right'
+      position={isMobile ? 'top' : 'right'}
+      horizontalAlign='center'
       verticalAlign='center'
-      zIndex={99}
+      zIndex={1000}
       isCloseOnClick={false}
       floatPosition={true}>
       <ErrorStyled>{children}</ErrorStyled>

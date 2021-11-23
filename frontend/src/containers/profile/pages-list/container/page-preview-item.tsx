@@ -11,7 +11,7 @@ interface IProps {
 }
 
 export const PagePreviewItem = (props: IProps) => {
-  const { username, page, selectedPage } = props;
+  const { username, page } = props;
 
   return (
     <PagePreviewItemWrapper to={`/profile/${username}/pages/${page.slug}/`}>
@@ -20,7 +20,7 @@ export const PagePreviewItem = (props: IProps) => {
           <BlockMock key={block.id} />
         ))}
       </PageContentPreview>
-      <PageLabel>{page.slug}</PageLabel>
+      <PageLabel>{page.label}</PageLabel>
     </PagePreviewItemWrapper>
   );
 };

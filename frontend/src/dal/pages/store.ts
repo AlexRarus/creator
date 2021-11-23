@@ -61,6 +61,17 @@ export default class DalPagesStore {
     }
   });
 
+  createPageAction = flow(function* (this: DalPagesStore, label: string) {
+    try {
+      const response = yield this.API.createPage({ label });
+      this.selectedPage = response.data;
+      const username = this.rootStore.dalAuthStore.user?.username;
+      this.routerStore.push(`/profile/${username}/pages/${this.selectedPage?.slug}/`); // переходим к редактированию страницы
+    } catch (e) {
+      console.log('createPageAction', e);
+    }
+  });
+
   public selectPageAction = (page: IPage) => {
     this.selectedPage = page;
   };

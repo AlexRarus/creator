@@ -1,7 +1,7 @@
 import { FocusEvent, FunctionComponent } from 'react';
 
 export type TDimension = 's' | 'm' | 'l' | 'xxl';
-export type TType = 'air' | string;
+export type TKind = 'air' | string;
 
 export interface IInputProps {
   name: string;
@@ -16,7 +16,8 @@ export interface IProps extends Partial<IInputProps> {
   error?: string;
   dimension?: TDimension;
   disabled?: boolean;
-  type?: TType;
+  type?: string;
+  kind?: TKind;
   icon?: FunctionComponent;
   placeholder?: string;
   [key: string]: any;

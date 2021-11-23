@@ -15,6 +15,7 @@ class PageWriteSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         blocks = validated_data.pop("blocks")
+        print(validated_data)
         page = Page.objects.create(**validated_data)
 
         for order, block in enumerate(blocks):
@@ -29,6 +30,7 @@ class PageWriteSerializer(serializers.ModelSerializer):
         blocks = validated_data.pop("blocks")
 
         page.slug = validated_data.get("slug", page.slug)
+        page.label = validated_data.get("label", page.label)
         page.save()
 
         for order, block in enumerate(blocks):
@@ -53,6 +55,7 @@ class PageWriteSerializer(serializers.ModelSerializer):
             "author",
             "blocks",
             "slug",
+            "label",
         )
 
 
@@ -67,4 +70,5 @@ class PageReadSerializer(serializers.ModelSerializer):
             "author",
             "blocks",
             "slug",
+            "label",
         )

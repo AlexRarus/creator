@@ -14,9 +14,15 @@ class PageAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "author",
+        "label",
+        "slug",
         # "blocks",
     )
-    search_fields = ("id",)
+    search_fields = (
+        "id",
+        "label",
+        "slug",
+    )
     empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
 
 

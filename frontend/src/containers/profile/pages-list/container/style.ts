@@ -40,7 +40,8 @@ export const PageLabel = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: ${COLORS.black};
+  color: ${COLORS.grey[600]};
+  margin-top: 3px;
 `;
 
 export const BlockMock = styled.div`
