@@ -19,6 +19,7 @@ export const useSubmitPageForm = <FormInputs>() => {
         response = await API.endpoints.pages.updatePage(dataForServer);
       }
       setData(response.data);
+      setErrors(null);
     } catch (error) {
       if (error?.response?.status === 400) {
         setErrors(error.response.data || null);

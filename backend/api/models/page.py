@@ -10,12 +10,13 @@ User = get_user_model()
 
 class Page(models.Model):
     label = models.CharField(
-        max_length=250,
+        max_length=35,
         verbose_name="Наименование",
         null=False,
         blank=False,
     )
     slug = models.SlugField(
+        max_length=80,
         verbose_name="Строковый идентификатор (задает пользователь)",
         null=True,
     )

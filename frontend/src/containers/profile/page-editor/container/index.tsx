@@ -7,9 +7,8 @@ import { BlockEditorModal } from 'src/containers/profile/block-editor';
 
 import { PageForm } from './page-form';
 import { PagePreview } from './page-preview';
-import { LikePhoneWrapper } from './like-phone-wrapper';
 import { useMapStoreToProps } from './selectors';
-import { BlockWrapper } from './style';
+import { DesktopPageWrapper, BlockWrapper, PhoneWrapper } from './style';
 
 interface IProps {
   username: string;
@@ -59,31 +58,33 @@ export const PageEditorContainer = observer((props: IProps) => {
       {!isLoading && data !== null && (
         <>
           <BrowserView>
-            <Grid verticalGap={32}>
-              <GridColumn size={4}>
-                <BlockWrapper>
-                  <LikePhoneWrapper>
-                    <PageForm
-                      data={data}
-                      username={username}
-                      pageSlug={pageSlug}
-                      onClickAddBlock={openAddBlockModal}
-                    />
-                  </LikePhoneWrapper>
-                </BlockWrapper>
-              </GridColumn>
-              <GridColumn size={4}>
-                <BlockWrapper>
-                  <LikePhoneWrapper>
-                    <PagePreview data={data} username={username} pageSlug={pageSlug} />
-                  </LikePhoneWrapper>
-                </BlockWrapper>
-              </GridColumn>
-            </Grid>
+            <DesktopPageWrapper>
+              <Grid verticalGap={32}>
+                <GridColumn size={6} alignItems='center'>
+                  <BlockWrapper>
+                    <PhoneWrapper isForm={true}>
+                      <PageForm
+                        data={data}
+                        username={username}
+                        pageSlug={pageSlug}
+                        onClickAddBlock={openAddBlockModal}
+                      />
+                    </PhoneWrapper>
+                  </BlockWrapper>
+                </GridColumn>
+                <GridColumn size={6} alignItems='center'>
+                  <BlockWrapper>
+                    <PhoneWrapper isForm={false}>
+                      <PagePreview data={data} username={username} pageSlug={pageSlug} />
+                    </PhoneWrapper>
+                  </BlockWrapper>
+                </GridColumn>
+              </Grid>
+            </DesktopPageWrapper>
           </BrowserView>
           <MobileView>
             <Grid verticalGap={32}>
-              <GridColumn size={12} direction='row' alignItems='center'>
+              <GridColumn size={12} alignItems='center'>
                 <PageForm
                   data={data}
                   username={username}
