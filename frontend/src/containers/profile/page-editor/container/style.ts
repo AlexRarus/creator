@@ -1,22 +1,31 @@
 import styled from 'styled-components';
 import { COLORS } from 'src/components/theme';
 
-export const PageFormWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 24px;
+import { FORM_HEADER_HEIGHT, FORM_FOOTER_HEIGHT } from './page-form/style';
+
+export const DesktopPageWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  padding-top: 20px;
 `;
 
 export const BlockWrapper = styled.div`
   height: 100%;
-  width: 100%;
-  border: 2px solid ${COLORS.red[700]};
 `;
 
-export const PhoneWrapper = styled.div`
+export const PhoneWrapper = styled.div<{ isForm: boolean }>`
+  position: relative;
   width: 400px;
   height: 800px;
   border: 7px solid ${COLORS.black};
   border-radius: 30px;
-  padding: 24px;
+  overflow: hidden;
+  padding-top: ${({ isForm }) => (isForm ? FORM_HEADER_HEIGHT : 0)}px;
+  padding-bottom: ${({ isForm }) => (isForm ? FORM_FOOTER_HEIGHT : 0)}px;
+`;
+
+export const PagePreviewWrapper = styled.div`
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;

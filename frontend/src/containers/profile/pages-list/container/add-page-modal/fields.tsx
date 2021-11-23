@@ -2,7 +2,7 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Grid, GridColumn } from 'src/components/grid';
 import { ControlledField } from 'src/components/controlled-field';
-import { required } from 'src/utils/validators';
+import { required, maxLength } from 'src/utils/validators';
 import InputText from 'src/components/input-text';
 
 export const AddPageFields = () => {
@@ -11,7 +11,7 @@ export const AddPageFields = () => {
   return (
     <Grid verticalGap={24}>
       <GridColumn>
-        <ControlledField name='label' control={control} rules={required()}>
+        <ControlledField name='label' control={control} rules={{ ...required(), ...maxLength(35) }}>
           <InputText label='Наименование страницы' />
         </ControlledField>
       </GridColumn>

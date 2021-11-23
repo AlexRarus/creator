@@ -9,7 +9,13 @@ import { useHistory } from 'react-router-dom';
 import { AddPageModal } from './add-page-modal';
 import { PagePreviewItem } from './page-preview-item';
 import { useMapStoreToProps } from './selectors';
-import { PagesListWrapper, NewPageButton, PageLabel } from './style';
+import {
+  PagesListWrapper,
+  PagesListTitleDesktop,
+  NewPageButtonWrapper,
+  NewPageButton,
+  PageLabel,
+} from './style';
 
 interface IProps {
   username: string;
@@ -35,6 +41,7 @@ export const PagesListContainer = observer((props: IProps) => {
 
   return (
     <PagesListWrapper>
+      <PagesListTitleDesktop>Мои страницы</PagesListTitleDesktop>
       {!isAuthor && 'PagesListContainer Error...'}
       {isLoading && isAuthor && 'Loading...'}
       {!isLoading && pages !== null && (
@@ -46,10 +53,12 @@ export const PagesListContainer = observer((props: IProps) => {
           ))}
           {!isLoading && (
             <GridColumn size={2} alignItems='center'>
-              <NewPageButton onClick={openAddPageModal}>
-                <AddIcon />
-              </NewPageButton>
-              <PageLabel>Новая страница</PageLabel>
+              <NewPageButtonWrapper>
+                <NewPageButton onClick={openAddPageModal}>
+                  <AddIcon />
+                </NewPageButton>
+                <PageLabel>Новая страница</PageLabel>
+              </NewPageButtonWrapper>
             </GridColumn>
           )}
         </Grid>

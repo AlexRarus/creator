@@ -20,6 +20,7 @@ export const useSubmitBlockEditor = <FormInputs>() => {
         response = await API.endpoints.blocks.updateBlock(dataForServer);
       }
       setData(response.data);
+      setErrors(null);
     } catch (error) {
       if (error?.response?.status === 400) {
         setErrors(error.response.data || null);
