@@ -8,6 +8,13 @@ import { IRoute } from '../interfaces';
 const appRoutes: IRoute[] = [
   {
     exact: true,
+    path: `/profile/:username/pages/`,
+    component: lazy(() =>
+      import(/* webpackChunkName: "page_landing_main" */ 'src/containers/profile/pages-list/')
+    ),
+  },
+  {
+    exact: true,
     path: `/profile/:username/pages/:pageSlug`,
     component: lazy(() =>
       import(/* webpackChunkName: "page_landing_main" */ 'src/containers/profile/page-editor/')

@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { COLORS, FONTS } from 'src/components/theme';
-import { makeStyles } from '@material-ui/core/styles';
 
 interface IRowActionsProps {
   isActive: boolean;
@@ -137,11 +136,3 @@ export const ActionLabel = styled.div`
   margin-left: 10px;
   width: 100%;
 `;
-
-export const usePopoverPaperStyle = makeStyles({
-  paper: {
-    boxShadow: '0 1px 4px rgba(107, 118, 131, 0.3), 0 1px 8px rgba(11, 67, 218, 0.15)',
-    overflowY: 'inherit',
-    overflowX: 'inherit',
-  },
-});

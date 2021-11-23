@@ -1,5 +1,4 @@
 import React, { ChangeEvent, useState, useEffect } from 'react';
-import MaskedInput from 'react-text-mask';
 import isValid from 'date-fns/isValid';
 import format from 'date-fns/format';
 
@@ -44,7 +43,7 @@ export function InputCalendar(props: IProps) {
 
   return (
     <ComponentWrapper>
-      <MaskedInput value={stringValue} mask={mask} onChange={inputHandler} onBlur={blurHandler} />
+      {/*<MaskedInput value={stringValue} mask={mask} onChange={inputHandler} onBlur={blurHandler} />*/}
     </ComponentWrapper>
   );
 }

@@ -4,9 +4,6 @@ import { BrowserView, MobileView } from 'react-device-detect';
 import { Grid, GridColumn } from 'src/components/grid';
 import { useIsAuthor } from 'src/utils/useIsAuthor';
 import { BlockEditorModal } from 'src/containers/profile/block-editor';
-import Button from 'src/components/button';
-
-import { PagesListModal } from '../pages-list-modal';
 
 import { PageForm } from './page-form';
 import { PagePreview } from './page-preview';
@@ -30,7 +27,6 @@ export const PageEditorContainer = observer((props: IProps) => {
   const { username, pageSlug } = props;
   const isAuthor = useIsAuthor(username);
   const [isOpenAddBlockModal, setIsOpenAddBlockModal] = useState(false);
-  const [isOpenPagesListModal, setIsOpenPagesListModal] = useState(false);
 
   useEffect(() => {
     return () => resetAction();
@@ -56,9 +52,6 @@ export const PageEditorContainer = observer((props: IProps) => {
   };
   const closeAddBlockModal = () => setIsOpenAddBlockModal(false);
 
-  const openPagesListModal = () => setIsOpenPagesListModal(true);
-  const closePagesListModal = () => setIsOpenPagesListModal(false);
-
   return (
     <>
       {!isAuthor && 'PageEditorContainer Error...'}
@@ -67,11 +60,6 @@ export const PageEditorContainer = observer((props: IProps) => {
         <>
           <BrowserView>
             <Grid verticalGap={32}>
-              <GridColumn size={4}>
-                <BlockWrapper>
-                  <Button onClick={openPagesListModal}>Мои страницы</Button>
-                </BlockWrapper>
-              </GridColumn>
               <GridColumn size={4}>
                 <BlockWrapper>
                   <LikePhoneWrapper>
@@ -103,9 +91,6 @@ export const PageEditorContainer = observer((props: IProps) => {
                   onClickAddBlock={openAddBlockModal}
                 />
               </GridColumn>
-              <GridColumn size={4}>
-                <Button onClick={openPagesListModal}>Мои страницы</Button>
-              </GridColumn>
             </Grid>
           </MobileView>
         </>
@@ -117,9 +102,6 @@ export const PageEditorContainer = observer((props: IProps) => {
           username={username}
           pageSlug={pageSlug}
         />
-      )}
-      {isOpenPagesListModal && (
-        <PagesListModal onClose={closePagesListModal} username={username} pageSlug={pageSlug} />
       )}
     </>
   );

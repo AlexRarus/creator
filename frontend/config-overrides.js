@@ -8,7 +8,7 @@ const {
   overrideDevServer,
 } = require('customize-cra');
 const path = require('path');
-const { GitRevisionPlugin } = require('git-revision-webpack-plugin')
+const GitRevisionPlugin = require('git-revision-webpack-plugin')
 const webpack = require('webpack');
 const packagejson = require('./package.json');
 

@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { useHistory } from 'react-router-dom';
 import InputText from 'src/components/input-text';
 import Button from 'src/components/button';
 import { COLORS } from 'src/components/theme';
-import Category from '@material-ui/icons/Category';
-import Facebook from '@material-ui/icons/Facebook';
-import YouTube from '@material-ui/icons/YouTube';
-import Instagram from '@material-ui/icons/Instagram';
+import Category from '@mui/icons-material/Category';
+import Facebook from '@mui/icons-material/Facebook';
+import YouTube from '@mui/icons-material/YouTube';
+import Instagram from '@mui/icons-material/Instagram';
 
 import {
   LandingWrapper,

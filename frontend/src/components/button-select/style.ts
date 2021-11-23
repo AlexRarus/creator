@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import ExpandMore from '@material-ui/icons/ExpandMore';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 import { COLORS } from 'src/components/theme';
 import { rgba } from 'polished';
 import { TDimension } from 'src/components/input-components';

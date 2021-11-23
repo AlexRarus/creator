@@ -1,5 +1,5 @@
 import React from 'react';
-import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
+import ArrowDropUp from '@mui/icons-material/ArrowDropUp';
 
 import { IColumn, SortDirection, TID } from '../interfaces';
 

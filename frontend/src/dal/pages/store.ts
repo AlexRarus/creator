@@ -43,16 +43,15 @@ export default class DalPagesStore {
     }
   });
 
-  getMyPagesAction = flow(function* (this: DalPagesStore, pageSlug?: string) {
+  getMyPagesAction = flow(function* (this: DalPagesStore) {
     try {
       this.isLoading = true;
       const responsePages = yield this.API.getMyPages();
       this.total = responsePages.data?.total || 0;
       this.pages = responsePages.data?.list || null;
 
-      if (this.pages.length) {
-        const selectedPage = this.pages.find((page: IPage) => page.slug === pageSlug);
-        this.selectedPage = selectedPage || this.pages[0]; // выбираем страницу активной
+      if (this.pages.length && !this.selectedPage) {
+        this.selectedPage = this.pages[0]; // выбираем первую страницу активной
       }
 
       this.isLoading = false;
