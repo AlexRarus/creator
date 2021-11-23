@@ -1,5 +1,5 @@
 import React, { useState, useEffect, MouseEvent } from 'react';
-import CloseIcon from '@material-ui/icons/Close';
+import CloseIcon from '@mui/icons-material/Close';
 import { isMobile } from 'react-device-detect';
 
 import { DesktopSize, IPropsModal, MobileSize } from './interfaces';

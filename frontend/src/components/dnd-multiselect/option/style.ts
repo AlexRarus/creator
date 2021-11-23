@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { COLORS } from 'src/components/theme';
-import CloseIcon from '@material-ui/icons/Close';
-import AddIcon from '@material-ui/icons/Add';
+import CloseIcon from '@mui/icons-material/Close';
+import AddIcon from '@mui/icons-material/Add';
 
 interface ISortedProps {
   sorting?: boolean;

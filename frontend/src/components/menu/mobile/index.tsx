@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { IUser } from 'src/dal/auth/interfaces';
 import { IPage } from 'src/dal/pages/interfaces';
-import NavigationIcon from '@material-ui/icons/Menu';
+import NavigationIcon from '@mui/icons-material/Menu';
 import { VerticalSlide } from 'src/components/animations';
 import { useScrollDirection } from 'src/utils/useScrollDirection';
 

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { COLORS } from 'src/components/theme';
-import Check from '@material-ui/icons/Check';
+import Check from '@mui/icons-material/Check';
 
 interface IBoxProps {
   checked: boolean;

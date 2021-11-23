@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { COLORS, FONTS } from 'src/components/theme';
-import ExpandMore from '@material-ui/icons/ExpandMore';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 
 import { IColumn } from './interfaces';
 import { RowActionsWrapper } from './row-actions/style';

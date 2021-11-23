@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { COLORS } from 'src/components/theme';
 
 export const HelpOutlineIconStyled = styled(HelpOutlineIcon)`

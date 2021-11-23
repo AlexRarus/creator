@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { useHistory } from 'react-router-dom';
 import InputText from 'src/components/input-text';
 import Button from 'src/components/button';
 import { COLORS } from 'src/components/theme';
-import Category from '@material-ui/icons/Category';
+import Category from '@mui/icons-material/Category';
 
 import {
   LandingWrapper,

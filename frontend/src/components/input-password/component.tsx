@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import InputText from 'src/components/input-text';
 import { IProps as IInputTextProps } from 'src/components/input-text/interfaces';
-import VisibilityOffOutlinedIcon from '@material-ui/icons/VisibilityOffOutlined';
-import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
+import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 
 import { VisibleIconWrapper } from './style';
 

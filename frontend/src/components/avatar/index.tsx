@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import PersonIcon from '@material-ui/icons/Person';
+import PersonIcon from '@mui/icons-material/Person';
 
 import { AvatarWrapper, DefaultBackground, Image } from './style';
 

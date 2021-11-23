@@ -1,8 +1,8 @@
 import styled, { css } from 'styled-components';
 import { COLORS, FONTS, defaultTheme, ITheme } from 'src/components/theme';
-import CloseIcon from '@material-ui/icons/Close';
-import ErrorIcon from '@material-ui/icons/Error';
-import GetAppIcon from '@material-ui/icons/GetApp';
+import CloseIcon from '@mui/icons-material/Close';
+import ErrorIcon from '@mui/icons-material/Error';
+import GetAppIcon from '@mui/icons-material/GetApp';
 
 interface IFileUploader {
   theme: ITheme;
