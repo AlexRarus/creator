@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { Grid, GridColumn } from 'src/components/grid';
 import { useIsAuthor } from 'src/utils/useIsAuthor';
-import ButtonLink from 'src/components/button-link';
 import { TargetBlockTypePreview } from 'src/containers/app/block';
 import { IBlock } from 'src/dal/blocks/interfaces';
 import { IPage } from 'src/dal/pages/interfaces';
@@ -40,15 +39,6 @@ export const PageContainer = observer((props: IProps) => {
               <TargetBlockTypePreview block={block} />
             </GridColumn>
           ))}
-          <GridColumn size={12}>
-            {isAuthor && !previewData && (
-              <ButtonLink
-                to={`/profile/${username}/pages/${resultData.slug}/`}
-                style={{ marginLeft: '10px' }}>
-                Edit Page
-              </ButtonLink>
-            )}
-          </GridColumn>
         </Grid>
       )}
     </PageWrapper>
