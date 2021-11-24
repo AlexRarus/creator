@@ -7,6 +7,17 @@ export const GlobalStyleApp = createGlobalStyle`
     width: 100%;
     height: 100%;
     display: table;
+    
+    ${({ theme }: { theme: ITheme }) =>
+      theme?.isMobile
+        ? css`
+            position: relative;
+            max-width: 100%;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            text-rendering: optimizeLegibility;
+          `
+        : css``}
   }    
   
   body {
