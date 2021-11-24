@@ -519,7 +519,7 @@ export const AllowHeader = styled.div`
   font-size: 40px;
   font-weight: 700;
   padding-bottom: 32px;
-  color: ${COLORS.grey[900]};
+  color: ${COLORS.white};
   ${({ theme }) => theme.isMobile && 'display: none;'}
 `;
 
@@ -528,7 +528,7 @@ export const AllowMobileHeader = styled.div`
   font-size: 32px;
   font-weight: 700;
   padding-bottom: 32px;
-  color: ${COLORS.grey[900]};
+  color: ${COLORS.white};
   ${({ theme }) => theme.isMobile && 'display: block;'}
 `;
 
@@ -543,7 +543,7 @@ export const AllowRow = styled.div<{ isSelected?: boolean }>`
   padding-left: 32px;
   margin-bottom: 32px;
   font-size: 20px;
-  color: ${({ isSelected }) => (isSelected ? COLORS.grey[900] : COLORS.indigo[900])};
+  color: ${({ isSelected }) => (isSelected ? COLORS.white : COLORS.blueGrey[100])};
   transition: all 0.3s;
   cursor: pointer;
 `;
@@ -557,7 +557,7 @@ export const AllowIndicatorBox = styled.div<{ isSelected?: boolean }>`
   top: 50%;
   transform: translateY(-50%);
   border-radius: 50%;
-  background: ${({ isSelected }) => (isSelected ? COLORS.deepPurple[500] : COLORS.deepPurple[900])};
+  background: ${({ isSelected }) => (isSelected ? COLORS.white : COLORS.blueGrey[100])};
   width: ${({ isSelected }) => (isSelected ? 24 : 12)}px;
   height: ${({ isSelected }) => (isSelected ? 24 : 12)}px;
   transition: all 0.3s;
@@ -581,7 +581,7 @@ export const AllowScreen = styled.div<ScreenViewport>`
     content: '';
     width: 50%;
     height: 16px;
-    top: 0;
+    top: -1px;
     left: 50%;
     transform: translateX(-50%);
     background: ${COLORS.blueGrey[100]};
