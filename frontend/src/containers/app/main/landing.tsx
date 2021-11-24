@@ -33,6 +33,7 @@ import {
   FooterIconBox,
   ScreensList,
   ScreenImage,
+  AllowPart,
   Allows,
   AllowBlock,
   AllowList,
@@ -68,6 +69,8 @@ const carouselList = [
   },
 ];
 
+const carouselAllowList = [MobilePhone, MobilePhone2, MobilePhone3, MobilePhone4];
+
 export const LandingContainer = observer(() => {
   const [emailValue, setEmailValue] = useState('');
   const [carouselOrder, setOrder] = useState(0);
@@ -80,7 +83,16 @@ export const LandingContainer = observer(() => {
     } else {
       setSelectedAllow(0);
     }
-  }, milliseconds / 10); // 1 sec
+  }, milliseconds / 12); // 5 sec
+
+  // set interval для смены слайдов блока examples
+  useInterval(() => {
+    if (carouselOrder < 3) {
+      setOrder(carouselOrder + 1);
+    } else {
+      setOrder(0);
+    }
+  }, milliseconds / 12); // 5 sec
 
   const onAllowClick = (nextAllow: number) => () => {
     // обавляем 1 милисекунду к интервалу чтобы запустить его заново
@@ -89,13 +101,14 @@ export const LandingContainer = observer(() => {
   };
 
   const history = useHistory();
-  const isMobileWidth = useMediaQuery('(max-width:1000px)');
 
   const onClickStart = () => {
     history.push(`auth/registration?email=${emailValue}`);
   };
 
   const setCarousel = (order: number) => () => {
+    // обавляем 1 милисекунду к интервалу чтобы запустить его заново
+    setMilliseconds(milliseconds + 1);
     setOrder(order);
   };
 
@@ -104,12 +117,12 @@ export const LandingContainer = observer(() => {
       <LandingPart background={COLORS.deepPurple[800]}>
         <WelcomeTitle isLight={true}>Расширяйте возможности вашего профиля</WelcomeTitle>
         <WelcomeSpan isLight={true}>в TikTok и других соцсетях</WelcomeSpan>
-        <StartRow isMobile={isMobileWidth}>
+        <StartRow>
           <InputText
             value={emailValue}
             onChange={setEmailValue}
             placeholder={'Ваш email'}
-            type={'air'}
+            kind={'air'}
             dimension={'xxl'}
           />
           <Button dimension={'xxl'} kind={'air'} onClick={onClickStart}>
@@ -118,12 +131,20 @@ export const LandingContainer = observer(() => {
         </StartRow>
       </LandingPart>
       <LandingPart padding={{ top: '100px', bottom: '100px', left: '24px', right: '24px' }}>
-        <LandingExamplesBlock isMobile={isMobileWidth}>
+        <LandingExamplesBlock>
           <ExamplesLinks>
-            <ExampleLink onClick={setCarousel(0)}>товары</ExampleLink>
-            <ExampleLink onClick={setCarousel(1)}>услуги</ExampleLink>
-            <ExampleLink onClick={setCarousel(2)}>обучение</ExampleLink>
-            <ExampleLink onClick={setCarousel(3)}>мероприятия</ExampleLink>
+            <ExampleLink isSelected={carouselOrder === 0} onClick={setCarousel(0)}>
+              товары
+            </ExampleLink>
+            <ExampleLink isSelected={carouselOrder === 1} onClick={setCarousel(1)}>
+              услуги
+            </ExampleLink>
+            <ExampleLink isSelected={carouselOrder === 2} onClick={setCarousel(2)}>
+              обучение
+            </ExampleLink>
+            <ExampleLink isSelected={carouselOrder === 3} onClick={setCarousel(3)}>
+              мероприятия
+            </ExampleLink>
           </ExamplesLinks>
           <ExamplesHeader>
             <HeaderIconBox>
@@ -140,55 +161,28 @@ export const LandingContainer = observer(() => {
             Попробовать сейчас
           </Button>
         </LandingExamplesBlock>
-        <ScreenOfPhone width={230} right={224} bottom={isMobileWidth ? 220 : -100}>
-          <ScreensList
-            isMobile={isMobileWidth}
-            width={230}
-            order={carouselOrder}
-            length={carouselList.length}>
+        <ScreenOfPhone width={230}>
+          <ScreensList width={230} order={carouselOrder} length={carouselList.length}>
             {carouselList.map((pair, index) => (
-              <ScreenImage
-                key={index}
-                imageUrl={pair.second}
-                isMobile={isMobileWidth}
-                width={230}
-              />
+              <ScreenImage key={index} imageUrl={pair.second} width={230} />
             ))}
           </ScreensList>
         </ScreenOfPhone>
-        <ScreenOfPhone
-          width={280}
-          right={isMobileWidth ? 14 : 40}
-          bottom={isMobileWidth ? 140 : -40}>
-          <ScreensList
-            isMobile={isMobileWidth}
-            width={280}
-            order={carouselOrder}
-            length={carouselList.length}>
+        <ScreenOfPhone screenOrder={1} width={280}>
+          <ScreensList width={280} order={carouselOrder} length={carouselList.length}>
             {carouselList.map((pair, index) => (
-              <ScreenImage key={index} imageUrl={pair.main} isMobile={isMobileWidth} width={280} />
+              <ScreenImage key={index} imageUrl={pair.main} width={280} />
             ))}
           </ScreensList>
         </ScreenOfPhone>
       </LandingPart>
-      <LandingPart
-        background={COLORS.blue[500]}
-        padding={{ top: '120px', bottom: '24px', left: '24px', right: '24px' }}>
+      <AllowPart background={COLORS.blue[500]}>
         <Allows>
           <AllowBlock>
             <AllowScreen width={250}>
-              <AllowScreensList
-                isMobile={isMobileWidth}
-                width={250}
-                order={selectedAllow}
-                length={carouselList.length}>
-                {carouselList.map((pair, index) => (
-                  <ScreenImage
-                    key={index}
-                    imageUrl={pair.second}
-                    isMobile={isMobileWidth}
-                    width={250}
-                  />
+              <AllowScreensList width={250} order={selectedAllow} length={carouselAllowList.length}>
+                {carouselAllowList.map((image, index) => (
+                  <ScreenImage key={index} imageUrl={image} width={250} />
                 ))}
               </AllowScreensList>
             </AllowScreen>
@@ -215,18 +209,18 @@ export const LandingContainer = observer(() => {
             </AllowList>
           </AllowBlock>
         </Allows>
-      </LandingPart>
+      </AllowPart>
       <LandingPart background={COLORS.teal[100]}>
         <WelcomeTitle>Увеличьте возможности вашего профиля в Инстаграм прямо сейчас</WelcomeTitle>
         <WelcomeSpan>
           Создайте YourSite за несколько минут. Без дизайнеров и программистов.
         </WelcomeSpan>
-        <StartRow isMobile={isMobileWidth}>
+        <StartRow>
           <InputText
             value={emailValue}
             onChange={setEmailValue}
             placeholder={'Ваш email'}
-            type={'air'}
+            kind={'air'}
             dimension={'xxl'}
           />
           <Button dimension={'xxl'} kind={'air'} onClick={onClickStart}>
