@@ -2,13 +2,8 @@ import styled, { css } from 'styled-components';
 import { COLORS } from 'src/components/theme';
 import { MENU_HEIGHT } from 'src/components/menu/constants';
 
-export interface IMobile {
-  isMobile?: boolean;
-}
-
 export interface ICarousel {
   width: number;
-  isMobile?: boolean;
   order?: number;
   length?: number;
 }
@@ -16,66 +11,242 @@ export interface ICarousel {
 export interface ICarouselItem {
   imageUrl: string;
   width: number;
-  isMobile?: boolean;
 }
 
 export interface ScreenViewport {
   width: number;
-  bottom?: number;
-  right?: number;
-  isMobile?: boolean;
+  screenOrder?: number;
 }
 
-const calcPhoneWidth = ({ isMobile, width }: ICarousel) => {
-  if (isMobile) {
+const calcPhoneWidth = ({ theme, width }: any) => {
+  const { isMobile, isTablet } = theme;
+  if (isMobile || isTablet) {
     return (width / 7) * 5;
   }
   return width;
 };
 
-const calcCarouselWidth = ({ isMobile, width, length = 1 }: ICarousel) => {
+export const getPhonePosition = ({ theme, screenOrder }: any) => {
+  const { isTablet, isMobile } = theme;
   if (isMobile) {
+    return screenOrder === 1
+      ? css`
+          top: 40px;
+          right: 40px;
+        `
+      : css`
+          top: 56px;
+          left: 40px;
+        `;
+  }
+
+  if (isTablet) {
+    return screenOrder === 1
+      ? css`
+          bottom: 140px;
+          right: 14px;
+        `
+      : css`
+          bottom: 160px;
+          right: 160px;
+        `;
+  }
+
+  return screenOrder === 1
+    ? css`
+        bottom: -40px;
+        right: 40px;
+      `
+    : css`
+        bottom: -100px;
+        right: 240px;
+      `;
+};
+
+const calcCarouselWidth = ({ theme, width, length = 1 }: any) => {
+  const { isMobile, isTablet } = theme;
+  if (isMobile || isTablet) {
     return (width / 7) * 5 * length;
   }
   return width * length;
 };
 
-const calcCarouselLeft = ({ order = 0, width, isMobile }: ICarousel) => {
-  if (isMobile) {
+const calcCarouselLeft = ({ order = 0, width, theme }: any) => {
+  const { isMobile, isTablet } = theme;
+  if (isMobile || isTablet) {
     return -(width / 7) * 5 * order;
   }
   return -width * order;
 };
 
-const calcAllowCarouselHeight = ({ isMobile, width, length = 1 }: ICarousel) => {
-  if (isMobile) {
+const calcAllowCarouselHeight = ({ theme, width, length = 1 }: any) => {
+  const { isMobile, isTablet } = theme;
+  if (isMobile || isTablet) {
     return (width / 7) * 5 * 2 * length;
   }
   return width * 2.1 * length;
 };
 
-const calcAllowCarouselTop = ({ order = 0, width, isMobile }: ICarousel) => {
-  if (isMobile) {
+const calcAllowCarouselTop = ({ order = 0, width, theme }: any) => {
+  const { isMobile, isTablet } = theme;
+  if (isMobile || isTablet) {
     return -(width / 7) * 2 * 5 * order;
   }
   return -width * 2 * order;
 };
 
-const getMobileStyles = (props: IMobile) => {
-  if (props.isMobile) {
+const getHeaderFontSize = (props: any) => {
+  const {
+    theme: { isTablet, isMobile },
+  } = props;
+  if (isMobile) {
+    return '36px;';
+  }
+  if (isTablet) {
+    return '38px';
+  }
+  return '46px';
+};
+
+const getStartRowStyles = (props: any) => {
+  const {
+    theme: { isTablet, isMobile },
+  } = props;
+  if (isMobile || isTablet) {
     return css`
       display: flex;
       flex-direction: column;
       width: 100%;
-    `;
-  } else {
-    return css`
-      display: flex;
-      flex-direction: row;
-      width: 50%;
-      min-width: 500px;
+      button {
+        margin-top: 16px;
+        width: 100%;
+      }
     `;
   }
+  return css`
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    min-width: 500px;
+    button {
+      margin-left: 16px;
+    }
+  `;
+};
+
+const getStylesExamplesBlock = ({ theme }: any) => {
+  const { isMobile, isTablet } = theme;
+
+  if (isMobile) {
+    return css`
+      width: calc(100% - 24px);
+      margin-top: 360px;
+      margin-left: 24px;
+      max-width: 100%;
+    `;
+  }
+
+  if (isTablet) {
+    return css`
+      max-width: 40%;
+      margin-left: 24px;
+    `;
+  }
+
+  return css`
+    max-width: 40%;
+    margin-left: 80px;
+  `;
+};
+
+const getFooterStyles = ({ theme }: any) => {
+  const { isMobile } = theme;
+
+  if (isMobile) {
+    return css`
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      padding: 20px;
+    `;
+  }
+
+  return css`
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 40px;
+  `;
+};
+
+const getStylesExamplesHeader = ({ theme }: any) => {
+  const { isMobile } = theme;
+
+  if (isMobile) {
+    return css`
+      font-size: 34px;
+      font-weight: 600;
+    `;
+  }
+
+  return css`
+    font-size: 40px;
+    font-weight: 700;
+  `;
+};
+
+const getStylesExamplesSeparate = ({ theme }: any) => {
+  const { isMobile } = theme;
+
+  if (isMobile) {
+    return css`
+      margin: 16px 0;
+    `;
+  }
+
+  return css`
+    margin: 32px 0;
+  `;
+};
+
+const getStylesExamplesLink = ({ theme }: any) => {
+  const { isMobile } = theme;
+
+  if (isMobile) {
+    return css`
+      font-size: 16px;
+    `;
+  }
+
+  return css`
+    font-size: 18px;
+  `;
+};
+
+const getStylesExamplesLinks = ({ theme }: any) => {
+  const { isMobile } = theme;
+
+  if (isMobile) {
+    return css`
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+    `;
+  }
+
+  return css``;
+};
+
+const getStylesAllowPart = ({ theme }: any) => {
+  const { isMobile } = theme;
+
+  if (isMobile) {
+    return css`
+      padding: 40px 20px 20px 20px;
+    `;
+  }
+
+  return css`120px 24px 24px 24px`;
 };
 
 export const MainPageWrapper = styled.div`
@@ -104,8 +275,18 @@ export const LandingPart = styled.div<{ background?: string; padding?: any }>`
   background-color: ${({ background }) => (background ? background : COLORS.white)};
 `;
 
+export const AllowPart = styled.div<{ background?: string }>`
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  flex-direction: column;
+  background-color: ${({ background }) => (background ? background : COLORS.white)};
+  ${getStylesAllowPart}
+`;
+
 export const WelcomeTitle = styled.div<{ isLight?: boolean }>`
-  font-size: 46px;
+  font-size: ${getHeaderFontSize};
   font-weight: 600;
   text-align: center;
   color: ${({ isLight }) => (isLight ? COLORS.white : COLORS.grey[900])};
@@ -118,35 +299,21 @@ export const WelcomeSpan = styled.div<{ isLight?: boolean }>`
   color: ${({ isLight }) => (isLight ? COLORS.grey[400] : COLORS.grey[800])};
 `;
 
-export const StartRow = styled.div<IMobile>`
+export const StartRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   margin-top: 40px;
-
-  button {
-    ${({ isMobile }) =>
-      isMobile
-        ? css`
-            margin-top: 16px;
-            width: 100%;
-          `
-        : css`
-            margin-left: 16px;
-          `}
-  }
-
-  ${getMobileStyles}
+  ${getStartRowStyles}
 `;
 
 export const ScreenOfPhone = styled.div<ScreenViewport>`
   position: absolute;
-  right: ${({ right }) => right}px;
-  bottom: ${({ bottom }) => bottom}px;
+  ${getPhonePosition}
   border-radius: 24px;
   display: flex;
   width: ${calcPhoneWidth}px;
-  height: ${({ isMobile, width }) => calcPhoneWidth({ isMobile, width }) * 2}px;
+  height: ${({ theme, width }) => calcPhoneWidth({ theme, width }) * 2}px;
   overflow: hidden;
   z-index: 1;
   border: 8px solid ${COLORS.blueGrey[300]};
@@ -168,7 +335,7 @@ export const ScreenOfPhone = styled.div<ScreenViewport>`
 
 export const ScreenImage = styled.div<ICarouselItem>`
   width: ${calcPhoneWidth}px;
-  height: ${({ isMobile, width }) => calcPhoneWidth({ isMobile, width }) * 2}px;
+  height: ${({ theme, width }) => calcPhoneWidth({ theme, width }) * 2}px;
   background-image: url(${({ imageUrl }) => imageUrl});
   background-repeat: no-repeat;
   background-size: cover;
@@ -184,30 +351,30 @@ export const ScreensList = styled.div<ICarousel>`
   transition: all 0.3s;
 `;
 
-export const LandingExamplesBlock = styled.div<IMobile>`
+export const LandingExamplesBlock = styled.div`
   display: flex;
   align-self: flex-start;
   flex-direction: column;
-  max-width: 40%;
-  margin-left: ${({ isMobile }) => (isMobile ? 24 : 80)}px;
+  ${getStylesExamplesBlock}
 `;
 
 export const ExamplesLinks = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 12px;
+  ${getStylesExamplesLinks}
 `;
 
-export const ExampleLink = styled.div`
+export const ExampleLink = styled.div<{ isSelected?: boolean }>`
   font-weight: 700;
-  font-size: 12px;
   line-height: 24px;
   text-transform: uppercase;
-  color: ${COLORS.indigo[800]};
+  color: ${({ isSelected }) => (isSelected ? COLORS.deepPurple.A700 : COLORS.indigo[800])};
   position: relative;
   white-space: nowrap;
   padding-right: 34px;
   cursor: pointer;
+  ${getStylesExamplesLink}
 
   &:before {
     content: '';
@@ -230,10 +397,9 @@ export const ExampleLink = styled.div`
 `;
 
 export const ExamplesHeader = styled.div`
-  font-size: 40px;
   color: ${COLORS.grey[900]};
   position: relative;
-  font-weight: 700;
+  ${getStylesExamplesHeader}
 
   &svg {
     fill: ${COLORS.deepPurple[500]};
@@ -251,12 +417,11 @@ export const HeaderIconBox = styled.div`
 `;
 
 export const ExamplesSeparate = styled.div`
-  margin-top: 30px;
-  margin-bottom: 30px;
   height: 3px;
   width: 100px;
   border-radius: 3px;
   background-color: ${COLORS.deepPurple[500]};
+  ${getStylesExamplesSeparate}
 `;
 
 export const ExamplesContent = styled.div`
@@ -271,11 +436,9 @@ export const ExamplesContent = styled.div`
 
 export const LandingFooter = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
   width: 100%;
-  padding: 40px 40px;
   background: ${COLORS.blueGrey[700]};
+  ${getFooterStyles}
 `;
 
 export const FooterItem = styled.div`
@@ -390,7 +553,7 @@ export const AllowScreen = styled.div<ScreenViewport>`
   border-radius: 24px;
   display: flex;
   width: ${calcPhoneWidth}px;
-  height: ${({ isMobile, width }) => calcPhoneWidth({ isMobile, width }) * 2}px;
+  height: ${({ theme, width }) => calcPhoneWidth({ theme, width }) * 2}px;
   overflow: hidden;
   z-index: 1;
   border: 8px solid ${COLORS.blueGrey[100]};
