@@ -95,8 +95,8 @@ export const ModalContent = styled.div<{
   overflow-y: auto;
   overflow-x: hidden;
   padding: ${({ padding, isMobile }) => {
-    if (padding) {
-      return padding;
+    if (padding !== undefined) {
+      return padding || 'none'; // в случае если передали null
     } else if (isMobile) {
       return '0 10px 10px';
     }

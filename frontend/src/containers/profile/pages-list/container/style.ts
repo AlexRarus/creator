@@ -7,10 +7,6 @@ export const PagesListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: 10px;
-
-  ${MEDIA.max530({
-    padding: '10px 0 0 10px',
-  })}
 `;
 
 export const PagesListTitleDesktop = styled.div`

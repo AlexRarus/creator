@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
+import { useHistory } from 'react-router-dom';
 import { BrowserView, MobileView } from 'react-device-detect';
 import { Grid, GridColumn } from 'src/components/grid';
 import { useIsAuthor } from 'src/utils/useIsAuthor';
@@ -24,6 +25,7 @@ export const PageEditorContainer = observer((props: IProps) => {
     resetAction,
   } = useMapStoreToProps();
   const { username, pageSlug } = props;
+  const { replace } = useHistory();
   const isAuthor = useIsAuthor(username);
   const [isOpenAddBlockModal, setIsOpenAddBlockModal] = useState(false);
 
@@ -43,10 +45,19 @@ export const PageEditorContainer = observer((props: IProps) => {
     }
   }, [pageSlug, data]);
 
-  const updatePageData = () => getMyPageBySlugAction(pageSlug);
+  const updatePageData = () => {
+    getMyPageBySlugAction(pageSlug);
+  };
+
+  const onSubmitPageFormSuccess = (pageData: any) => {
+    if (pageData.slug) {
+      replace(`/profile/${username}/pages/${pageData.slug}`);
+    } else {
+      console.warn('СТРАНИЦА НЕ ОБНОВИЛАСЬ');
+    }
+  };
 
   const openAddBlockModal = () => {
-    console.log('openAddBlockModal');
     setIsOpenAddBlockModal(true);
   };
   const closeAddBlockModal = () => setIsOpenAddBlockModal(false);
@@ -68,6 +79,7 @@ export const PageEditorContainer = observer((props: IProps) => {
                         username={username}
                         pageSlug={pageSlug}
                         onClickAddBlock={openAddBlockModal}
+                        onSubmitSuccess={onSubmitPageFormSuccess}
                       />
                     </PhoneWrapper>
                   </BlockWrapper>
@@ -90,6 +102,7 @@ export const PageEditorContainer = observer((props: IProps) => {
                   username={username}
                   pageSlug={pageSlug}
                   onClickAddBlock={openAddBlockModal}
+                  onSubmitSuccess={onSubmitPageFormSuccess}
                 />
               </GridColumn>
             </Grid>

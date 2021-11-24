@@ -25,7 +25,7 @@ export const FormHeader = styled.div`
   background: ${COLORS.grey[800]};
   display: flex;
   flex-direction: row;
-  padding: 10px;
+  padding: 10px 0 10px 10px;
   justify-content: space-between;
   align-items: center;
 
@@ -34,16 +34,75 @@ export const FormHeader = styled.div`
   })}
 `;
 
-export const HeaderMessage = styled.div`
+export const LinkToPageField = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  cursor: pointer;
+
+  * {
+    cursor: pointer;
+  }
+`;
+
+export const LinkToPageLabel = styled.div`
+  display: flex;
+  flex-direction: row;
+  font-size: 13px;
+  color: ${COLORS.white};
+`;
+
+export const LinkToPageValue = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   color: ${COLORS.grey[400]};
   font-size: 16px;
+  overflow-x: auto;
+  padding-right: 5px;
+
+  &::-webkit-scrollbar {
+    height: 1px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${COLORS.grey[400]};
+    background-clip: content-box;
+  }
+`;
+
+export const PrefixPath = styled.span`
+  color: ${COLORS.grey[500]};
+`;
+
+export const PageSlug = styled.span`
+  color: ${COLORS.white};
+`;
+
+export const LinkCopyIndicator = styled.div`
+  position: absolute;
+  top: 0;
+  right: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color: ${COLORS.grey[500]};
+  font-size: 13px;
 
   svg {
     margin-left: 5px;
-    fill: ${COLORS.grey[400]};
+    fill: ${COLORS.grey[500]};
+    width: 16px;
+    height: 16px;
   }
 `;
 
@@ -69,13 +128,31 @@ export const IconButton = styled.div`
   align-items: center;
   justify-content: center;
   width: ${FORM_FOOTER_HEIGHT}px;
+  min-width: ${FORM_FOOTER_HEIGHT}px;
   height: ${FORM_FOOTER_HEIGHT}px;
+  min-height: ${FORM_FOOTER_HEIGHT}px;
+  border-left: 1px solid ${COLORS.grey[500]};
+  border-right: 1px solid ${COLORS.grey[500]};
+  cursor: pointer;
+
+  * {
+    cursor: pointer;
+  }
+
+  :first-child {
+    border-left: none;
+  }
+  :last-child {
+    border-right: none;
+  }
 
   svg {
     fill: ${COLORS.grey[300]};
+  }
 
-    :hover {
-      fill: ${COLORS.grey[100]};
+  :hover {
+    svg {
+      fill: ${COLORS.white};
     }
   }
 `;
@@ -87,6 +164,4 @@ export const AddBlockButtonWrapper = styled.div`
   flex-grow: 1;
   height: 100%;
   padding: 5px;
-  border-left: 1px solid ${COLORS.grey[500]};
-  border-right: 1px solid ${COLORS.grey[500]};
 `;
