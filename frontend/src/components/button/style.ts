@@ -92,6 +92,8 @@ const getLabelFontSize = (props: ILabelProps) => {
       return '14px';
     case 'l':
       return '16px';
+    case 'xxl':
+      return '18px';
     default:
       return '16px';
   }

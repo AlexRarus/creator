@@ -27,6 +27,8 @@ interface IThemeBase {
 }
 
 export interface ITheme extends IThemeBase {
+  isMobile?: boolean;
+  isTablet?: boolean;
   component: {
     button: IThemeBase;
     input: IThemeBase;

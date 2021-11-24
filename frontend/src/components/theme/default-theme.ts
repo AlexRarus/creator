@@ -2,6 +2,8 @@ import { ITheme } from './interfaces';
 import * as COLORS from './colors';
 
 export const defaultTheme: ITheme = {
+  isMobile: false,
+  isTablet: false,
   color: {
     primary: COLORS.blue[500],
     secondary: COLORS.red[500],
