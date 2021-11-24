@@ -213,11 +213,17 @@ const getStylesExamplesLink = ({ theme }: any) => {
 
   if (isMobile) {
     return css`
+      padding-right: 8px;
       font-size: 16px;
+
+      &:before {
+        display: none;
+      }
     `;
   }
 
   return css`
+    padding-right: 34px;
     font-size: 18px;
   `;
 };
@@ -251,8 +257,9 @@ const getStylesAllowPart = ({ theme }: any) => {
 
 export const MainPageWrapper = styled.div`
   display: flex;
-  flex-grow: 1;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   padding-top: ${MENU_HEIGHT}px;
 `;
 
@@ -324,7 +331,7 @@ export const ScreenOfPhone = styled.div<ScreenViewport>`
     content: '';
     width: 50%;
     height: 16px;
-    top: 0;
+    top: -1px;
     left: 50%;
     transform: translateX(-50%);
     background: ${COLORS.blueGrey[300]};
@@ -372,7 +379,6 @@ export const ExampleLink = styled.div<{ isSelected?: boolean }>`
   color: ${({ isSelected }) => (isSelected ? COLORS.deepPurple.A700 : COLORS.indigo[800])};
   position: relative;
   white-space: nowrap;
-  padding-right: 34px;
   cursor: pointer;
   ${getStylesExamplesLink}
 
@@ -499,13 +505,14 @@ export const FooterIconBox = styled.div`
 export const Allows = styled.div`
   display: flex;
   width: 100%;
+  ${({ theme }) => theme.isMobile && 'flex-direction: column;'}
 `;
 
 export const AllowBlock = styled.div`
   display: flex;
   flex-direction: column;
-  width: 50%;
-  padding: 0 12px;
+  width: ${({ theme }) => (theme.isMobile ? '100%' : '50%')};
+  padding: ${({ theme }) => (theme.isMobile ? '0' : '0 12px')};
 `;
 
 export const AllowHeader = styled.div`
@@ -513,6 +520,16 @@ export const AllowHeader = styled.div`
   font-weight: 700;
   padding-bottom: 32px;
   color: ${COLORS.grey[900]};
+  ${({ theme }) => theme.isMobile && 'display: none;'}
+`;
+
+export const AllowMobileHeader = styled.div`
+  display: none;
+  font-size: 32px;
+  font-weight: 700;
+  padding-bottom: 32px;
+  color: ${COLORS.grey[900]};
+  ${({ theme }) => theme.isMobile && 'display: block;'}
 `;
 
 export const AllowList = styled.div`
