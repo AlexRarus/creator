@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Modal, { MobileSize } from 'src/components/modal';
 import { useForm, FormProvider } from 'react-hook-form';
 import Button, { ButtonsList } from 'src/components/button';
-import { useSubmitPageForm } from 'src/hooks/submit-forms/page/useSubmitPageForm';
+import { useSubmitPageForm } from 'src/api/hooks/submit-forms/page/useSubmitPageForm';
 import { IPage } from 'src/dal/pages/interfaces';
 
 import { TabValue, ITab, FormInputs, RawData } from './interfaces';

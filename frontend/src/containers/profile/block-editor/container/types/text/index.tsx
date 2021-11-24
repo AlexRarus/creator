@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { useForm, FormProvider } from 'react-hook-form';
 import Button, { ButtonsList } from 'src/components/button';
+import { useSubmitBlockForm } from 'src/api/hooks/submit-forms/block/useSubmitBlockForm';
 
 import { FormWrapper } from '../../style';
-import { useSubmitBlockEditor } from '../../hooks';
 
 import { useMapStoreToProps } from './selectors';
 import { FormInputs } from './interfaces';
@@ -32,7 +32,7 @@ export const TextForm = observer((props: IProps) => {
   });
   const { formState, setError, handleSubmit } = methods;
   const { isValid } = formState;
-  const [submitBlockEditor, isLoading, data, errors] = useSubmitBlockEditor<FormInputs>();
+  const [submitBlockEditor, isLoading, data, errors] = useSubmitBlockForm<FormInputs>();
 
   const submit = async (data: FormInputs) => {
     const rawData: any = { data, pageSlug, blockType };

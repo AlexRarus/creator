@@ -1,11 +1,13 @@
 import { useState, useCallback } from 'react';
 import { AxiosResponse } from 'axios';
 import API from 'src/api';
+import { IWriteBlock as DataForServer } from 'src/api/endpoints/blocks';
 
-import { DataForServer } from './interfaces';
-
-// отправка формы создания/обновления блока
-export const useSubmitBlockEditor = <FormInputs>() => {
+/**
+ * partialUpdate - в базе будут обновлены только те поля которые отправлены
+ * @param partialUpdate
+ */
+export const useSubmitBlockForm = <FormInputs>(partialUpdate = true) => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<FormInputs | null>(null);
   const [data, setData] = useState<DataForServer<FormInputs> | null>(null);
@@ -16,6 +18,8 @@ export const useSubmitBlockEditor = <FormInputs>() => {
       let response: AxiosResponse<any>;
       if (!dataForServer.id) {
         response = await API.endpoints.blocks.createBlock(dataForServer);
+      } else if (partialUpdate) {
+        response = await API.endpoints.blocks.partialUpdatePage(dataForServer);
       } else {
         response = await API.endpoints.blocks.updateBlock(dataForServer);
       }
