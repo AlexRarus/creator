@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import InputText from 'src/components/input-text';
 import Button from 'src/components/button';
@@ -9,6 +9,7 @@ import Category from '@mui/icons-material/Category';
 import Facebook from '@mui/icons-material/Facebook';
 import YouTube from '@mui/icons-material/YouTube';
 import Instagram from '@mui/icons-material/Instagram';
+import { ControlledField } from 'src/components/controlled-field';
 
 import {
   LandingWrapper,
@@ -72,8 +73,11 @@ const carouselList = [
 
 const carouselAllowList = [MobilePhone, MobilePhone2, MobilePhone3, MobilePhone4];
 
+type FormInputs = {
+  email: string;
+};
+
 export const LandingContainer = observer(() => {
-  const [emailValue, setEmailValue] = useState('');
   const [carouselOrder, setOrder] = useState(0);
   const [milliseconds, setMilliseconds] = useState(60000); // 1 min;
   const [selectedAllow, setSelectedAllow] = useState(0);
@@ -95,6 +99,13 @@ export const LandingContainer = observer(() => {
     }
   }, milliseconds / 10); // 6 sec
 
+  const { watch, control } = useForm<FormInputs>({
+    mode: 'onTouched',
+    reValidateMode: 'onChange',
+  });
+
+  const username = watch('email');
+
   const onAllowClick = (nextAllow: number) => () => {
     // обавляем 1 милисекунду к интервалу чтобы запустить его заново
     setMilliseconds(milliseconds + 1);
@@ -104,7 +115,7 @@ export const LandingContainer = observer(() => {
   const history = useHistory();
 
   const onClickStart = () => {
-    history.push(`auth/registration?email=${emailValue}`);
+    history.push(`auth/registration?email=${username}`);
   };
 
   const setCarousel = (order: number) => () => {
@@ -119,13 +130,9 @@ export const LandingContainer = observer(() => {
         <WelcomeTitle isLight={true}>Расширяйте возможности вашего профиля</WelcomeTitle>
         <WelcomeSpan isLight={true}>в TikTok и других соцсетях</WelcomeSpan>
         <StartRow>
-          <InputText
-            value={emailValue}
-            onChange={setEmailValue}
-            placeholder={'Ваш email'}
-            kind={'air'}
-            dimension={'xxl'}
-          />
+          <ControlledField name='email' control={control}>
+            <InputText placeholder={'Ваш email'} kind={'air'} dimension={'xxl'} />
+          </ControlledField>
           <Button dimension={'xxl'} kind={'air'} onClick={onClickStart}>
             Начать бесплатно
           </Button>
@@ -177,7 +184,7 @@ export const LandingContainer = observer(() => {
           </ScreensList>
         </ScreenOfPhone>
       </LandingPart>
-      <AllowPart background={COLORS.blue[500]}>
+      <AllowPart background={COLORS.blue[700]}>
         <Allows>
           <AllowBlock>
             <AllowMobileHeader>YourSite позволяет</AllowMobileHeader>
@@ -218,13 +225,9 @@ export const LandingContainer = observer(() => {
           Создайте YourSite за несколько минут. Без дизайнеров и программистов.
         </WelcomeSpan>
         <StartRow>
-          <InputText
-            value={emailValue}
-            onChange={setEmailValue}
-            placeholder={'Ваш email'}
-            kind={'air'}
-            dimension={'xxl'}
-          />
+          <ControlledField name='email' control={control}>
+            <InputText placeholder={'Ваш email'} kind={'air'} dimension={'xxl'} />
+          </ControlledField>
           <Button dimension={'xxl'} kind={'air'} onClick={onClickStart}>
             Создать YourSite
           </Button>
