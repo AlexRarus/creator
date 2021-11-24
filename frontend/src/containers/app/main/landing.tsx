@@ -33,6 +33,7 @@ import {
   FooterIconBox,
   ScreensList,
   ScreenImage,
+  AllowMobileHeader,
   AllowPart,
   Allows,
   AllowBlock,
@@ -92,7 +93,7 @@ export const LandingContainer = observer(() => {
     } else {
       setOrder(0);
     }
-  }, milliseconds / 12); // 5 sec
+  }, milliseconds / 10); // 6 sec
 
   const onAllowClick = (nextAllow: number) => () => {
     // обавляем 1 милисекунду к интервалу чтобы запустить его заново
@@ -179,6 +180,7 @@ export const LandingContainer = observer(() => {
       <AllowPart background={COLORS.blue[500]}>
         <Allows>
           <AllowBlock>
+            <AllowMobileHeader>YourSite позволяет</AllowMobileHeader>
             <AllowScreen width={250}>
               <AllowScreensList width={250} order={selectedAllow} length={carouselAllowList.length}>
                 {carouselAllowList.map((image, index) => (
