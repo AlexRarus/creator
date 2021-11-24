@@ -21,7 +21,7 @@ import { prepareDataForServer } from './utils';
 
 interface IProps {
   onClose(): void;
-  onSuccess(data: any): void;
+  onSuccess(slug?: string): void;
   activeTabValue: TabValue;
   pageData: IPage;
 }
@@ -53,7 +53,7 @@ export const PageSettingsModal = (props: IProps) => {
   // форма успешно (без ошибок) отправлена
   useEffect(() => {
     if (!isLoading && formState.isSubmitSuccessful && !errors && data) {
-      onSuccess(data);
+      onSuccess(data?.slug);
       onClose();
     }
   }, [formState, errors, data, isLoading]);

@@ -10,6 +10,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { copyTextToClipboard } from 'src/utils/copyToClipboard';
 import { v4 as uuidv4 } from 'uuid';
+import { BlockEditorModal } from 'src/containers/profile/block-editor';
+import { isMobile } from 'react-device-detect';
+
+import { PagePreview } from '../page-preview';
 
 import {
   FormWrapper,
@@ -21,9 +25,9 @@ import {
   PrefixPath,
   PageSlug,
   FormFooter,
-  IconButton,
   AddBlockButtonWrapper,
 } from './style';
+import { IconButton } from './icon-button';
 import { PageSettingsModal, TabValue } from './page-settings-modal';
 import { BlinkMessage } from './blink-message';
 
@@ -31,12 +35,13 @@ interface IProps {
   data: IPage;
   username: string;
   pageSlug: string;
-  onClickAddBlock?: () => void;
-  onSubmitSuccess: (data: any) => void;
+  onUpdatePageForm: (slug?: string) => void;
 }
 
 export const PageForm = (props: IProps) => {
-  const { data, username, pageSlug, onClickAddBlock, onSubmitSuccess } = props;
+  const { data, username, pageSlug, onUpdatePageForm } = props;
+  const [isShowPreview, setIsShowPreview] = useState(false);
+  const [isOpenAddBlockModal, setIsOpenAddBlockModal] = useState(false);
   const [pageSettingsModalTab, setPageSettingsModalTab] = useState<TabValue | null>(null);
   const [copyBlinkId, setCopyBlinkId] = useState<string>();
 
@@ -45,7 +50,11 @@ export const PageForm = (props: IProps) => {
     setCopyBlinkId(uuidv4());
   };
 
-  const goToPreviewAction = () => console.log('goToPreviewAction');
+  const showPagePreview = () => setIsShowPreview(true);
+  const hidePagePreview = () => setIsShowPreview(false);
+
+  const openAddBlockModal = () => setIsOpenAddBlockModal(true);
+  const closeAddBlockModal = () => setIsOpenAddBlockModal(false);
 
   const openPageSettingsModal = (activeTab = TabValue.LINK) => () =>
     setPageSettingsModalTab(activeTab);
@@ -53,56 +62,76 @@ export const PageForm = (props: IProps) => {
 
   return (
     <>
-      <FormHeader>
-        <LinkToPageField onClick={onCopyToClipboard}>
-          <LinkToPageLabel>Ссылка на страницу</LinkToPageLabel>
-          <LinkToPageValue>
-            <PrefixPath>
-              {window.location.origin}/{username}
-            </PrefixPath>
-            <PageSlug>/{pageSlug}</PageSlug>
-          </LinkToPageValue>
-          <LinkCopyIndicator>
-            <BlinkMessage showId={copyBlinkId}>(Скопировано)</BlinkMessage>
-            <ContentCopyIcon />
-          </LinkCopyIndicator>
-        </LinkToPageField>
-        <IconButton onClick={openPageSettingsModal(TabValue.LINK)}>
-          <EditIcon />
-        </IconButton>
-      </FormHeader>
-      <FormWrapper>
-        <Grid verticalGap={32}>
-          <GridColumn alignItems='center'>
-            <Grid>
-              {data.blocks.map((block: IBlock<any>) => (
-                <GridColumn key={block.id} size={12}>
-                  <TargetBlockTypePreview block={block} />
-                </GridColumn>
-              ))}
+      {isShowPreview && <PagePreview username={username} pageSlug={pageSlug} data={data} />}
+      {!isShowPreview && (
+        <>
+          <FormHeader>
+            <LinkToPageField onClick={onCopyToClipboard}>
+              <LinkToPageLabel>Ссылка на страницу</LinkToPageLabel>
+              <LinkToPageValue>
+                <PrefixPath>
+                  {window.location.origin}/{username}
+                </PrefixPath>
+                <PageSlug>/{pageSlug}</PageSlug>
+              </LinkToPageValue>
+              <LinkCopyIndicator>
+                <BlinkMessage showId={copyBlinkId}>(Скопировано)</BlinkMessage>
+                <ContentCopyIcon />
+              </LinkCopyIndicator>
+            </LinkToPageField>
+            <IconButton onClick={openPageSettingsModal(TabValue.LINK)}>
+              <EditIcon />
+            </IconButton>
+          </FormHeader>
+          <FormWrapper>
+            <Grid verticalGap={32}>
+              <GridColumn alignItems='center'>
+                <Grid>
+                  {data.blocks.map((block: IBlock<any>) => (
+                    <GridColumn key={block.id} size={12}>
+                      <TargetBlockTypePreview block={block} />
+                    </GridColumn>
+                  ))}
+                </Grid>
+              </GridColumn>
             </Grid>
-          </GridColumn>
-        </Grid>
-      </FormWrapper>
+          </FormWrapper>
+        </>
+      )}
       <FormFooter>
-        <IconButton onClick={goToPreviewAction}>
-          <VisibilityIcon />
-        </IconButton>
+        {isShowPreview && (
+          <IconButton onClick={hidePagePreview} isActive={true}>
+            <EditIcon />
+          </IconButton>
+        )}
+        {!isShowPreview && (
+          <IconButton onClick={showPagePreview} disabled={!isMobile}>
+            <VisibilityIcon />
+          </IconButton>
+        )}
         <AddBlockButtonWrapper>
-          <Button block={true} onClick={onClickAddBlock}>
+          <Button block={true} onClick={openAddBlockModal} disabled={isShowPreview}>
             Добавить блок
           </Button>
         </AddBlockButtonWrapper>
-        <IconButton onClick={openPageSettingsModal()}>
+        <IconButton onClick={openPageSettingsModal()} disabled={isShowPreview}>
           <SettingsIcon />
         </IconButton>
       </FormFooter>
       {pageSettingsModalTab && (
         <PageSettingsModal
           onClose={closePageSettingsModal}
-          onSuccess={onSubmitSuccess}
+          onSuccess={onUpdatePageForm}
           activeTabValue={pageSettingsModalTab as TabValue}
           pageData={data}
+        />
+      )}
+      {isOpenAddBlockModal && (
+        <BlockEditorModal
+          onSuccess={onUpdatePageForm}
+          onClose={closeAddBlockModal}
+          username={username}
+          pageSlug={pageSlug}
         />
       )}
     </>

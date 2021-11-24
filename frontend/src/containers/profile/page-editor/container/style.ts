@@ -23,9 +23,3 @@ export const PhoneWrapper = styled.div<{ isForm: boolean }>`
   padding-top: ${({ isForm }) => (isForm ? FORM_HEADER_HEIGHT : 0)}px;
   padding-bottom: ${({ isForm }) => (isForm ? FORM_FOOTER_HEIGHT : 0)}px;
 `;
-
-export const PagePreviewWrapper = styled.div`
-  height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-`;

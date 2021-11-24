@@ -122,41 +122,6 @@ export const FormFooter = styled.div`
   })}
 `;
 
-export const IconButton = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: ${FORM_FOOTER_HEIGHT}px;
-  min-width: ${FORM_FOOTER_HEIGHT}px;
-  height: ${FORM_FOOTER_HEIGHT}px;
-  min-height: ${FORM_FOOTER_HEIGHT}px;
-  border-left: 1px solid ${COLORS.grey[500]};
-  border-right: 1px solid ${COLORS.grey[500]};
-  cursor: pointer;
-
-  * {
-    cursor: pointer;
-  }
-
-  :first-child {
-    border-left: none;
-  }
-  :last-child {
-    border-right: none;
-  }
-
-  svg {
-    fill: ${COLORS.grey[300]};
-  }
-
-  :hover {
-    svg {
-      fill: ${COLORS.white};
-    }
-  }
-`;
-
 export const AddBlockButtonWrapper = styled.div`
   display: flex;
   align-items: center;

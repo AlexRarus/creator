@@ -12,6 +12,7 @@ interface IProps {
 
 export const PagePreview = (props: IProps) => {
   const { data: previewData, ...restProps } = props;
+
   return (
     <PagePreviewWrapper>
       <PageContainer {...restProps} previewData={previewData} />

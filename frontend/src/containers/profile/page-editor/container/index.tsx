@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom';
 import { BrowserView, MobileView } from 'react-device-detect';
 import { Grid, GridColumn } from 'src/components/grid';
 import { useIsAuthor } from 'src/utils/useIsAuthor';
-import { BlockEditorModal } from 'src/containers/profile/block-editor';
 
 import { PageForm } from './page-form';
 import { PagePreview } from './page-preview';
@@ -27,7 +26,6 @@ export const PageEditorContainer = observer((props: IProps) => {
   const { username, pageSlug } = props;
   const { replace } = useHistory();
   const isAuthor = useIsAuthor(username);
-  const [isOpenAddBlockModal, setIsOpenAddBlockModal] = useState(false);
 
   useEffect(() => {
     return () => resetAction();
@@ -45,22 +43,13 @@ export const PageEditorContainer = observer((props: IProps) => {
     }
   }, [pageSlug, data]);
 
-  const updatePageData = () => {
-    getMyPageBySlugAction(pageSlug);
-  };
-
-  const onSubmitPageFormSuccess = (pageData: any) => {
-    if (pageData.slug) {
-      replace(`/profile/${username}/pages/${pageData.slug}`);
+  const onUpdatePageForm = (slug?: string) => {
+    if (slug) {
+      replace(`/profile/${username}/pages/${slug}`);
     } else {
-      console.warn('СТРАНИЦА НЕ ОБНОВИЛАСЬ');
+      getMyPageBySlugAction(pageSlug);
     }
   };
-
-  const openAddBlockModal = () => {
-    setIsOpenAddBlockModal(true);
-  };
-  const closeAddBlockModal = () => setIsOpenAddBlockModal(false);
 
   return (
     <>
@@ -78,8 +67,7 @@ export const PageEditorContainer = observer((props: IProps) => {
                         data={data}
                         username={username}
                         pageSlug={pageSlug}
-                        onClickAddBlock={openAddBlockModal}
-                        onSubmitSuccess={onSubmitPageFormSuccess}
+                        onUpdatePageForm={onUpdatePageForm}
                       />
                     </PhoneWrapper>
                   </BlockWrapper>
@@ -101,21 +89,12 @@ export const PageEditorContainer = observer((props: IProps) => {
                   data={data}
                   username={username}
                   pageSlug={pageSlug}
-                  onClickAddBlock={openAddBlockModal}
-                  onSubmitSuccess={onSubmitPageFormSuccess}
+                  onUpdatePageForm={onUpdatePageForm}
                 />
               </GridColumn>
             </Grid>
           </MobileView>
         </>
-      )}
-      {isOpenAddBlockModal && (
-        <BlockEditorModal
-          onSuccess={updatePageData}
-          onClose={closeAddBlockModal}
-          username={username}
-          pageSlug={pageSlug}
-        />
       )}
     </>
   );
