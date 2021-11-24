@@ -1,5 +1,5 @@
-import { createGlobalStyle } from 'styled-components';
-import { COLORS, FONTS } from 'src/components/theme';
+import { createGlobalStyle, css } from 'styled-components';
+import { COLORS, FONTS, defaultTheme, ITheme } from 'src/components/theme';
 
 export const GlobalStyleApp = createGlobalStyle`  
   html {
@@ -17,6 +17,17 @@ export const GlobalStyleApp = createGlobalStyle`
     color: ${COLORS.grey[900]};   
     width: 100%;
     display: table-cell;
+    
+    ${({ theme }: { theme: ITheme }) =>
+      theme?.isMobile
+        ? css`
+            position: relative;
+            max-width: 100%;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            text-rendering: optimizeLegibility;
+          `
+        : css``}
     
     &.disable-scroll {
       overflow: hidden;

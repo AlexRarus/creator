@@ -1,12 +1,10 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { Route, Switch } from 'react-router-dom';
-import { ThemeProvider } from 'styled-components';
 import AuthApp from 'src/apps/auth-app';
 import ProfileApp from 'src/apps/profile-app';
 import App from 'src/apps/app';
 import Notification from 'src/components/notification';
-import { defaultTheme } from 'src/components/theme';
 import { ScrollGlobalStyle } from 'src/utils/scroll';
 import API from 'src/api';
 
@@ -47,7 +45,7 @@ const Root = observer((props: any) => {
   }, [access]);
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <>
       <GlobalStyleApp />
       <ScrollGlobalStyle />
       <Notification maxShowItems={5} />
@@ -56,7 +54,7 @@ const Root = observer((props: any) => {
         {access && <Route path='/profile' render={() => <ProfileApp />} />}
         <Route path='/' render={() => <App />} />
       </Switch>
-    </ThemeProvider>
+    </>
   );
 });
 
