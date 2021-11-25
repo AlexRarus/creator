@@ -1,11 +1,12 @@
 import React from 'react';
 
-import { IModalButtonProps, ModalButtonStyled } from './style';
+import { IModalButtonStyledProps, ModalButtonStyled } from './style';
 
-interface IProps extends IModalButtonProps {
+interface IProps extends IModalButtonStyledProps {
   children: any;
   onClick?(): void;
 }
+export type { IModalButtonStyledProps as IButton };
 
 export const ModalButton = React.forwardRef((props: IProps, ref: any) => {
   const { children, onClick, disabled = false, ...restProps } = props;

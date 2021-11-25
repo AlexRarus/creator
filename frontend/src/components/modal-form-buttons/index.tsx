@@ -3,10 +3,12 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { MobileView, DesktopView } from 'src/style';
 import Popup from 'src/components/popup';
 
+import { ActionConfirmModal } from './confirm/action-confirm';
+import { MobileActions } from './mobile-actions';
 import { ModalButton } from './modal-button';
 import { ActionButton } from './action-button';
-import type { IAction } from './action-button';
-export type { IAction } from './action-button';
+import type { IAction } from './action-button/interfaces';
+export type { IAction } from './action-button/interfaces';
 import {
   ModalFormButtonsWrapper,
   DesktopButtonsList,
@@ -22,29 +24,51 @@ interface IProps {
   isValid?: boolean;
 }
 
+/**
+ * Кнопки для управления формой (задумывались для модального окна)
+ * Умеют рендериться под десктоп и мобилку
+ * Можно передавать различные Экшены над формой
+ * Можно Вызывать подтверждение экшенов (например перед удалением)
+ * @param props
+ * @constructor
+ */
 export const ModalFormButtons = (props: IProps) => {
   const { submitLabel = 'Отправить', actions, onSubmit, onActionClick, isValid = true } = props;
   const [isOpenDesktopActions, setIsOpenDesktopActions] = useState(false);
   const [isOpenMobileActions, setIsOpenMobileActions] = useState(false);
   const [desktopActionsElement, desktopActionsRefCallback] = useState<HTMLElement | null>(null);
-  const [mobileActionsElement, mobileActionsRefCallback] = useState<HTMLElement | null>(null);
-  const [mobileActionsButtonWidth, setMobileActionsButtonWidth] = useState(0);
   const [desktopActionsButtonWidth, setDesktopActionsButtonWidth] = useState(0);
+  const [confirmAction, setConfirmAction] = useState<IAction | null>(null);
 
   useEffect(() => {
-    if (mobileActionsElement) {
-      setMobileActionsButtonWidth(mobileActionsElement.getBoundingClientRect().width);
-    }
     if (desktopActionsElement) {
       setDesktopActionsButtonWidth(desktopActionsElement.getBoundingClientRect().width);
     }
-  }, [mobileActionsElement, desktopActionsElement]);
+  }, [desktopActionsElement]);
 
-  const toggleMobileActions = () => setIsOpenMobileActions((isOpen: boolean) => !isOpen);
+  const openMobileActions = () => setIsOpenMobileActions(true);
   const closeMobileActions = () => setIsOpenMobileActions(false);
 
   const toggleDesktopActions = () => setIsOpenDesktopActions((isOpen: boolean) => !isOpen);
   const closeDesktopActions = () => setIsOpenDesktopActions(false);
+
+  const actionClickHandler = (action: IAction) => {
+    if (action.needConfirm) {
+      setConfirmAction(action);
+    } else {
+      onActionClick && onActionClick(action.id);
+      closeMobileActions();
+      closeDesktopActions();
+    }
+  };
+
+  const onConfirmAction = (action: IAction) => {
+    setConfirmAction(null);
+    closeMobileActions();
+    closeDesktopActions();
+    onActionClick && onActionClick(action.id);
+  };
+  const onCancelConfirm = () => setConfirmAction(null);
 
   return (
     <ModalFormButtonsWrapper>
@@ -52,39 +76,23 @@ export const ModalFormButtons = (props: IProps) => {
         <MobileButtonsList>
           <ModalButton
             kind='secondary'
-            isBlock={true}
+            hasBorder={false}
             disabled={!actions?.length}
-            ref={mobileActionsRefCallback}
-            onClick={toggleMobileActions}>
+            onClick={openMobileActions}>
             <MoreVertIcon />
             <span>Действие</span>
           </ModalButton>
-          <ModalButton kind='primary' isBlock={true} onClick={onSubmit} disabled={!isValid}>
+          <ModalButton kind='primary' hasBorder={false} onClick={onSubmit} disabled={!isValid}>
             {submitLabel}
           </ModalButton>
         </MobileButtonsList>
-        <Popup
-          isOpen={isOpenMobileActions}
-          onClose={closeMobileActions}
-          openerElement={mobileActionsElement}
-          horizontalAlign='start'
-          verticalAlign='start'
-          position='top'
-          maxHeight={320}
-          plateMargin={0}
-          zIndex={999}
-          hasBorder={false}
-          hasShadow={false}
-          borderRadius='0 4px 0 0'
-          hasPointer={false}>
-          <ActionsList width={mobileActionsButtonWidth} isMobile={true}>
-            {actions?.map((action: IAction) => (
-              <ActionButton key={action.id} {...action} onClick={onActionClick}>
-                {action.label}
-              </ActionButton>
-            ))}
-          </ActionsList>
-        </Popup>
+        {isOpenMobileActions && (
+          <MobileActions
+            onClose={closeMobileActions}
+            actions={actions}
+            onActionClick={actionClickHandler}
+          />
+        )}
       </MobileView>
       <DesktopView>
         <DesktopButtonsList>
@@ -113,13 +121,22 @@ export const ModalFormButtons = (props: IProps) => {
           hasPointer={false}>
           <ActionsList width={desktopActionsButtonWidth}>
             {actions?.map((action: IAction) => (
-              <ActionButton key={action.id} {...action} onClick={onActionClick}>
-                {action.label}
-              </ActionButton>
+              <ActionButton
+                key={action.id}
+                action={action}
+                onClick={() => actionClickHandler(action)}
+              />
             ))}
           </ActionsList>
         </Popup>
       </DesktopView>
+      {confirmAction && (
+        <ActionConfirmModal
+          action={confirmAction}
+          onClose={onCancelConfirm}
+          onConfirm={onConfirmAction}
+        />
+      )}
     </ModalFormButtonsWrapper>
   );
 };

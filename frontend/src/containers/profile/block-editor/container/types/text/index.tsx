@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { useForm, FormProvider } from 'react-hook-form';
-import Button, { ButtonsList } from 'src/components/button';
 import { useSubmitBlockForm } from 'src/api/hooks/submit-forms/block/useSubmitBlockForm';
+import { ModalFormButtons } from 'src/components/modal-form-buttons';
 
 import { FormWrapper } from '../../style';
+import { blockActions } from '../../constants';
 
 import { useMapStoreToProps } from './selectors';
 import { FormInputs } from './interfaces';
@@ -65,16 +66,20 @@ export const TextForm = observer((props: IProps) => {
     }
   }, [errors, setError]);
 
+  const onActionClick = (actionId: string) => {
+    console.log('[BLOCK] onActionClick:', actionId);
+  };
+
   return (
     <FormProvider {...methods}>
       <FormWrapper>
         <TextBlockFields formDefaultValues={formDefaultValues} />
-        <ButtonsList marginTop={20}>
-          <Button onClick={onSubmit} disabled={!isValid}>
-            Готово
-          </Button>
-          <Button onClick={onCancel}>Отмена</Button>
-        </ButtonsList>
+        <ModalFormButtons
+          onSubmit={onSubmit}
+          actions={blockActions}
+          onActionClick={onActionClick}
+          isValid={isValid}
+        />
       </FormWrapper>
     </FormProvider>
   );

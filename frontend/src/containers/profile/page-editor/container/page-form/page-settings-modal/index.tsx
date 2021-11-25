@@ -3,8 +3,8 @@ import Modal, { MobileSize } from 'src/components/modal';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useSubmitPageForm } from 'src/api/hooks/submit-forms/page/useSubmitPageForm';
 import { IPage } from 'src/dal/pages/interfaces';
+import { ModalFormButtons, IAction } from 'src/components/modal-form-buttons';
 
-import { ModalFormButtons, IAction } from './modal-form-buttons';
 import { TabValue, ITab, FormInputs, RawData } from './interfaces';
 import { useTabs } from './hooks';
 import {
@@ -33,10 +33,7 @@ const pageActions: IAction[] = [
     id: 'delete',
     label: 'Удалить',
     kind: 'delete',
-  },
-  {
-    id: 'clone',
-    label: 'Клонировать',
+    needConfirm: true,
   },
 ];
 
@@ -84,7 +81,7 @@ export const PageSettingsModal = (props: IProps) => {
   }, [errors, setError]);
 
   const onActionClick = (actionId: string) => {
-    console.log('onActionClick:', actionId);
+    console.log('[PAGE] onActionClick:', actionId);
   };
 
   return (
