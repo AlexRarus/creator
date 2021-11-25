@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import Modal, { MobileSize } from 'src/components/modal';
 import { useForm, FormProvider } from 'react-hook-form';
-import Button, { ButtonsList } from 'src/components/button';
 import { useSubmitPageForm } from 'src/api/hooks/submit-forms/page/useSubmitPageForm';
 import { IPage } from 'src/dal/pages/interfaces';
 
+import { ModalFormButtons, IAction } from './modal-form-buttons';
 import { TabValue, ITab, FormInputs, RawData } from './interfaces';
 import { useTabs } from './hooks';
 import {
@@ -27,6 +27,18 @@ interface IProps {
 }
 
 export { TabValue } from './interfaces';
+
+const pageActions: IAction[] = [
+  {
+    id: 'delete',
+    label: 'Удалить',
+    kind: 'delete',
+  },
+  {
+    id: 'clone',
+    label: 'Клонировать',
+  },
+];
 
 export const PageSettingsModal = (props: IProps) => {
   const { activeTabValue: initActiveTabValue, onClose, onSuccess, pageData } = props;
@@ -71,6 +83,10 @@ export const PageSettingsModal = (props: IProps) => {
     }
   }, [errors, setError]);
 
+  const onActionClick = (actionId: string) => {
+    console.log('onActionClick:', actionId);
+  };
+
   return (
     <Modal
       onClose={onClose}
@@ -100,12 +116,12 @@ export const PageSettingsModal = (props: IProps) => {
             </HideBlock>
           </FormProvider>
         </PageSettingsContent>
-        <ButtonsList marginTop={20}>
-          <Button onClick={onClose}>Действия</Button>
-          <Button onClick={onSubmit} disabled={!isValid}>
-            Сохранить
-          </Button>
-        </ButtonsList>
+        <ModalFormButtons
+          onSubmit={onSubmit}
+          actions={pageActions}
+          onActionClick={onActionClick}
+          isValid={isValid}
+        />
       </PageSettingsWrapper>
     </Modal>
   );

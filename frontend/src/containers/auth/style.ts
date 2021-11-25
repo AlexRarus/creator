@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { rgba } from 'polished';
-import { MEDIA, COLORS, defaultTheme, getThemeProps } from 'src/components/theme';
+import { MEDIA, COLORS, defaultTheme } from 'src/components/theme';
 
 export const AuthPageWrapper = styled.div`
   display: flex;
@@ -18,7 +18,7 @@ export const AuthFormWrapper = styled.form`
   max-width: 100%;
   margin: 100px 10px 0;
   border-radius: 4px;
-  background: ${getThemeProps('background.primary')};
+  background: ${({ theme }) => theme.background.primary};
   box-shadow: 0 0.6px 1.8px ${rgba(COLORS.black, 0.1)}, 0px 3.2px 7.2px ${rgba(COLORS.black, 0.14)};
 
   ${MEDIA.max530({

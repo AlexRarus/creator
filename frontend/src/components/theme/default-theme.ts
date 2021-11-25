@@ -84,15 +84,3 @@ export const defaultTheme: ITheme = {
     '1280px': 12,
   },
 };
-
-export const getThemeProps = (pathToProp: string) => ({ theme }: any) => {
-  const path = pathToProp.split('.');
-  return path.reduce((result: any, key: any) => {
-    if (result?.[key]) {
-      return result[key];
-    } else if (result) {
-      console.warn(`Has no props "${key}" path "${pathToProp}" in theme`);
-    }
-    return '';
-  }, theme);
-};

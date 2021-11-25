@@ -1,5 +1,5 @@
-import { createGlobalStyle, css } from 'styled-components';
-import { COLORS, FONTS, ITheme } from 'src/components/theme';
+import styled, { createGlobalStyle, css } from 'styled-components';
+import { MEDIA, COLORS, FONTS, ITheme } from 'src/components/theme';
 
 export const GlobalStyleApp = createGlobalStyle`  
   html {
@@ -83,4 +83,30 @@ export const GlobalStyleApp = createGlobalStyle`
   * {
     box-sizing: border-box;
   }
+`;
+
+interface IViewProps {
+  direction?: 'column' | 'row';
+}
+
+export const MobileView = styled.div<IViewProps>`
+  flex-direction: ${({ direction = 'row' }: IViewProps) => direction};
+  width: 100%;
+  height: 100%;
+
+  display: none;
+  ${MEDIA.max768({
+    display: 'flex',
+  })};
+`;
+
+export const DesktopView = styled.div<IViewProps>`
+  flex-direction: ${({ direction = 'row' }: IViewProps) => direction};
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  ${MEDIA.max768({
+    display: 'none',
+  })};
 `;

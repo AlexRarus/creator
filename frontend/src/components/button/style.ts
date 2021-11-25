@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { defaultTheme, getThemeProps, ITheme } from 'src/components/theme';
+import { defaultTheme, ITheme } from 'src/components/theme';
 import { Link } from 'react-router-dom';
 
 import { TKind, TDimension } from './interfaces';
@@ -18,19 +18,26 @@ interface ILabelProps {
 }
 
 const getButtonBackground = (props: IButtonStyledProps) => {
-  const propKey = props.disabled ? 'disabled' : props.kind;
-  return getThemeProps(`component.button.background.${propKey}`)(props);
-};
-const getButtonColor = (props: IButtonStyledProps) => {
-  const propKey = props.disabled ? 'disabled' : props.kind;
-  return getThemeProps(`component.button.color.${propKey}`)(props);
-};
-const getButtonBorder = (props: IButtonStyledProps) => {
-  const propKey = props.disabled ? 'disabled' : props.kind;
-  return getThemeProps(`component.button.borderColor.${propKey}`)(props);
+  const { theme, disabled, kind } = props;
+  const propKey = disabled ? 'disabled' : kind;
+  const background = theme.component.button.background;
+  return background && background[propKey];
 };
 
-const getButtonPadding = (props: ILabelProps) => {
+const getButtonColor = (props: IButtonStyledProps) => {
+  const { theme, disabled, kind } = props;
+  const propKey = disabled ? 'disabled' : kind;
+  const color = theme.component.button.color;
+  return color && color[propKey];
+};
+const getButtonBorder = (props: IButtonStyledProps) => {
+  const { theme, disabled, kind } = props;
+  const propKey = disabled ? 'disabled' : kind;
+  const borderColor = theme.component.button.borderColor;
+  return `1px solid ${borderColor && borderColor[propKey]}`;
+};
+
+const getButtonPadding = (props: IButtonStyledProps) => {
   switch (props.dimension) {
     case 's':
       return '0 16px';
@@ -45,21 +52,22 @@ const getButtonPadding = (props: ILabelProps) => {
   }
 };
 
-const getButtonHeight = (props: ILabelProps) => {
-  switch (props.dimension) {
+const getButtonHeight = (props: IButtonStyledProps) => {
+  const { dimension, block } = props;
+
+  switch (dimension) {
     case 's':
-      return '24px';
+      return block ? '100%' : '24px';
     case 'm':
-      return '32px';
+      return block ? '100%' : '32px';
     case 'l':
-      return '40px';
+      return block ? '100%' : '40px';
     case 'xxl':
-      return '60px';
+      return block ? '100%' : '60px';
     default:
-      return '40px';
+      return block ? '100%' : '40px';
   }
 };
-
 const getButtonStyles = (props: IButtonStyledProps) => {
   switch (props.kind) {
     case 'air':
@@ -108,7 +116,7 @@ export const ButtonStyledLink = styled(Link)<IButtonStyledProps>`
   padding: ${getButtonPadding};
   background: ${getButtonBackground};
   color: ${getButtonColor};
-  border: 1px solid ${getButtonBorder};
+  border: ${getButtonBorder};
   height: ${getButtonHeight};
   cursor: pointer;
   width: ${({ block }) => (block ? '100%' : 'auto')};
@@ -134,7 +142,7 @@ export const ButtonStyled = styled.button<IButtonStyledProps>`
   padding: ${getButtonPadding};
   background: ${getButtonBackground};
   color: ${getButtonColor};
-  border: 1px solid ${getButtonBorder};
+  border: ${getButtonBorder};
   height: ${getButtonHeight};
   cursor: pointer;
   width: ${({ block }) => (block ? '100%' : 'auto')};
