@@ -27,6 +27,7 @@ class BlocksFormStore {
   initAction = (blockId: number | string) => {
     if (blockId === 'new') {
       this.initialized = true;
+      this.isLoading = false;
     } else {
       this.getBlockByIdAction(blockId as number);
     }
