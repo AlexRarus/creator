@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { defaultTheme, getThemeProps, ITheme } from 'src/components/theme';
+import { getThemeProps, ITheme } from 'src/components/theme';
 
 import { getInputHeight, getInputFontSize, getInputStyles } from '../input-components';
 
@@ -55,9 +55,6 @@ export const InputStyled = styled.input<IInputStyledProps>`
   padding-right: ${({ iconWrapperWidth }) => iconWrapperWidth}px;
   ${getInputStyles}
 `;
-InputStyled.defaultProps = {
-  theme: defaultTheme,
-};
 
 export const ComponentWrapper = styled.div<IComponentWrapperProps>`
   position: relative;
@@ -69,9 +66,6 @@ export const ComponentWrapper = styled.div<IComponentWrapperProps>`
     font-size: ${getInputFontSize};
   }
 `;
-ComponentWrapper.defaultProps = {
-  theme: defaultTheme,
-};
 
 export const IconWrapper = styled.div`
   position: absolute;
@@ -83,6 +77,3 @@ export const IconWrapper = styled.div`
   align-items: center;
   justify-content: center;
 `;
-IconWrapper.defaultProps = {
-  theme: defaultTheme,
-};

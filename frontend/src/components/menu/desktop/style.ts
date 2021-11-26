@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { COLORS, defaultTheme } from 'src/components/theme';
+import { COLORS } from 'src/components/theme';
 import { Link, NavLink } from 'react-router-dom';
 
 import { MENU_HEIGHT } from '../constants';
@@ -17,16 +17,11 @@ export const DesktopMenuWrapper = styled.div`
   flex-direction: row;
   width: 100%;
   height: ${MENU_HEIGHT}px;
-  padding: 0 100px;
-  background: ${COLORS.white};
-  color: ${COLORS.black};
+  padding: 0 42px;
   justify-content: space-between;
   align-items: center;
   user-select: none;
 `;
-DesktopMenuWrapper.defaultProps = {
-  theme: defaultTheme,
-};
 
 export const LeftSide = styled.div`
   display: flex;
@@ -34,25 +29,27 @@ export const LeftSide = styled.div`
   justify-content: flex-start;
   align-items: center;
 `;
-LeftSide.defaultProps = {
-  theme: defaultTheme,
-};
+
 export const RightSide = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
 `;
-RightSide.defaultProps = {
-  theme: defaultTheme,
-};
+
+export const ThemeModeButton = styled.div`
+  position: absolute;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+`;
 
 export const Logo = styled(Link)`
   padding: 15px 0;
   text-decoration: none;
-  color: ${COLORS.grey[500]};
   margin-right: 50px;
-  border: 1px solid ${COLORS.black};
 
   :visited,
   :active {
@@ -65,7 +62,6 @@ export const MenuItem = styled(NavLink)`
   align-items: center;
   border-bottom: 1px solid transparent;
   text-decoration: none;
-  color: ${COLORS.grey[500]};
   margin-right: 30px;
   height: ${MENU_HEIGHT}px;
 

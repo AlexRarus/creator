@@ -4,6 +4,9 @@ import { IPage } from 'src/dal/pages/interfaces';
 import NavigationIcon from '@mui/icons-material/Menu';
 import { VerticalSlide } from 'src/components/animations';
 import { useScrollDirection } from 'src/utils/useScrollDirection';
+import { useDarkThemeContext } from 'src/providers/dark-theme-provider';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import ModeNightIcon from '@mui/icons-material/ModeNightOutlined';
 
 import { UserMenu } from '../user-menu';
 import { MENU_HEIGHT } from '../constants';
@@ -18,6 +21,7 @@ import {
   NavigationList,
   Logo,
   NavigationItem,
+  ThemeModeButton,
 } from './style';
 
 interface IProps {
@@ -33,6 +37,7 @@ export const MobileMenu = (props: IProps) => {
   const [isOpenNavigation, setIsOpenNavigation] = useState(false);
   const isHideMenu: boolean = useScrollDirection(false, 30, 15);
   const hasMenuItems = Boolean(menuItems.length);
+  const { toggleTheme, themeType } = useDarkThemeContext();
 
   const openNavigation = () => setIsOpenNavigation(true);
   const closeNavigation = () => setIsOpenNavigation(false);
@@ -56,6 +61,13 @@ export const MobileMenu = (props: IProps) => {
                   В кабинет
                 </ButtonLink>
               )}
+              <ThemeModeButton onClick={toggleTheme}>
+                {themeType === 'light' ? (
+                  <LightModeIcon fontSize={'small'} />
+                ) : (
+                  <ModeNightIcon fontSize={'small'} />
+                )}
+              </ThemeModeButton>
             </>
           )}
         </MobileMenuHeader>

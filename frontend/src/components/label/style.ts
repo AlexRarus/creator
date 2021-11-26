@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { defaultTheme, getThemeProps } from 'src/components/theme';
+import { getThemeProps } from 'src/components/theme';
 
 interface ILabelStyledProps {
   isRequired: boolean;
@@ -22,6 +22,3 @@ export const LabelStyled = styled.label<ILabelStyledProps>`
     content: '*';
   }
 `;
-LabelStyled.defaultProps = {
-  theme: defaultTheme,
-};

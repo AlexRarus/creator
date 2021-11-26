@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { defaultTheme } from 'src/components/theme';
+import { LIGHT_THEME } from 'src/components/theme';
 import { ITheme, TGridSize } from 'src/components/theme/interfaces';
 
 import { IGridProps, IGridColumnProps } from './interfaces';
@@ -85,7 +85,7 @@ function getTemplate({
   alignItems = 'start',
 }: IGridProps) {
   const resultTheme: ITheme = {
-    ...defaultTheme,
+    ...LIGHT_THEME,
     ...theme,
   };
   const resultBreakPoints = breakPoints || {
@@ -136,5 +136,5 @@ export const Grid = styled.div<IGridProps>`
   ${getTemplate};
 `;
 Grid.defaultProps = {
-  theme: defaultTheme,
+  theme: LIGHT_THEME,
 };

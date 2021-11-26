@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { MEDIA, FONTS, defaultTheme } from 'src/components/theme';
+import { MEDIA, FONTS } from 'src/components/theme';
 
 export const ProfileLayoutWrapper = styled.div`
   display: flex;
@@ -8,9 +8,6 @@ export const ProfileLayoutWrapper = styled.div`
   ${FONTS.InterStyle};
   background: inherit;
 `;
-ProfileLayoutWrapper.defaultProps = {
-  theme: defaultTheme,
-};
 
 export const PageWrapper = styled.div`
   display: flex;
@@ -22,6 +19,3 @@ export const PageWrapper = styled.div`
     marginLeft: '0',
   })}
 `;
-PageWrapper.defaultProps = {
-  theme: defaultTheme,
-};

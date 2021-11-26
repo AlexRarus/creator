@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { COLORS, FONTS, defaultTheme, ITheme } from 'src/components/theme';
+import { COLORS, FONTS, ITheme } from 'src/components/theme';
 import CloseIcon from '@mui/icons-material/Close';
 import ErrorIcon from '@mui/icons-material/Error';
 import GetAppIcon from '@mui/icons-material/GetApp';
@@ -24,9 +24,6 @@ export const Wrapper = styled.div<IFileUploader>`
     cursor: pointer;
   }
 `;
-Wrapper.defaultProps = {
-  theme: defaultTheme,
-};
 
 export const Title = styled.div`
   color: ${COLORS.blue[400]};
@@ -57,9 +54,6 @@ export const Field = styled.div<IFieldProps>`
   `}
   flex-direction: column;
 `;
-Field.defaultProps = {
-  theme: defaultTheme,
-};
 
 export const Input = styled.input`
   display: none;
@@ -81,16 +75,10 @@ export const Uploaded = styled.div<IFileUploader>`
     margin-bottom: 0;
   }
 `;
-Uploaded.defaultProps = {
-  theme: defaultTheme,
-};
 
 export const Files = styled.div<IFileUploader>`
   font-size: 14px;
 `;
-Files.defaultProps = {
-  theme: defaultTheme,
-};
 
 export const UploadedText = styled.div`
   white-space: nowrap;
@@ -131,9 +119,6 @@ export const Error = styled.div<IFileUploader>`
     color: ${COLORS.red[400]};
   `}
 `;
-Error.defaultProps = {
-  theme: defaultTheme,
-};
 
 export const ErrorBlock = styled.div`
   margin-bottom: 16px;

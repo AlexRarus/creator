@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { COLORS, defaultTheme, ITheme } from 'src/components/theme';
+import { COLORS, ITheme } from 'src/components/theme';
 
 import { TDimension } from './interfaces';
 
@@ -126,9 +126,6 @@ export const Label = styled.label<{
   transition: all 300ms;
   z-index: 99;
 `;
-Label.defaultProps = {
-  theme: defaultTheme,
-};
 
 export const StatusBar = styled.div<IStatus>`
   width: 100%;
@@ -151,9 +148,6 @@ export const StatusBar = styled.div<IStatus>`
 
   ${getStatusBarStyles}
 `;
-StatusBar.defaultProps = {
-  theme: defaultTheme,
-};
 
 export const ErrorStyled = styled.div`
   color: ${({ theme }) => theme.color.error};
@@ -162,6 +156,3 @@ export const ErrorStyled = styled.div`
   padding: 20px;
   background: ${COLORS.white};
 `;
-ErrorStyled.defaultProps = {
-  theme: defaultTheme,
-};

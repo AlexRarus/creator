@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { defaultTheme, ITheme, COLORS } from 'src/components/theme';
+import { ITheme, COLORS } from 'src/components/theme';
 
 import { TDimension } from './interfaces';
 
@@ -35,9 +35,6 @@ export const CheckboxStyled = styled.input<IInputStyledProps>`
   border: 1px solid black;
   cursor: pointer;
 `;
-CheckboxStyled.defaultProps = {
-  theme: defaultTheme,
-};
 
 export const ComponentWrapper = styled.div<IComponentWrapperProps>`
   position: relative;
@@ -45,9 +42,6 @@ export const ComponentWrapper = styled.div<IComponentWrapperProps>`
   flex-direction: row;
   width: 100%;
 `;
-ComponentWrapper.defaultProps = {
-  theme: defaultTheme,
-};
 
 export const Label = styled.label<{
   dimension: TDimension;
@@ -57,6 +51,3 @@ export const Label = styled.label<{
   margin-left: 10px;
   user-select: none;
 `;
-Label.defaultProps = {
-  theme: defaultTheme,
-};

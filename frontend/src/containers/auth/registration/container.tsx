@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 import { useForm } from 'react-hook-form';
-import { Grid, GridColumn } from 'src/components/grid';
 import { ControlledField } from 'src/components/controlled-field';
 import InputText from 'src/components/input-text';
 import InputPassword from 'src/components/input-password';
@@ -10,8 +9,18 @@ import ButtonLink from 'src/components/button-link';
 import { checkEmptyObject } from 'src/utils/checkEmptyObject';
 import { email as emailVal, required } from 'src/utils/validators';
 import { useQuery } from 'src/hooks/useQuery';
+import Facebook from '@mui/icons-material/Facebook';
+import GoogleIcon from '@mui/icons-material/Google';
+import Instagram from '@mui/icons-material/Instagram';
 
-import { AuthPageWrapper, AuthFormWrapper, FormTitle } from '../style';
+import {
+  AuthPageWrapper,
+  AuthFormWrapper,
+  FormTitle,
+  AuthCommonButton,
+  AuthRow,
+  AuthSeparate,
+} from '../style';
 
 import { useMapStoreToProps } from './selectors';
 
@@ -47,51 +56,59 @@ export const RegistrationPageContainer = observer(() => {
   return (
     <AuthPageWrapper>
       <AuthFormWrapper onSubmit={handleSubmit(onSubmit)}>
-        <Grid verticalGap={24}>
-          <GridColumn>
-            <FormTitle>Регистрация</FormTitle>
-          </GridColumn>
-          <GridColumn>
-            <ControlledField
-              name='email'
-              control={control}
-              defaultValue={email}
-              rules={{
-                ...required(),
-                ...emailVal(),
-              }}>
-              <InputText label='Введите почту' />
-            </ControlledField>
-          </GridColumn>
-          <GridColumn>
-            <ControlledField name='password' control={control} rules={required()}>
-              <InputPassword label='Придумайте пароль' />
-            </ControlledField>
-          </GridColumn>
-          <GridColumn>
-            <ControlledField
-              name='repeatPassword'
-              control={control}
-              rules={{
-                ...required(),
-                validate: (value: any) => value === password || 'Введеные пароли не совпадают',
-              }}>
-              <InputPassword label='Повторите пароль' />
-            </ControlledField>
-          </GridColumn>
-          <GridColumn>
-            <ButtonsList marginTop={20}>
-              <Button block={true} type='submit' disabled={hasErrors || formState.isSubmitting}>
-                Зарегистрироваться
-              </Button>
-            </ButtonsList>
-          </GridColumn>
-          <GridColumn>
-            <ButtonsList align='center'>
-              <ButtonLink to={`/auth/login${search}`}>Уже есть аккаунт</ButtonLink>
-            </ButtonsList>
-          </GridColumn>
-        </Grid>
+        <FormTitle>Регистрация</FormTitle>
+        <AuthRow>
+          <AuthCommonButton>
+            <Facebook />
+          </AuthCommonButton>
+          <AuthCommonButton>
+            <GoogleIcon />
+          </AuthCommonButton>
+          <AuthCommonButton>
+            <Instagram />
+          </AuthCommonButton>
+        </AuthRow>
+        <AuthSeparate />
+        <AuthRow>
+          <ControlledField
+            name='email'
+            control={control}
+            defaultValue={email}
+            rules={{
+              ...required(),
+              ...emailVal(),
+            }}>
+            <InputText label='Введите почту' />
+          </ControlledField>
+        </AuthRow>
+        <AuthRow>
+          <ControlledField name='password' control={control} rules={required()}>
+            <InputPassword label='Придумайте пароль' />
+          </ControlledField>
+        </AuthRow>
+        <AuthRow>
+          <ControlledField
+            name='repeatPassword'
+            control={control}
+            rules={{
+              ...required(),
+              validate: (value: any) => value === password || 'Введеные пароли не совпадают',
+            }}>
+            <InputPassword label='Повторите пароль' />
+          </ControlledField>
+        </AuthRow>
+        <AuthRow>
+          <ButtonsList marginTop={20}>
+            <Button block={true} type='submit' disabled={hasErrors || formState.isSubmitting}>
+              Зарегистрироваться
+            </Button>
+          </ButtonsList>
+        </AuthRow>
+        <AuthRow>
+          <ButtonsList align='center'>
+            <ButtonLink to={`/auth/login${search}`}>Уже есть аккаунт</ButtonLink>
+          </ButtonsList>
+        </AuthRow>
       </AuthFormWrapper>
     </AuthPageWrapper>
   );
