@@ -37,6 +37,7 @@ export const MobileMenuHeader = styled.div`
   height: ${MENU_HEIGHT}px;
   width: 100%;
   padding: 12px;
+  background-color: ${({ theme }) => theme?.background?.primary};
 `;
 
 export const NavigationOpener = styled.div`
