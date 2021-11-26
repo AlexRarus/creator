@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react';
+import { Menu } from 'src/components/menu';
 
 import { Footer } from './footer';
 import { AuthLayoutWrapper, PageWrapper } from './style';
@@ -12,6 +13,7 @@ export function AuthLayout(props: IProps) {
 
   return (
     <AuthLayoutWrapper>
+      <Menu isProfile={false} />
       <PageWrapper>{children}</PageWrapper>
       <Footer />
     </AuthLayoutWrapper>

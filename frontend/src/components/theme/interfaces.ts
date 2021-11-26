@@ -25,10 +25,14 @@ interface IThemePalette {
   error?: string;
   link?: string;
   air?: string;
+  light?: string;
+  dark?: string;
 }
 interface IThemeBase {
   color: IThemePalette;
   background?: IThemePalette;
+  hover?: IThemePalette;
+  active?: IThemePalette;
   textColor?: IThemePalette;
   borderColor?: IThemePalette;
 }

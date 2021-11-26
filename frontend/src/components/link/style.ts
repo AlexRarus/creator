@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { defaultTheme } from 'src/components/theme';
 
 export const StyledLink = styled(Link)<{
   color?: string;
@@ -19,6 +18,3 @@ export const StyledLink = styled(Link)<{
     color: ${({ theme }) => theme.component.link.color.secondary};
   }
 `;
-StyledLink.defaultProps = {
-  theme: defaultTheme,
-};

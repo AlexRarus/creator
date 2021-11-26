@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { defaultTheme } from 'src/components/theme';
 
 interface IAnimationProps {
   height: number | null;
@@ -20,6 +19,3 @@ export const AnimationHeightWrapper = styled.div<IAnimationProps>`
     position: static;
   }
 `;
-AnimationHeightWrapper.defaultProps = {
-  theme: defaultTheme,
-};

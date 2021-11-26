@@ -1,9 +1,10 @@
 import styled, { createGlobalStyle, css } from 'styled-components';
-import { MEDIA, COLORS, FONTS, ITheme } from 'src/components/theme';
+import { MEDIA, FONTS, ITheme } from 'src/components/theme';
 
 export const GlobalStyleApp = createGlobalStyle`  
   html {
-    background-color: ${COLORS.grey[50]};
+    background: ${({ theme }) => theme.background?.primary};
+    color: ${({ theme }) => theme.textColor?.primary};
     width: 100%;
     height: 100%;
     display: table;
@@ -25,7 +26,8 @@ export const GlobalStyleApp = createGlobalStyle`
     margin: 0;
     padding: 0;   
     font-size: 14px;
-    color: ${COLORS.grey[900]};   
+    background: ${({ theme }) => theme.background?.primary};
+    color: ${({ theme }) => theme.textColor?.primary};
     width: 100%;
     display: table-cell;
     

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { defaultTheme, ITheme } from 'src/components/theme';
+import { LIGHT_THEME, ITheme } from 'src/components/theme';
 
 import { getInputHeight, getInputFontSize, getInputStyles } from '../input-components';
 
@@ -56,7 +56,7 @@ export const InputStyled = styled.input<IInputStyledProps>`
   ${getInputStyles}
 `;
 InputStyled.defaultProps = {
-  theme: defaultTheme,
+  theme: LIGHT_THEME,
 };
 
 export const ComponentWrapper = styled.div<IComponentWrapperProps>`
@@ -70,7 +70,7 @@ export const ComponentWrapper = styled.div<IComponentWrapperProps>`
   }
 `;
 ComponentWrapper.defaultProps = {
-  theme: defaultTheme,
+  theme: LIGHT_THEME,
 };
 
 export const IconWrapper = styled.div`
@@ -84,5 +84,5 @@ export const IconWrapper = styled.div`
   justify-content: center;
 `;
 IconWrapper.defaultProps = {
-  theme: defaultTheme,
+  theme: LIGHT_THEME,
 };

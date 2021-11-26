@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { MEDIA, COLORS, defaultTheme } from 'src/components/theme';
+import { MEDIA, COLORS } from 'src/components/theme';
 import Link from 'src/components/link';
 
 export const FooterWrapper = styled.div`
@@ -14,9 +14,6 @@ export const FooterWrapper = styled.div`
     width: '100%',
   })}
 `;
-FooterWrapper.defaultProps = {
-  theme: defaultTheme,
-};
 
 export const LeftSide = styled.div`
   display: flex;
@@ -24,18 +21,13 @@ export const LeftSide = styled.div`
   justify-content: flex-start;
   align-items: center;
 `;
-LeftSide.defaultProps = {
-  theme: defaultTheme,
-};
+
 export const RightSide = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
 `;
-RightSide.defaultProps = {
-  theme: defaultTheme,
-};
 
 export const LinkStyled = styled(Link)`
   margin-right: 10px;

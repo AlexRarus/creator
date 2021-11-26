@@ -9,6 +9,7 @@ export const ButtonLink = styled(Link)`
   border: 1px solid ${COLORS.grey[500]};
   border-radius: 4px;
   cursor: pointer;
+  margin-left: auto;
 
   :visited,
   :active {

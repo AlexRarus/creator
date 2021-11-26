@@ -3,6 +3,9 @@ import { IUser } from 'src/dal/auth/interfaces';
 import { IPage } from 'src/dal/pages/interfaces';
 import { VerticalSlide } from 'src/components/animations';
 import { useScrollDirection } from 'src/utils/useScrollDirection';
+import { useDarkThemeContext } from 'src/providers/dark-theme-provider';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import ModeNightIcon from '@mui/icons-material/ModeNightOutlined';
 
 import { UserMenu } from '../user-menu';
 import { MENU_HEIGHT } from '../constants';
@@ -16,6 +19,7 @@ import {
   RightSide,
   Logo,
   MenuItem,
+  ThemeModeButton,
 } from './style';
 
 interface IProps {
@@ -28,6 +32,7 @@ interface IProps {
 
 export const DesktopMenu = (props: IProps) => {
   const { user, logoutAction, selectedPage, isProfile, menuItems } = props;
+  const { toggleTheme, themeType } = useDarkThemeContext();
   const isHideMenu: boolean = useScrollDirection(false, 15, 15);
 
   return (
@@ -59,6 +64,9 @@ export const DesktopMenu = (props: IProps) => {
                 )}
               </>
             )}
+            <ThemeModeButton onClick={toggleTheme}>
+              {themeType === 'light' ? <LightModeIcon /> : <ModeNightIcon />}
+            </ThemeModeButton>
           </RightSide>
         </DesktopMenuWrapper>
       </VerticalSlide>

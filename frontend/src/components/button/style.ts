@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { defaultTheme, ITheme } from 'src/components/theme';
+import { LIGHT_THEME, ITheme } from 'src/components/theme';
 import { Link } from 'react-router-dom';
 
 import { TKind, TDimension } from './interfaces';
@@ -130,7 +130,7 @@ export const ButtonStyledLink = styled(Link)<IButtonStyledProps>`
   }
 `;
 ButtonStyledLink.defaultProps = {
-  theme: defaultTheme,
+  theme: LIGHT_THEME,
 };
 
 export const ButtonStyled = styled.button<IButtonStyledProps>`
@@ -149,7 +149,7 @@ export const ButtonStyled = styled.button<IButtonStyledProps>`
   ${getButtonStyles};
 `;
 ButtonStyled.defaultProps = {
-  theme: defaultTheme,
+  theme: LIGHT_THEME,
 };
 
 export const Label = styled.div<ILabelProps>`
@@ -158,7 +158,7 @@ export const Label = styled.div<ILabelProps>`
   ${getLabelStyles}
 `;
 Label.defaultProps = {
-  theme: defaultTheme,
+  theme: LIGHT_THEME,
 };
 
 interface IButtonListProps {
@@ -194,5 +194,5 @@ export const ButtonsList = styled.div<IButtonListProps>`
   }
 `;
 ButtonsList.defaultProps = {
-  theme: defaultTheme,
+  theme: LIGHT_THEME,
 };
