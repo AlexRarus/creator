@@ -9,6 +9,7 @@ export function useMapStoreToProps() {
     isLoading: store.isLoading,
     initialized: store.initialized,
     initAction: store.initAction,
+    resetAction: store.resetAction,
     user: dalAuthStore.user,
   };
 }

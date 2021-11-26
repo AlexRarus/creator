@@ -1,11 +1,11 @@
 import { AxiosResponse } from 'axios';
 
 export interface IBlocksAPI {
-  getBlockById(blockId: string): AxiosResponse<any>; // запрос одного блока (для редактирования)
+  getBlockById(blockId: number): AxiosResponse<any>; // запрос одного блока (для редактирования)
   createBlock(data: IWriteBlock<any>): AxiosResponse<any>; // создание блока
   updateBlock(data: IWriteBlock<any>): AxiosResponse<any>; // обновление блока
   partialUpdatePage(data: IWriteBlock<any>): AxiosResponse<any>; // обновление блока
-  deleteBlock(blockId: string): AxiosResponse<any>;
+  deleteBlock(blockId: number): AxiosResponse<any>;
   getTypesList(): AxiosResponse<any>;
 }
 

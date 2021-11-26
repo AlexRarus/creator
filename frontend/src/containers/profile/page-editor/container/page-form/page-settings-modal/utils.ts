@@ -20,11 +20,12 @@ export const pageTabs: ITab[] = [
   },
 ];
 
-export const pageActions: IAction[] = [
+export const getActions = (pages: IPage[]): IAction[] => [
   {
     id: 'delete',
     label: 'Удалить',
     kind: 'delete',
+    disabled: pages?.length === 1,
     needConfirm: true,
   },
 ];

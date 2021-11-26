@@ -21,6 +21,7 @@ interface IProps {
 export const ActionConfirmModal = (props: IProps) => {
   const { onConfirm, onClose, action } = props;
   const {
+    kind = 'primary',
     confirmTitle = 'Подтвердите действие',
     confirmMessage = `Вы точно хотите ${action.label}?`,
     confirmButton = { label: action.label },
@@ -47,7 +48,7 @@ export const ActionConfirmModal = (props: IProps) => {
               <Button kind='secondary' hasBorder={false} onClick={onClose}>
                 <span>Отмена</span>
               </Button>
-              <Button {...confirmButton} hasBorder={false} onClick={confirmHandler}>
+              <Button kind={kind} {...confirmButton} hasBorder={false} onClick={confirmHandler}>
                 {confirmButton.label}
               </Button>
             </MobileButtonsList>
@@ -57,7 +58,7 @@ export const ActionConfirmModal = (props: IProps) => {
               <Button kind='secondary' onClick={onClose}>
                 <span>Отмена</span>
               </Button>
-              <Button {...confirmButton} onClick={confirmHandler}>
+              <Button kind={kind} {...confirmButton} onClick={confirmHandler}>
                 {confirmButton.label}
               </Button>
             </DesktopButtonsList>

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { observer } from 'mobx-react';
 import Modal, { MobileSize, DesktopSize } from 'src/components/modal';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useSubmitPageForm } from 'src/api/hooks/submit-forms/page/useSubmitPageForm';
@@ -9,7 +10,8 @@ import { Form } from 'src/components/form';
 import { TabValue, FormInputs, RawData } from './interfaces';
 import { LinkFields } from './fields/link';
 import { SEOFields } from './fields/seo';
-import { prepareDataForServer, pageTabs, pageActions } from './utils';
+import { prepareDataForServer, pageTabs, getActions } from './utils';
+import { useMapStoreToProps } from './selectors';
 
 interface IProps {
   onClose(): void;
@@ -20,9 +22,10 @@ interface IProps {
 
 export { TabValue } from './interfaces';
 
-export const PageSettingsModal = (props: IProps) => {
+export const PageSettingsModal = observer((props: IProps) => {
   const { activeTabValue: initActiveTabValue, onClose, onSuccess, pageData } = props;
   const [tabs, activeTab, onChangeTab] = useTabs(pageTabs, initActiveTabValue);
+  const { myPages, deletePageAction } = useMapStoreToProps();
   // todo хук useForm создает форму и возвращает методы и состояние формы
   // todo все поля зарегистрированные в форме управляются этой формой
   // todo поле можно зарегистрировать (например) при помощи обертки <ControlledField> и "methods.control"
@@ -44,7 +47,7 @@ export const PageSettingsModal = (props: IProps) => {
   useEffect(() => {
     if (!isLoading && formState.isSubmitSuccessful && !errors && data) {
       onSuccess(data?.slug);
-      onClose();
+      onClose(); // При УСПЕШНОЙ отправке формы закрываем ее
     }
   }, [formState, errors, data, isLoading]);
 
@@ -65,12 +68,14 @@ export const PageSettingsModal = (props: IProps) => {
     switch (actionId) {
       case 'submit':
         handleSubmit(submit)();
+        // тут фому НЕ закрываем так как с бэка могли вернуться ошибки
         break;
       case 'cancel':
         onClose();
         break;
-      case 'remove':
-        console.log('remove page');
+      case 'delete':
+        deletePageAction(pageData.id);
+        onClose();
         break;
       default:
         console.warn('Unknown action type', actionId);
@@ -85,7 +90,7 @@ export const PageSettingsModal = (props: IProps) => {
       padding={null}
       title='Настройки страницы'>
       <Tabs tabs={tabs} activeTab={activeTab} onChangeTab={onChangeTab} />
-      <Form onAction={onAction} actions={pageActions} isValid={isValid}>
+      <Form onAction={onAction} actions={getActions(myPages)} isValid={isValid}>
         <FormProvider {...methods}>
           <TabContainer value={TabValue.LINK} activeTabValue={activeTab.value}>
             <LinkFields formDefaultValues={pageData} />
@@ -100,4 +105,4 @@ export const PageSettingsModal = (props: IProps) => {
       </Form>
     </Modal>
   );
-};
+});

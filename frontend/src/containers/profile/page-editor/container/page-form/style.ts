@@ -130,3 +130,14 @@ export const AddBlockButtonWrapper = styled.div`
   height: 100%;
   padding: 5px;
 `;
+
+export const BlockActionWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  cursor: pointer;
+
+  * {
+    cursor: pointer;
+  }
+`;

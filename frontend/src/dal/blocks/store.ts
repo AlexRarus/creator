@@ -2,6 +2,7 @@ import { flow, makeAutoObservable } from 'mobx';
 import API from 'src/api';
 import { History } from 'history';
 import { AxiosResponse } from 'axios';
+import { addNotificationItem } from 'src/components/notification';
 
 import { IRootStore } from '../interfaces';
 
@@ -32,6 +33,24 @@ export default class DalBlocksStore {
       this.totalTypes = response?.data?.total || 0;
     } catch (e) {
       console.log('getTypesListAction', e);
+    }
+  });
+
+  public deleteBlockAction = flow(function* (this: DalBlocksStore, id: number) {
+    try {
+      yield this.API.deleteBlock(id);
+      // после успешного удаления блока СИНХРОНИЗИРУЕМ текущую редактируемую страницу с бэком
+      this.rootStore.dalPagesStore.syncSelectPageAction();
+      addNotificationItem({
+        level: 'success',
+        message: 'Блок успешно удален',
+      });
+    } catch (e) {
+      addNotificationItem({
+        level: 'error',
+        message: 'При удалении блока что-то пошло не так.',
+      });
+      console.log('deletePageAction', e);
     }
   });
 }

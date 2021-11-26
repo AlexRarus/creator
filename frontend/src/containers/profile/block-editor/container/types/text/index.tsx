@@ -18,18 +18,27 @@ interface IProps {
   username: string;
   pageSlug: string;
   blockType: string;
-  blockId: string;
+  blockId: number | 'new';
   onSuccess(data: any): void;
   onCancel(): void;
+  onClose(): void;
+  isCloning: boolean;
+  setIsCloning(isCloning: boolean): void;
 }
 
 export const TextForm = observer((props: IProps) => {
-  const { pageSlug, blockType, blockId, onSuccess, onCancel } = props;
-  const { formDefaultValues } = useMapStoreToProps();
+  const {
+    pageSlug,
+    blockType,
+    blockId,
+    onSuccess,
+    onCancel,
+    onClose,
+    isCloning,
+    setIsCloning,
+  } = props;
+  const { formDefaultValues, deleteBlockAction } = useMapStoreToProps();
   const [tabs, activeTab, onChangeTab] = useTabs(blockTabs);
-  // todo хук useForm создает форму и возвращает методы и состояние формы
-  // todo все поля зарегистрированные в форме управляются этой формой
-  // todo поле можно зарегистрировать (например) при помощи обертки <ControlledField> и "methods.control"
   const methods = useForm<FormInputs>({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -37,11 +46,11 @@ export const TextForm = observer((props: IProps) => {
   const { formState, setError, handleSubmit } = methods;
   const { isValid } = formState;
   const [submitBlockEditor, isLoading, data, errors] = useSubmitBlockForm<FormInputs>();
-
+  const isEditing = blockId !== 'new' && !isCloning;
   const submit = async (data: FormInputs) => {
     const rawData: any = { data, pageSlug, blockType };
 
-    if (blockId !== 'new') {
+    if (isEditing) {
       rawData.blockId = blockId;
     }
 
@@ -51,7 +60,8 @@ export const TextForm = observer((props: IProps) => {
   // форма успешно (без ошибок) отправлена
   useEffect(() => {
     if (!isLoading && formState.isSubmitSuccessful && !errors && data) {
-      onSuccess(data);
+      onSuccess(data); // При УСПЕШНОЙ отправке формы закрываем ее
+      onClose();
     }
   }, [formState, errors, data, isLoading]);
 
@@ -72,15 +82,18 @@ export const TextForm = observer((props: IProps) => {
     switch (actionId) {
       case 'submit':
         handleSubmit(submit)();
+        // тут фому не закрываем так как с бэка могли вернуться ошибки
         break;
       case 'cancel':
         onCancel();
         break;
-      case 'remove':
-        console.log('remove block');
+      case 'delete':
+        deleteBlockAction(blockId as number);
+        onClose();
         break;
       case 'clone':
-        console.log('clone block');
+        console.log('CLONE');
+        setIsCloning(true);
         break;
       default:
         console.warn('Unknown action type', actionId);
@@ -90,7 +103,11 @@ export const TextForm = observer((props: IProps) => {
   return (
     <TextFormWrapper>
       <Tabs tabs={tabs} activeTab={activeTab} onChangeTab={onChangeTab} />
-      <Form onAction={onAction} actions={blockId === 'new' ? [] : blockActions} isValid={isValid}>
+      <Form
+        onAction={onAction}
+        actions={isEditing ? blockActions : []}
+        isValid={isValid}
+        submitActionLabel='Сохранить'>
         <FormProvider {...methods}>
           <FormWrapper>
             <TabContainer value={TabValue.text} activeTabValue={activeTab.value}>

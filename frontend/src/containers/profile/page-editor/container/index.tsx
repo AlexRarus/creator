@@ -16,20 +16,10 @@ interface IProps {
 }
 
 export const PageEditorContainer = observer((props: IProps) => {
-  const {
-    isLoading,
-    getMyPageBySlugAction,
-    data,
-    selectPageAction,
-    resetAction,
-  } = useMapStoreToProps();
+  const { isLoading, getMyPageBySlugAction, data, selectPageAction } = useMapStoreToProps();
   const { username, pageSlug } = props;
   const { replace } = useHistory();
   const isAuthor = useIsAuthor(username);
-
-  useEffect(() => {
-    return () => resetAction();
-  }, []);
 
   useEffect(() => {
     if (isAuthor) {
