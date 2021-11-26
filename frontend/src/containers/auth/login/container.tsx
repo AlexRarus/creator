@@ -22,6 +22,7 @@ import {
   AuthSpan,
   AuthCommonButton,
   AuthSeparate,
+  ButtonRow,
 } from '../style';
 
 import { ForgotPasswordLink } from './style';
@@ -84,13 +85,11 @@ export const LoginPageContainer = observer(() => {
             </ForgotPasswordLink>
           </AuthSpan>
         </AuthColumn>
-        <AuthRow>
-          <ButtonsList marginTop={20}>
-            <Button block={true} type='submit' disabled={hasErrors}>
-              Войти
-            </Button>
-          </ButtonsList>
-        </AuthRow>
+        <ButtonRow>
+          <Button block={true} type='submit' disabled={hasErrors}>
+            Войти
+          </Button>
+        </ButtonRow>
         <AuthRow>
           <ButtonsList align='center'>
             <ButtonLink to={`/auth/registration${search}`}>Еще нет аккаунта?</ButtonLink>

@@ -20,6 +20,7 @@ import {
   AuthCommonButton,
   AuthRow,
   AuthSeparate,
+  ButtonRow,
 } from '../style';
 
 import { useMapStoreToProps } from './selectors';
@@ -97,13 +98,11 @@ export const RegistrationPageContainer = observer(() => {
             <InputPassword label='Повторите пароль' />
           </ControlledField>
         </AuthRow>
-        <AuthRow>
-          <ButtonsList marginTop={20}>
-            <Button block={true} type='submit' disabled={hasErrors || formState.isSubmitting}>
-              Зарегистрироваться
-            </Button>
-          </ButtonsList>
-        </AuthRow>
+        <ButtonRow>
+          <Button block={true} type='submit' disabled={hasErrors || formState.isSubmitting}>
+            Зарегистрироваться
+          </Button>
+        </ButtonRow>
         <AuthRow>
           <ButtonsList align='center'>
             <ButtonLink to={`/auth/login${search}`}>Уже есть аккаунт</ButtonLink>
