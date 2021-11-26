@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import { COLORS } from 'src/components/theme';
 
-import { ModalButtonStyled } from './modal-button/style';
+import { ButtonStyled } from './button/style';
 
 export const DesktopButtonsList = styled.div`
   display: flex;
@@ -18,7 +18,7 @@ export const MobileButtonsList = styled.div`
   width: 100%;
   border-top: 1px solid ${COLORS.grey[400]};
 
-  ${ModalButtonStyled} {
+  ${ButtonStyled} {
     width: 50%;
     height: 100%;
 
@@ -44,8 +44,12 @@ export const ActionsList = styled.div<{ width?: number; isMobile?: boolean }>`
       : ''}
 `;
 
-export const ModalFormButtonsWrapper = styled.div`
+export const FormButtonsWrapper = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
+
+  & > * {
+    width: 100%;
+  }
 `;

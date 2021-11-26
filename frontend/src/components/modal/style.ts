@@ -92,17 +92,11 @@ export const ModalContent = styled.div<{
   isMobile: boolean;
   headerHeight: number;
 }>`
+  display: flex;
+  flex-direction: column;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: ${({ padding, isMobile }) => {
-    if (padding !== undefined) {
-      return padding || 'none'; // в случае если передали null
-    } else if (isMobile) {
-      return '0 10px 10px';
-    }
-
-    return '0 24px 24px';
-  }};
+  padding: ${({ padding = null }) => padding || 'none'};
 
   ${({ isMobile, headerHeight }) =>
     isMobile &&

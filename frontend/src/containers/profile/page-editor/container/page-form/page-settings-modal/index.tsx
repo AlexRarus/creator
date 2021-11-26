@@ -1,23 +1,15 @@
 import React, { useEffect } from 'react';
-import Modal, { MobileSize } from 'src/components/modal';
+import Modal, { MobileSize, DesktopSize } from 'src/components/modal';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useSubmitPageForm } from 'src/api/hooks/submit-forms/page/useSubmitPageForm';
 import { IPage } from 'src/dal/pages/interfaces';
-import { ModalFormButtons, IAction } from 'src/components/modal-form-buttons';
+import { Tabs, TabContainer, useTabs } from 'src/components/tabs';
+import { Form } from 'src/components/form';
 
-import { TabValue, ITab, FormInputs, RawData } from './interfaces';
-import { useTabs } from './hooks';
-import {
-  PageSettingsWrapper,
-  PageSettingsHeader,
-  Tabs,
-  TabItem,
-  PageSettingsContent,
-  HideBlock,
-} from './styles';
+import { TabValue, FormInputs, RawData } from './interfaces';
 import { LinkFields } from './fields/link';
 import { SEOFields } from './fields/seo';
-import { prepareDataForServer } from './utils';
+import { prepareDataForServer, pageTabs, pageActions } from './utils';
 
 interface IProps {
   onClose(): void;
@@ -28,18 +20,9 @@ interface IProps {
 
 export { TabValue } from './interfaces';
 
-const pageActions: IAction[] = [
-  {
-    id: 'delete',
-    label: 'Удалить',
-    kind: 'delete',
-    needConfirm: true,
-  },
-];
-
 export const PageSettingsModal = (props: IProps) => {
   const { activeTabValue: initActiveTabValue, onClose, onSuccess, pageData } = props;
-  const [tabs, activeTab, setActiveTab] = useTabs(initActiveTabValue);
+  const [tabs, activeTab, onChangeTab] = useTabs(pageTabs, initActiveTabValue);
   // todo хук useForm создает форму и возвращает методы и состояние формы
   // todo все поля зарегистрированные в форме управляются этой формой
   // todo поле можно зарегистрировать (например) при помощи обертки <ControlledField> и "methods.control"
@@ -56,8 +39,6 @@ export const PageSettingsModal = (props: IProps) => {
 
     await submitPageForm(prepareDataForServer(rawData));
   };
-
-  const onSubmit = () => handleSubmit(submit)();
 
   // форма успешно (без ошибок) отправлена
   useEffect(() => {
@@ -80,46 +61,43 @@ export const PageSettingsModal = (props: IProps) => {
     }
   }, [errors, setError]);
 
-  const onActionClick = (actionId: string) => {
-    console.log('[PAGE] onActionClick:', actionId);
+  const onAction = (actionId: string) => {
+    switch (actionId) {
+      case 'submit':
+        handleSubmit(submit)();
+        break;
+      case 'cancel':
+        onClose();
+        break;
+      case 'remove':
+        console.log('remove page');
+        break;
+      default:
+        console.warn('Unknown action type', actionId);
+    }
   };
 
   return (
     <Modal
       onClose={onClose}
       mobileSize={MobileSize.L}
-      title='Редактирование страницы'
-      padding={null}>
-      <PageSettingsWrapper>
-        <PageSettingsHeader>
-          <Tabs>
-            {tabs.map((tab: ITab) => (
-              <TabItem
-                key={tab.value}
-                isActive={tab.value === activeTab.value}
-                onClick={() => setActiveTab(tab)}>
-                {tab.label}
-              </TabItem>
-            ))}
-          </Tabs>
-        </PageSettingsHeader>
-        <PageSettingsContent>
-          <FormProvider {...methods}>
-            <HideBlock isShow={activeTab.value === TabValue.LINK}>
-              <LinkFields formDefaultValues={pageData} />
-            </HideBlock>
-            <HideBlock isShow={activeTab.value === TabValue.SEO}>
-              <SEOFields formDefaultValues={pageData} />
-            </HideBlock>
-          </FormProvider>
-        </PageSettingsContent>
-        <ModalFormButtons
-          onSubmit={onSubmit}
-          actions={pageActions}
-          onActionClick={onActionClick}
-          isValid={isValid}
-        />
-      </PageSettingsWrapper>
+      desktopSize={DesktopSize.M}
+      padding={null}
+      title='Настройки страницы'>
+      <Tabs tabs={tabs} activeTab={activeTab} onChangeTab={onChangeTab} />
+      <Form onAction={onAction} actions={pageActions} isValid={isValid}>
+        <FormProvider {...methods}>
+          <TabContainer value={TabValue.LINK} activeTabValue={activeTab.value}>
+            <LinkFields formDefaultValues={pageData} />
+          </TabContainer>
+          <TabContainer value={TabValue.QR} activeTabValue={activeTab.value}>
+            QR code tab content
+          </TabContainer>
+          <TabContainer value={TabValue.SEO} activeTabValue={activeTab.value}>
+            <SEOFields formDefaultValues={pageData} />
+          </TabContainer>
+        </FormProvider>
+      </Form>
     </Modal>
   );
 };

@@ -4,6 +4,7 @@ import { Grid, GridColumn } from 'src/components/grid';
 import { ControlledField } from 'src/components/controlled-field';
 import { required } from 'src/utils/validators';
 import TinyEditor from 'src/components/tiny-editor';
+import { isMobile } from 'react-device-detect';
 
 import { FormInputs } from './interfaces';
 
@@ -23,7 +24,7 @@ export const TextBlockFields = (props: IProps) => {
           control={control}
           rules={required()}
           formDefaultValues={formDefaultValues}>
-          <TinyEditor />
+          <TinyEditor height={isMobile ? 280 : 500} />
         </ControlledField>
       </GridColumn>
     </Grid>

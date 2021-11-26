@@ -1,4 +1,4 @@
-import { IAction } from 'src/components/modal-form-buttons';
+import { IAction } from 'src/components/form';
 
 export const blockActions: IAction[] = [
   {

@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 
-export const BlocksFormContainerWrapper = styled.div`
+export const BlockEditorContainerWrapper = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  flex-grow: 1;
 `;
 
 export const FormWrapper = styled.form`

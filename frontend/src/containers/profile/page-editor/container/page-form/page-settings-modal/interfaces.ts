@@ -4,11 +4,6 @@ export enum TabValue {
   SEO = 'SEO',
 }
 
-export interface ITab {
-  value: TabValue;
-  label: string;
-}
-
 // поля формы
 export type FormInputs = {
   slug?: string; // tab "LINK"

@@ -1,39 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { MobileView, DesktopView } from 'src/style';
+import { BrowserView, MobileView } from 'react-device-detect';
 import Popup from 'src/components/popup';
 
 import { ActionConfirmModal } from './confirm/action-confirm';
 import { MobileActions } from './mobile-actions';
-import { ModalButton } from './modal-button';
+import { Button } from './button';
 import { ActionButton } from './action-button';
 import type { IAction } from './action-button/interfaces';
 export type { IAction } from './action-button/interfaces';
-import {
-  ModalFormButtonsWrapper,
-  DesktopButtonsList,
-  MobileButtonsList,
-  ActionsList,
-} from './style';
+import { FormButtonsWrapper, DesktopButtonsList, MobileButtonsList, ActionsList } from './style';
 
 interface IProps {
-  onSubmit(): void;
-  submitLabel?: string;
+  onAction(actionId: string): void;
+  submitActionLabel?: string;
   actions?: IAction[];
-  onActionClick?(actionId: string): void;
   isValid?: boolean;
 }
 
 /**
- * Кнопки для управления формой (задумывались для модального окна)
+ * Кнопки для управления формой
  * Умеют рендериться под десктоп и мобилку
  * Можно передавать различные Экшены над формой
  * Можно Вызывать подтверждение экшенов (например перед удалением)
  * @param props
  * @constructor
  */
-export const ModalFormButtons = (props: IProps) => {
-  const { submitLabel = 'Отправить', actions, onSubmit, onActionClick, isValid = true } = props;
+export const FormButtons = (props: IProps) => {
+  const { submitActionLabel = 'Отправить', actions, onAction, isValid = true } = props;
   const [isOpenDesktopActions, setIsOpenDesktopActions] = useState(false);
   const [isOpenMobileActions, setIsOpenMobileActions] = useState(false);
   const [desktopActionsElement, desktopActionsRefCallback] = useState<HTMLElement | null>(null);
@@ -56,7 +50,7 @@ export const ModalFormButtons = (props: IProps) => {
     if (action.needConfirm) {
       setConfirmAction(action);
     } else {
-      onActionClick && onActionClick(action.id);
+      onAction(action.id);
       closeMobileActions();
       closeDesktopActions();
     }
@@ -66,25 +60,45 @@ export const ModalFormButtons = (props: IProps) => {
     setConfirmAction(null);
     closeMobileActions();
     closeDesktopActions();
-    onActionClick && onActionClick(action.id);
+    onAction(action.id);
   };
   const onCancelConfirm = () => setConfirmAction(null);
 
   return (
-    <ModalFormButtonsWrapper>
+    <FormButtonsWrapper>
       <MobileView>
         <MobileButtonsList>
-          <ModalButton
-            kind='secondary'
+          {!actions?.length && (
+            <Button kind='secondary' hasBorder={false} onClick={() => onAction('cancel')}>
+              <span>Отмена</span>
+            </Button>
+          )}
+          {actions?.length === 1 && (
+            <Button
+              kind='secondary'
+              {...actions[0]}
+              hasBorder={false}
+              onClick={() => actionClickHandler(actions[0])}>
+              <span>{actions[0].label}</span>
+            </Button>
+          )}
+          {actions && actions.length > 1 && (
+            <Button
+              kind='secondary'
+              hasBorder={false}
+              disabled={!actions?.length}
+              onClick={openMobileActions}>
+              <MoreVertIcon />
+              <span>Действие</span>
+            </Button>
+          )}
+          <Button
+            kind='primary'
             hasBorder={false}
-            disabled={!actions?.length}
-            onClick={openMobileActions}>
-            <MoreVertIcon />
-            <span>Действие</span>
-          </ModalButton>
-          <ModalButton kind='primary' hasBorder={false} onClick={onSubmit} disabled={!isValid}>
-            {submitLabel}
-          </ModalButton>
+            onClick={() => onAction('submit')}
+            disabled={!isValid}>
+            {submitActionLabel}
+          </Button>
         </MobileButtonsList>
         {isOpenMobileActions && (
           <MobileActions
@@ -94,19 +108,31 @@ export const ModalFormButtons = (props: IProps) => {
           />
         )}
       </MobileView>
-      <DesktopView>
+      <BrowserView>
         <DesktopButtonsList>
-          <ModalButton
-            kind='secondary'
-            disabled={!actions?.length}
-            ref={desktopActionsRefCallback}
-            onClick={toggleDesktopActions}>
-            <MoreVertIcon />
-            <span>Действие</span>
-          </ModalButton>
-          <ModalButton kind='primary' onClick={onSubmit} disabled={!isValid}>
-            {submitLabel}
-          </ModalButton>
+          {!actions?.length && (
+            <Button kind='secondary' onClick={() => onAction('cancel')}>
+              <span>Отмена</span>
+            </Button>
+          )}
+          {actions?.length === 1 && (
+            <Button kind='secondary' {...actions[0]} onClick={() => actionClickHandler(actions[0])}>
+              <span>{actions[0].label}</span>
+            </Button>
+          )}
+          {actions && actions.length > 1 && (
+            <Button
+              kind='secondary'
+              disabled={!actions?.length}
+              ref={desktopActionsRefCallback}
+              onClick={toggleDesktopActions}>
+              <MoreVertIcon />
+              <span>Действие</span>
+            </Button>
+          )}
+          <Button kind='primary' onClick={() => onAction('submit')} disabled={!isValid}>
+            {submitActionLabel}
+          </Button>
         </DesktopButtonsList>
         <Popup
           isOpen={isOpenDesktopActions}
@@ -129,7 +155,7 @@ export const ModalFormButtons = (props: IProps) => {
             ))}
           </ActionsList>
         </Popup>
-      </DesktopView>
+      </BrowserView>
       {confirmAction && (
         <ActionConfirmModal
           action={confirmAction}
@@ -137,6 +163,6 @@ export const ModalFormButtons = (props: IProps) => {
           onConfirm={onConfirmAction}
         />
       )}
-    </ModalFormButtonsWrapper>
+    </FormButtonsWrapper>
   );
 };

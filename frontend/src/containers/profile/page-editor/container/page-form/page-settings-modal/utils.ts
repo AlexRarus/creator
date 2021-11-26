@@ -1,7 +1,33 @@
 import { IPage } from 'src/dal/pages/interfaces';
 import type { IWritePage as DataForServer } from 'src/api/endpoints/pages';
+import { ITab } from 'src/components/tabs';
+import { IAction } from 'src/components/form';
 
-import { FormInputs, RawData } from './interfaces';
+import { FormInputs, RawData, TabValue } from './interfaces';
+
+export const pageTabs: ITab[] = [
+  {
+    value: TabValue.LINK,
+    label: 'Ссылка',
+  },
+  {
+    value: TabValue.QR,
+    label: 'QR код',
+  },
+  {
+    value: TabValue.SEO,
+    label: 'СЕО',
+  },
+];
+
+export const pageActions: IAction[] = [
+  {
+    id: 'delete',
+    label: 'Удалить',
+    kind: 'delete',
+    needConfirm: true,
+  },
+];
 
 // преобразовываем типы и меняем поля если надо
 export const prepareDataForServer = (rawData: RawData): DataForServer => ({

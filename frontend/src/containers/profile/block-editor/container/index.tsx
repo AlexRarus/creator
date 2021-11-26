@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
 
 import { useMapStoreToProps } from './selectors';
-import { BlocksFormContainerWrapper } from './style';
+import { BlockEditorContainerWrapper } from './style';
 import { TargetTypeForm } from './types';
 
 interface IProps {
@@ -28,9 +28,9 @@ export const BlocksFormContainer = observer((props: IProps) => {
   }
 
   return (
-    <BlocksFormContainerWrapper>
+    <BlockEditorContainerWrapper>
       {isLoading && <div>Loading...</div>}
       {!isLoading && <TargetTypeForm {...props} />}
-    </BlocksFormContainerWrapper>
+    </BlockEditorContainerWrapper>
   );
 });

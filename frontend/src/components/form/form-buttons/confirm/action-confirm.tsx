@@ -3,8 +3,8 @@ import Modal, { DesktopSize, MobileSize } from 'src/components/modal';
 import { DesktopView, MobileView } from 'src/style';
 
 import { IAction } from '../action-button/interfaces';
-import { IButton, ModalButton } from '../modal-button';
-import { DesktopButtonsList, MobileButtonsList, ModalFormButtonsWrapper } from '../style';
+import { IButton, Button } from '../button';
+import { DesktopButtonsList, MobileButtonsList, FormButtonsWrapper } from '../style';
 
 import { ConfirmContent, ConfirmMessage } from './style';
 
@@ -41,28 +41,28 @@ export const ActionConfirmModal = (props: IProps) => {
       zIndex={1000}>
       <ConfirmContent>
         <ConfirmMessage>{confirmMessage}</ConfirmMessage>
-        <ModalFormButtonsWrapper>
+        <FormButtonsWrapper>
           <MobileView>
             <MobileButtonsList>
-              <ModalButton kind='secondary' hasBorder={false} onClick={onClose}>
+              <Button kind='secondary' hasBorder={false} onClick={onClose}>
                 <span>Отмена</span>
-              </ModalButton>
-              <ModalButton {...confirmButton} hasBorder={false} onClick={confirmHandler}>
+              </Button>
+              <Button {...confirmButton} hasBorder={false} onClick={confirmHandler}>
                 {confirmButton.label}
-              </ModalButton>
+              </Button>
             </MobileButtonsList>
           </MobileView>
           <DesktopView>
             <DesktopButtonsList>
-              <ModalButton kind='secondary' onClick={onClose}>
+              <Button kind='secondary' onClick={onClose}>
                 <span>Отмена</span>
-              </ModalButton>
-              <ModalButton {...confirmButton} onClick={confirmHandler}>
+              </Button>
+              <Button {...confirmButton} onClick={confirmHandler}>
                 {confirmButton.label}
-              </ModalButton>
+              </Button>
             </DesktopButtonsList>
           </DesktopView>
-        </ModalFormButtonsWrapper>
+        </FormButtonsWrapper>
       </ConfirmContent>
     </Modal>
   );

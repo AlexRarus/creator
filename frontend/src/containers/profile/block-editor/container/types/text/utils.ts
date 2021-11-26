@@ -1,4 +1,5 @@
 import { IBlock } from 'src/dal/blocks/interfaces';
+import { ITab } from 'src/components/tabs';
 
 import { DataForServer } from '../../interfaces';
 
@@ -15,3 +16,24 @@ export const prepareDataForServer = (rawData: RawData): DataForServer<FormInputs
 export const prepareDataToFormValues = (block: IBlock<FormInputs> | null): FormInputs => ({
   text: block?.data?.text,
 });
+
+export enum TabValue {
+  text = 'text',
+  settings = 'settings',
+  section = 'section',
+}
+
+export const blockTabs: ITab[] = [
+  {
+    value: TabValue.text,
+    label: 'Текст',
+  },
+  {
+    value: TabValue.settings,
+    label: 'Настройки',
+  },
+  {
+    value: TabValue.section,
+    label: 'Секция',
+  },
+];

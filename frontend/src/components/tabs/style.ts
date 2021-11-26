@@ -4,25 +4,14 @@ import { COLORS } from 'src/components/theme';
 const ACTIVE_TAB_COLOR = COLORS.blue[500];
 const DISABLE_TAB_COLOR = COLORS.grey[500];
 
-export const PageSettingsWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-`;
-
-export const PageSettingsHeader = styled.div`
-  display: flex;
-  width: 100%;
-  padding: 0 10px;
-  border-bottom: 1px solid ${COLORS.grey[400]};
-`;
-
-export const Tabs = styled.div`
+export const TabsWrapper = styled.div<{ hasUnderline: boolean; padding: string }>`
   width: 100%;
   height: 40px;
   display: flex;
   flex-direction: row;
+  border-bottom: ${({ hasUnderline }) =>
+    hasUnderline ? `1px solid ${DISABLE_TAB_COLOR}` : 'none'};
+  padding: ${({ padding }) => padding || 'none'};
 `;
 
 export const TabItem = styled.div<{ isActive: boolean }>`
@@ -56,14 +45,6 @@ export const TabItem = styled.div<{ isActive: boolean }>`
   }
 `;
 
-export const PageSettingsContent = styled.div`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: column;
-  width: 100%;
-  padding: 10px;
-`;
-
-export const HideBlock = styled.div<{ isShow: boolean }>`
-  display: ${({ isShow }) => (isShow ? 'block' : 'none')};
+export const TabContainer = styled.div<{ value: string; activeTabValue: string }>`
+  display: ${({ value, activeTabValue }) => (value === activeTabValue ? 'block' : 'none')};
 `;
