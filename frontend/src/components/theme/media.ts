@@ -5,6 +5,7 @@ import { IMedia } from './interfaces';
 export const MEDIA_QUERY: IMedia = {
   max320: 'max-width: 320px',
   max530: 'max-width: 529px',
+  max768: 'max-width: 768px',
   max950: 'max-width: 949px',
   max1024: 'max-width: 1024px',
   max1280: 'max-width: 1280px',
@@ -19,6 +20,11 @@ export const MEDIA = {
   `,
   max530: (p: CSSObject, ...args: TemplateStringsArray[]) => css`
     @media (${MEDIA_QUERY.max530}) {
+      ${css(p, ...args)}
+    }
+  `,
+  max768: (p: CSSObject, ...args: TemplateStringsArray[]) => css`
+    @media (${MEDIA_QUERY.max768}) {
       ${css(p, ...args)}
     }
   `,

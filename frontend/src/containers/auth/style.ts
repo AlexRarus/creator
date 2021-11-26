@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { MEDIA } from 'src/components/theme';
+import { rgba } from 'polished';
+import { MEDIA, COLORS, LIGHT_THEME } from 'src/components/theme';
 
 export const AuthPageWrapper = styled.div`
   display: flex;
@@ -8,6 +9,9 @@ export const AuthPageWrapper = styled.div`
   justify-content: center;
   align-items: center;
 `;
+AuthPageWrapper.defaultProps = {
+  theme: LIGHT_THEME,
+};
 
 export const AuthFormWrapper = styled.form`
   padding: 20px;
@@ -21,6 +25,9 @@ export const AuthFormWrapper = styled.form`
     width: '100%',
   })}
 `;
+AuthFormWrapper.defaultProps = {
+  theme: LIGHT_THEME,
+};
 
 export const FormTitle = styled.div`
   width: 100%;

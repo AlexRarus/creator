@@ -33,7 +33,7 @@ interface IProps {
 export const DesktopMenu = (props: IProps) => {
   const { user, logoutAction, selectedPage, isProfile, menuItems } = props;
   const { toggleTheme, themeType } = useDarkThemeContext();
-  const isHideMenu: boolean = useScrollDirection(false, 30, 15);
+  const isHideMenu: boolean = useScrollDirection(false, 15, 15);
 
   return (
     <DesktopHeaderWrapper>

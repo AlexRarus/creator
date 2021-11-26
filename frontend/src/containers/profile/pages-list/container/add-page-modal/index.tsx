@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import Modal from 'src/components/modal';
 import { useForm, FormProvider } from 'react-hook-form';
 import Button, { ButtonsList } from 'src/components/button';
+import { useSubmitPageForm } from 'src/api/hooks/submit-forms/page/useSubmitPageForm';
 
 import { FormInputs, RawData } from './interfaces';
-import { useSubmitPageForm } from './hooks';
 import { prepareDataForServer } from './utils';
 import { AddPageFields } from './fields';
 

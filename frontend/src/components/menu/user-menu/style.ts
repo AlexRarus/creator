@@ -2,7 +2,8 @@ import styled, { css } from 'styled-components';
 import { COLORS } from 'src/components/theme';
 import { Link } from 'react-router-dom';
 
-export const USER_MENU_BACKGROUND = COLORS.grey[800];
+export const USER_MENU_BACKGROUND = COLORS.grey[700];
+export const USER_MENU_BACKGROUND_HOVER = COLORS.grey[900];
 
 export const UserMenuWrapper = styled.div<{ isOpen: boolean }>`
   background: ${({ isOpen }) => (isOpen ? USER_MENU_BACKGROUND : COLORS.white)};
@@ -19,10 +20,10 @@ export const MenuItem = css`
   color: ${COLORS.white};
   padding: 15px;
   transition: all 200ms ease-out;
-  background: ${COLORS.grey[800]};
+  background: ${USER_MENU_BACKGROUND};
 
-  border-top: 1px solid ${COLORS.grey[700]};
-  border-bottom: 1px solid ${COLORS.grey[900]};
+  border-top: 1px solid ${COLORS.grey[600]};
+  border-bottom: 1px solid ${COLORS.grey[800]};
 
   &:first-child {
     border-top: none;
@@ -32,7 +33,7 @@ export const MenuItem = css`
   }
 
   &:hover {
-    background: ${COLORS.grey[900]};
+    background: ${USER_MENU_BACKGROUND_HOVER};
   }
 `;
 

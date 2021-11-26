@@ -35,7 +35,7 @@ interface IProps {
 export const MobileMenu = (props: IProps) => {
   const { user, logoutAction, selectedPage, isProfile, menuItems } = props;
   const [isOpenNavigation, setIsOpenNavigation] = useState(false);
-  const isHideMenu: boolean = useScrollDirection(false, 30, 15);
+  const isHideMenu: boolean = useScrollDirection(false, 15, 15);
   const hasMenuItems = Boolean(menuItems.length);
   const { toggleTheme, themeType } = useDarkThemeContext();
 

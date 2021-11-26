@@ -17,7 +17,7 @@ const gitRevisionPlugin = new GitRevisionPlugin({
 });
 
 const LOCAL_API_URL = 'http://127.0.0.1:8000';
-const SERVICE_API_URL = process.env.PUBLIC_URL || LOCAL_API_URL;
+const SERVICE_API_URL = process.env.API_URL || LOCAL_API_URL;
 
 const devServerConfig = () => config => {
   return {
@@ -72,6 +72,7 @@ module.exports = {
         'process.env.COMMITHASH': JSON.stringify(gitRevisionPlugin.commithash()),
         'process.env.BRANCH': JSON.stringify(gitRevisionPlugin.branch()),
         'process.env.VERSION': JSON.stringify(packagejson.version),
+        'API_URL': JSON.stringify(process.env.API_URL),
       })
     )
   ),

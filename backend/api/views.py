@@ -41,6 +41,13 @@ class PageViewSet(viewsets.ModelViewSet):
             ),
         ).filter(author__username=author_username)
 
+    def get_object(self):
+        lookup_field = self.kwargs["slug"]
+        if self.action == "retrieve":
+            return get_object_or_404(self.get_queryset(), slug=lookup_field)
+        else:
+            return get_object_or_404(self.get_queryset(), id=lookup_field)
+
     def get_serializer_class(self):
         if self.action == "retrieve" or self.action == "list":
             return PageReadSerializer

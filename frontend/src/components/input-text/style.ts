@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { getThemeProps, ITheme } from 'src/components/theme';
+import { LIGHT_THEME, ITheme } from 'src/components/theme';
 
 import { getInputHeight, getInputFontSize, getInputStyles } from '../input-components';
 
@@ -18,7 +18,7 @@ interface IInputStyledProps extends IComponentWrapperProps {
 }
 
 const getInputBackground = (props: IInputStyledProps) => {
-  const { disabled, kind } = props;
+  const { theme, disabled, kind } = props;
   let propKey = 'primary';
 
   if (kind === 'air') {
@@ -28,11 +28,11 @@ const getInputBackground = (props: IInputStyledProps) => {
   if (disabled) {
     propKey = 'disabled';
   }
-
-  return getThemeProps(`component.input.background.${propKey}`)(props);
+  const background = theme.component.input.background;
+  return background && background[propKey];
 };
 const getInputColor = (props: IInputStyledProps) => {
-  const { kind, disabled } = props;
+  const { theme, kind, disabled } = props;
   let propKey = 'primary';
 
   if (kind) {
@@ -42,7 +42,7 @@ const getInputColor = (props: IInputStyledProps) => {
   if (disabled) {
     propKey = 'disabled';
   }
-  return getThemeProps(`component.input.color.${propKey}`)(props);
+  return theme.component.input.color[propKey];
 };
 
 export const InputStyled = styled.input<IInputStyledProps>`
@@ -55,6 +55,9 @@ export const InputStyled = styled.input<IInputStyledProps>`
   padding-right: ${({ iconWrapperWidth }) => iconWrapperWidth}px;
   ${getInputStyles}
 `;
+InputStyled.defaultProps = {
+  theme: LIGHT_THEME,
+};
 
 export const ComponentWrapper = styled.div<IComponentWrapperProps>`
   position: relative;
@@ -66,6 +69,9 @@ export const ComponentWrapper = styled.div<IComponentWrapperProps>`
     font-size: ${getInputFontSize};
   }
 `;
+ComponentWrapper.defaultProps = {
+  theme: LIGHT_THEME,
+};
 
 export const IconWrapper = styled.div`
   position: absolute;
@@ -77,3 +83,6 @@ export const IconWrapper = styled.div`
   align-items: center;
   justify-content: center;
 `;
+IconWrapper.defaultProps = {
+  theme: LIGHT_THEME,
+};

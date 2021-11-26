@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { getThemeProps } from 'src/components/theme';
+import { LIGHT_THEME } from 'src/components/theme';
 
 interface ILabelStyledProps {
   isRequired: boolean;
@@ -8,13 +8,13 @@ interface ILabelStyledProps {
 export const LabelStyled = styled.label<ILabelStyledProps>`
   position: relative;
   font-size: 14px;
-  color: ${getThemeProps('textColor.primary')};
+  color: ${({ theme }) => theme.textColor.primary};
   cursor: pointer;
   margin-bottom: 4px;
 
   &:after {
     font-size: 16px;
-    color: ${getThemeProps('color.warning')};
+    color: ${({ theme }) => theme.color.warning};
     display: ${({ isRequired }) => (isRequired ? 'block' : 'none')};
     position: absolute;
     right: -8px;
@@ -22,3 +22,6 @@ export const LabelStyled = styled.label<ILabelStyledProps>`
     content: '*';
   }
 `;
+LabelStyled.defaultProps = {
+  theme: LIGHT_THEME,
+};

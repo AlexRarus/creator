@@ -10,12 +10,14 @@ import { getDifference } from './getDifference';
  * @param minDownScroll - минимальное смещение в 'px' при скроле вниз при котором будет переключаться стейт
  * @param minUpScroll - минимальное смещение в 'px' при скроле вверх при котором будет переключаться стейт
  * @param wait - debounce time
+ * @param topBuffer - расстоянис сверху страницы в котором считать state = false
  */
 export const useScrollDirection = (
   initState = false,
   minDownScroll = Infinity,
   minUpScroll = Infinity,
-  wait = 0
+  wait = 0,
+  topBuffer = 100
 ): boolean => {
   const [state, setState] = useState(initState);
   const [scrollValue, setScrollValue] = useState(0);
@@ -23,11 +25,11 @@ export const useScrollDirection = (
 
   useEffect(() => {
     const shift: number = getDifference(scrollValue, prevScrollValue);
-    const scrollDirection: boolean = scrollValue > prevScrollValue;
+    const scrollDirection: boolean = scrollValue > topBuffer && scrollValue > prevScrollValue;
 
     if (scrollDirection && shift >= minDownScroll) {
       setState(scrollDirection);
-    } else if (!scrollValue || shift >= minUpScroll) {
+    } else if (scrollValue < topBuffer || shift >= minUpScroll) {
       setState(scrollDirection);
     }
   }, [scrollValue]);

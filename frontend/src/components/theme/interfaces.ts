@@ -1,4 +1,11 @@
-export type TMediaSize = 'max320' | 'max530' | 'max950' | 'max1024' | 'max1280' | 'min1280';
+export type TMediaSize =
+  | 'max320'
+  | 'max530'
+  | 'max768'
+  | 'max950'
+  | 'max1024'
+  | 'max1280'
+  | 'min1280';
 export type TGridSize = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 
 export type IMedia = {
