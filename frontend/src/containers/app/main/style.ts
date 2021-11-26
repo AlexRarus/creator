@@ -252,7 +252,9 @@ const getStylesAllowPart = ({ theme }: any) => {
     `;
   }
 
-  return css`120px 24px 24px 24px`;
+  return css`
+    padding: 120px 24px 24px 24px;
+  `;
 };
 
 export const MainPageWrapper = styled.div`
@@ -269,6 +271,7 @@ export const LandingWrapper = styled.div`
   justify-content: center;
   flex-grow: 1;
   flex-direction: column;
+  width: 100%;
 `;
 
 export const LandingPart = styled.div<{ background?: string; padding?: any }>`
