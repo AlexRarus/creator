@@ -27,18 +27,19 @@ class PageWriteSerializer(serializers.ModelSerializer):
         return page
 
     def update(self, page, validated_data):
-        blocks = validated_data.pop("blocks")
+        blocks = validated_data.pop("blocks", None)
 
         page.slug = validated_data.get("slug", page.slug)
         page.label = validated_data.get("label", page.label)
         page.save()
 
-        for order, block in enumerate(blocks):
-            PageBlockRelation.objects.update_or_create(
-                page=page,
-                block=block,
-                order=order,
-            )
+        if blocks is not None:
+            for order, block in enumerate(blocks):
+                PageBlockRelation.objects.update_or_create(
+                    page=page,
+                    block=block,
+                    order=order,
+                )
 
         # для того чтобы возвращалась нужная сортировка
         return Page.objects.prefetch_related(

@@ -41,18 +41,12 @@ const getConfig = () => ({
   updatePage: ({ id, ...data }: IWritePage) => ({
     url: `/pages/my/${id}/`,
     method: 'PUT',
-    data: {
-      blocks: [],
-      ...data,
-    },
+    data,
   }),
   partialUpdatePage: ({ id, ...data }: IWritePage) => ({
     url: `/pages/my/${id}/`,
     method: 'PATCH',
-    data: {
-      blocks: [],
-      ...data,
-    },
+    data,
   }),
   deletePage: (id: number) => ({
     url: `/pages/my/${id}`,
