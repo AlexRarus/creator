@@ -33,7 +33,7 @@ export const PageContainer = observer((props: IProps) => {
     <PageWrapper>
       {isLoading && 'Loading...'}
       {resultData && (
-        <Grid>
+        <Grid verticalGap={16}>
           {resultData.blocks.map((block: IBlock<any>) => (
             <GridColumn key={block.id} size={12}>
               <TargetBlockTypePreview block={block} />

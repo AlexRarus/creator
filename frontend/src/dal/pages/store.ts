@@ -1,6 +1,7 @@
 import { flow, makeAutoObservable } from 'mobx';
 import API from 'src/api';
 import { History } from 'history';
+import { addNotificationItem } from 'src/components/notification';
 
 import { IRootStore } from '../interfaces';
 
@@ -61,14 +62,48 @@ export default class DalPagesStore {
     }
   });
 
-  createPageAction = flow(function* (this: DalPagesStore, label: string) {
+  getMyPageBySlugAction = flow(function* (this: DalPagesStore, pageSlug: string) {
     try {
-      const response = yield this.API.createPage({ label });
+      this.isLoading = true;
+      const response = yield this.API.getMyPageBySlug(pageSlug);
       this.selectedPage = response.data;
-      const username = this.rootStore.dalAuthStore.user?.username;
-      this.routerStore.push(`/profile/${username}/pages/${this.selectedPage?.slug}/`); // переходим к редактированию страницы
+      this.isLoading = false;
     } catch (e) {
-      console.log('createPageAction', e);
+      console.log('getMyPageBySlugAction', e);
+      this.isLoading = false;
+    }
+  });
+
+  // синхронизирование данных страницы с бэком
+  syncSelectPageAction = flow(function* (this: DalPagesStore) {
+    try {
+      this.isLoading = true;
+      const response = yield this.API.getMyPageBySlug(this.selectedPage?.slug as string);
+      this.selectedPage = response.data;
+      this.isLoading = false;
+    } catch (e) {
+      console.log('syncSelectPageAction', e);
+      this.isLoading = false;
+    }
+  });
+
+  deletePageAction = flow(function* (this: DalPagesStore, id: number) {
+    try {
+      yield this.API.deletePage(id);
+      this.pages = this.pages.filter((page: IPage) => page.id !== id);
+      this.selectedPage = this.pages[0];
+      const username = this.rootStore.dalAuthStore.user?.username;
+      this.routerStore.push(`/profile/${username}/pages/`); // переходим к списку страниц
+      addNotificationItem({
+        level: 'success',
+        message: 'Страница успешно удалена',
+      });
+    } catch (e) {
+      addNotificationItem({
+        level: 'error',
+        message: 'При удалении страницы что-то пошло не так.',
+      });
+      console.log('deletePageAction', e);
     }
   });
 

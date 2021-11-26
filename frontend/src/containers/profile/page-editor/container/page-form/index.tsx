@@ -26,6 +26,7 @@ import {
   PageSlug,
   FormFooter,
   AddBlockButtonWrapper,
+  BlockActionWrapper,
 } from './style';
 import { IconButton } from './icon-button';
 import { PageSettingsModal, TabValue } from './page-settings-modal';
@@ -38,12 +39,17 @@ interface IProps {
   onUpdatePageForm: (slug?: string) => void;
 }
 
+interface INewBlock {
+  id: 'new';
+  type?: string;
+}
+
 export const PageForm = (props: IProps) => {
   const { data, username, pageSlug, onUpdatePageForm } = props;
   const [isShowPreview, setIsShowPreview] = useState(false);
-  const [isOpenAddBlockModal, setIsOpenAddBlockModal] = useState(false);
   const [pageSettingsModalTab, setPageSettingsModalTab] = useState<TabValue | null>(null);
   const [copyBlinkId, setCopyBlinkId] = useState<string>();
+  const [selectedBlock, setSelectedBlock] = useState<IBlock<any> | INewBlock | null>(null);
 
   const onCopyToClipboard = () => {
     copyTextToClipboard(`${window.location.origin}/${username}/${pageSlug}`);
@@ -53,8 +59,8 @@ export const PageForm = (props: IProps) => {
   const showPagePreview = () => setIsShowPreview(true);
   const hidePagePreview = () => setIsShowPreview(false);
 
-  const openAddBlockModal = () => setIsOpenAddBlockModal(true);
-  const closeAddBlockModal = () => setIsOpenAddBlockModal(false);
+  const openAddBlockModal = () => setSelectedBlock({ id: 'new' });
+  const closeAddBlockModal = () => setSelectedBlock(null);
 
   const openPageSettingsModal = (activeTab = TabValue.LINK) => () =>
     setPageSettingsModalTab(activeTab);
@@ -86,10 +92,12 @@ export const PageForm = (props: IProps) => {
           <FormWrapper>
             <Grid verticalGap={32}>
               <GridColumn alignItems='center'>
-                <Grid>
+                <Grid verticalGap={16}>
                   {data.blocks.map((block: IBlock<any>) => (
                     <GridColumn key={block.id} size={12}>
-                      <TargetBlockTypePreview block={block} />
+                      <BlockActionWrapper onClick={() => setSelectedBlock(block)}>
+                        <TargetBlockTypePreview block={block} />
+                      </BlockActionWrapper>
                     </GridColumn>
                   ))}
                 </Grid>
@@ -126,8 +134,10 @@ export const PageForm = (props: IProps) => {
           pageData={data}
         />
       )}
-      {isOpenAddBlockModal && (
+      {selectedBlock && (
         <BlockEditorModal
+          blockId={selectedBlock.id}
+          blockType={selectedBlock.type}
           onSuccess={onUpdatePageForm}
           onClose={closeAddBlockModal}
           username={username}

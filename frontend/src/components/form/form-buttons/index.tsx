@@ -50,9 +50,9 @@ export const FormButtons = (props: IProps) => {
     if (action.needConfirm) {
       setConfirmAction(action);
     } else {
-      onAction(action.id);
       closeMobileActions();
       closeDesktopActions();
+      onAction(action.id);
     }
   };
 

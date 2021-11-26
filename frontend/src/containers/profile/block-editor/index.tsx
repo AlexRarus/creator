@@ -10,30 +10,43 @@ interface IProps {
   onClose(): void;
   username: string;
   pageSlug: string;
+  blockId: number | 'new';
   blockType?: string;
-  blockId?: string;
 }
+
+const getTitle = (isNew: boolean, isCloning: boolean) => {
+  if (isNew) {
+    return 'Создание блока';
+  }
+
+  if (isCloning) {
+    return 'Клонирование блока';
+  }
+
+  return 'Редактирование блока';
+};
 
 // модалка создания блока для страницы
 export const BlockEditorModal = (props: IProps) => {
-  const { onSuccess, onClose, blockType: initBlockType, blockId = 'new', ...restProps } = props;
+  const { onSuccess, onClose, blockType: initBlockType, blockId, ...restProps } = props;
   const [blockType, setBlockType] = useState<string | undefined>(initBlockType);
+  const [isCloning, setIsCloning] = useState(false);
 
   const onSetBlockType = (blockType: IBlockType) => setBlockType(blockType.slug);
   const onResetBlockType = () => setBlockType(undefined);
 
   const onSuccessHandler = () => {
-    console.log('onSuccess from MODAL');
     onSuccess();
-    onClose();
   };
   const onCancel = () => {
-    console.log('onCancel from MODAL');
     onResetBlockType();
   };
 
   return (
-    <Modal onClose={onClose} mobileSize={MobileSize.L} title='Создание блока'>
+    <Modal
+      onClose={onClose}
+      mobileSize={MobileSize.L}
+      title={getTitle(blockId === 'new', isCloning)}>
       {!blockType && <BlocksTypesContainer onSelectBlockType={onSetBlockType} />}
       {blockType && (
         <BlocksFormContainer
@@ -42,6 +55,9 @@ export const BlockEditorModal = (props: IProps) => {
           blockType={blockType}
           onSuccess={onSuccessHandler}
           onCancel={onCancel}
+          onClose={onClose}
+          isCloning={isCloning}
+          setIsCloning={setIsCloning}
         />
       )}
     </Modal>

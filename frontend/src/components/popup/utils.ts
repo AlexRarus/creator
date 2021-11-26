@@ -1,9 +1,9 @@
 import { useCallback, useState, RefCallback, useEffect } from 'react';
 import debounce from 'lodash/debounce';
 
-export function getScrollParents(element: any): any[] {
-  const scrollParents = [window];
-  if (!element) {
+export function getScrollParents(isOpen: boolean, element: any): any[] {
+  const scrollParents: HTMLElement[] = [document.body];
+  if (!element || !isOpen) {
     return scrollParents;
   }
 
@@ -18,7 +18,11 @@ export function getScrollParents(element: any): any[] {
   let parent = element;
   while (parent !== document.body) {
     parent = parent.parentElement;
-    style = getComputedStyle(parent);
+    try {
+      style = getComputedStyle(parent);
+    } catch (e) {
+      console.log('getScrollParents', e);
+    }
     if (excludeStaticParent && style.position === 'static') {
       continue;
     }

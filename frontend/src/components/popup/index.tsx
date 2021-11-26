@@ -261,7 +261,7 @@ export default function Popup(props: IProps) {
   }, [isOpen, onClosePopup]);
 
   useEffect(() => {
-    const scrollableParents = getScrollParents(openerElement);
+    const scrollableParents = getScrollParents(isOpen, openerElement);
     setPosition();
     const calcPosition = () => {
       setPosition();

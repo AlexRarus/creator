@@ -6,9 +6,12 @@ interface IProps {
   username: string;
   pageSlug: string;
   blockType: string;
-  blockId: string;
+  blockId: number | 'new';
   onSuccess(data: any): void;
   onCancel(): void;
+  onClose(): void;
+  isCloning: boolean;
+  setIsCloning(isCloning: boolean): void;
 }
 
 export const TargetTypeForm = (props: IProps) => {

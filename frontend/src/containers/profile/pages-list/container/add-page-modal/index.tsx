@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import Modal from 'src/components/modal';
 import { useForm, FormProvider } from 'react-hook-form';
-import Button, { ButtonsList } from 'src/components/button';
 import { useSubmitPageForm } from 'src/api/hooks/submit-forms/page/useSubmitPageForm';
+import { Form } from 'src/components/form';
 
 import { FormInputs, RawData } from './interfaces';
 import { prepareDataForServer } from './utils';
@@ -32,13 +32,11 @@ export const AddPageModal = (props: IProps) => {
     await submitPageForm(prepareDataForServer(rawData));
   };
 
-  const onSubmit = () => handleSubmit(submit)();
-
   // форма успешно (без ошибок) отправлена
   useEffect(() => {
     if (!isLoading && formState.isSubmitSuccessful && !errors && data) {
       onSuccess(data as any);
-      onClose();
+      onClose(); // При УСПЕШНОЙ отправке формы закрываем ее
     }
   }, [formState, errors, data, isLoading]);
 
@@ -55,17 +53,27 @@ export const AddPageModal = (props: IProps) => {
     }
   }, [errors, setError]);
 
+  const onAction = (actionId: string) => {
+    switch (actionId) {
+      case 'submit':
+        handleSubmit(submit)();
+        // тут фому НЕ закрываем так как с бэка могли вернуться ошибки
+        break;
+      case 'cancel':
+        onClose();
+        break;
+      default:
+        console.warn('Unknown action type', actionId);
+    }
+  };
+
   return (
     <Modal onClose={onClose} title='Добавление страницы'>
-      <FormProvider {...methods}>
-        <AddPageFields />
-        <ButtonsList marginTop={20}>
-          <Button onClick={onSubmit} disabled={!isValid}>
-            Отправить
-          </Button>
-          <Button onClick={onClose}>Отмена</Button>
-        </ButtonsList>
-      </FormProvider>
+      <Form onAction={onAction} isValid={isValid}>
+        <FormProvider {...methods}>
+          <AddPageFields />
+        </FormProvider>
+      </Form>
     </Modal>
   );
 };

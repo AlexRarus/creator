@@ -3,14 +3,15 @@ import { History } from 'history';
 import { IRootStore } from 'src/dal/interfaces';
 import API from 'src/api';
 import RootStore from 'src/dal/root-store';
+import { IBlock } from 'src/dal/blocks/interfaces';
 
 class BlocksFormStore {
   rootStore!: IRootStore;
   routerStore!: History;
 
   initialized = false;
-  isLoading = false;
-  data: any | null;
+  isLoading = true;
+  block: IBlock<any> | null;
 
   get API() {
     return API.endpoints.blocks;
@@ -23,19 +24,19 @@ class BlocksFormStore {
     this.routerStore = RootStore.routing;
   }
 
-  initAction = (blockId: string) => {
+  initAction = (blockId: number | string) => {
     if (blockId === 'new') {
       this.initialized = true;
     } else {
-      this.getBlockByIdAction(blockId);
+      this.getBlockByIdAction(blockId as number);
     }
   };
 
-  getBlockByIdAction = flow(function* (this: BlocksFormStore, blockId: string) {
+  getBlockByIdAction = flow(function* (this: BlocksFormStore, blockId: number) {
     try {
       this.isLoading = true;
       const response = yield this.API.getBlockById(blockId);
-      this.data = response.data?.data || null;
+      this.block = response.data || null;
       this.isLoading = false;
       this.initialized = true;
     } catch (e) {
@@ -44,6 +45,10 @@ class BlocksFormStore {
       this.initialized = true;
     }
   });
+
+  resetAction = () => {
+    this.initialized = false;
+  };
 }
 
 export const store = new BlocksFormStore(RootStore);
