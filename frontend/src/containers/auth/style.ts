@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import { rgba } from 'polished';
-import { MEDIA, COLORS, LIGHT_THEME } from 'src/components/theme';
+import { MEDIA, LIGHT_THEME } from 'src/components/theme';
 
 export const AuthPageWrapper = styled.div`
   display: flex;

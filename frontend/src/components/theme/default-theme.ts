@@ -97,6 +97,20 @@ export const LIGHT_THEME: ITheme = {
         secondary: COLORS.red[500],
       },
     },
+    notification: {
+      color: {
+        success: COLORS.green[800],
+        warning: COLORS.orange[800],
+        error: COLORS.red[800],
+        info: COLORS.blue[800],
+      },
+      background: {
+        success: COLORS.green[200],
+        warning: COLORS.orange[200],
+        error: COLORS.pink[200],
+        info: COLORS.blue[200],
+      },
+    },
   },
   gridBreakPoints: {
     '320px': 4,
@@ -200,6 +214,20 @@ export const DARK_THEME: ITheme = {
       color: {
         primary: COLORS.indigo.A200,
         secondary: COLORS.red[200],
+      },
+    },
+    notification: {
+      color: {
+        success: COLORS.green[50],
+        warning: COLORS.orange[50],
+        error: COLORS.red[50],
+        info: COLORS.blue[50],
+      },
+      background: {
+        success: COLORS.green[500],
+        warning: COLORS.orange[500],
+        error: COLORS.red[500],
+        info: COLORS.blue[500],
       },
     },
   },
