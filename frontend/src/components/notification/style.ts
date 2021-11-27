@@ -1,5 +1,5 @@
 import styled, { createGlobalStyle, keyframes } from 'styled-components';
-import { COLORS, FONTS } from 'src/components/theme';
+import { COLORS, FONTS, ITheme } from 'src/components/theme';
 
 import { TNotificationLevel } from './interfaces';
 
@@ -20,6 +20,7 @@ interface IItemProps {
 
 interface INotificationHeaderProps {
   level: TNotificationLevel;
+  theme: ITheme;
 }
 
 const TOP_POSITION = 50;
@@ -89,11 +90,11 @@ const getAnimationTime = ({ animation, openAnimationTime, closeAnimationTime }: 
 const getAnimation = ({ animation, height }: IItemProps) => animations[animation](height);
 
 function getLevelBackground(props: INotificationHeaderProps) {
-  return levelBackgroundsMap[props.level] || 'transparent';
+  return props?.theme?.component?.notification?.background?.[props?.level] || 'transparent';
 }
 
 function getLevelColor(props: INotificationHeaderProps) {
-  return levelColorsMap[props.level] || COLORS.black;
+  return props?.theme?.component?.notification?.color?.[props?.level] || COLORS.black;
 }
 
 export const GlobalStyle: any = createGlobalStyle`
@@ -122,7 +123,6 @@ export const NotificationItemWrapper = styled.div<IItemProps>`
   flex-direction: column;
   align-items: center;
   margin-bottom: 8px;
-  background: ${COLORS.white};
   width: 100%;
   position: relative;
   left: 0;

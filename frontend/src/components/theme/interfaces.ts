@@ -17,8 +17,8 @@ export type IGridBreakPoints = {
 };
 
 interface IThemePalette {
-  primary: string;
-  secondary: string;
+  primary?: string;
+  secondary?: string;
   disabled?: string;
   success?: string;
   warning?: string;
@@ -29,6 +29,7 @@ interface IThemePalette {
   dark?: string;
   formed?: string;
   hover?: string;
+  info?: string;
 }
 interface IThemeBase {
   color: IThemePalette;
@@ -47,6 +48,7 @@ export interface ITheme extends IThemeBase {
     input: IThemeBase;
     link: IThemeBase;
     buttonLink: IThemeBase;
+    notification?: IThemeBase;
   };
   gridBreakPoints: IGridBreakPoints;
 }
