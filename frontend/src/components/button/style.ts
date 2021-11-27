@@ -30,10 +30,11 @@ const getButtonColor = (props: IButtonStyledProps) => {
   const color = theme.component.button.color;
   return color && color[propKey];
 };
+
 const getButtonBorder = (props: IButtonStyledProps) => {
   const { theme, disabled, kind } = props;
   const propKey = disabled ? 'disabled' : kind;
-  const borderColor = theme.component.button.borderColor;
+  const borderColor = theme?.component?.button?.borderColor;
   return `1px solid ${borderColor && borderColor[propKey]}`;
 };
 
@@ -69,10 +70,28 @@ const getButtonHeight = (props: IButtonStyledProps) => {
   }
 };
 const getButtonStyles = (props: IButtonStyledProps) => {
-  switch (props.kind) {
+  const { kind, theme } = props;
+  const buttonTheme = theme?.component?.button;
+
+  switch (kind) {
     case 'air':
       return css`
         border-radius: 8px;
+      `;
+    case 'formed':
+      return css`
+        border-radius: 3px;
+        font-weight: 200;
+
+        :visited,
+        :active {
+          background-color: ${buttonTheme?.active?.formed};
+          border-color: ${buttonTheme?.active?.formed};
+        }
+        :hover {
+          background-color: ${buttonTheme?.hover?.formed};
+          border-color: ${buttonTheme?.hover?.formed};
+        }
       `;
     default:
       return css`
@@ -86,6 +105,10 @@ const getLabelStyles = (props: ILabelProps) => {
     case 'air':
       return css`
         white-space: nowrap;
+      `;
+    case 'formed':
+      return css`
+        font-weight: 200;
       `;
     default:
       return '';
@@ -128,6 +151,8 @@ export const ButtonStyledLink = styled(Link)<IButtonStyledProps>`
   :hover {
     color: ${getButtonColor};
   }
+
+  ${getButtonBackground}
 `;
 ButtonStyledLink.defaultProps = {
   theme: LIGHT_THEME,

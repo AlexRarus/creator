@@ -67,7 +67,7 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
           {label}
         </Label>
       )}
-      {placeholder && (
+      {placeholder && value.length <= 0 && (
         <Placeholder
           isFocused={isFocused}
           dimension={dimension}
@@ -89,7 +89,7 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
         dimension={dimension}
         iconWrapperWidth={iconWrapperWidth}
       />
-      <IconWrapper ref={iconWrapperRefCallback} dimension={dimension}>
+      <IconWrapper kind={kind} ref={iconWrapperRefCallback} dimension={dimension}>
         {Icon && <Icon />}
       </IconWrapper>
       <StatusBar kind={kind} markError={markError} isFocused={isFocused} />

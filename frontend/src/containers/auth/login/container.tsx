@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import { ControlledField } from 'src/components/controlled-field';
 import InputText from 'src/components/input-text';
 import InputPassword from 'src/components/input-password';
-import Button, { ButtonsList } from 'src/components/button';
+import Button from 'src/components/button';
 import ButtonLink from 'src/components/button-link';
 import { checkEmptyObject } from 'src/utils/checkEmptyObject';
 import { required } from 'src/utils/validators';
@@ -34,6 +34,8 @@ type FormInputs = {
 };
 
 export const LoginPageContainer = observer(() => {
+  // TODO скрывам логин с помощью facebook vk gmail пока не реализовано
+  const [additionalLogins] = useState(false);
   const { loginAction } = useMapStoreToProps();
   const { search } = useQuery({
     next: '/',
@@ -55,27 +57,31 @@ export const LoginPageContainer = observer(() => {
     <AuthPageWrapper>
       <AuthFormWrapper onSubmit={handleSubmit(onSubmit)}>
         <FormTitle>Вход</FormTitle>
-        <AuthRow>
-          <AuthCommonButton>
-            <Facebook />
-          </AuthCommonButton>
-          <AuthCommonButton>
-            <GoogleIcon />
-          </AuthCommonButton>
-          <AuthCommonButton>
-            <Instagram />
-          </AuthCommonButton>
-        </AuthRow>
-        <AuthSeparate />
+        {additionalLogins && (
+          <>
+            <AuthRow>
+              <AuthCommonButton>
+                <Facebook />
+              </AuthCommonButton>
+              <AuthCommonButton>
+                <GoogleIcon />
+              </AuthCommonButton>
+              <AuthCommonButton>
+                <Instagram />
+              </AuthCommonButton>
+            </AuthRow>
+            <AuthSeparate />
+          </>
+        )}
         <AuthRow>
           <ControlledField name='email' control={control} rules={required()}>
-            <InputText label='Email' />
+            <InputText dimension={'xl'} kind={'formed'} placeholder='Email' />
           </ControlledField>
         </AuthRow>
         <AuthColumn>
           <AuthSpan>
             <ControlledField name='password' control={control} rules={required()}>
-              <InputPassword label='Пароль' />
+              <InputPassword dimension={'xl'} kind={'formed'} placeholder='Пароль' />
             </ControlledField>
           </AuthSpan>
           <AuthSpan>
@@ -86,14 +92,12 @@ export const LoginPageContainer = observer(() => {
           </AuthSpan>
         </AuthColumn>
         <ButtonRow>
-          <Button block={true} type='submit' disabled={hasErrors}>
+          <Button kind={'formed'} block={true} type='submit' disabled={hasErrors}>
             Войти
           </Button>
         </ButtonRow>
         <AuthRow>
-          <ButtonsList align='center'>
-            <ButtonLink to={`/auth/registration${search}`}>Еще нет аккаунта?</ButtonLink>
-          </ButtonsList>
+          <ButtonLink to={`/auth/registration${search}`}>Еще нет аккаунта?</ButtonLink>
         </AuthRow>
       </AuthFormWrapper>
     </AuthPageWrapper>

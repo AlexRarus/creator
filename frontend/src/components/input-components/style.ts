@@ -18,6 +18,7 @@ interface IStatus {
 export const getStatusBarStyles = (props: IStatus) => {
   switch (props.kind) {
     case 'air':
+    case 'formed':
       return css`
         display: none;
       `;
@@ -34,6 +35,32 @@ export const getInputStyles = (props: IComponentWrapperProps) => {
         padding: 0 24px;
         box-shadow: 0 15px 45px rgb(40 67 79 / 15%);
         font-weight: 700;
+      `;
+    case 'formed':
+      return css`
+        border-radius: 3px;
+        border: 1px solid;
+        border-color: ${({ theme }) => theme?.component?.input?.borderColor?.formed};
+        padding: 0 12px;
+        transition: all 200ms;
+
+        &:hover {
+          border-color: ${({ theme }) => theme?.component?.input?.borderColor?.hover};
+        }
+
+        &:focus {
+          box-shadow: 0 0 0 1px ${({ theme }) => theme?.component?.input?.borderColor?.hover};
+        }
+
+        :-webkit-autofill,
+        :-webkit-autofill:hover,
+        :-webkit-autofill:focus,
+        :-webkit-autofill:active {
+          -webkit-text-fill-color: ${({ theme }) =>
+            theme?.component?.input?.color?.formed} !important;
+          -webkit-box-shadow: 0 0 0px 1000px
+            ${({ theme }) => theme?.component?.input?.background?.formed} inset;
+        }
       `;
     default:
       return '';
@@ -63,10 +90,23 @@ export const getInputHeight = (props: IComponentWrapperProps) => {
       return '28px';
     case 'l':
       return '32px';
+    case 'xl':
+      return '40px';
     case 'xxl':
       return '60px';
     default:
       return '32px';
+  }
+};
+
+export const getIconWrapStyles = (props: IComponentWrapperProps) => {
+  switch (props.kind) {
+    case 'formed':
+      return css`
+        right: 12px;
+      `;
+    default:
+      return '';
   }
 };
 

@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { useParams } from 'react-router-dom';
-import { Grid, GridColumn } from 'src/components/grid';
 import { ButtonsList } from 'src/components/button';
 import { useQuery } from 'src/hooks/useQuery';
 
-import { AuthPageWrapper } from '../style';
+import { AuthPageWrapper, AuthFormWrapper, AuthRow } from '../style';
 
-import { Message, AuthMessageWrapper, MenuLink } from './style';
+import { Message, MenuLink } from './style';
 import { useMapStoreToProps } from './selectors';
 
 interface IParams {
@@ -30,20 +29,18 @@ export const RegistrationConfirmPageContainer = observer(() => {
   // TODO (в успешном случаем пользователя перекидывает на страницу логина)
   return (
     <AuthPageWrapper>
-      <AuthMessageWrapper>
-        <Grid verticalGap={24}>
-          <GridColumn>
-            <Message>Подтверждение email адреса...</Message>
-          </GridColumn>
-          <GridColumn>
-            <ButtonsList>
-              <MenuLink to='/'>Главная</MenuLink>
-              <MenuLink to='/auth/login'>Вход</MenuLink>
-              <MenuLink to='/auth/registration'>Регистрация</MenuLink>
-            </ButtonsList>
-          </GridColumn>
-        </Grid>
-      </AuthMessageWrapper>
+      <AuthFormWrapper>
+        <AuthRow>
+          <Message>Подтверждение email адреса...</Message>
+        </AuthRow>
+        <AuthRow>
+          <ButtonsList>
+            <MenuLink to='/'>Главная</MenuLink>
+            <MenuLink to='/auth/login'>Вход</MenuLink>
+            <MenuLink to='/auth/registration'>Регистрация</MenuLink>
+          </ButtonsList>
+        </AuthRow>
+      </AuthFormWrapper>
     </AuthPageWrapper>
   );
 });

@@ -1,7 +1,12 @@
 import styled from 'styled-components';
 import { LIGHT_THEME, ITheme } from 'src/components/theme';
 
-import { getInputHeight, getInputFontSize, getInputStyles } from '../input-components';
+import {
+  getInputHeight,
+  getInputFontSize,
+  getInputStyles,
+  getIconWrapStyles,
+} from '../input-components';
 
 import { TDimension, TKind } from './interfaces';
 
@@ -21,8 +26,8 @@ const getInputBackground = (props: IInputStyledProps) => {
   const { theme, disabled, kind } = props;
   let propKey = 'primary';
 
-  if (kind === 'air') {
-    propKey = 'air';
+  if (kind) {
+    propKey = kind;
   }
 
   if (disabled) {
@@ -79,9 +84,11 @@ export const IconWrapper = styled.div`
   bottom: 0;
   height: ${getInputHeight};
   display: flex;
+  height: 100%;
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  ${getIconWrapStyles}
 `;
 IconWrapper.defaultProps = {
   theme: LIGHT_THEME,

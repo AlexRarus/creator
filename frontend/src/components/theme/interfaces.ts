@@ -27,6 +27,8 @@ interface IThemePalette {
   air?: string;
   light?: string;
   dark?: string;
+  formed?: string;
+  hover?: string;
 }
 interface IThemeBase {
   color: IThemePalette;
