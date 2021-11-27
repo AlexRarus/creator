@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { ControlledField } from 'src/components/controlled-field';
 import InputText from 'src/components/input-text';
 import InputPassword from 'src/components/input-password';
-import Button, { ButtonsList } from 'src/components/button';
+import Button from 'src/components/button';
 import ButtonLink from 'src/components/button-link';
 import { checkEmptyObject } from 'src/utils/checkEmptyObject';
 import { email as emailVal, required } from 'src/utils/validators';
@@ -32,6 +32,8 @@ type FormInputs = {
 };
 
 export const RegistrationPageContainer = observer(() => {
+  // TODO скрывам регистрацию с помощью facebook vk gmail пока не реализовано
+  const [additionalLogins] = useState(false);
   const { registrationAction } = useMapStoreToProps();
   const { search, email } = useQuery({
     next: '/auth/message?type=registration-confirm&email=',
@@ -58,18 +60,22 @@ export const RegistrationPageContainer = observer(() => {
     <AuthPageWrapper>
       <AuthFormWrapper onSubmit={handleSubmit(onSubmit)}>
         <FormTitle>Регистрация</FormTitle>
-        <AuthRow>
-          <AuthCommonButton>
-            <Facebook />
-          </AuthCommonButton>
-          <AuthCommonButton>
-            <GoogleIcon />
-          </AuthCommonButton>
-          <AuthCommonButton>
-            <Instagram />
-          </AuthCommonButton>
-        </AuthRow>
-        <AuthSeparate />
+        {additionalLogins && (
+          <>
+            <AuthRow>
+              <AuthCommonButton>
+                <Facebook />
+              </AuthCommonButton>
+              <AuthCommonButton>
+                <GoogleIcon />
+              </AuthCommonButton>
+              <AuthCommonButton>
+                <Instagram />
+              </AuthCommonButton>
+            </AuthRow>
+            <AuthSeparate />
+          </>
+        )}
         <AuthRow>
           <ControlledField
             name='email'
@@ -79,12 +85,12 @@ export const RegistrationPageContainer = observer(() => {
               ...required(),
               ...emailVal(),
             }}>
-            <InputText label='Введите почту' />
+            <InputText dimension={'xl'} kind={'formed'} placeholder='Введите почту' />
           </ControlledField>
         </AuthRow>
         <AuthRow>
           <ControlledField name='password' control={control} rules={required()}>
-            <InputPassword label='Придумайте пароль' />
+            <InputPassword dimension={'xl'} kind={'formed'} placeholder='Придумайте пароль' />
           </ControlledField>
         </AuthRow>
         <AuthRow>
@@ -95,18 +101,20 @@ export const RegistrationPageContainer = observer(() => {
               ...required(),
               validate: (value: any) => value === password || 'Введеные пароли не совпадают',
             }}>
-            <InputPassword label='Повторите пароль' />
+            <InputPassword dimension={'xl'} kind={'formed'} placeholder='Повторите пароль' />
           </ControlledField>
         </AuthRow>
         <ButtonRow>
-          <Button block={true} type='submit' disabled={hasErrors || formState.isSubmitting}>
+          <Button
+            kind={'formed'}
+            block={true}
+            type='submit'
+            disabled={hasErrors || formState.isSubmitting}>
             Зарегистрироваться
           </Button>
         </ButtonRow>
         <AuthRow>
-          <ButtonsList align='center'>
-            <ButtonLink to={`/auth/login${search}`}>Уже есть аккаунт</ButtonLink>
-          </ButtonsList>
+          <ButtonLink to={`/auth/login${search}`}>Уже есть аккаунт</ButtonLink>
         </AuthRow>
       </AuthFormWrapper>
     </AuthPageWrapper>

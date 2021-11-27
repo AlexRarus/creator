@@ -8,7 +8,7 @@ export const yellow: IColorWithAlter = {
   400: '#ffee58',
   500: '#ffeb3b',
   600: '#fdd835',
-  700: '#fbc02d',
+  700: '#fbc139',
   800: '#f9a825',
   900: '#f57f17',
   A100: '#ffff8d',

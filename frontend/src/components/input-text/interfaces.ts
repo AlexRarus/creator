@@ -1,7 +1,7 @@
 import { FocusEvent, FunctionComponent } from 'react';
 
 export type TDimension = 's' | 'm' | 'l' | 'xxl';
-export type TKind = 'air' | string;
+export type TKind = 'air' | 'formed' | string;
 
 export interface IInputProps {
   name: string;

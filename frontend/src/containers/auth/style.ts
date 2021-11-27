@@ -70,7 +70,7 @@ export const AuthRow = styled.div`
 `;
 
 export const ButtonRow = styled(AuthRow)`
-  height: 32px;
+  height: 40px;
 `;
 
 export const AuthColumn = styled.div`

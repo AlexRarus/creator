@@ -4,6 +4,7 @@ export {
   getInputHeight,
   getLabelTransform,
   getInputStyles,
+  getIconWrapStyles,
   Label,
   StatusBar,
   Placeholder,
