@@ -33,7 +33,7 @@ export default class DalPagesStore {
 
       if (!this.pages.length) {
         // если у пользователя еще НЕТ созданных страниц, то создаем новую страницу автоматически за него (упрощаем вход)
-        const responseFirstPage = yield this.API.createPage();
+        const responseFirstPage = yield this.API.createPage({ label: 'new_page' });
         const firstPage = responseFirstPage.data;
         this.pages = [firstPage];
         this.total = 1;

@@ -49,7 +49,7 @@ const getConfig = () => ({
     data,
   }),
   deletePage: (id: number) => ({
-    url: `/pages/my/${id}`,
+    url: `/pages/my/${id}/`,
     method: 'DELETE',
   }),
 });
