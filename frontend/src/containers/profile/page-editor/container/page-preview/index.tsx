@@ -8,14 +8,19 @@ interface IProps {
   data: IPage;
   username: string;
   pageSlug: string;
+  isUpdating: boolean;
 }
 
 export const PagePreview = (props: IProps) => {
-  const { data: previewData, ...restProps } = props;
+  const { data: previewData, isUpdating, ...restProps } = props;
 
   return (
     <PagePreviewWrapper>
-      <PageContainer {...restProps} previewData={previewData} />
+      {isUpdating ? (
+        'wait few seconds please'
+      ) : (
+        <PageContainer {...restProps} previewData={previewData} />
+      )}
     </PagePreviewWrapper>
   );
 };
