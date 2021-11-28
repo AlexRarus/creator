@@ -78,6 +78,13 @@ export const PageForm = (props: IProps) => {
     setListItems(items);
   };
 
+  const onDragStart = () => {
+    // good times
+    if (window.navigator.vibrate) {
+      window.navigator.vibrate(100);
+    }
+  };
+
   const showPagePreview = () => setIsShowPreview(true);
   const hidePagePreview = () => setIsShowPreview(false);
 
@@ -112,7 +119,7 @@ export const PageForm = (props: IProps) => {
             </IconButton>
           </FormHeader>
           <FormWrapper>
-            <DragDropContext onDragEnd={onDragEnd}>
+            <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
               <Droppable droppableId='droppable'>
                 {(provided: any, snapshot: any) => (
                   <DroppableList
@@ -157,7 +164,11 @@ export const PageForm = (props: IProps) => {
           </IconButton>
         )}
         <AddBlockButtonWrapper>
-          <Button block={true} onClick={openAddBlockModal} disabled={isShowPreview}>
+          <Button
+            kind={'formed'}
+            dimension={'l'}
+            onClick={openAddBlockModal}
+            disabled={isShowPreview}>
             Добавить блок
           </Button>
         </AddBlockButtonWrapper>

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { IUser } from 'src/dal/auth/interfaces';
 import { IPage } from 'src/dal/pages/interfaces';
 import NavigationIcon from '@mui/icons-material/Menu';
 import { VerticalSlide } from 'src/components/animations';
 import { useScrollDirection } from 'src/utils/useScrollDirection';
-import { useDarkThemeContext } from 'src/providers/dark-theme-provider';
+import { useThemeContext } from 'src/providers/dark-theme-provider';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import ModeNightIcon from '@mui/icons-material/ModeNightOutlined';
 import Button from 'src/components/button';
@@ -40,10 +40,13 @@ export const MobileMenu = (props: IProps) => {
   const [isOpenNavigation, setIsOpenNavigation] = useState(false);
   const isHideMenu: boolean = useScrollDirection(false, 15, 15);
   const hasMenuItems = Boolean(menuItems.length);
-  const { toggleTheme, themeType } = useDarkThemeContext();
+  const { toggleTheme, themeType } = useThemeContext();
+  const { pathname } = useLocation();
 
   const onClickAuth = () => {
-    const link = user ? `/profile/${user.username}/pages/${selectedPage?.slug}/` : `/auth/login/`;
+    const link = user
+      ? `/profile/${user.username}/pages/${selectedPage?.slug}/`
+      : `${pathname === '/auth/login/' ? '/auth/registration' : '/auth/login/'}`;
     history.push(link);
   };
 
@@ -66,7 +69,7 @@ export const MobileMenu = (props: IProps) => {
               {!isProfile && (
                 <>
                   <Button kind={'secondary'} onClick={onClickAuth}>
-                    {user ? 'В кабинет' : 'Авторизоваться'}
+                    {user ? 'В кабинет' : pathname === '/auth/login/' ? 'Регистрация' : 'Войти'}
                   </Button>
                 </>
               )}

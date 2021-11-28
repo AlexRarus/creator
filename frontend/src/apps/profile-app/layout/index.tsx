@@ -1,5 +1,7 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import { Menu } from 'src/components/menu';
+import { isMobile } from 'react-device-detect';
+import { useAppTypeContext } from 'src/providers/app-type-provider';
 
 import { menuItems } from './menu-items';
 import { Footer } from './footer';
@@ -11,6 +13,13 @@ interface IProps {
 
 export function ProfileLayout(props: IProps) {
   const { children } = props;
+  const { toggleAppType } = useAppTypeContext();
+
+  useEffect(() => {
+    if (isMobile) {
+      toggleAppType();
+    }
+  }, [isMobile]);
 
   return (
     <ProfileLayoutWrapper>
