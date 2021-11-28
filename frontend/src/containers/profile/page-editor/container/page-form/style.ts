@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { rgba } from 'polished';
+import { Grid, GridColumn } from 'src/components/grid';
 import { COLORS, MEDIA } from 'src/components/theme';
 
 export const FORM_HEADER_HEIGHT = 64;
@@ -140,4 +142,17 @@ export const BlockActionWrapper = styled.div`
   * {
     cursor: pointer;
   }
+`;
+
+export const DroppableList = styled(Grid)<{ isDraggingOver: boolean }>`
+  background: ${({ theme, isDraggingOver }) =>
+    isDraggingOver ? theme?.background?.secondary : theme?.background?.primary};
+  width: 100%;
+  height: 100%;
+`;
+
+export const DraggableItem = styled.div<{ isDragging: boolean }>`
+  background: ${({ theme, isDragging }) =>
+    isDragging ? rgba(theme?.component?.button?.borderColor?.secondary, 0.7) : 'inherit'};
+  width: 100%;
 `;
