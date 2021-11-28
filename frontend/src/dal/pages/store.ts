@@ -4,6 +4,7 @@ import { History } from 'history';
 import { addNotificationItem } from 'src/components/notification';
 
 import { IRootStore } from '../interfaces';
+import { IWritePage } from '../../api/endpoints/pages';
 
 import { IPage } from './interfaces';
 
@@ -70,6 +71,15 @@ export default class DalPagesStore {
       this.isLoading = false;
     } catch (e) {
       console.log('getMyPageBySlugAction', e);
+      this.isLoading = false;
+    }
+  });
+
+  updateMyPageAction = flow(function* (this: DalPagesStore, data: IWritePage) {
+    try {
+      yield this.API.updatePage(data);
+    } catch (e) {
+      console.log('updateMyPageAction', e);
       this.isLoading = false;
     }
   });
