@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { IUser } from 'src/dal/auth/interfaces';
 import { IPage } from 'src/dal/pages/interfaces';
 import NavigationIcon from '@mui/icons-material/Menu';
@@ -7,11 +8,12 @@ import { useScrollDirection } from 'src/utils/useScrollDirection';
 import { useDarkThemeContext } from 'src/providers/dark-theme-provider';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import ModeNightIcon from '@mui/icons-material/ModeNightOutlined';
+import Button from 'src/components/button';
 
 import { UserMenu } from '../user-menu';
 import { MENU_HEIGHT } from '../constants';
 import { IMenuItem } from '../interfaces';
-import { ButtonLink } from '../style';
+// import { ButtonLink } from '../style';
 
 import {
   MobileMenuWrapper,
@@ -34,10 +36,16 @@ interface IProps {
 
 export const MobileMenu = (props: IProps) => {
   const { user, logoutAction, selectedPage, isProfile, menuItems } = props;
+  const history = useHistory();
   const [isOpenNavigation, setIsOpenNavigation] = useState(false);
   const isHideMenu: boolean = useScrollDirection(false, 15, 15);
   const hasMenuItems = Boolean(menuItems.length);
   const { toggleTheme, themeType } = useDarkThemeContext();
+
+  const onClickAuth = () => {
+    const link = user ? `/profile/${user.username}/pages/${selectedPage?.slug}/` : `/auth/login/`;
+    history.push(link);
+  };
 
   const openNavigation = () => setIsOpenNavigation(true);
   const closeNavigation = () => setIsOpenNavigation(false);
@@ -55,11 +63,12 @@ export const MobileMenu = (props: IProps) => {
           {isProfile && <UserMenu user={user} logoutAction={logoutAction} />}
           {!isProfile && (
             <>
-              {!user && <ButtonLink to={`/auth/login/`}>Авторизоваться</ButtonLink>}
-              {user && (
-                <ButtonLink to={`/profile/${user.username}/pages/${selectedPage?.slug}/`}>
-                  В кабинет
-                </ButtonLink>
+              {!isProfile && (
+                <>
+                  <Button kind={'secondary'} onClick={onClickAuth}>
+                    {user ? 'В кабинет' : 'Авторизоваться'}
+                  </Button>
+                </>
               )}
               <ThemeModeButton onClick={toggleTheme}>
                 {themeType === 'light' ? (

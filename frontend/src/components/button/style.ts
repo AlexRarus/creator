@@ -73,15 +73,27 @@ const getButtonStyles = (props: IButtonStyledProps) => {
   const { kind, theme } = props;
   const buttonTheme = theme?.component?.button;
 
+  console.warn('kind: ', kind);
   switch (kind) {
     case 'air':
       return css`
         border-radius: 8px;
       `;
+    case 'secondary':
+      return css`
+        border-radius: 8px;
+        font-weight: ${({ theme }) => (theme?.isMobile ? 400 : 200)};
+
+        :visited,
+        :active {
+          background-color: ${buttonTheme?.active?.secondary};
+          border-color: ${buttonTheme?.active?.secondary};
+        }
+      `;
     case 'formed':
       return css`
         border-radius: 3px;
-        font-weight: 200;
+        font-weight: ${({ theme }) => (theme?.isMobile ? 400 : 200)};
 
         :visited,
         :active {
@@ -106,9 +118,13 @@ const getLabelStyles = (props: ILabelProps) => {
       return css`
         white-space: nowrap;
       `;
+    case 'secondary':
+      return css`
+        font-weight: ${({ theme }) => (theme?.isMobile ? 400 : 200)};
+      `;
     case 'formed':
       return css`
-        font-weight: 200;
+        font-weight: ${({ theme }) => (theme?.isMobile ? 400 : 200)};
       `;
     default:
       return '';

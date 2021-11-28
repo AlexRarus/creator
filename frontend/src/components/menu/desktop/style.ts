@@ -65,6 +65,7 @@ export const MenuItem = styled(NavLink)`
   text-decoration: none;
   margin-right: 30px;
   height: ${MENU_HEIGHT}px;
+  color: ${({ theme }) => theme?.textColor?.primary};
 
   :last-child {
     margin-right: 0;
