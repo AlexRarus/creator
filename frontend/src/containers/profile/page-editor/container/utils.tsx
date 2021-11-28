@@ -13,22 +13,3 @@ export const reorder = (list: any[], startIndex: number, endIndex: number) => {
 
   return result;
 };
-
-export const grid = 8;
-
-export const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
-  // some basic styles to make the items look a bit nicer
-  userSelect: 'none',
-
-  // change background colour if dragging
-  background: isDragging && 'lightgreen',
-
-  // styles we need to apply on draggables
-  ...draggableStyle,
-});
-
-export const getListStyle = (isDraggingOver: boolean) => ({
-  background: isDraggingOver && 'lightblue',
-  width: '100%',
-  height: '100%',
-});

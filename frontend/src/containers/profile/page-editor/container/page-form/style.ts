@@ -90,7 +90,6 @@ export const PageSlug = styled.span`
 `;
 
 export const LinkCopyIndicator = styled.div`
-  display: ${({ theme }) => (theme?.isMobile ? 'none' : 'flex')};
   position: absolute;
   top: 0;
   right: 10px;
@@ -144,7 +143,13 @@ export const BlockActionWrapper = styled.div`
   }
 `;
 
-export const DroppableList = styled(Grid)<{ isDraggingOver: boolean }>`
+export const FormWrapperDroppable = styled(Grid)<{ isDraggingOver: boolean }>`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: ${PAGE_PREVIEW_PADDING}px;
   background: ${({ theme, isDraggingOver }) =>
     isDraggingOver ? theme?.background?.secondary : theme?.background?.primary};
   width: 100%;

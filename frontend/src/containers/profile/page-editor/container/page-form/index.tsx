@@ -18,7 +18,7 @@ import { PagePreview } from '../page-preview';
 import { reorder } from '../utils';
 
 import {
-  FormWrapper,
+  // FormWrapper,
   FormHeader,
   LinkToPageField,
   LinkToPageLabel,
@@ -29,7 +29,7 @@ import {
   FormFooter,
   AddBlockButtonWrapper,
   BlockActionWrapper,
-  DroppableList,
+  FormWrapperDroppable,
   DraggableItem,
 } from './style';
 import { IconButton } from './icon-button';
@@ -41,6 +41,7 @@ interface IProps {
   username: string;
   pageSlug: string;
   onUpdatePageForm: (slug?: string) => void;
+  onDragEndPagesAction: (list: number[]) => void;
 }
 
 interface INewBlock {
@@ -49,7 +50,7 @@ interface INewBlock {
 }
 
 export const PageForm = (props: IProps) => {
-  const { data, username, pageSlug, onUpdatePageForm } = props;
+  const { data, username, pageSlug, onUpdatePageForm, onDragEndPagesAction } = props;
   const [listItems, setListItems] = useState<any[]>([]);
   const [isShowPreview, setIsShowPreview] = useState(false);
   const [pageSettingsModalTab, setPageSettingsModalTab] = useState<TabValue | null>(null);
@@ -74,8 +75,9 @@ export const PageForm = (props: IProps) => {
     }
 
     const items = reorder(listItems, result.source.index, result.destination.index);
-
+    const listIds = items.map((item) => item.id);
     setListItems(items);
+    onDragEndPagesAction(listIds);
   };
 
   const onDragStart = () => {
@@ -118,38 +120,36 @@ export const PageForm = (props: IProps) => {
               <EditIcon />
             </IconButton>
           </FormHeader>
-          <FormWrapper>
-            <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
-              <Droppable droppableId='droppable'>
-                {(provided: any, snapshot: any) => (
-                  <DroppableList
-                    isDraggingOver={snapshot.isDraggingOver}
-                    verticalGap={32}
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}>
-                    <GridColumn alignItems='center'>
-                      {listItems.map((block: IBlock<any>, index) => (
-                        <Draggable key={block.id} draggableId={`${block.id}`} index={index}>
-                          {(provided: any, snapshot: any) => (
-                            <DraggableItem
-                              isDragging={snapshot.isDragging}
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                              key={block.id}>
-                              <BlockActionWrapper onClick={() => setSelectedBlock(block)}>
-                                <TargetBlockTypePreview block={block} />
-                              </BlockActionWrapper>
-                            </DraggableItem>
-                          )}
-                        </Draggable>
-                      ))}
-                    </GridColumn>
-                  </DroppableList>
-                )}
-              </Droppable>
-            </DragDropContext>
-          </FormWrapper>
+          <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
+            <Droppable droppableId='droppable'>
+              {(provided: any, snapshot: any) => (
+                <FormWrapperDroppable
+                  isDraggingOver={snapshot.isDraggingOver}
+                  verticalGap={32}
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}>
+                  <GridColumn alignItems='center'>
+                    {listItems.map((block: IBlock<any>, index) => (
+                      <Draggable key={block.id} draggableId={`${block.id}`} index={index}>
+                        {(provided: any, snapshot: any) => (
+                          <DraggableItem
+                            isDragging={snapshot.isDragging}
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            key={block.id}>
+                            <BlockActionWrapper onClick={() => setSelectedBlock(block)}>
+                              <TargetBlockTypePreview block={block} />
+                            </BlockActionWrapper>
+                          </DraggableItem>
+                        )}
+                      </Draggable>
+                    ))}
+                  </GridColumn>
+                </FormWrapperDroppable>
+              )}
+            </Droppable>
+          </DragDropContext>
         </>
       )}
       <FormFooter>

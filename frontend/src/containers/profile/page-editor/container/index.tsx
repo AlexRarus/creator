@@ -1,14 +1,20 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { useHistory } from 'react-router-dom';
-import { BrowserView, MobileView } from 'react-device-detect';
+import { BrowserView } from 'react-device-detect';
 import { Grid, GridColumn } from 'src/components/grid';
 import { useIsAuthor } from 'src/utils/useIsAuthor';
 
 import { PageForm } from './page-form';
 import { PagePreview } from './page-preview';
 import { useMapStoreToProps } from './selectors';
-import { DesktopPageWrapper, BlockWrapper, PhoneWrapper } from './style';
+import {
+  DesktopPageWrapper,
+  BlockWrapper,
+  PhoneWrapper,
+  StyledMobileView,
+  FlexBlock,
+} from './style';
 
 interface IProps {
   username: string;
@@ -16,7 +22,13 @@ interface IProps {
 }
 
 export const PageEditorContainer = observer((props: IProps) => {
-  const { isLoading, getMyPageBySlugAction, data, selectPageAction } = useMapStoreToProps();
+  const {
+    isLoading,
+    getMyPageBySlugAction,
+    data,
+    selectPageAction,
+    updateMyPageAction,
+  } = useMapStoreToProps();
   const { username, pageSlug } = props;
   const { replace } = useHistory();
   const isAuthor = useIsAuthor(username);
@@ -41,6 +53,16 @@ export const PageEditorContainer = observer((props: IProps) => {
     }
   };
 
+  const onDragEndPagesAction = (listIds?: any[]) => {
+    const reqData = {
+      id: data?.id,
+      label: data?.label,
+      blocks: listIds, // id блоков в том порядке в котором они должны сохраниться
+      slug: pageSlug,
+    };
+    updateMyPageAction(reqData);
+  };
+
   return (
     <>
       {!isAuthor && 'PageEditorContainer Error...'}
@@ -58,6 +80,7 @@ export const PageEditorContainer = observer((props: IProps) => {
                         username={username}
                         pageSlug={pageSlug}
                         onUpdatePageForm={onUpdatePageForm}
+                        onDragEndPagesAction={onDragEndPagesAction}
                       />
                     </PhoneWrapper>
                   </BlockWrapper>
@@ -72,18 +95,17 @@ export const PageEditorContainer = observer((props: IProps) => {
               </Grid>
             </DesktopPageWrapper>
           </BrowserView>
-          <MobileView>
-            <Grid verticalGap={32}>
-              <GridColumn size={12} alignItems='center'>
-                <PageForm
-                  data={data}
-                  username={username}
-                  pageSlug={pageSlug}
-                  onUpdatePageForm={onUpdatePageForm}
-                />
-              </GridColumn>
-            </Grid>
-          </MobileView>
+          <StyledMobileView>
+            <FlexBlock>
+              <PageForm
+                data={data}
+                username={username}
+                pageSlug={pageSlug}
+                onUpdatePageForm={onUpdatePageForm}
+                onDragEndPagesAction={onDragEndPagesAction}
+              />
+            </FlexBlock>
+          </StyledMobileView>
         </>
       )}
     </>
