@@ -13,7 +13,7 @@ export const LIGHT_THEME: ITheme = {
   },
   background: {
     primary: COLORS.grey[200],
-    secondary: COLORS.blueGrey[500],
+    secondary: COLORS.blueGrey[200],
   },
   textColor: {
     primary: COLORS.grey[900],
@@ -133,7 +133,7 @@ export const DARK_THEME: ITheme = {
   },
   background: {
     primary: COLORS.grey.A700,
-    secondary: COLORS.blueGrey[500],
+    secondary: COLORS.grey.A400,
   },
   textColor: {
     primary: COLORS.grey[300],
