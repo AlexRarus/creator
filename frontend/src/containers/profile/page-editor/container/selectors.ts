@@ -5,6 +5,7 @@ export function useMapStoreToProps() {
 
   return {
     isLoading: dalPagesStore.isLoading,
+    isUpdating: dalPagesStore.isUpdating,
     data: dalPagesStore.selectedPage,
     getMyPageBySlugAction: dalPagesStore.getMyPageBySlugAction,
     updateMyPageAction: dalPagesStore.updateMyPageAction,

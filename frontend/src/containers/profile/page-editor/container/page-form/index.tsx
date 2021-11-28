@@ -40,6 +40,7 @@ interface IProps {
   data: IPage;
   username: string;
   pageSlug: string;
+  isUpdating: boolean;
   onUpdatePageForm: (slug?: string) => void;
   onDragEndPagesAction: (list: number[]) => void;
 }
@@ -50,7 +51,7 @@ interface INewBlock {
 }
 
 export const PageForm = (props: IProps) => {
-  const { data, username, pageSlug, onUpdatePageForm, onDragEndPagesAction } = props;
+  const { data, username, pageSlug, isUpdating, onUpdatePageForm, onDragEndPagesAction } = props;
   const [listItems, setListItems] = useState<any[]>([]);
   const [isShowPreview, setIsShowPreview] = useState(false);
   const [pageSettingsModalTab, setPageSettingsModalTab] = useState<TabValue | null>(null);
@@ -99,7 +100,9 @@ export const PageForm = (props: IProps) => {
 
   return (
     <>
-      {isShowPreview && <PagePreview username={username} pageSlug={pageSlug} data={data} />}
+      {isShowPreview && (
+        <PagePreview isUpdating={isUpdating} username={username} pageSlug={pageSlug} data={data} />
+      )}
       {!isShowPreview && (
         <>
           <FormHeader>

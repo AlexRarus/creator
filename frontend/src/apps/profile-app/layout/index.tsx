@@ -13,11 +13,11 @@ interface IProps {
 
 export function ProfileLayout(props: IProps) {
   const { children } = props;
-  const { toggleAppType } = useAppTypeContext();
+  const { setAppType } = useAppTypeContext();
 
   useEffect(() => {
     if (isMobile) {
-      toggleAppType();
+      setAppType('app');
     }
   }, [isMobile]);
 

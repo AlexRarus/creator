@@ -50,6 +50,14 @@ export const MobileMenu = (props: IProps) => {
     history.push(link);
   };
 
+  const toggleThemeAction = () => {
+    if (themeType === 'light') {
+      toggleTheme('dark');
+    } else {
+      toggleTheme('light');
+    }
+  };
+
   const openNavigation = () => setIsOpenNavigation(true);
   const closeNavigation = () => setIsOpenNavigation(false);
 
@@ -73,7 +81,7 @@ export const MobileMenu = (props: IProps) => {
                   </Button>
                 </>
               )}
-              <ThemeModeButton onClick={toggleTheme}>
+              <ThemeModeButton onClick={toggleThemeAction}>
                 {themeType === 'light' ? (
                   <LightModeIcon fontSize={'small'} />
                 ) : (

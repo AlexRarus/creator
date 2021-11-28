@@ -46,6 +46,14 @@ export const DesktopMenu = (props: IProps) => {
     history.push(link);
   };
 
+  const toggleThemeAction = () => {
+    if (themeType === 'light') {
+      toggleTheme('dark');
+    } else {
+      toggleTheme('light');
+    }
+  };
+
   return (
     <DesktopHeaderWrapper>
       <VerticalSlide duration={200} state={isHideMenu} value={MENU_HEIGHT} direction={-1}>
@@ -72,7 +80,7 @@ export const DesktopMenu = (props: IProps) => {
                 </Button>
               </>
             )}
-            <ThemeModeButton onClick={toggleTheme}>
+            <ThemeModeButton onClick={toggleThemeAction}>
               {themeType === 'light' ? <LightModeIcon /> : <ModeNightIcon />}
             </ThemeModeButton>
           </RightSide>

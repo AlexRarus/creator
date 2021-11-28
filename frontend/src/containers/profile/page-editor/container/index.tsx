@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 import { useHistory } from 'react-router-dom';
 import { BrowserView } from 'react-device-detect';
@@ -24,6 +24,7 @@ interface IProps {
 export const PageEditorContainer = observer((props: IProps) => {
   const {
     isLoading,
+    isUpdating,
     getMyPageBySlugAction,
     data,
     selectPageAction,
@@ -79,6 +80,7 @@ export const PageEditorContainer = observer((props: IProps) => {
                         data={data}
                         username={username}
                         pageSlug={pageSlug}
+                        isUpdating={isUpdating}
                         onUpdatePageForm={onUpdatePageForm}
                         onDragEndPagesAction={onDragEndPagesAction}
                       />
@@ -88,7 +90,12 @@ export const PageEditorContainer = observer((props: IProps) => {
                 <GridColumn size={6} alignItems='center'>
                   <BlockWrapper>
                     <PhoneWrapper isForm={false}>
-                      <PagePreview data={data} username={username} pageSlug={pageSlug} />
+                      <PagePreview
+                        data={data}
+                        isUpdating={isUpdating}
+                        username={username}
+                        pageSlug={pageSlug}
+                      />
                     </PhoneWrapper>
                   </BlockWrapper>
                 </GridColumn>
@@ -100,6 +107,7 @@ export const PageEditorContainer = observer((props: IProps) => {
               <PageForm
                 data={data}
                 username={username}
+                isUpdating={isUpdating}
                 pageSlug={pageSlug}
                 onUpdatePageForm={onUpdatePageForm}
                 onDragEndPagesAction={onDragEndPagesAction}

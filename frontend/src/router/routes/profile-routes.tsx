@@ -21,6 +21,11 @@ const appRoutes: IRoute[] = [
     ),
   },
   {
+    exact: true,
+    path: `/profile/:username/themes/`,
+    component: lazy(() => import(/* webpackChunkName: "page_themes" */ 'src/containers/themes/')),
+  },
+  {
     path: `*`,
     component: lazy(() => import(/* webpackChunkName: "page_404" */ 'src/containers/404')),
   },

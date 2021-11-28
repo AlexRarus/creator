@@ -15,7 +15,7 @@ export const AppTypeProvider = ({ children }: any) => {
     }
   };
 
-  return <Provider value={{ appType, toggleAppType }}>{children}</Provider>;
+  return <Provider value={{ appType, toggleAppType, setAppType }}>{children}</Provider>;
 };
 
 export const useAppTypeContext = () => useContext(Context);
