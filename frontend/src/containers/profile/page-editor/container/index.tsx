@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom';
 import { BrowserView, MobileView } from 'react-device-detect';
 import { Grid, GridColumn } from 'src/components/grid';
 import { useIsAuthor } from 'src/utils/useIsAuthor';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import { PageForm } from './page-form';
 import { PagePreview } from './page-preview';

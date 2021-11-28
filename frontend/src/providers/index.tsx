@@ -4,7 +4,8 @@ import React from 'react';
 import * as mobx from 'mobx';
 import { RootStoreProvider } from 'src/dal/store-provider';
 
-import { DarkThemeProvider } from './dark-theme-provider';
+import { CustomThemeProvider } from './dark-theme-provider';
+import { AppTypeProvider } from './app-type-provider';
 
 /*
     const isMobile = useMediaQuery('(max-width:768px)');
@@ -21,8 +22,10 @@ export const AppCommonProvider = (props: any) => {
   const { children } = props;
 
   return (
-    <DarkThemeProvider>
-      <RootStoreProvider>{children}</RootStoreProvider>
-    </DarkThemeProvider>
+    <CustomThemeProvider>
+      <AppTypeProvider>
+        <RootStoreProvider>{children}</RootStoreProvider>
+      </AppTypeProvider>
+    </CustomThemeProvider>
   );
 };

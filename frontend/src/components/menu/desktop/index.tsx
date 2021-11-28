@@ -4,7 +4,7 @@ import { IUser } from 'src/dal/auth/interfaces';
 import { IPage } from 'src/dal/pages/interfaces';
 import { VerticalSlide } from 'src/components/animations';
 import { useScrollDirection } from 'src/utils/useScrollDirection';
-import { useDarkThemeContext } from 'src/providers/dark-theme-provider';
+import { useThemeContext } from 'src/providers/dark-theme-provider';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import ModeNightIcon from '@mui/icons-material/ModeNightOutlined';
 import Button from 'src/components/button';
@@ -35,7 +35,7 @@ interface IProps {
 export const DesktopMenu = (props: IProps) => {
   const { user, logoutAction, selectedPage, isProfile, menuItems } = props;
   const history = useHistory();
-  const { toggleTheme, themeType } = useDarkThemeContext();
+  const { toggleTheme, themeType } = useThemeContext();
   const isHideMenu: boolean = useScrollDirection(false, 15, 15);
   const { pathname } = useLocation();
 
@@ -68,7 +68,7 @@ export const DesktopMenu = (props: IProps) => {
             {!isProfile && (
               <>
                 <Button kind={'secondary'} onClick={onClickAuth}>
-                  {user ? 'В кабинет' : pathname === '/auth/login/' ? 'Авторизоваться' : 'Войти'}
+                  {user ? 'В кабинет' : pathname === '/auth/login/' ? 'Регистрация' : 'Войти'}
                 </Button>
               </>
             )}

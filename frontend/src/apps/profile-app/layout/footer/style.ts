@@ -4,14 +4,11 @@ import Link from 'src/components/link';
 
 export const FooterWrapper = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: ${({ theme }) => (theme?.isMobile ? 'column' : 'row')};
   width: 100%;
-  padding: 15px 30px;
+  padding: ${({ theme }) => (theme?.isMobile ? '4px' : '15px 30px')};
   justify-content: space-between;
   height: 64px;
-  ${MEDIA.max1024({
-    width: '100%',
-  })}
 `;
 
 export const LeftSide = styled.div`

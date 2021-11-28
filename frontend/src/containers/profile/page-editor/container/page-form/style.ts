@@ -90,10 +90,10 @@ export const PageSlug = styled.span`
 `;
 
 export const LinkCopyIndicator = styled.div`
+  display: ${({ theme }) => (theme?.isMobile ? 'none' : 'flex')};
   position: absolute;
   top: 0;
   right: 10px;
-  display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
