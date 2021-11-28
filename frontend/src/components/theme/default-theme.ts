@@ -27,24 +27,24 @@ export const LIGHT_THEME: ITheme = {
     button: {
       color: {
         primary: COLORS.white,
-        secondary: COLORS.white,
+        secondary: COLORS.grey[900],
         disabled: COLORS.grey[300],
         air: COLORS.white,
         formed: COLORS.grey[200],
       },
       background: {
         primary: COLORS.blue[500],
-        secondary: COLORS.grey[500],
+        secondary: COLORS.white,
         disabled: COLORS.grey[400],
         air: COLORS.indigo[900],
         formed: COLORS.grey.A400,
       },
       hover: {
         primary: COLORS.blue[600],
-        secondary: COLORS.grey[600],
+        secondary: COLORS.white,
         disabled: COLORS.grey[400],
         air: COLORS.indigo[800],
-        formed: COLORS.grey.A200,
+        formed: COLORS.grey.A400,
       },
       active: {
         primary: COLORS.blue[500],
@@ -161,7 +161,7 @@ export const DARK_THEME: ITheme = {
       },
       hover: {
         primary: COLORS.blue[300],
-        secondary: COLORS.black,
+        secondary: COLORS.grey.A400,
         disabled: COLORS.grey[400],
         air: COLORS.indigo.A100,
         formed: COLORS.blue[600],
@@ -175,7 +175,7 @@ export const DARK_THEME: ITheme = {
       },
       borderColor: {
         primary: COLORS.blue[400],
-        secondary: COLORS.grey.A400,
+        secondary: COLORS.grey.A100,
         disabled: COLORS.grey[400],
         air: COLORS.indigo.A200,
         formed: COLORS.blue[400],
@@ -200,7 +200,7 @@ export const DARK_THEME: ITheme = {
         primary: COLORS.black,
         secondary: COLORS.grey[500],
         disabled: COLORS.grey.A400,
-        formed: COLORS.grey.A400,
+        formed: COLORS.grey.A100,
         hover: COLORS.grey.A200,
       },
     },

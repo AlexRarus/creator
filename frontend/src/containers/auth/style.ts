@@ -86,7 +86,7 @@ export const AuthSpan = styled.div`
 
 export const AuthSeparate = styled.div`
   width: 100%;
-  border-bottom: 1px solid ${({ theme }) => theme?.colorText?.primary};
+  border-bottom: 1px solid ${({ theme }) => theme?.textColor?.primary};
   position: relative;
   margin: 30px 0;
 

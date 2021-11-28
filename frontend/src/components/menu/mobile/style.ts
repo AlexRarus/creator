@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { COLORS } from 'src/components/theme';
+import { rgba } from 'polished';
 import { Link, NavLink } from 'react-router-dom';
 
 import { MENU_HEIGHT } from '../constants';
@@ -58,6 +59,8 @@ export const NavigationList = styled.div<{ isOpen: boolean }>`
   height: 100%;
   top: 0;
   left: ${({ isOpen }) => (isOpen ? 0 : -280)}px;
+  background: ${({ theme }) => rgba(theme?.background?.primary, 0.9)};
+  backdrop-filter: blur(4px);
   transition: all ease-out 300ms;
 `;
 
