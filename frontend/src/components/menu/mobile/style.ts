@@ -60,8 +60,9 @@ export const NavigationList = styled.div<{ isOpen: boolean }>`
   top: 0;
   left: ${({ isOpen }) => (isOpen ? 0 : -280)}px;
   background: ${({ theme }) => rgba(theme?.background?.primary, 0.9)};
+  box-shadow: 0px 0px 150px -15px ${({ theme, isOpen }) => (isOpen ? rgba(theme?.textColor?.primary, 0.15) : 'transparent')};
   backdrop-filter: blur(4px);
-  transition: all ease-out 300ms;
+  transition: all cubic-bezier(0, 1.2, 0.12, 1) 250ms;
 `;
 
 export const Logo = styled(Link)`
@@ -77,21 +78,17 @@ export const Logo = styled(Link)`
 
 export const NavigationItem = styled(NavLink)`
   padding: 15px 20px 14px 20px;
-  border-bottom: 1px solid transparent;
   text-decoration: none;
+  color ${({ theme }) => theme?.textColor?.primary};
+  font-size: ${({ theme }) => (theme?.isMobile ? '18px' : '16px')};
+  font-weight: ${({ theme }) => (theme?.isMobile ? '600' : '400')};
 
   :last-child {
     margin-right: 0;
   }
 
-  :visited,
-  :active {
-    color: ${COLORS.grey.A400};
-  }
-
   &.selected {
-    color: ${COLORS.blue[600]};
-    border-bottom: 1px solid ${COLORS.blue[500]};
+    background-color: ${({ theme }) => theme?.component?.input?.borderColor?.hover};
   }
 `;
 
