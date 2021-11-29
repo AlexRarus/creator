@@ -2,7 +2,7 @@ from api.models.avatar import Avatar
 from rest_framework import serializers
 
 
-class AvatarExistsException(Exception):
+class AvatarExistsExceptionError(Exception):
     pass
 
 

@@ -16,7 +16,7 @@ from .permissions import (
     IsAvatarPermission,
     IsPagePermission,
 )
-from .serializers.avatar import AvatarExistsException, AvatarSerializer
+from .serializers.avatar import AvatarExistsExceptionError, AvatarSerializer
 from .serializers.block import BlockReadSerializer, BlockWriteSerializer
 from .serializers.block_type import BlockTypeSerializer
 from .serializers.page import PageReadSerializer, PageWriteSerializer
@@ -144,7 +144,7 @@ class AvatarViewSet(
     def create(self, request, *args, **kwargs):
         try:
             return super(AvatarViewSet, self).create(request, *args, **kwargs)
-        except AvatarExistsException:
+        except AvatarExistsExceptionError:
             content = {"error": "У вас уже есть аватар"}
             return Response(
                 content,
