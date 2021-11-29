@@ -43,7 +43,7 @@ export const ModalWrapper = styled.div<IModalWrapperProps>`
   display: flex;
   flex-direction: column;
   position: absolute;
-  background: ${COLORS.white};
+  background: ${({ theme }) => theme?.background?.primary};
   border-radius: ${({ isMobile }) => (isMobile ? '8px 8px 0 0' : '8px')};
   padding-top: ${({ isMobile, hasTitle }) => {
     if (!hasTitle) {
@@ -117,7 +117,6 @@ export const CloseButton = styled.div<{ isMobile: boolean; hasTitle: boolean }>`
   right: 0;
   padding: ${({ isMobile }) => (isMobile ? '10px 10px 0 0' : '24px 24px 0 0')};
   cursor: pointer;
-  background-color: ${COLORS.white};
   border-top-right-radius: 8px;
 
   :hover {
@@ -129,7 +128,6 @@ export const CloseButton = styled.div<{ isMobile: boolean; hasTitle: boolean }>`
   svg {
     width: 24px;
     height: 24px;
-    color: ${COLORS.black};
     cursor: pointer;
   }
 `;

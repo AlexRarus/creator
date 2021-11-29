@@ -8,4 +8,5 @@ export const BlockEditorContainerWrapper = styled.div`
 
 export const FormWrapper = styled.form`
   max-width: 100%;
+  background: ${({ theme }) => theme?.background?.primary};
 `;

@@ -17,6 +17,7 @@ export function ProfileLayout(props: IProps) {
 
   useEffect(() => {
     if (isMobile) {
+      // блокировка скролла для нормальной работы dnd
       setAppType('app');
     }
   }, [isMobile]);
