@@ -4,6 +4,7 @@ import { History } from 'history';
 import { addNotificationItem } from 'src/components/notification';
 
 import { IRootStore } from '../interfaces';
+import { IWritePage } from '../../api/endpoints/pages';
 
 import { IPage } from './interfaces';
 
@@ -11,6 +12,7 @@ export default class DalPagesStore {
   rootStore!: IRootStore;
   routerStore!: History;
 
+  isUpdating = false; // loader для обновления данных, чтобы не мигала вся страница
   isLoading = false;
   total = 0;
   pages: IPage[] = [];
@@ -71,6 +73,19 @@ export default class DalPagesStore {
     } catch (e) {
       console.log('getMyPageBySlugAction', e);
       this.isLoading = false;
+    }
+  });
+
+  updateMyPageAction = flow(function* (this: DalPagesStore, data: IWritePage) {
+    try {
+      this.isUpdating = true;
+      yield this.API.updatePage(data);
+      const response = yield this.API.getMyPageBySlug(this.selectedPage?.slug as string);
+      this.selectedPage = response.data;
+      this.isUpdating = false;
+    } catch (e) {
+      console.log('updateMyPageAction', e);
+      this.isUpdating = false;
     }
   });
 

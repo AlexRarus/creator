@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { COLORS } from 'src/components/theme';
+import { MobileView } from 'react-device-detect';
 
 import { FORM_HEADER_HEIGHT, FORM_FOOTER_HEIGHT } from './page-form/style';
 
@@ -22,4 +23,16 @@ export const PhoneWrapper = styled.div<{ isForm: boolean }>`
   overflow: hidden;
   padding-top: ${({ isForm }) => (isForm ? FORM_HEADER_HEIGHT : 0)}px;
   padding-bottom: ${({ isForm }) => (isForm ? FORM_FOOTER_HEIGHT : 0)}px;
+`;
+
+export const StyledMobileView = styled(MobileView)`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+`;
+
+export const FlexBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 `;

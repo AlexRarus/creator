@@ -6,7 +6,7 @@ export const USER_MENU_BACKGROUND = COLORS.grey[700];
 export const USER_MENU_BACKGROUND_HOVER = COLORS.grey[900];
 
 export const UserMenuWrapper = styled.div<{ isOpen: boolean }>`
-  background: ${({ isOpen }) => (isOpen ? USER_MENU_BACKGROUND : COLORS.white)};
+  background: ${({ isOpen }) => (isOpen ? USER_MENU_BACKGROUND : 'inherit')};
   padding: 5px;
   border-radius: 4px 4px 0 0;
   transition: all 100ms ease-out;

@@ -31,6 +31,9 @@ const devServerConfig = () => config => {
           '^/api': '/api',
         },
         secure: false,
+        headers: {
+          Connection: 'keep-alive'
+        }
       },
       '/static': {
         target: SERVICE_API_URL,

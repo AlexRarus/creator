@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { rgba } from 'polished';
+import { Grid, GridColumn } from 'src/components/grid';
 import { COLORS, MEDIA } from 'src/components/theme';
 
 export const FORM_HEADER_HEIGHT = 64;
@@ -91,7 +93,6 @@ export const LinkCopyIndicator = styled.div`
   position: absolute;
   top: 0;
   right: 10px;
-  display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
@@ -139,5 +140,37 @@ export const BlockActionWrapper = styled.div`
 
   * {
     cursor: pointer;
+  }
+`;
+
+export const FormWrapperDroppable = styled(Grid)<{ isDraggingOver: boolean }>`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: ${PAGE_PREVIEW_PADDING}px;
+  background: ${({ theme, isDraggingOver }) =>
+    isDraggingOver ? theme?.background?.secondary : theme?.background?.primary};
+  width: 100%;
+  height: 100%;
+`;
+
+export const DraggableItem = styled.div<{ isDragging: boolean }>`
+  position: relative;
+  background: ${({ theme, isDragging }) =>
+    isDragging ? theme?.component?.button?.borderColor?.secondary : 'inherit'};
+  width: 100%;
+
+  &:before {
+    content: '';
+    position: absolute;
+    left: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: ${({ theme }) => theme?.textColor?.primary};
   }
 `;

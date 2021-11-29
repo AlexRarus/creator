@@ -6,6 +6,7 @@ import ProfileApp from 'src/apps/profile-app';
 import App from 'src/apps/app';
 import Notification from 'src/components/notification';
 import { ScrollGlobalStyle } from 'src/utils/scroll';
+import { useAppTypeContext } from 'src/providers/app-type-provider';
 import API from 'src/api';
 
 import { useMapStoreToProps } from './selectors';
@@ -13,6 +14,7 @@ import { GlobalStyleApp } from './style';
 
 const Root = observer((props: any) => {
   const { initAuthAction, logoutAction, access } = useMapStoreToProps();
+  const { appType } = useAppTypeContext();
 
   useEffect(() => {
     const responseSuccess = (response: any) => {
@@ -46,7 +48,7 @@ const Root = observer((props: any) => {
 
   return (
     <>
-      <GlobalStyleApp />
+      <GlobalStyleApp appType={appType} />
       <ScrollGlobalStyle />
       <Notification maxShowItems={5} />
       <Switch>

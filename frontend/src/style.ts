@@ -1,7 +1,7 @@
 import styled, { createGlobalStyle, css } from 'styled-components';
 import { MEDIA, FONTS, ITheme } from 'src/components/theme';
 
-export const GlobalStyleApp = createGlobalStyle`  
+export const GlobalStyleApp = createGlobalStyle<any>`  
   html {
     background: ${({ theme }) => theme.background?.primary};
     color: ${({ theme }) => theme.textColor?.primary};
@@ -9,13 +9,13 @@ export const GlobalStyleApp = createGlobalStyle`
     height: 100%;
     display: table;
     
-    ${({ theme }: { theme: ITheme }) =>
+    ${({ theme, appType }: any) =>
       theme?.isMobile
         ? css`
             position: relative;
             max-width: 100%;
             overflow-x: hidden;
-            overflow-y: scroll;
+            overflow-y: ${appType === 'web' ? 'scroll' : 'hidden'};
             text-rendering: optimizeLegibility;
           `
         : css``}
