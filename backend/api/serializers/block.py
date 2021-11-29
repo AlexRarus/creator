@@ -9,7 +9,10 @@ class BlockReadSerializer(serializers.ModelSerializer):
     author = serializers.PrimaryKeyRelatedField(read_only=True)
     data = serializers.SerializerMethodField(read_only=True)
     page_slugs = serializers.SlugRelatedField(
-        source="pages", slug_field="slug", read_only=True, many=True
+        source="pages",
+        slug_field="slug",
+        read_only=True,
+        many=True,
     )
 
     def get_data(self, obj):

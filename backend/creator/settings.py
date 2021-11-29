@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "djoser",
     "users",
     "api",
+    "django_cleanup",
 ]
 
 MIDDLEWARE = [

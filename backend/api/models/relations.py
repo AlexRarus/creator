@@ -3,10 +3,14 @@ from django.db import models
 
 class PageBlockRelation(models.Model):
     block = models.ForeignKey(
-        "api.Block", verbose_name="блок", on_delete=models.CASCADE
+        "api.Block",
+        verbose_name="блок",
+        on_delete=models.CASCADE,
     )
     page = models.ForeignKey(
-        "api.Page", verbose_name="страница", on_delete=models.CASCADE
+        "api.Page",
+        verbose_name="страница",
+        on_delete=models.CASCADE,
     )
     order = models.PositiveIntegerField(
         default=0,
@@ -18,6 +22,7 @@ class PageBlockRelation(models.Model):
         ordering = ("order",)
         constraints = [
             models.UniqueConstraint(
-                fields=("block", "page"), name="page_block_relation"
+                fields=("block", "page"),
+                name="page_block_relation",
             )
         ]

@@ -21,6 +21,20 @@ class IsAuthorPermission(BasePermission):
         return request.method in SAFE_METHODS or request.user.is_authenticated
 
     def has_object_permission(self, request, view, obj):
-        if request.method == "DELETE":
+        if request.method in [
+            "DELETE",
+            "PUT",
+            "PATCH",
+        ]:
             return request.user.is_staff or request.user == obj.author
         return request.method in SAFE_METHODS or request.user.is_authenticated
+
+
+class IsAvatarPermission(BasePermission):
+    def has_permission(self, request, view):
+        # Создание
+        return request.user.is_authenticated
+
+    def has_object_permission(self, request, view, obj):
+        # Удаление / Изменение
+        return request.user.is_staff or request.user == obj.user

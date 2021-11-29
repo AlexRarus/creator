@@ -31,7 +31,10 @@ class LogoutView(APIView):
             token.blacklist()
 
             return Response(status=status.HTTP_205_RESET_CONTENT)
-        except (TokenError, TokenBackendError) as e:
+        except (
+            TokenError,
+            TokenBackendError,
+        ) as e:
             print(e)
             return Response(status=status.HTTP_200_OK)
         except Exception as e:
@@ -49,6 +52,9 @@ class LogoutAllView(APIView):
         logout(request)
         tokens = OutstandingToken.objects.filter(user_id=request.user.id)
         for token in tokens:
-            t, _ = BlacklistedToken.objects.get_or_create(token=token)
+            (
+                t,
+                _,
+            ) = BlacklistedToken.objects.get_or_create(token=token)
 
         return Response(status=status.HTTP_205_RESET_CONTENT)
