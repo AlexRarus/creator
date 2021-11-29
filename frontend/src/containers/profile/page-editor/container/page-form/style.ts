@@ -157,7 +157,20 @@ export const FormWrapperDroppable = styled(Grid)<{ isDraggingOver: boolean }>`
 `;
 
 export const DraggableItem = styled.div<{ isDragging: boolean }>`
+  position: relative;
   background: ${({ theme, isDragging }) =>
-    isDragging ? rgba(theme?.component?.button?.borderColor?.secondary, 0.7) : 'inherit'};
+    isDragging ? theme?.component?.button?.borderColor?.secondary : 'inherit'};
   width: 100%;
+
+  &:before {
+    content: '';
+    position: absolute;
+    left: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: ${({ theme }) => theme?.textColor?.primary};
+  }
 `;
