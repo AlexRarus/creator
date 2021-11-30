@@ -19,9 +19,8 @@ export const ThemeItem = styled.div<{ isSelected?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 140px;
   width: 100%;
-  height: 140px;
+  height: 80px;
   border 2px solid ${({ theme }) => theme?.component?.button?.borderColor?.secondary};
   background: ${({ isSelected, theme }) => (isSelected ? theme?.background?.secondary : 'inherit')};
   border-radius: 8px;

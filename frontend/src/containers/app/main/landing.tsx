@@ -10,14 +10,16 @@ import Facebook from '@mui/icons-material/Facebook';
 import YouTube from '@mui/icons-material/YouTube';
 import Instagram from '@mui/icons-material/Instagram';
 import { ControlledField } from 'src/components/controlled-field';
+import { Grid, GridColumn } from 'src/components/grid';
 
+import { BlockSwiper } from './block-swiper';
+import { PhoneSwiper } from './phone-swiper';
 import {
   LandingWrapper,
   LandingPart,
   WelcomeTitle,
   WelcomeSpan,
   StartRow,
-  ScreenOfPhone,
   LandingExamplesBlock,
   ExamplesLinks,
   ExampleLink,
@@ -32,7 +34,7 @@ import {
   LangRow,
   Flag,
   FooterIconBox,
-  ScreensList,
+  // ScreensList,
   ScreenImage,
   AllowMobileHeader,
   AllowPart,
@@ -44,32 +46,14 @@ import {
   AllowIndicatorBox,
   AllowScreensList,
   AllowScreen,
+  LeftExample,
+  RightExample,
 } from './style';
 import MobilePhone from './assets/test-image.jpg';
-import MobilePhone1 from './assets/test-image1.jpg';
 import MobilePhone2 from './assets/test-image2.jpeg';
 import MobilePhone3 from './assets/test-image3.jpeg';
 import MobilePhone4 from './assets/test-image4.jpeg';
 import { useInterval } from './hooks';
-
-const carouselList = [
-  {
-    main: MobilePhone,
-    second: MobilePhone1,
-  },
-  {
-    main: MobilePhone2,
-    second: MobilePhone3,
-  },
-  {
-    main: MobilePhone3,
-    second: MobilePhone4,
-  },
-  {
-    main: MobilePhone4,
-    second: MobilePhone,
-  },
-];
 
 const carouselAllowList = [MobilePhone, MobilePhone2, MobilePhone3, MobilePhone4];
 
@@ -78,7 +62,6 @@ type FormInputs = {
 };
 
 export const LandingContainer = observer(() => {
-  const [carouselOrder, setOrder] = useState(0);
   const [milliseconds, setMilliseconds] = useState(60000); // 1 min;
   const [selectedAllow, setSelectedAllow] = useState(0);
   // set interval для смены слайдов блока allows
@@ -89,15 +72,6 @@ export const LandingContainer = observer(() => {
       setSelectedAllow(0);
     }
   }, milliseconds / 12); // 5 sec
-
-  // set interval для смены слайдов блока examples
-  useInterval(() => {
-    if (carouselOrder < 3) {
-      setOrder(carouselOrder + 1);
-    } else {
-      setOrder(0);
-    }
-  }, milliseconds / 10); // 6 sec
 
   const { watch, control } = useForm<FormInputs>({
     mode: 'onTouched',
@@ -118,71 +92,54 @@ export const LandingContainer = observer(() => {
     history.push(`auth/registration?email=${username}`);
   };
 
-  const setCarousel = (order: number) => () => {
-    // обавляем 1 милисекунду к интервалу чтобы запустить его заново
-    setMilliseconds(milliseconds + 1);
-    setOrder(order);
-  };
-
   return (
     <LandingWrapper>
-      <LandingPart background={COLORS.deepPurple[800]}>
-        <WelcomeTitle isLight={true}>Расширяйте возможности вашего профиля</WelcomeTitle>
-        <WelcomeSpan isLight={true}>в TikTok и других соцсетях</WelcomeSpan>
-        <StartRow>
-          <ControlledField name='email' control={control}>
-            <InputText placeholder={'Ваш email'} kind={'air'} dimension={'xxl'} />
-          </ControlledField>
-          <Button dimension={'xxl'} kind={'air'} onClick={onClickStart}>
-            Начать бесплатно
-          </Button>
-        </StartRow>
-      </LandingPart>
-      <LandingPart padding={{ top: '100px', bottom: '100px', left: '24px', right: '24px' }}>
-        <LandingExamplesBlock>
-          <ExamplesLinks>
-            <ExampleLink isSelected={carouselOrder === 0} onClick={setCarousel(0)}>
-              товары
-            </ExampleLink>
-            <ExampleLink isSelected={carouselOrder === 1} onClick={setCarousel(1)}>
-              услуги
-            </ExampleLink>
-            <ExampleLink isSelected={carouselOrder === 2} onClick={setCarousel(2)}>
-              обучение
-            </ExampleLink>
-            <ExampleLink isSelected={carouselOrder === 3} onClick={setCarousel(3)}>
-              мероприятия
-            </ExampleLink>
-          </ExamplesLinks>
-          <ExamplesHeader>
-            <HeaderIconBox>
-              <Category htmlColor={COLORS.deepPurple[500]} />
-            </HeaderIconBox>
-            Получайте больше обращений и продаж через Инстаграм
-          </ExamplesHeader>
-          <ExamplesSeparate />
-          <ExamplesContent>
-            Позвольте клиенту выбрать удобный способ связи с вами и оплатить товары и услуги прямо в
-            Инстаграм.
-          </ExamplesContent>
-          <Button dimension={'xxl'} kind={'air'} onClick={onClickStart}>
-            Попробовать сейчас
-          </Button>
-        </LandingExamplesBlock>
-        <ScreenOfPhone width={230}>
-          <ScreensList width={230} order={carouselOrder} length={carouselList.length}>
-            {carouselList.map((pair, index) => (
-              <ScreenImage key={index} imageUrl={pair.second} width={230} />
-            ))}
-          </ScreensList>
-        </ScreenOfPhone>
-        <ScreenOfPhone screenOrder={1} width={280}>
-          <ScreensList width={280} order={carouselOrder} length={carouselList.length}>
-            {carouselList.map((pair, index) => (
-              <ScreenImage key={index} imageUrl={pair.main} width={280} />
-            ))}
-          </ScreensList>
-        </ScreenOfPhone>
+      <BlockSwiper />
+      <LandingPart padding={{ top: '24px', bottom: '24px', left: '24px', right: '24px' }}>
+        <Grid
+          // alignItems="end" колонки будут выравнены по правому краю
+          gap={24}
+          verticalGap={32}
+          // staticSize={6} если передать то пересчета размеров для разных breakPoints НЕ БУДЕТ
+          breakPoints={{
+            // все переданные здесь значения выставлены по-умолчанию
+            // можно передать через контекст ThemeProvider theme: { gridBreakPoints: {...} }
+            '320px': 6, // 4 колонки при ширине экрана 320 и меньше
+            '530px': 6, // 6 колонок при ширине экрана 530 и меньше
+            '950px': 8, // 8 колонок при ширине экрана 950 и меньше
+            '1024px': 12, // 10 колонок при ширине экрана 1024 и меньше
+            '1280px': 12, // 12 колонок при ширине экрана 1280 и меньше
+          }}>
+          <GridColumn size={6}>
+            <LeftExample>
+              <ExamplesLinks>
+                <ExampleLink>товары</ExampleLink>
+                <ExampleLink>услуги</ExampleLink>
+                <ExampleLink>обучение</ExampleLink>
+                <ExampleLink>мероприятия</ExampleLink>
+              </ExamplesLinks>
+              <ExamplesHeader>
+                <HeaderIconBox>
+                  <Category htmlColor={COLORS.deepPurple[500]} />
+                </HeaderIconBox>
+                Получайте больше обращений и продаж через Инстаграм
+              </ExamplesHeader>
+              <ExamplesSeparate />
+              <ExamplesContent>
+                Позвольте клиенту выбрать удобный способ связи с вами и оплатить товары и услуги
+                прямо в Инстаграм.
+              </ExamplesContent>
+              <Button dimension={'xxl'} kind={'air'} onClick={onClickStart}>
+                Попробовать сейчас
+              </Button>
+            </LeftExample>
+          </GridColumn>
+          <GridColumn size={6}>
+            <RightExample>
+              <PhoneSwiper />
+            </RightExample>
+          </GridColumn>
+        </Grid>
       </LandingPart>
       <AllowPart background={COLORS.blue[700]}>
         <Allows>
