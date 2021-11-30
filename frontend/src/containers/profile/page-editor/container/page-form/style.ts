@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import { rgba } from 'polished';
-import { Grid, GridColumn } from 'src/components/grid';
+import { Grid } from 'src/components/grid';
 import { COLORS, MEDIA } from 'src/components/theme';
 
 export const FORM_HEADER_HEIGHT = 64;
@@ -93,6 +92,7 @@ export const LinkCopyIndicator = styled.div`
   position: absolute;
   top: 0;
   right: 10px;
+  display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
