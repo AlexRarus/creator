@@ -81,7 +81,7 @@ docker push rarus/creator_backend:latest
 > [Установка docker-compose на ubuntu18.04](https://www.digitalocean.com/community/tutorials/how-to-install-docker-compose-on-ubuntu-18-04-ru)
 ### Копирование директории ./deploy на удаленный сервер
 ```shell
-scp -r ./deploy user@178.154.216.28:/home/user/
+scp -r ./deploy admin@178.154.216.28:/home/admin/
 ```
 ### Подключиться к серверу и проверить наличие директории ./deploy
 ```shell
