@@ -10,6 +10,7 @@ export interface IAuthAPI {
   logoutAll(): AxiosResponse<any>; // прибиваем все токены
   resetPassword(data: IResetPasswordData): AxiosResponse<any>; // отправляем код для восстановления пароля на email
   resetPasswordConfirm(data: IResetPasswordConfirmData): AxiosResponse<any>; // устанавливаем новый пароль
+  setPassword(data: ISetPassword): AxiosResponse<any>; // меняем пароль пароль
 }
 
 export interface ILoginData {
@@ -43,6 +44,11 @@ export interface IResetPasswordConfirmData {
 
 export interface ILogoutData {
   refresh: string;
+}
+
+export interface ISetPassword {
+  current_password: string;
+  new_password: string;
 }
 
 const getConfig = () => ({
@@ -86,6 +92,11 @@ const getConfig = () => ({
   }),
   resetPasswordConfirm: (data: IResetPasswordConfirmData) => ({
     url: `/auth/users/reset_password_confirm/`,
+    method: 'POST',
+    data,
+  }),
+  setPassword: (data: ISetPassword) => ({
+    url: `/auth/users/set_password/`,
     method: 'POST',
     data,
   }),
