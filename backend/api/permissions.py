@@ -38,3 +38,13 @@ class IsAvatarPermission(BasePermission):
     def has_object_permission(self, request, view, obj):
         # Удаление / Изменение
         return request.user.is_staff or request.user == obj.user
+
+
+class IsImagePermission(BasePermission):
+    def has_permission(self, request, view):
+        # Создание
+        return request.user.is_authenticated
+
+    def has_object_permission(self, request, view, obj):
+        # Удаление / Изменение
+        return request.user.is_staff or request.user == obj.author

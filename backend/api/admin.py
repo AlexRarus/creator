@@ -4,10 +4,25 @@ from django.contrib import admin
 from .models.avatar import Avatar
 from .models.block import Block
 from .models.block_type import BlockType
+from .models.image import Image
 from .models.page import Page
 from .models.relations import PageBlockRelation
 from .models.section import Section
 from .models.types.text import Text
+
+
+@admin.register(Image)
+class ImageAdmin(admin.ModelAdmin):
+    list_display = (
+        "author",
+        "file",
+    )
+    search_fields = (
+        "id",
+        "author",
+        "file",
+    )
+    empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
 
 
 @admin.register(Avatar)

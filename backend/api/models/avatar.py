@@ -4,16 +4,6 @@ from django.db import models
 User = get_user_model()
 
 
-def get_file_name(instance, filename):
-    return "/".join(
-        [
-            "avatar",
-            instance.user.username,
-            filename,
-        ]
-    )
-
-
 class Avatar(models.Model):
     user = models.OneToOneField(
         User,
@@ -24,7 +14,7 @@ class Avatar(models.Model):
     file = models.ImageField(
         verbose_name="Файл",
         help_text="Выберите файл",
-        upload_to=get_file_name,
+        upload_to="avatars/%Y/%m/%d/",
         blank=True,
         null=True,
     )

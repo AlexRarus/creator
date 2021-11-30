@@ -8,17 +8,20 @@ from rest_framework.viewsets import GenericViewSet
 from .models.avatar import Avatar
 from .models.block import Block
 from .models.block_type import BlockType
+from .models.image import Image
 from .models.page import Page
 from .models.section import Section
 from .pagination import CustomPagination
 from .permissions import (
     IsAuthorPermission,
     IsAvatarPermission,
+    IsImagePermission,
     IsPagePermission,
 )
 from .serializers.avatar import AvatarExistsExceptionError, AvatarSerializer
 from .serializers.block import BlockReadSerializer, BlockWriteSerializer
 from .serializers.block_type import BlockTypeSerializer
+from .serializers.image import ImageSerializer
 from .serializers.page import PageReadSerializer, PageWriteSerializer
 from .serializers.section import SectionSerializer
 
@@ -170,3 +173,15 @@ class AvatarViewSet(
                 content,
                 status=status.HTTP_400_BAD_REQUEST,
             )
+
+
+class ImageViewSet(viewsets.ModelViewSet):
+    queryset = Image.objects.all()
+    permission_classes = (IsImagePermission,)
+    serializer_class = ImageSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
+    def perform_update(self, serializer):
+        serializer.save(author=self.request.user)
