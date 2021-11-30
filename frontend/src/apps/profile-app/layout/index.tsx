@@ -20,6 +20,8 @@ export function ProfileLayout(props: IProps) {
       // блокировка скролла для нормальной работы dnd
       setAppType('app');
     }
+
+    return () => setAppType('web');
   }, [isMobile]);
 
   return (

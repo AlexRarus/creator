@@ -139,22 +139,18 @@ const getStylesExamplesBlock = ({ theme }: any) => {
 
   if (isMobile) {
     return css`
-      width: calc(100% - 24px);
-      margin-top: 360px;
-      margin-left: 24px;
-      max-width: 100%;
+      width: auto;
+      flex-direction: column;
     `;
   }
 
   if (isTablet) {
     return css`
-      max-width: 40%;
       margin-left: 24px;
     `;
   }
 
   return css`
-    max-width: 40%;
     margin-left: 80px;
   `;
 };
@@ -213,8 +209,8 @@ const getStylesExamplesLink = ({ theme }: any) => {
 
   if (isMobile) {
     return css`
-      padding-right: 8px;
-      font-size: 16px;
+      padding-right: 6px;
+      font-size: 14px;
 
       &:before {
         display: none;
@@ -226,21 +222,6 @@ const getStylesExamplesLink = ({ theme }: any) => {
     padding-right: 34px;
     font-size: 18px;
   `;
-};
-
-const getStylesExamplesLinks = ({ theme }: any) => {
-  const { isMobile } = theme;
-
-  if (isMobile) {
-    return css`
-      position: absolute;
-      top: 8px;
-      left: 50%;
-      transform: translateX(-50%);
-    `;
-  }
-
-  return css``;
 };
 
 const getStylesAllowPart = ({ theme }: any) => {
@@ -326,21 +307,7 @@ export const ScreenOfPhone = styled.div<ScreenViewport>`
   height: ${({ theme, width }) => calcPhoneWidth({ theme, width }) * 2}px;
   overflow: hidden;
   z-index: 1;
-  border: 8px solid ${COLORS.blueGrey[300]};
   box-sizing: content-box;
-
-  &:before {
-    position: absolute;
-    content: '';
-    width: 50%;
-    height: 16px;
-    top: -1px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: ${COLORS.blueGrey[300]};
-    border-radius: 0 0 12px 12px;
-    z-index: 1;
-  }
 `;
 
 export const ScreenImage = styled.div<ICarouselItem>`
@@ -363,16 +330,29 @@ export const ScreensList = styled.div<ICarousel>`
 
 export const LandingExamplesBlock = styled.div`
   display: flex;
-  align-self: flex-start;
-  flex-direction: column;
   ${getStylesExamplesBlock}
+`;
+
+export const LeftExample = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 0 24px;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const RightExample = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 `;
 
 export const ExamplesLinks = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 12px;
-  ${getStylesExamplesLinks}
 `;
 
 export const ExampleLink = styled.div<{ isSelected?: boolean }>`
@@ -434,13 +414,12 @@ export const ExamplesSeparate = styled.div`
 `;
 
 export const ExamplesContent = styled.div`
-  font-family: Noto Sans;
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
   line-height: 1.6;
   color: ${COLORS.grey[700]};
-  margin-bottom: 28px;
+  margin: 32px 0;
 `;
 
 export const LandingFooter = styled.div`
@@ -602,4 +581,53 @@ export const AllowScreensList = styled.div<ICarousel>`
   top: ${calcAllowCarouselTop}px;
   height: ${calcAllowCarouselHeight}px;
   transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+`;
+
+export const SwiperOfPhone = styled.div<ScreenViewport>`
+  position: absolute;
+  ${getPhonePosition}
+  border-radius: 24px;
+  display: flex;
+  width: ${calcPhoneWidth}px;
+  height: ${({ theme, width }) => calcPhoneWidth({ theme, width }) * 2}px;
+  overflow: hidden;
+  z-index: 1;
+  box-sizing: content-box;
+`;
+
+export const SwiperWrapper = styled.div<{ width?: number }>`
+  position: relative;
+  height: 100%;
+  width: ${({ width }) => width}px;
+
+  .swiper {
+    width: 100%;
+    height: 100%;
+  }
+
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+
+    /* Center slide text vertically */
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+  }
+
+  .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
