@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { BrowserView } from 'react-device-detect';
 import { Grid, GridColumn } from 'src/components/grid';
 import { useIsAuthor } from 'src/utils/useIsAuthor';
+import { DeviceContainer } from 'src/containers/profile/device-wrapper';
 
 import { PageForm } from './page-form';
 import { PagePreview } from './page-preview';
@@ -11,9 +12,10 @@ import { useMapStoreToProps } from './selectors';
 import {
   DesktopPageWrapper,
   BlockWrapper,
-  PhoneWrapper,
+  PhoneScreenWrapper,
   StyledMobileView,
   FlexBlock,
+  ScaleBlock,
 } from './style';
 
 interface IProps {
@@ -76,7 +78,7 @@ export const PageEditorContainer = observer((props: IProps) => {
               <Grid verticalGap={32}>
                 <GridColumn size={6} alignItems='center'>
                   <BlockWrapper>
-                    <PhoneWrapper isForm={true}>
+                    <PhoneScreenWrapper isForm={true}>
                       <PageForm
                         data={data}
                         selectedTheme={selectedTheme}
@@ -86,12 +88,12 @@ export const PageEditorContainer = observer((props: IProps) => {
                         onUpdatePageForm={onUpdatePageForm}
                         onDragEndPagesAction={onDragEndPagesAction}
                       />
-                    </PhoneWrapper>
+                    </PhoneScreenWrapper>
                   </BlockWrapper>
                 </GridColumn>
                 <GridColumn size={6} alignItems='center'>
-                  <BlockWrapper>
-                    <PhoneWrapper isForm={false}>
+                  <ScaleBlock>
+                    <DeviceContainer>
                       <PagePreview
                         data={data}
                         selectedTheme={selectedTheme}
@@ -99,8 +101,8 @@ export const PageEditorContainer = observer((props: IProps) => {
                         username={username}
                         pageSlug={pageSlug}
                       />
-                    </PhoneWrapper>
-                  </BlockWrapper>
+                    </DeviceContainer>
+                  </ScaleBlock>
                 </GridColumn>
               </Grid>
             </DesktopPageWrapper>

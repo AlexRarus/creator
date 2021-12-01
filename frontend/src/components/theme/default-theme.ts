@@ -22,6 +22,7 @@ export const LIGHT_THEME: ITheme = {
   borderColor: {
     primary: COLORS.white,
     secondary: COLORS.blueGrey[500],
+    contrast: COLORS.grey[900],
   },
   component: {
     button: {
@@ -147,6 +148,7 @@ export const DARK_THEME: ITheme = {
   borderColor: {
     primary: COLORS.grey.A700,
     secondary: COLORS.blueGrey[500],
+    contrast: COLORS.grey[200],
   },
   component: {
     button: {

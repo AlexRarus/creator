@@ -4,9 +4,6 @@ import { IUser } from 'src/dal/auth/interfaces';
 import { IPage } from 'src/dal/pages/interfaces';
 import { VerticalSlide } from 'src/components/animations';
 import { useScrollDirection } from 'src/utils/useScrollDirection';
-import { useThemeContext } from 'src/providers/dark-theme-provider';
-import LightModeIcon from '@mui/icons-material/LightMode';
-import ModeNightIcon from '@mui/icons-material/ModeNightOutlined';
 import Button from 'src/components/button';
 
 import { UserMenu } from '../user-menu';
@@ -35,7 +32,6 @@ interface IProps {
 export const DesktopMenu = (props: IProps) => {
   const { user, logoutAction, selectedPage, isProfile, menuItems } = props;
   const history = useHistory();
-  const { toggleTheme, themeType } = useThemeContext();
   const isHideMenu: boolean = useScrollDirection(false, 15, 15);
   const { pathname } = useLocation();
 
@@ -44,14 +40,6 @@ export const DesktopMenu = (props: IProps) => {
       ? `/profile/${user.username}/pages/${selectedPage?.slug}/`
       : `${pathname === '/auth/login/' ? '/auth/registration' : '/auth/login/'}`;
     history.push(link);
-  };
-
-  const toggleThemeAction = () => {
-    if (themeType === 'light') {
-      toggleTheme('dark');
-    } else {
-      toggleTheme('light');
-    }
   };
 
   return (
@@ -80,9 +68,6 @@ export const DesktopMenu = (props: IProps) => {
                 </Button>
               </>
             )}
-            <ThemeModeButton onClick={toggleThemeAction}>
-              {themeType === 'light' ? <LightModeIcon /> : <ModeNightIcon />}
-            </ThemeModeButton>
           </RightSide>
         </DesktopMenuWrapper>
       </VerticalSlide>

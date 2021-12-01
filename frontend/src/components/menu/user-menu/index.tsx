@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Avatar } from 'src/components/avatar';
 import Popup from 'src/components/popup';
 import { IUser } from 'src/dal/auth/interfaces';
+import { useThemeContext } from 'src/providers/dark-theme-provider';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import ModeNightIcon from '@mui/icons-material/ModeNightOutlined';
 
 import {
   UserMenuWrapper,
@@ -9,6 +12,7 @@ import {
   MenuItemLink,
   MenuItemButton,
   USER_MENU_BACKGROUND,
+  ModeLabel,
 } from './style';
 
 interface IProps {
@@ -20,6 +24,17 @@ export const UserMenu = (props: IProps) => {
   const { user, logoutAction } = props;
   const [openerElement, openerRefCallback] = useState<HTMLDivElement | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const { themeType, toggleTheme } = useThemeContext();
+
+  const toggleThemeAction = (event: any) => {
+    event.stopPropagation();
+    event.preventDefault();
+    if (themeType === 'light') {
+      toggleTheme('dark');
+    } else {
+      toggleTheme('light');
+    }
+  };
 
   const openHandler = () => setIsOpen(true);
   const closeHandler = () => setIsOpen(false);
@@ -52,6 +67,19 @@ export const UserMenu = (props: IProps) => {
           <MenuItemLink to={`/profile/${user?.username}/settings/`}>
             Настройки аккаунта
           </MenuItemLink>
+          <MenuItemButton onClick={toggleThemeAction}>
+            {themeType !== 'light' ? (
+              <ModeLabel>
+                Светлая тема
+                <LightModeIcon />
+              </ModeLabel>
+            ) : (
+              <ModeLabel>
+                Темная тема
+                <ModeNightIcon />
+              </ModeLabel>
+            )}
+          </MenuItemButton>
           <MenuItemButton onClick={logoutAction}>Выход</MenuItemButton>
         </MenuList>
       </Popup>
