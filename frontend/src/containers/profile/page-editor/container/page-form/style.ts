@@ -94,6 +94,7 @@ export const LinkCopyIndicator = styled.div`
   position: absolute;
   top: 0;
   right: 10px;
+  display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;

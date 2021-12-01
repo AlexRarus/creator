@@ -8,16 +8,25 @@ import { IRoute } from '../interfaces';
 const appRoutes: IRoute[] = [
   {
     exact: true,
+    path: `/profile/:username/settings/`,
+    component: lazy(() =>
+      import(/* webpackChunkName: "page_settings" */ 'src/containers/profile/settings/')
+    ),
+  },
+  {
+    exact: true,
     path: `/profile/:username/pages/`,
     component: lazy(() =>
-      import(/* webpackChunkName: "page_landing_main" */ 'src/containers/profile/pages-list/')
+      import(/* webpackChunkName: "page_pages_list" */ 'src/containers/profile/pages-list/')
     ),
   },
   {
     exact: true,
     path: `/profile/:username/pages/:pageSlug`,
     component: lazy(() =>
-      import(/* webpackChunkName: "page_landing_main" */ 'src/containers/profile/page-editor/')
+      import(
+        /* webpackChunkName: "page_selected_page_editor" */ 'src/containers/profile/page-editor/'
+      )
     ),
   },
   {

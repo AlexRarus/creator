@@ -42,7 +42,8 @@ class Page(models.Model):
         ordering = ("id",)
         constraints = [
             models.UniqueConstraint(
-                fields=("slug", "author"), name="author_slug_constraint"
+                fields=("slug", "author"),
+                name="author_slug_constraint",
             )
         ]
 

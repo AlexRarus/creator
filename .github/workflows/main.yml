@@ -21,7 +21,7 @@ jobs:
           # обновление pip
           python -m pip install --upgrade pip
           # установка flake8 и его плагинов
-          pip install flake8 pep8-naming flake8-broken-line flake8-return flake8-isort
+          pip install flake8 pep8-naming flake8-broken-line flake8-return
           # установка зависимостей
           pip install -r ./backend/requirements.txt
       - name: Test with flake8 and django tests
@@ -50,6 +50,9 @@ jobs:
           echo DJANGO_SUPERUSER_USERNAME=${{ secrets.DJANGO_SUPERUSER_USERNAME }} >> .env
           echo DJANGO_SUPERUSER_EMAIL=${{ secrets.DJANGO_SUPERUSER_EMAIL }} >> .env
           echo DJANGO_SUPERUSER_PASSWORD=${{ secrets.DJANGO_SUPERUSER_PASSWORD }} >> .env
+          echo AWS_STORAGE_BUCKET_NAME=${{ secrets.AWS_STORAGE_BUCKET_NAME }} >> .env
+          echo AWS_S3_ACCESS_KEY_ID=${{ secrets.AWS_S3_ACCESS_KEY_ID }} >> .env
+          echo AWS_S3_SECRET_ACCESS_KEY=${{ secrets.AWS_S3_SECRET_ACCESS_KEY }} >> .env
           # запустить написанные разработчиком тесты
           python manage.py test
   build_and_push_to_docker_hub_frontend:
@@ -131,6 +134,9 @@ jobs:
               echo DJANGO_SUPERUSER_USERNAME=${{ secrets.DJANGO_SUPERUSER_USERNAME }} >> .env
               echo DJANGO_SUPERUSER_EMAIL=${{ secrets.DJANGO_SUPERUSER_EMAIL }} >> .env
               echo DJANGO_SUPERUSER_PASSWORD=${{ secrets.DJANGO_SUPERUSER_PASSWORD }} >> .env
+              echo AWS_STORAGE_BUCKET_NAME=${{ secrets.AWS_STORAGE_BUCKET_NAME }} >> .env
+              echo AWS_S3_ACCESS_KEY_ID=${{ secrets.AWS_S3_ACCESS_KEY_ID }} >> .env
+              echo AWS_S3_SECRET_ACCESS_KEY=${{ secrets.AWS_S3_SECRET_ACCESS_KEY }} >> .env
               sudo docker-compose up -d
   send_message:
     runs-on: ubuntu-latest

@@ -25,6 +25,7 @@ export default class DalAuthStore {
   rootStore!: IRootStore;
   routerStore!: History;
 
+  isLoading = false;
   user: IUser | null = null;
   access: string | null = localStorage.getItem('access');
   refresh: string | null = localStorage.getItem('refresh');

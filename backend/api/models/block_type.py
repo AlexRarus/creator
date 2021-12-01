@@ -11,7 +11,10 @@ class BlockType(models.Model):
         related_name="block_types",
         on_delete=models.CASCADE,
     )
-    label = models.CharField(max_length=255, verbose_name="Наименование")
+    label = models.CharField(
+        max_length=255,
+        verbose_name="Наименование",
+    )
     slug = models.SlugField(
         verbose_name="slug",
         null=False,

@@ -48,13 +48,20 @@ class UserRoles(models.TextChoices):
 
 class CustomUser(AbstractUser):
     first_name = models.CharField(
-        max_length=50, blank=True, verbose_name="First name"
+        max_length=50,
+        blank=True,
+        verbose_name="First name",
     )
     last_name = models.CharField(
-        max_length=50, blank=True, verbose_name="Last name"
+        max_length=50,
+        blank=True,
+        verbose_name="Last name",
     )
     username = models.SlugField(
-        max_length=254, unique=True, blank=True, null=True
+        max_length=254,
+        unique=True,
+        blank=True,
+        null=True,
     )
     email = models.EmailField(max_length=254, unique=True)
     role = models.CharField(
