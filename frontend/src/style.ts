@@ -8,6 +8,7 @@ export const GlobalStyleApp = createGlobalStyle<any>`
     width: 100%;
     height: 100%;
     display: table;
+    overflow-x: hidden;
     
     ${({ theme, appType }: any) =>
       theme?.isMobile
@@ -29,6 +30,7 @@ export const GlobalStyleApp = createGlobalStyle<any>`
     background: ${({ theme }) => theme.background?.primary};
     color: ${({ theme }) => theme.textColor?.primary};
     width: 100%;
+    overflow-x: hidden;
     display: table-cell;
     
     ${({ theme }: { theme: ITheme }) =>

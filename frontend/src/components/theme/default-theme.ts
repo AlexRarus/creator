@@ -31,6 +31,7 @@ export const LIGHT_THEME: ITheme = {
         disabled: COLORS.grey[300],
         air: COLORS.white,
         formed: COLORS.grey[200],
+        success: COLORS.grey[200],
       },
       background: {
         primary: COLORS.blue[500],
@@ -38,6 +39,7 @@ export const LIGHT_THEME: ITheme = {
         disabled: COLORS.grey[400],
         air: COLORS.indigo[900],
         formed: COLORS.blue[400],
+        success: COLORS.green[500],
       },
       hover: {
         primary: COLORS.blue[600],
@@ -45,6 +47,7 @@ export const LIGHT_THEME: ITheme = {
         disabled: COLORS.grey[400],
         air: COLORS.indigo[800],
         formed: COLORS.blue[600],
+        success: COLORS.green[400],
       },
       active: {
         primary: COLORS.blue[500],
@@ -52,6 +55,7 @@ export const LIGHT_THEME: ITheme = {
         disabled: COLORS.grey[400],
         air: COLORS.indigo[900],
         formed: COLORS.blue[500],
+        success: COLORS.green[500],
       },
       borderColor: {
         primary: COLORS.blue[500],
@@ -59,6 +63,7 @@ export const LIGHT_THEME: ITheme = {
         disabled: COLORS.grey[400],
         air: COLORS.indigo[900],
         formed: COLORS.blue[400],
+        success: COLORS.green[500],
       },
     },
     input: {
@@ -151,6 +156,7 @@ export const DARK_THEME: ITheme = {
         disabled: COLORS.grey[500],
         air: COLORS.grey[300],
         formed: COLORS.grey[200],
+        success: COLORS.grey[200],
       },
       background: {
         primary: COLORS.blue[400],
@@ -158,6 +164,7 @@ export const DARK_THEME: ITheme = {
         disabled: COLORS.grey[400],
         air: COLORS.indigo.A200,
         formed: COLORS.blue[400],
+        success: COLORS.green[500],
       },
       hover: {
         primary: COLORS.blue[300],
@@ -165,6 +172,7 @@ export const DARK_THEME: ITheme = {
         disabled: COLORS.grey[400],
         air: COLORS.indigo.A100,
         formed: COLORS.blue[600],
+        success: COLORS.green[400],
       },
       active: {
         primary: COLORS.blue[300],
@@ -172,6 +180,7 @@ export const DARK_THEME: ITheme = {
         disabled: COLORS.grey[400],
         air: COLORS.indigo.A100,
         formed: COLORS.blue[500],
+        success: COLORS.green[500],
       },
       borderColor: {
         primary: COLORS.blue[400],
@@ -179,6 +188,7 @@ export const DARK_THEME: ITheme = {
         disabled: COLORS.grey[400],
         air: COLORS.indigo.A200,
         formed: COLORS.blue[400],
+        success: COLORS.green[500],
       },
     },
     input: {

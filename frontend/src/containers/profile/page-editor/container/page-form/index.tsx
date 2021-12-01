@@ -13,6 +13,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { BlockEditorModal } from 'src/containers/profile/block-editor';
 import { isMobile } from 'react-device-detect';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { ITheme } from 'src/dal/themes/interface';
 
 import { PagePreview } from '../page-preview';
 import { reorder } from '../utils';
@@ -41,6 +42,7 @@ interface IProps {
   username: string;
   pageSlug: string;
   isUpdating: boolean;
+  selectedTheme: ITheme | null;
   onUpdatePageForm: (slug?: string) => void;
   onDragEndPagesAction: (list: number[]) => void;
 }
@@ -51,7 +53,15 @@ interface INewBlock {
 }
 
 export const PageForm = (props: IProps) => {
-  const { data, username, pageSlug, isUpdating, onUpdatePageForm, onDragEndPagesAction } = props;
+  const {
+    data,
+    username,
+    pageSlug,
+    isUpdating,
+    onUpdatePageForm,
+    onDragEndPagesAction,
+    selectedTheme,
+  } = props;
   const [listItems, setListItems] = useState<any[]>([]);
   const [isShowPreview, setIsShowPreview] = useState(false);
   const [pageSettingsModalTab, setPageSettingsModalTab] = useState<TabValue | null>(null);
@@ -101,7 +111,13 @@ export const PageForm = (props: IProps) => {
   return (
     <>
       {isShowPreview && (
-        <PagePreview isUpdating={isUpdating} username={username} pageSlug={pageSlug} data={data} />
+        <PagePreview
+          selectedTheme={selectedTheme}
+          isUpdating={isUpdating}
+          username={username}
+          pageSlug={pageSlug}
+          data={data}
+        />
       )}
       {!isShowPreview && (
         <>
@@ -127,6 +143,7 @@ export const PageForm = (props: IProps) => {
             <Droppable droppableId='droppable'>
               {(provided: any, snapshot: any) => (
                 <FormWrapperDroppable
+                  selectedTheme={selectedTheme}
                   isDraggingOver={snapshot.isDraggingOver}
                   verticalGap={32}
                   {...provided.droppableProps}
@@ -142,7 +159,7 @@ export const PageForm = (props: IProps) => {
                             {...provided.dragHandleProps}
                             key={block.id}>
                             <BlockActionWrapper onClick={() => setSelectedBlock(block)}>
-                              <TargetBlockTypePreview block={block} />
+                              <TargetBlockTypePreview selectedTheme={selectedTheme} block={block} />
                             </BlockActionWrapper>
                           </DraggableItem>
                         )}

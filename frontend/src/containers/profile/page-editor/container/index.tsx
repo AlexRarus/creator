@@ -29,6 +29,7 @@ export const PageEditorContainer = observer((props: IProps) => {
     data,
     selectPageAction,
     updateMyPageAction,
+    selectedTheme,
   } = useMapStoreToProps();
   const { username, pageSlug } = props;
   const { replace } = useHistory();
@@ -78,6 +79,7 @@ export const PageEditorContainer = observer((props: IProps) => {
                     <PhoneWrapper isForm={true}>
                       <PageForm
                         data={data}
+                        selectedTheme={selectedTheme}
                         username={username}
                         pageSlug={pageSlug}
                         isUpdating={isUpdating}
@@ -92,6 +94,7 @@ export const PageEditorContainer = observer((props: IProps) => {
                     <PhoneWrapper isForm={false}>
                       <PagePreview
                         data={data}
+                        selectedTheme={selectedTheme}
                         isUpdating={isUpdating}
                         username={username}
                         pageSlug={pageSlug}
@@ -106,6 +109,7 @@ export const PageEditorContainer = observer((props: IProps) => {
             <FlexBlock>
               <PageForm
                 data={data}
+                selectedTheme={selectedTheme}
                 username={username}
                 isUpdating={isUpdating}
                 pageSlug={pageSlug}

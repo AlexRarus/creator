@@ -1,7 +1,7 @@
 import { useStores } from 'src/dal/use-stores';
 
 export function useMapStoreToProps() {
-  const { dalAuthStore, dalPagesStore } = useStores();
+  const { dalAuthStore, dalPagesStore, dalThemesStore } = useStores();
 
   return {
     isLoading: dalPagesStore.isLoading,
@@ -12,5 +12,6 @@ export function useMapStoreToProps() {
     user: dalAuthStore.user,
     selectPageAction: dalPagesStore.selectPageAction,
     pages: dalPagesStore.pages,
+    selectedTheme: dalThemesStore.selectedTheme,
   };
 }

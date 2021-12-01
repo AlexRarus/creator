@@ -12,15 +12,7 @@ import SwiperCore, { Autoplay, Pagination, Navigation } from 'swiper';
 // Import Swiper styles
 import 'swiper/swiper-bundle.css';
 
-import {
-  LandingPart,
-  WelcomeTitle,
-  WelcomeSpan,
-  StartRow,
-  SwiperWrapper,
-  SwiperOfPhone,
-  ScreenImage,
-} from './style';
+import { LandingPart, WelcomeTitle, WelcomeSpan, StartRow, SwiperWrapper } from './style';
 
 const swiperList = [
   {
