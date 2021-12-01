@@ -1,15 +1,22 @@
 import React from 'react';
 import { IBlock } from 'src/dal/blocks/interfaces';
+import { ITheme } from 'src/dal/themes/interface';
 
 import { TextData } from './interfaces';
 import { TextBlockStyled } from './style';
 
 interface IProps {
   block: IBlock<TextData>;
+  selectedTheme: ITheme | null;
 }
 
 export const TextPreview = (props: IProps) => {
-  const { block } = props;
+  const { block, selectedTheme } = props;
 
-  return <TextBlockStyled dangerouslySetInnerHTML={{ __html: block.data.text }} />;
+  return (
+    <TextBlockStyled
+      selectedTheme={selectedTheme}
+      dangerouslySetInnerHTML={{ __html: block.data.text }}
+    />
+  );
 };

@@ -5,6 +5,7 @@ import { useIsAuthor } from 'src/utils/useIsAuthor';
 import { TargetBlockTypePreview } from 'src/containers/app/block';
 import { IBlock } from 'src/dal/blocks/interfaces';
 import { IPage } from 'src/dal/pages/interfaces';
+import { ITheme } from 'src/dal/themes/interface';
 
 import { useMapStoreToProps } from './selectors';
 import { PageWrapper } from './style';
@@ -13,11 +14,12 @@ interface IProps {
   username: string;
   pageSlug: string;
   previewData?: IPage;
+  selectedTheme: ITheme | null;
 }
 
 export const PageContainer = observer((props: IProps) => {
   const { isLoading, getPageBySlugAction, data } = useMapStoreToProps();
-  const { username, pageSlug, previewData } = props;
+  const { username, pageSlug, previewData, selectedTheme } = props;
   const isAuthor = useIsAuthor(username);
 
   useEffect(() => {
@@ -30,13 +32,13 @@ export const PageContainer = observer((props: IProps) => {
   const resultData = previewData || data;
 
   return (
-    <PageWrapper>
+    <PageWrapper selectedTheme={selectedTheme}>
       {isLoading && 'Loading...'}
       {resultData && (
         <Grid verticalGap={16}>
           {resultData.blocks.map((block: IBlock<any>) => (
             <GridColumn key={block.id} size={12}>
-              <TargetBlockTypePreview block={block} />
+              <TargetBlockTypePreview block={block} selectedTheme={selectedTheme} />
             </GridColumn>
           ))}
         </Grid>

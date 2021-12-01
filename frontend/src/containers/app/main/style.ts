@@ -601,8 +601,11 @@ export const SwiperWrapper = styled.div<{ width?: number }>`
   width: ${({ width }) => width}px;
 
   .swiper {
-    width: 100%;
     height: 100%;
+  }
+
+  .swiper-wrapper {
+    width: auto;
   }
 
   .swiper-slide {

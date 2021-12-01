@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import { rgba } from 'polished';
-import { Grid, GridColumn } from 'src/components/grid';
+import { Grid } from 'src/components/grid';
 import { COLORS, MEDIA } from 'src/components/theme';
+import { ITheme } from 'src/dal/themes/interface';
 
 export const FORM_HEADER_HEIGHT = 64;
 export const FORM_FOOTER_HEIGHT = 64;
@@ -143,15 +144,20 @@ export const BlockActionWrapper = styled.div`
   }
 `;
 
-export const FormWrapperDroppable = styled(Grid)<{ isDraggingOver: boolean }>`
+export const FormWrapperDroppable = styled(Grid)<{
+  isDraggingOver: boolean;
+  selectedTheme: ITheme | null;
+}>`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   overflow-x: hidden;
   overflow-y: auto;
   padding: ${PAGE_PREVIEW_PADDING}px;
-  background: ${({ theme, isDraggingOver }) =>
-    isDraggingOver ? theme?.background?.secondary : theme?.background?.primary};
+  background: ${({ selectedTheme, isDraggingOver, theme }) =>
+    isDraggingOver
+      ? rgba(selectedTheme ? selectedTheme.background : theme.background.primary, 0.9)
+      : selectedTheme?.background || theme.background.primary};
   width: 100%;
   height: 100%;
 `;

@@ -1,14 +1,14 @@
 import { IAuthAPI } from './endpoints/auth';
 import { IPagesAPI } from './endpoints/pages';
 import { IBlocksAPI } from './endpoints/blocks';
-import { IThemeAPI } from './endpoints/theme';
+import { IThemeAPI } from './endpoints/themes';
 import { IMediaAPI } from './endpoints/media';
 
 export interface IAPI {
   auth: IAuthAPI;
   pages: IPagesAPI;
   blocks: IBlocksAPI;
-  theme: IThemeAPI;
+  themes: IThemeAPI;
   media: IMediaAPI;
 }
 

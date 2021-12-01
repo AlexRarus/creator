@@ -3,6 +3,7 @@ import { AxiosRequestConfig } from 'axios';
 import { IAPI } from './interfaces';
 import auth from './endpoints/auth';
 import pages from './endpoints/pages';
+import themes from './endpoints/themes';
 import blocks from './endpoints/blocks';
 import media from './endpoints/media';
 import { axiosInstance } from './axios-instance';
@@ -14,6 +15,7 @@ const domains = {
   pages,
   blocks,
   media,
+  themes,
 };
 
 /**
