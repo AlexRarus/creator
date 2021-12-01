@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const PagePreviewWrapper = styled.div`
+  z-index: 1;
   display: flex;
   flex-direction: column;
   flex-grow: 1;

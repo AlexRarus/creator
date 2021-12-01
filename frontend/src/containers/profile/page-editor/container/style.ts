@@ -14,12 +14,17 @@ export const BlockWrapper = styled.div`
   height: 100%;
 `;
 
-export const PhoneWrapper = styled.div<{ isForm: boolean }>`
+export const ScaleBlock = styled.div`
+  height: 100%;
+  transform: scale(0.9);
+`;
+
+export const PhoneScreenWrapper = styled.div<{ isForm: boolean }>`
   position: relative;
   width: 400px;
   height: 800px;
-  border: 7px solid ${COLORS.black};
-  border-radius: 30px;
+  border: 2px solid ${({ theme }) => theme?.borderColor?.contrast};
+  border-radius: 6px;
   overflow: hidden;
   padding-top: ${({ isForm }) => (isForm ? FORM_HEADER_HEIGHT : 0)}px;
   padding-bottom: ${({ isForm }) => (isForm ? FORM_FOOTER_HEIGHT : 0)}px;

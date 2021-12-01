@@ -7,7 +7,20 @@ import { IRootStore } from '../interfaces';
 
 import { ITheme } from './interface';
 
+const defaultTheme = {
+  id: 0,
+  background: COLORS.grey[200],
+  color: COLORS.grey[900],
+  headerColor: COLORS.grey[900],
+};
+
 const initialThemes: ITheme[] = [
+  {
+    id: 0,
+    background: COLORS.grey[200],
+    color: COLORS.grey[900],
+    headerColor: COLORS.grey[900],
+  },
   {
     id: 1,
     background: COLORS.deepPurple[800],
@@ -48,7 +61,7 @@ export default class DalThemesStore {
   isLoading = false;
   total = 0;
   themes: ITheme[] = initialThemes; // TODO заглушка
-  selectedTheme: ITheme | null = null;
+  selectedTheme: ITheme | null = defaultTheme; // TODO заглушка
 
   public get API() {
     return API.endpoints.themes;

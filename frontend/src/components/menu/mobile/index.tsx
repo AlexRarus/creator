@@ -5,9 +5,6 @@ import { IPage } from 'src/dal/pages/interfaces';
 import NavigationIcon from '@mui/icons-material/Menu';
 import { VerticalSlide } from 'src/components/animations';
 import { useScrollDirection } from 'src/utils/useScrollDirection';
-import { useThemeContext } from 'src/providers/dark-theme-provider';
-import LightModeIcon from '@mui/icons-material/LightMode';
-import ModeNightIcon from '@mui/icons-material/ModeNightOutlined';
 import Button from 'src/components/button';
 
 import { UserMenu } from '../user-menu';
@@ -23,7 +20,6 @@ import {
   NavigationList,
   Logo,
   NavigationItem,
-  ThemeModeButton,
 } from './style';
 
 interface IProps {
@@ -40,7 +36,6 @@ export const MobileMenu = (props: IProps) => {
   const [isOpenNavigation, setIsOpenNavigation] = useState(false);
   const isHideMenu: boolean = useScrollDirection(false, 15, 15);
   const hasMenuItems = Boolean(menuItems.length);
-  const { toggleTheme, themeType } = useThemeContext();
   const { pathname } = useLocation();
 
   const onClickAuth = () => {
@@ -48,14 +43,6 @@ export const MobileMenu = (props: IProps) => {
       ? `/profile/${user.username}/pages/${selectedPage?.slug}/`
       : `${pathname === '/auth/login/' ? '/auth/registration' : '/auth/login/'}`;
     history.push(link);
-  };
-
-  const toggleThemeAction = () => {
-    if (themeType === 'light') {
-      toggleTheme('dark');
-    } else {
-      toggleTheme('light');
-    }
   };
 
   const openNavigation = () => setIsOpenNavigation(true);
@@ -81,13 +68,6 @@ export const MobileMenu = (props: IProps) => {
                   </Button>
                 </>
               )}
-              <ThemeModeButton onClick={toggleThemeAction}>
-                {themeType === 'light' ? (
-                  <LightModeIcon fontSize={'small'} />
-                ) : (
-                  <ModeNightIcon fontSize={'small'} />
-                )}
-              </ThemeModeButton>
             </>
           )}
         </MobileMenuHeader>
