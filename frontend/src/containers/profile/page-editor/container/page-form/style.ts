@@ -159,7 +159,7 @@ export const FormWrapperDroppable = styled(Grid)<{
   flex-grow: 1;
 
   width: ${({ width }) => width}px;
-  padding: 24px 24px 64px 48px;
+  padding: 24px 20px 64px 20px;
 
   color: inherit;
   background: ${({ selectedTheme, isDraggingOver, theme }) =>
@@ -171,20 +171,12 @@ export const FormWrapperDroppable = styled(Grid)<{
   ${({ theme }) => !theme?.isMobile && 'overflow: auto;'}
 `;
 
-export const DraggableItem = styled.div<{ isDragging: boolean; index: number }>`
+export const DraggableItem = styled.div<{ isDragging: boolean }>`
   position: relative;
   width: calc(100% - 4px);
-  padding-left: 12px;
-  padding-right: 12px;
+  padding-left: 48px;
+  padding-right: 32px;
   margin: 8px 2px;
-  
-  &:after {
-    content: '${({ index }) => index}';
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
 
   &:before {
     content: '';
@@ -195,7 +187,7 @@ export const DraggableItem = styled.div<{ isDragging: boolean; index: number }>`
     height: 100%;
     background: ${({ isDragging }) =>
       isDragging ? rgba(COLORS.white, 0.15) : rgba(COLORS.white, 0.2)};
-    border-radius: 2px;
+    border-radius: 6px;
     border: 1px dashed;
     border-color: ${({ isDragging }) => (isDragging ? rgba(COLORS.black, 0.1) : 'transparent')};
     box-shadow: ${({ isDragging }) =>
@@ -220,13 +212,25 @@ export const DragHandleZone = styled.div<{ isDragging: boolean }>`
   justify-content: center;
   align-items: center;
   position: absolute;
-  top: 50%;
-  left: -40px;
-  transform: translateY(-50%);
-  height: calc(100% + 8px);
+  top: 4px;
+  left: 4px;
+  height: 32px;
   width: 32px;
-  border-radius: 4px;
+  border-radius: 6px;
   box-shadow: ${({ isDragging }) =>
     isDragging ? '0px 15px 20px rgba(46, 229, 157, 0.4)' : 'none'};
-  background: ${({ isDragging, theme }) => (isDragging ? '#2EE59D' : theme?.scroll?.primary)};
+  background: ${({ isDragging, theme }) => (isDragging ? '#2EE59D' : '#7d2ae8')};
+`;
+
+export const DragIconBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 4px;
+  height: 32px;
+  width: 32px;
+  border-radius: 6px;
 `;
