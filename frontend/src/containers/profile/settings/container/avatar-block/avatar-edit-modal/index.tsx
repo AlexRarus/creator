@@ -69,7 +69,7 @@ export const AvatarEditModal = (props: IProps) => {
         y: positionCenterY,
       });
       // инициализация borderRadius
-      setValue('borderRadius', avatar ? (avatar.borderRadius / 100) * imageSize : 0);
+      setValue('borderRadius', avatar ? (avatar.borderRadius / 100) * imageSize : maxBorderRadius);
     }
   }, [imageSize, imageInfo, avatar, scale]);
 
