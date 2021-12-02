@@ -9,8 +9,8 @@ import PaletteIcon from '@mui/icons-material/Palette';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import SettingsIcon from '@mui/icons-material/Settings';
 import EditIcon from '@mui/icons-material/Edit';
-// import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
-import SwapVertIcon from '@mui/icons-material/SwapVert';
+import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
+// import SwapVertIcon from '@mui/icons-material/SwapVert';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { copyTextToClipboard } from 'src/utils/copyToClipboard';
 import { v4 as uuidv4 } from 'uuid';
@@ -18,6 +18,7 @@ import { BlockEditorModal } from 'src/containers/profile/block-editor';
 import { isMobile } from 'react-device-detect';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { ITheme } from 'src/dal/themes/interface';
+import { typeIconsMap } from 'src/containers/profile/block-editor/types-list/utils';
 
 import { PagePreview } from '../page-preview';
 import { reorder } from '../utils';
@@ -39,6 +40,7 @@ import {
   DraggableItem,
   DragIcon,
   DragHandleZone,
+  DragIconBox,
 } from './style';
 import { IconButton } from './icon-button';
 import { PageSettingsModal, TabValue } from './page-settings-modal';
@@ -189,9 +191,12 @@ export const PageForm = (props: IProps) => {
                                 onClick={onClickStopPropagation}
                                 isDragging={snapshot.isDragging}>
                                 <DragIcon isDragging={snapshot.isDragging}>
-                                  <SwapVertIcon />
+                                  {typeIconsMap[1]}
                                 </DragIcon>
                               </DragHandleZone>
+                              <DragIconBox>
+                                <DragIndicatorIcon />
+                              </DragIconBox>
                               <BlockActionWrapper>
                                 <TargetBlockTypePreview selectedTheme={null} block={block} />
                               </BlockActionWrapper>
