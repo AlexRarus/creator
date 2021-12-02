@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Avatar } from 'src/components/avatar';
+import { AvatarPreview } from 'src/components/avatar-preview';
 import Popup from 'src/components/popup';
 import { IUser } from 'src/dal/auth/interfaces';
 import { useThemeContext } from 'src/providers/dark-theme-provider';
@@ -46,7 +46,7 @@ export const UserMenu = (props: IProps) => {
       onClick={openHandler}
       onMouseEnter={openHandler}
       onMouseLeave={closeHandler}>
-      <Avatar />
+      <AvatarPreview size={30} avatar={user?.avatar} />
       <Popup
         isOpen={isOpen}
         onClose={closeHandler}

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { BrowserView, MobileView } from 'react-device-detect';
 import Popup from 'src/components/popup';
+import { Loader } from 'src/components/loader';
+import { COLORS } from 'src/components/theme';
 
 import { ActionConfirmModal } from './confirm/action-confirm';
 import { MobileActions } from './mobile-actions';
@@ -16,6 +18,7 @@ interface IProps {
   submitActionLabel?: string;
   actions?: IAction[];
   isValid?: boolean;
+  isLoading?: boolean;
 }
 
 /**
@@ -27,7 +30,13 @@ interface IProps {
  * @constructor
  */
 export const FormButtons = (props: IProps) => {
-  const { submitActionLabel = 'Отправить', actions, onAction, isValid = true } = props;
+  const {
+    submitActionLabel = 'Отправить',
+    actions,
+    onAction,
+    isValid = true,
+    isLoading = false,
+  } = props;
   const [isOpenDesktopActions, setIsOpenDesktopActions] = useState(false);
   const [isOpenMobileActions, setIsOpenMobileActions] = useState(false);
   const [desktopActionsElement, desktopActionsRefCallback] = useState<HTMLElement | null>(null);
@@ -69,7 +78,11 @@ export const FormButtons = (props: IProps) => {
       <MobileView>
         <MobileButtonsList>
           {!actions?.length && (
-            <Button kind='secondary' hasBorder={false} onClick={() => onAction('cancel')}>
+            <Button
+              kind='secondary'
+              hasBorder={false}
+              onClick={() => onAction('cancel')}
+              disabled={isLoading}>
               <span>Отмена</span>
             </Button>
           )}
@@ -78,7 +91,8 @@ export const FormButtons = (props: IProps) => {
               kind='secondary'
               {...actions[0]}
               hasBorder={false}
-              onClick={() => actionClickHandler(actions[0])}>
+              onClick={() => actionClickHandler(actions[0])}
+              disabled={isLoading}>
               <span>{actions[0].label}</span>
             </Button>
           )}
@@ -86,7 +100,7 @@ export const FormButtons = (props: IProps) => {
             <Button
               kind='secondary'
               hasBorder={false}
-              disabled={!actions?.length}
+              disabled={!actions?.length || isLoading}
               onClick={openMobileActions}>
               <MoreVertIcon />
               <span>Действие</span>
@@ -96,8 +110,9 @@ export const FormButtons = (props: IProps) => {
             kind='primary'
             hasBorder={false}
             onClick={() => onAction('submit')}
-            disabled={!isValid}>
-            {submitActionLabel}
+            disabled={!isValid || isLoading}>
+            {isLoading && <Loader type='ring' size={30} color={COLORS.blue[300]} />}
+            {!submitActionLabel}
           </Button>
         </MobileButtonsList>
         {isOpenMobileActions && (
@@ -111,26 +126,34 @@ export const FormButtons = (props: IProps) => {
       <BrowserView>
         <DesktopButtonsList>
           {!actions?.length && (
-            <Button kind='secondary' onClick={() => onAction('cancel')}>
+            <Button kind='secondary' onClick={() => onAction('cancel')} disabled={isLoading}>
               <span>Отмена</span>
             </Button>
           )}
           {actions?.length === 1 && (
-            <Button kind='secondary' {...actions[0]} onClick={() => actionClickHandler(actions[0])}>
+            <Button
+              kind='secondary'
+              {...actions[0]}
+              onClick={() => actionClickHandler(actions[0])}
+              disabled={isLoading}>
               <span>{actions[0].label}</span>
             </Button>
           )}
           {actions && actions.length > 1 && (
             <Button
               kind='secondary'
-              disabled={!actions?.length}
+              disabled={!actions?.length || isLoading}
               ref={desktopActionsRefCallback}
               onClick={toggleDesktopActions}>
               <MoreVertIcon />
               <span>Действие</span>
             </Button>
           )}
-          <Button kind='primary' onClick={() => onAction('submit')} disabled={!isValid}>
+          <Button
+            kind='primary'
+            onClick={() => onAction('submit')}
+            disabled={!isValid || isLoading}>
+            {isLoading && <Loader type='ring' size={30} color={COLORS.blue[300]} />}
             {submitActionLabel}
           </Button>
         </DesktopButtonsList>

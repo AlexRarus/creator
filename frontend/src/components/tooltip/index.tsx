@@ -40,8 +40,7 @@ export function Tooltip(props: IProps) {
       plateMargin={6}
       color={COLORS.white}
       background={COLORS.black}
-      floatPosition={true}
-    >
+      floatPosition={true}>
       <TooltipContent>{children}</TooltipContent>
     </Popup>
   );

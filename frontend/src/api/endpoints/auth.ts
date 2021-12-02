@@ -11,6 +11,7 @@ export interface IAuthAPI {
   resetPassword(data: IResetPasswordData): AxiosResponse<any>; // отправляем код для восстановления пароля на email
   resetPasswordConfirm(data: IResetPasswordConfirmData): AxiosResponse<any>; // устанавливаем новый пароль
   setPassword(data: ISetPassword): AxiosResponse<any>; // меняем пароль пароль
+  setAvatar(data: FormData): AxiosResponse<any>; // создание (изменение) аватара
 }
 
 export interface ILoginData {
@@ -49,6 +50,18 @@ export interface ILogoutData {
 export interface ISetPassword {
   current_password: string;
   new_password: string;
+}
+
+export interface ISetAvatar {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  borderRadius: number;
+  scale: number;
+  rotate: number;
+  sourceFile?: File;
+  previewFile?: File;
 }
 
 const getConfig = () => ({
@@ -98,6 +111,15 @@ const getConfig = () => ({
   setPassword: (data: ISetPassword) => ({
     url: `/auth/users/set_password/`,
     method: 'POST',
+    data,
+  }),
+  setAvatar: (data: FormData) => ({
+    url: `/avatar/`,
+    method: 'POST',
+    timeout: 0,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
     data,
   }),
 });

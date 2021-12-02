@@ -497,6 +497,7 @@ export default function Popup(props: IProps) {
         className={shouldRepositionOnClick ? REPOSITION_POPUP_MARKER : ''}
         borderColor={borderColor}
         borderRadius={borderRadius}
+        hasBorder={hasBorder}
         isFixed={isFixed}>
         <PlateContent
           maxHeight={maxHeight}

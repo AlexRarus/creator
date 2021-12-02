@@ -117,6 +117,12 @@ export const LIGHT_THEME: ITheme = {
         info: COLORS.blue[200],
       },
     },
+    loader: {
+      color: {
+        primary: COLORS.white,
+        secondary: COLORS.grey[500],
+      },
+    },
   },
   gridBreakPoints: {
     '320px': 4,

@@ -4,6 +4,15 @@ from django.db import models
 User = get_user_model()
 
 
+def get_upload_path(avatar, filename):
+    user_id = int(avatar.user.id)
+    dir_size = 1000
+    dir_from_ids = user_id // dir_size * dir_size
+    dir_to_ids = dir_from_ids + dir_size - 1
+    dir_name = f"user_ids_from_{dir_from_ids}_to_{dir_to_ids}"
+    return "/".join(["avatars", dir_name, f"user_id_{user_id}", filename])
+
+
 class Avatar(models.Model):
     user = models.OneToOneField(
         User,
@@ -11,10 +20,17 @@ class Avatar(models.Model):
         verbose_name="Пользователь",
         on_delete=models.CASCADE,
     )
-    file = models.ImageField(
-        verbose_name="Файл",
+    sourceFile = models.ImageField(
+        verbose_name="Исходный Файл",
         help_text="Выберите файл",
-        upload_to="avatars/%Y/%m/%d/",
+        upload_to=get_upload_path,
+        blank=True,
+        null=True,
+    )
+    previewFile = models.ImageField(
+        verbose_name="Файл для предпросмотра",
+        help_text="Выберите файл",
+        upload_to=get_upload_path,
         blank=True,
         null=True,
     )
@@ -38,13 +54,18 @@ class Avatar(models.Model):
         blank=True,
         null=True,
     )
-    border_radius = models.FloatField(
+    borderRadius = models.FloatField(
         verbose_name="Скругление углов",
         blank=True,
         null=True,
     )
     rotate = models.FloatField(
         verbose_name="Угол вращения в градусах",
+        blank=True,
+        null=True,
+    )
+    scale = models.FloatField(
+        verbose_name="Увеличение",
         blank=True,
         null=True,
     )

@@ -6,7 +6,7 @@ User = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
-    avatar = AvatarSerializer()
+    avatar = AvatarSerializer(read_only=True)
 
     class Meta:
         fields = (

@@ -10,6 +10,7 @@ interface IProps {
   actions?: IAction[];
   submitActionLabel?: string;
   isValid?: boolean; // доступность кнопки "Отправить"
+  isLoading?: boolean;
 }
 
 export { MobileSize, DesktopSize } from 'src/components/modal';
@@ -26,7 +27,7 @@ export { MobileSize, DesktopSize } from 'src/components/modal';
  * @constructor
  */
 export const Form = (props: IProps) => {
-  const { onAction, children, actions, isValid, submitActionLabel } = props;
+  const { onAction, children, actions, isValid, isLoading, submitActionLabel } = props;
 
   return (
     <FormWrapper>
@@ -37,6 +38,7 @@ export const Form = (props: IProps) => {
           onAction={onAction}
           submitActionLabel={submitActionLabel}
           isValid={isValid}
+          isLoading={isLoading}
         />
       </FormFooter>
     </FormWrapper>

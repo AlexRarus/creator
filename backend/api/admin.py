@@ -30,13 +30,15 @@ class AvatarAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "user",
-        "file",
+        "sourceFile",
+        "previewFile",
         "x",
         "y",
         "width",
         "height",
-        "border_radius",
+        "borderRadius",
         "rotate",
+        "scale",
     )
     search_fields = (
         "id",
