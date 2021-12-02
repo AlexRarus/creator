@@ -17,7 +17,7 @@ export const AvatarPreview = (props: IProps) => {
 
   return (
     <AvatarPreviewWrapper size={size} borderRadius={avatar ? avatar.borderRadius : 100}>
-      <DefaultBackground>
+      <DefaultBackground size={size} borderRadius={avatar ? avatar.borderRadius : 100}>
         <PersonIcon />
       </DefaultBackground>
       {avatar?.preview && (

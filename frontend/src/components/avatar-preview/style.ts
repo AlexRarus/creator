@@ -25,23 +25,26 @@ export const AvatarPreviewWrapper = styled.div<IAvatarPreviewProps>`
   })}
 `;
 
-export const DefaultBackground = styled.div`
+export const DefaultBackground = styled.div<IAvatarPreviewProps>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: relative;
   width: 100%;
   height: 100%;
 
   svg {
     position: absolute;
-    left: -8px;
-    width: 94px;
-    height: 94px;
+    width: ${({ size = 80 }) => size}px;
+    height: ${({ size = 80 }) => size}px;
     fill: ${COLORS.white};
 
-    ${MEDIA.max768({
-      left: '-6px',
-      width: '70px',
-      height: '70px',
-    })}
+    ${({ size = 60 }) =>
+      MEDIA.max768({
+        position: 'absolute',
+        width: `${size}px`,
+        height: `${size}px`,
+      })}
   }
 `;
 
