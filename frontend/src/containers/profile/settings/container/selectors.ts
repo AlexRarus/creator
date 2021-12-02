@@ -5,6 +5,7 @@ export function useMapStoreToProps() {
 
   return {
     isLoading: dalAuthStore.isLoading,
+    getMeAction: dalAuthStore.getMeAction,
     user: dalAuthStore.user,
   };
 }

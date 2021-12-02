@@ -10,6 +10,19 @@ export interface IUser {
   username: string;
   first_name?: string;
   last_name?: string;
+  avatar?: IAvatar;
+}
+
+export interface IAvatar {
+  source: string;
+  preview: string;
+  x: number;
+  y: number;
+  scale: number;
+  rotate: number;
+  width: number;
+  height: number;
+  borderRadius: number;
 }
 
 export interface IRegistrationConfirmActionData extends IRegistrationConfirmData {

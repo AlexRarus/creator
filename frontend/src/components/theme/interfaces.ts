@@ -53,6 +53,7 @@ export interface ITheme extends IThemeBase {
     link: IThemeBase;
     buttonLink: IThemeBase;
     notification?: IThemeBase;
+    loader?: IThemeBase;
   };
   gridBreakPoints: IGridBreakPoints;
 }

@@ -12,19 +12,23 @@ interface IProps {
 }
 
 export const SettingsContainer = observer((props: IProps) => {
-  const { isLoading, user } = useMapStoreToProps();
+  const { isLoading, user, getMeAction } = useMapStoreToProps();
   const { username } = props;
 
   if (user && user?.username !== username) {
     return <Redirect to={`/profile/${user?.username}/settings/`} />;
   }
 
+  const onSuccessChangeAvatar = () => {
+    getMeAction();
+  };
+
   return (
     <SettingsWrapper>
       {isLoading && 'Loading...'}
       {!isLoading && user && (
         <>
-          <AvatarBlock user={user} />
+          <AvatarBlock user={user} onSuccessChange={onSuccessChangeAvatar} />
           <AccountDataBlock user={user} />
         </>
       )}

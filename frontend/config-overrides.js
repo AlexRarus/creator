@@ -18,6 +18,7 @@ const gitRevisionPlugin = new GitRevisionPlugin({
 
 const LOCAL_API_URL = 'http://127.0.0.1:8000';
 const SERVICE_API_URL = process.env.API_URL || LOCAL_API_URL;
+const LOCAL_MEDIA_URL = process.env.LOCAL_MEDIA_URL;
 
 const devServerConfig = () => config => {
   return {
@@ -45,7 +46,7 @@ const devServerConfig = () => config => {
         secure: false,
       },
       '/media': {
-        target: SERVICE_API_URL,
+        target: SERVICE_API_URL === LOCAL_API_URL ? LOCAL_MEDIA_URL : SERVICE_API_URL,
         changeOrigin: true,
         ws: false,
         pathRewrite: {
@@ -76,6 +77,7 @@ module.exports = {
         'process.env.BRANCH': JSON.stringify(gitRevisionPlugin.branch()),
         'process.env.VERSION': JSON.stringify(packagejson.version),
         'API_URL': JSON.stringify(process.env.API_URL),
+        'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       })
     )
   ),

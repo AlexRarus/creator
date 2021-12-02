@@ -330,7 +330,7 @@ export const PlateWrapper = styled.div<IPlateProps>`
     top: ${pointerTopPosition}px;
     left: ${pointerLeftPosition}px;
     box-shadow: 0 0 6px 0 ${rgba(COLORS.black, 0.2)};
-    border: 1px solid ${({ borderColor }) => borderColor};
+    border: ${({ hasBorder, borderColor }) => (hasBorder ? `1px solid ${borderColor}` : 'none')};
     z-index: -1;
   }
 

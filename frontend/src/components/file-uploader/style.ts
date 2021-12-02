@@ -61,7 +61,6 @@ export const Input = styled.input`
 
 export const Uploaded = styled.div<IFileUploader>`
   ${({ isError }: IFileUploader) => `
-    background-color: ${isError ? COLORS.grey[100] : COLORS.white};
     color: ${isError ? COLORS.red[400] : COLORS.black};
     border-radius: 4px;
   `}

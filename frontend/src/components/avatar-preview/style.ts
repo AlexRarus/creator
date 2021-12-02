@@ -1,18 +1,27 @@
 import styled from 'styled-components';
 import { COLORS, MEDIA } from 'src/components/theme';
 
-export const AvatarPreviewWrapper = styled.div<{ borderRadius: string }>`
+interface IAvatarPreviewProps {
+  borderRadius: number;
+  size?: number;
+}
+
+interface IAvatarImageProps {
+  isLoaded: boolean;
+}
+
+export const AvatarPreviewWrapper = styled.div<IAvatarPreviewProps>`
   position: relative;
-  width: 80px;
-  height: 80px;
-  border-radius: ${({ borderRadius }) => borderRadius};
-  overflow: hidden;
+  width: ${({ size = 80 }) => size}px;
+  height: ${({ size = 80 }) => size}px;
+  border-radius: ${({ borderRadius }) => borderRadius}%;
   background: ${COLORS.grey[300]};
   border: 1px solid ${COLORS.grey[300]};
+  overflow: hidden;
 
   ${MEDIA.max768({
-    width: '60px',
-    height: '60px',
+    width: `${({ size = 60 }) => size}px`,
+    height: `${({ size = 60 }) => size}px`,
   })}
 `;
 
@@ -36,12 +45,10 @@ export const DefaultBackground = styled.div`
   }
 `;
 
-export const Image = styled.img<{ isLoaded: boolean }>`
+export const Image = styled.img<IAvatarImageProps>`
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  opacity: ${({ isLoaded }) => (isLoaded ? 1 : 0)};
 `;

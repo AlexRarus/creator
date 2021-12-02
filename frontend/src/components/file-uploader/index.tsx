@@ -1,3 +1,1 @@
-import { FileUploader } from './component';
-
-export default FileUploader;
+export { FileUploader } from './component';
