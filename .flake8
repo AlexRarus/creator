@@ -1,5 +1,5 @@
 [flake8]
-ignore = E211, E999, F401, F821, W503, R503, R504
+ignore = E211, E999, F401, F821, W503, R503, R504, N815
 exclude =
     */tests/*,
     */migrations/*,
