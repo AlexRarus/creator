@@ -68,7 +68,7 @@ export const UserMenu = (props: IProps) => {
             Настройки аккаунта
           </MenuItemLink>
           <MenuItemButton onClick={toggleThemeAction}>
-            {themeType !== 'light' ? (
+            {themeType === 'light' ? (
               <ModeLabel>
                 Светлая тема
                 <LightModeIcon />

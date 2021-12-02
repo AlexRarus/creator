@@ -115,10 +115,12 @@ export const FormFooter = styled.div`
   bottom: 0;
   height: ${FORM_FOOTER_HEIGHT}px;
   width: 100%;
-  background: ${COLORS.grey[800]};
+  background: ${rgba(COLORS.grey[800], 0.85)};
   color: ${COLORS.white};
   display: flex;
   flex-direction: row;
+  backdrop-filter: blur(4px);
+  z-index: 1;
 
   ${MEDIA.max530({
     position: 'fixed',
@@ -154,7 +156,11 @@ export const FormWrapperDroppable = styled(Grid)<{
   flex-grow: 1;
   overflow-x: hidden;
   overflow-y: auto;
-  padding: ${PAGE_PREVIEW_PADDING}px;
+  padding: 20px 0;
+  color: ${({ selectedTheme, isDraggingOver, theme }) =>
+    isDraggingOver
+      ? rgba(selectedTheme ? selectedTheme.color : theme.color.primary, 0.9)
+      : selectedTheme?.color || theme.color.primary};
   background: ${({ selectedTheme, isDraggingOver, theme }) =>
     isDraggingOver
       ? rgba(selectedTheme ? selectedTheme.background : theme.background.primary, 0.9)
@@ -163,21 +169,60 @@ export const FormWrapperDroppable = styled(Grid)<{
   height: 100%;
 `;
 
-export const DraggableItem = styled.div<{ isDragging: boolean }>`
+export const DraggableItem = styled.div<{ isDragging: boolean; index: number }>`
   position: relative;
-  background: ${({ theme, isDragging }) =>
-    isDragging ? theme?.component?.button?.borderColor?.secondary : 'inherit'};
-  width: 100%;
+  width: calc(100% - 4px);
+  padding-left: 44px;
+  padding-right: 24px;
+  margin: 2px;
+  
+  &:after {
+    content: '${({ index }) => index}';
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 
   &:before {
     content: '';
     position: absolute;
-    left: -10px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: ${({ theme }) => theme?.textColor?.primary};
+    left: 0px;
+    top: 0px;
+    width: calc(100% - 4px);
+    height: 100%;
+    background: ${({ isDragging }) =>
+      isDragging ? rgba(COLORS.black, 0.1) : rgba(COLORS.white, 0.2)};
+    border-radius: 2px;
+    border: 1px dashed;
+    border-color: ${({ isDragging }) => (isDragging ? rgba(COLORS.black, 0.1) : 'transparent')};
+    box-shadow: ${({ isDragging }) =>
+      !isDragging ? `0px 0px 10px ${rgba(COLORS.grey[900], 0.1)}` : 'none'};
+    transition: all 200ms;
   }
+`;
+
+export const DragIcon = styled.div<{ isDragging: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  box-shadow: ${({ isDragging }) =>
+    isDragging ? '0px 15px 20px rgba(46, 229, 157, 0.4)' : 'none'};
+  background: ${({ isDragging }) => (isDragging ? '#2EE59D' : 'transparent')};
+  color: ${({ isDragging }) => (isDragging ? COLORS.white : 'inherit')};
+  transition: all 200ms;
+`;
+
+export const DragHandleZone = styled.div`
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  padding-top: 8px;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 44px;
 `;

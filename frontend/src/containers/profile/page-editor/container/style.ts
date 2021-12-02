@@ -7,7 +7,8 @@ import { FORM_HEADER_HEIGHT, FORM_FOOTER_HEIGHT } from './page-form/style';
 export const DesktopPageWrapper = styled.div`
   width: 100%;
   height: 100%;
-  padding-top: 20px;
+  padding-top: 24px;
+  margin-top: 24px;
 `;
 
 export const BlockWrapper = styled.div`
