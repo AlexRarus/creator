@@ -4,9 +4,12 @@ import { IBlock } from 'src/dal/blocks/interfaces';
 import { TargetBlockTypePreview } from 'src/containers/app/block';
 import Button from 'src/components/button';
 import { IPage } from 'src/dal/pages/interfaces';
+import { useHistory } from 'react-router-dom';
+import PaletteIcon from '@mui/icons-material/Palette';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import SettingsIcon from '@mui/icons-material/Settings';
 import EditIcon from '@mui/icons-material/Edit';
+import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { copyTextToClipboard } from 'src/utils/copyToClipboard';
 import { v4 as uuidv4 } from 'uuid';
@@ -32,6 +35,8 @@ import {
   BlockActionWrapper,
   FormWrapperDroppable,
   DraggableItem,
+  DragIcon,
+  DragHandleZone,
 } from './style';
 import { IconButton } from './icon-button';
 import { PageSettingsModal, TabValue } from './page-settings-modal';
@@ -67,6 +72,7 @@ export const PageForm = (props: IProps) => {
   const [pageSettingsModalTab, setPageSettingsModalTab] = useState<TabValue | null>(null);
   const [copyBlinkId, setCopyBlinkId] = useState<string>();
   const [selectedBlock, setSelectedBlock] = useState<IBlock<any> | INewBlock | null>(null);
+  const history = useHistory();
 
   useEffect(() => {
     if (data.blocks) {
@@ -107,6 +113,8 @@ export const PageForm = (props: IProps) => {
   const openPageSettingsModal = (activeTab = TabValue.LINK) => () =>
     setPageSettingsModalTab(activeTab);
   const closePageSettingsModal = () => setPageSettingsModalTab(null);
+
+  const toThemesPage = () => history.push(`/profile/${username}/themes/`);
 
   return (
     <>
@@ -157,7 +165,13 @@ export const PageForm = (props: IProps) => {
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
+                            index={index}
                             key={block.id}>
+                            <DragHandleZone>
+                              <DragIcon isDragging={snapshot.isDragging}>
+                                <DragIndicatorIcon />
+                              </DragIcon>
+                            </DragHandleZone>
                             <BlockActionWrapper onClick={() => setSelectedBlock(block)}>
                               <TargetBlockTypePreview selectedTheme={selectedTheme} block={block} />
                             </BlockActionWrapper>
@@ -173,14 +187,19 @@ export const PageForm = (props: IProps) => {
         </>
       )}
       <FormFooter>
-        {isShowPreview && (
+        {isShowPreview && isMobile && (
           <IconButton onClick={hidePagePreview} isActive={true}>
             <EditIcon />
           </IconButton>
         )}
-        {!isShowPreview && (
-          <IconButton onClick={showPagePreview} disabled={!isMobile}>
+        {!isShowPreview && isMobile && (
+          <IconButton onClick={showPagePreview}>
             <VisibilityIcon />
+          </IconButton>
+        )}
+        {!isMobile && (
+          <IconButton onClick={toThemesPage}>
+            <PaletteIcon />
           </IconButton>
         )}
         <AddBlockButtonWrapper>

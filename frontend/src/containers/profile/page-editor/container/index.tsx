@@ -77,19 +77,17 @@ export const PageEditorContainer = observer((props: IProps) => {
             <DesktopPageWrapper>
               <Grid verticalGap={32}>
                 <GridColumn size={6} alignItems='center'>
-                  <BlockWrapper>
-                    <PhoneScreenWrapper isForm={true}>
-                      <PageForm
-                        data={data}
-                        selectedTheme={selectedTheme}
-                        username={username}
-                        pageSlug={pageSlug}
-                        isUpdating={isUpdating}
-                        onUpdatePageForm={onUpdatePageForm}
-                        onDragEndPagesAction={onDragEndPagesAction}
-                      />
-                    </PhoneScreenWrapper>
-                  </BlockWrapper>
+                  <PhoneScreenWrapper isForm={true}>
+                    <PageForm
+                      data={data}
+                      selectedTheme={selectedTheme}
+                      username={username}
+                      pageSlug={pageSlug}
+                      isUpdating={isUpdating}
+                      onUpdatePageForm={onUpdatePageForm}
+                      onDragEndPagesAction={onDragEndPagesAction}
+                    />
+                  </PhoneScreenWrapper>
                 </GridColumn>
                 <GridColumn size={6} alignItems='center'>
                   <ScaleBlock>
