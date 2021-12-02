@@ -177,6 +177,7 @@ export const PageForm = (props: IProps) => {
                               onClick={onClickEditBlock(block)}
                               isDragging={snapshot.isDragging}
                               ref={provided.innerRef}
+                              {...provided.dragHandleProps}
                               {...provided.draggableProps}
                               style={getStyleLockHorizontalGrag(
                                 provided?.draggableProps?.style,
@@ -186,8 +187,7 @@ export const PageForm = (props: IProps) => {
                               key={block.id}>
                               <DragHandleZone
                                 onClick={onClickStopPropagation}
-                                isDragging={snapshot.isDragging}
-                                {...provided.dragHandleProps}>
+                                isDragging={snapshot.isDragging}>
                                 <DragIcon isDragging={snapshot.isDragging}>
                                   <SwapVertIcon />
                                 </DragIcon>
