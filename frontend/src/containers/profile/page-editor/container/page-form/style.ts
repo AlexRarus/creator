@@ -162,6 +162,7 @@ export const FormWrapperDroppable = styled(Grid)<{
       : selectedTheme?.background || theme.background.primary};
   width: 100%;
   height: 100%;
+  ${({ theme }) => !theme?.isMobile && 'overflow: auto;'}
 `;
 
 export const DraggableItem = styled.div<{ isDragging: boolean; index: number }>`
