@@ -112,7 +112,7 @@ export const FormButtons = (props: IProps) => {
             onClick={() => onAction('submit')}
             disabled={!isValid || isLoading}>
             {isLoading && <Loader type='ring' size={30} color={COLORS.blue[300]} />}
-            {!submitActionLabel}
+            {submitActionLabel}
           </Button>
         </MobileButtonsList>
         {isOpenMobileActions && (
