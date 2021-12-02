@@ -244,6 +244,7 @@ export const MainPageWrapper = styled.div`
   justify-content: center;
   align-items: center;
   padding-top: ${MENU_HEIGHT}px;
+  overflow-x: hidden;
 `;
 
 export const LandingWrapper = styled.div`
