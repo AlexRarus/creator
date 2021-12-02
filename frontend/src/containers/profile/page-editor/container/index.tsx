@@ -11,8 +11,8 @@ import { PagePreview } from './page-preview';
 import { useMapStoreToProps } from './selectors';
 import {
   DesktopPageWrapper,
-  BlockWrapper,
-  PhoneScreenWrapper,
+  // BlockWrapper,
+  EditorWrapper,
   StyledMobileView,
   FlexBlock,
   ScaleBlock,
@@ -77,7 +77,7 @@ export const PageEditorContainer = observer((props: IProps) => {
             <DesktopPageWrapper>
               <Grid verticalGap={32}>
                 <GridColumn size={6} alignItems='center'>
-                  <PhoneScreenWrapper isForm={true}>
+                  <EditorWrapper isForm={true}>
                     <PageForm
                       data={data}
                       selectedTheme={selectedTheme}
@@ -87,7 +87,7 @@ export const PageEditorContainer = observer((props: IProps) => {
                       onUpdatePageForm={onUpdatePageForm}
                       onDragEndPagesAction={onDragEndPagesAction}
                     />
-                  </PhoneScreenWrapper>
+                  </EditorWrapper>
                 </GridColumn>
                 <GridColumn size={6} alignItems='center'>
                   <ScaleBlock>

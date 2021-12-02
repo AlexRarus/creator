@@ -25,7 +25,9 @@ export const FormHeader = styled.div`
   top: 0;
   height: ${FORM_HEADER_HEIGHT}px;
   width: 100%;
-  background: ${COLORS.grey[800]};
+  background: ${rgba(COLORS.grey[800], 0.85)};
+  color: ${COLORS.white};
+  backdrop-filter: blur(4px);
   display: flex;
   flex-direction: row;
   padding: 10px 0 10px 10px;
@@ -150,11 +152,15 @@ export const BlockActionWrapper = styled.div`
 export const FormWrapperDroppable = styled(Grid)<{
   isDraggingOver: boolean;
   selectedTheme: ITheme | null;
+  width?: number;
 }>`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  padding: 20px 0 68px 0;
+
+  width: ${({ width }) => width}px;
+  padding: 24px 24px 64px 48px;
+
   color: inherit;
   background: ${({ selectedTheme, isDraggingOver, theme }) =>
     isDraggingOver
@@ -168,8 +174,8 @@ export const FormWrapperDroppable = styled(Grid)<{
 export const DraggableItem = styled.div<{ isDragging: boolean; index: number }>`
   position: relative;
   width: calc(100% - 4px);
-  padding-left: 44px;
-  padding-right: 24px;
+  padding-left: 12px;
+  padding-right: 12px;
   margin: 8px 2px;
   
   &:after {
@@ -212,10 +218,11 @@ export const DragIcon = styled.div<{ isDragging: boolean }>`
 export const DragHandleZone = styled.div<{ isDragging: boolean }>`
   display: flex;
   justify-content: center;
+  align-items: center;
   position: absolute;
-  padding-top: 8px;
-  top: -4px;
-  left: 0;
+  top: 50%;
+  left: -40px;
+  transform: translateY(-50%);
   height: calc(100% + 8px);
   width: 32px;
   border-radius: 4px;
