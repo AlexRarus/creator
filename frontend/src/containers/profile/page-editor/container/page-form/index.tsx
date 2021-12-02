@@ -151,44 +151,51 @@ export const PageForm = (props: IProps) => {
           </FormHeader>
           <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
             <Droppable droppableId='droppable'>
-              {(provided: any, snapshot: any) => (
-                <FormWrapperDroppable
-                  selectedTheme={null}
-                  isDraggingOver={snapshot.isDraggingOver}
-                  verticalGap={32}
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}>
-                  <GridColumn alignItems='center'>
-                    {listItems.map((block: IBlock<any>, index) => (
-                      <Draggable key={block.id} draggableId={`${block.id}`} index={index}>
-                        {(provided: any, snapshot: any) => (
-                          <DraggableItem
-                            isDragging={snapshot.isDragging}
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            style={getStyleLockHorizontalGrag(
-                              provided?.draggableProps?.style,
-                              snapshot
-                            )}
-                            index={index}
-                            key={block.id}>
-                            <DragHandleZone
+              {(provided: any, snapshot: any) => {
+                console.log(provided);
+                console.log(provided.innerRef);
+                console.log('provided?.draggableProps?.style: ', provided?.draggableProps?.style);
+                return (
+                  <FormWrapperDroppable
+                    selectedTheme={null}
+                    isDraggingOver={snapshot.isDraggingOver}
+                    // addHeight={snapshot.isDragging ? provided?.draggableProps?.style?.height || 0}
+                    verticalGap={32}
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}>
+                    <GridColumn alignItems='center'>
+                      {listItems.map((block: IBlock<any>, index) => (
+                        <Draggable key={block.id} draggableId={`${block.id}`} index={index}>
+                          {(provided: any, snapshot: any) => (
+                            <DraggableItem
                               isDragging={snapshot.isDragging}
-                              {...provided.dragHandleProps}>
-                              <DragIcon isDragging={snapshot.isDragging}>
-                                <SwapVertIcon />
-                              </DragIcon>
-                            </DragHandleZone>
-                            <BlockActionWrapper onClick={() => setSelectedBlock(block)}>
-                              <TargetBlockTypePreview selectedTheme={null} block={block} />
-                            </BlockActionWrapper>
-                          </DraggableItem>
-                        )}
-                      </Draggable>
-                    ))}
-                  </GridColumn>
-                </FormWrapperDroppable>
-              )}
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              style={getStyleLockHorizontalGrag(
+                                provided?.draggableProps?.style,
+                                snapshot
+                              )}
+                              index={index}
+                              key={block.id}>
+                              <DragHandleZone
+                                isDragging={snapshot.isDragging}
+                                {...provided.dragHandleProps}>
+                                <DragIcon isDragging={snapshot.isDragging}>
+                                  <SwapVertIcon />
+                                </DragIcon>
+                              </DragHandleZone>
+                              <BlockActionWrapper onClick={() => setSelectedBlock(block)}>
+                                <TargetBlockTypePreview selectedTheme={null} block={block} />
+                              </BlockActionWrapper>
+                              {provided.placeholder}
+                            </DraggableItem>
+                          )}
+                        </Draggable>
+                      ))}
+                    </GridColumn>
+                  </FormWrapperDroppable>
+                );
+              }}
             </Droppable>
           </DragDropContext>
         </>

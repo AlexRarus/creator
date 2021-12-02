@@ -154,9 +154,7 @@ export const FormWrapperDroppable = styled(Grid)<{
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  overflow-x: hidden;
-  overflow-y: auto;
-  padding: 20px 0;
+  padding: 20px 0 68px 0;
   color: inherit;
   background: ${({ selectedTheme, isDraggingOver, theme }) =>
     isDraggingOver
