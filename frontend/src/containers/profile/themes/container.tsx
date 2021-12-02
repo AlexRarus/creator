@@ -48,9 +48,8 @@ export const ThemesContainer = observer((props: any) => {
     getThemesAction();
   }, []);
 
-  const onSelectTheme = () => {
-    updateThemeAction(activeTheme as ITheme);
-    toEditPage();
+  const onClickTheme = (isSelected?: boolean) => () => {
+    isSelected ? toEditPage() : updateThemeAction(activeTheme as ITheme);
   };
 
   const onSlideChange = ({ realIndex }: any) => {
@@ -102,7 +101,7 @@ export const ThemesContainer = observer((props: any) => {
             </Swiper>
             <ActionRow>
               <Button
-                onClick={onSelectTheme}
+                onClick={onClickTheme(activeTheme?.id === selectedTheme?.id)}
                 kind={activeTheme?.id === selectedTheme?.id ? 'success' : 'formed'}
                 block={true}>
                 {activeTheme?.id === selectedTheme?.id ? (

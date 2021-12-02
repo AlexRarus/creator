@@ -118,6 +118,14 @@ export const PageForm = (props: IProps) => {
 
   const toThemesPage = () => history.push(`/profile/${username}/themes/`);
 
+  const onClickEditBlock = (block: IBlock<any>) => (event: any) => {
+    setSelectedBlock(block);
+  };
+
+  const onClickStopPropagation = (event: any) => {
+    event.stopPropagation();
+  };
+
   return (
     <>
       {isShowPreview && (
@@ -152,11 +160,9 @@ export const PageForm = (props: IProps) => {
           <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
             <Droppable droppableId='droppable'>
               {(provided: any, snapshot: any) => {
-                console.log(provided);
-                console.log(provided.innerRef);
-                console.log('provided?.draggableProps?.style: ', provided?.draggableProps?.style);
                 return (
                   <FormWrapperDroppable
+                    width={isMobile ? window.innerWidth : 500}
                     selectedTheme={null}
                     isDraggingOver={snapshot.isDraggingOver}
                     // addHeight={snapshot.isDragging ? provided?.draggableProps?.style?.height || 0}
@@ -168,6 +174,7 @@ export const PageForm = (props: IProps) => {
                         <Draggable key={block.id} draggableId={`${block.id}`} index={index}>
                           {(provided: any, snapshot: any) => (
                             <DraggableItem
+                              onClick={onClickEditBlock(block)}
                               isDragging={snapshot.isDragging}
                               ref={provided.innerRef}
                               {...provided.draggableProps}
@@ -175,19 +182,19 @@ export const PageForm = (props: IProps) => {
                                 provided?.draggableProps?.style,
                                 snapshot
                               )}
-                              index={index}
+                              index={index + 1}
                               key={block.id}>
                               <DragHandleZone
+                                onClick={onClickStopPropagation}
                                 isDragging={snapshot.isDragging}
                                 {...provided.dragHandleProps}>
                                 <DragIcon isDragging={snapshot.isDragging}>
                                   <SwapVertIcon />
                                 </DragIcon>
                               </DragHandleZone>
-                              <BlockActionWrapper onClick={() => setSelectedBlock(block)}>
+                              <BlockActionWrapper>
                                 <TargetBlockTypePreview selectedTheme={null} block={block} />
                               </BlockActionWrapper>
-                              {provided.placeholder}
                             </DraggableItem>
                           )}
                         </Draggable>

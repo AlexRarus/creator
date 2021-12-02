@@ -7,15 +7,16 @@ import { TextPreview } from './types/text';
 interface IProps {
   block: IBlock<any>;
   selectedTheme: ITheme | null;
+  onClick?: any;
 }
 
 // Отображение блоков на пользовательской странице
 export const TargetBlockTypePreview = (props: IProps) => {
-  const { block, selectedTheme } = props;
+  const { block, selectedTheme, onClick } = props;
   switch (block.type) {
     case 'text':
-      return <TextPreview selectedTheme={selectedTheme} {...props} />;
+      return <TextPreview onClick={onClick} selectedTheme={selectedTheme} {...props} />;
     default:
-      return <div>Unknown block type</div>;
+      return <div onClick={onClick}>Unknown block type</div>;
   }
 };

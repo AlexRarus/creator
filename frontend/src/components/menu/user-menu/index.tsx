@@ -26,9 +26,7 @@ export const UserMenu = (props: IProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { themeType, toggleTheme } = useThemeContext();
 
-  const toggleThemeAction = (event: any) => {
-    event.stopPropagation();
-    event.preventDefault();
+  const toggleThemeAction = () => {
     if (themeType === 'light') {
       toggleTheme('dark');
     } else {
