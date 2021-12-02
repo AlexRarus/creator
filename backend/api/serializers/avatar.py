@@ -53,11 +53,11 @@ class AvatarSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         # Если аватарка уже есть, обновляем текущую
-        avatar = Avatar.objects.get(user=validated_data.get("user"))
-        if avatar:
+        try:
+            avatar = Avatar.objects.get(user=validated_data.get("user"))
             return self.update(avatar, validated_data)
-        avatar = Avatar.objects.create(**validated_data)
-        return avatar
+        except Avatar.DoesNotExist:
+            return Avatar.objects.create(**validated_data)
 
     def update(self, avatar, validated_data):
         # Если оставить поле file пустым, то оно не будет перезаписываться

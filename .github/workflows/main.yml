@@ -35,6 +35,8 @@ jobs:
           # Создаст файл для переменных окружения
           echo 'Создаст файл для переменных окружения'
           touch .env
+          # Удаляем предыдущее окружение если было
+          truncate -s 0 .env
           echo 'Наполнит файл переменными окружения из секретов GitHub'
           # Наполнит файл переменными окружения из секретов GitHub
           echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
@@ -119,6 +121,8 @@ jobs:
               sudo docker-compose rm django frontend
               # Создаст файл для переменных окружения
               touch .env
+              # Удаляем предыдущее окружение если было
+              truncate -s 0 .env
               # Наполнит файл переменными окружения из секретов GitHub
               echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
               echo DB_NAME=${{ secrets.DB_NAME }} >> .env
