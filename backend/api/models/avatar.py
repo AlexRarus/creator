@@ -9,8 +9,8 @@ def get_upload_path(avatar, filename):
     dir_size = 1000
     dir_from_ids = user_id // dir_size * dir_size
     dir_to_ids = dir_from_ids + dir_size - 1
-    dir_name = f"user_ids_from_{dir_from_ids}_to_{dir_to_ids}"
-    return "/".join(["avatars", dir_name, f"user_id_{user_id}", filename])
+    dir_name = f"{dir_from_ids}-{dir_to_ids}"
+    return "/".join(["avatars", dir_name, f"{user_id}", filename])
 
 
 class Avatar(models.Model):
