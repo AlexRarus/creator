@@ -9,7 +9,8 @@ import PaletteIcon from '@mui/icons-material/Palette';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import SettingsIcon from '@mui/icons-material/Settings';
 import EditIcon from '@mui/icons-material/Edit';
-import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
+// import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
+import SwapVertIcon from '@mui/icons-material/SwapVert';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { copyTextToClipboard } from 'src/utils/copyToClipboard';
 import { v4 as uuidv4 } from 'uuid';
@@ -21,6 +22,7 @@ import { ITheme } from 'src/dal/themes/interface';
 import { PagePreview } from '../page-preview';
 import { reorder } from '../utils';
 
+import { getStyleLockHorizontalGrag } from './utils';
 import {
   // FormWrapper,
   FormHeader,
@@ -151,7 +153,7 @@ export const PageForm = (props: IProps) => {
             <Droppable droppableId='droppable'>
               {(provided: any, snapshot: any) => (
                 <FormWrapperDroppable
-                  selectedTheme={selectedTheme}
+                  selectedTheme={null}
                   isDraggingOver={snapshot.isDraggingOver}
                   verticalGap={32}
                   {...provided.droppableProps}
@@ -164,16 +166,21 @@ export const PageForm = (props: IProps) => {
                             isDragging={snapshot.isDragging}
                             ref={provided.innerRef}
                             {...provided.draggableProps}
-                            {...provided.dragHandleProps}
+                            style={getStyleLockHorizontalGrag(
+                              provided?.draggableProps?.style,
+                              snapshot
+                            )}
                             index={index}
                             key={block.id}>
-                            <DragHandleZone>
+                            <DragHandleZone
+                              isDragging={snapshot.isDragging}
+                              {...provided.dragHandleProps}>
                               <DragIcon isDragging={snapshot.isDragging}>
-                                <DragIndicatorIcon />
+                                <SwapVertIcon />
                               </DragIcon>
                             </DragHandleZone>
                             <BlockActionWrapper onClick={() => setSelectedBlock(block)}>
-                              <TargetBlockTypePreview selectedTheme={selectedTheme} block={block} />
+                              <TargetBlockTypePreview selectedTheme={null} block={block} />
                             </BlockActionWrapper>
                           </DraggableItem>
                         )}

@@ -157,10 +157,7 @@ export const FormWrapperDroppable = styled(Grid)<{
   overflow-x: hidden;
   overflow-y: auto;
   padding: 20px 0;
-  color: ${({ selectedTheme, isDraggingOver, theme }) =>
-    isDraggingOver
-      ? rgba(selectedTheme ? selectedTheme.color : theme.color.primary, 0.9)
-      : selectedTheme?.color || theme.color.primary};
+  color: inherit;
   background: ${({ selectedTheme, isDraggingOver, theme }) =>
     isDraggingOver
       ? rgba(selectedTheme ? selectedTheme.background : theme.background.primary, 0.9)
@@ -174,7 +171,7 @@ export const DraggableItem = styled.div<{ isDragging: boolean; index: number }>`
   width: calc(100% - 4px);
   padding-left: 44px;
   padding-right: 24px;
-  margin: 2px;
+  margin: 8px 2px;
   
   &:after {
     content: '${({ index }) => index}';
@@ -192,7 +189,7 @@ export const DraggableItem = styled.div<{ isDragging: boolean; index: number }>`
     width: calc(100% - 4px);
     height: 100%;
     background: ${({ isDragging }) =>
-      isDragging ? rgba(COLORS.black, 0.1) : rgba(COLORS.white, 0.2)};
+      isDragging ? rgba(COLORS.white, 0.15) : rgba(COLORS.white, 0.2)};
     border-radius: 2px;
     border: 1px dashed;
     border-color: ${({ isDragging }) => (isDragging ? rgba(COLORS.black, 0.1) : 'transparent')};
@@ -209,20 +206,21 @@ export const DragIcon = styled.div<{ isDragging: boolean }>`
   width: 32px;
   height: 32px;
   border-radius: 4px;
-  box-shadow: ${({ isDragging }) =>
-    isDragging ? '0px 15px 20px rgba(46, 229, 157, 0.4)' : 'none'};
-  background: ${({ isDragging }) => (isDragging ? '#2EE59D' : 'transparent')};
   color: ${({ isDragging }) => (isDragging ? COLORS.white : 'inherit')};
   transition: all 200ms;
 `;
 
-export const DragHandleZone = styled.div`
+export const DragHandleZone = styled.div<{ isDragging: boolean }>`
   display: flex;
   justify-content: center;
   position: absolute;
   padding-top: 8px;
-  top: 0;
+  top: -4px;
   left: 0;
-  height: 100%;
-  width: 44px;
+  height: calc(100% + 8px);
+  width: 32px;
+  border-radius: 4px;
+  box-shadow: ${({ isDragging }) =>
+    isDragging ? '0px 15px 20px rgba(46, 229, 157, 0.4)' : 'none'};
+  background: ${({ isDragging, theme }) => (isDragging ? '#2EE59D' : theme?.scroll?.primary)};
 `;
