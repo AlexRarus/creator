@@ -1,3 +1,5 @@
+import uuid
+
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -10,7 +12,9 @@ def get_upload_path(avatar, filename):
     dir_from_ids = user_id // dir_size * dir_size
     dir_to_ids = dir_from_ids + dir_size - 1
     dir_name = f"{dir_from_ids}-{dir_to_ids}"
-    return "/".join(["avatars", dir_name, f"{user_id}", filename])
+    return "/".join(
+        ["avatars", dir_name, f"{user_id}", f"{uuid.uuid4()}_{filename}"]
+    )
 
 
 class Avatar(models.Model):
