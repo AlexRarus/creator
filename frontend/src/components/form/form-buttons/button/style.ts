@@ -16,6 +16,7 @@ const ButtonColors = {
 };
 
 export const ButtonStyled = styled.div<IButtonStyledProps>`
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
