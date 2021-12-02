@@ -4,6 +4,9 @@ import * as COLORS from './colors';
 export const LIGHT_THEME: ITheme = {
   isMobile: false,
   isTablet: false,
+  scroll: {
+    primary: `linear-gradient(315deg, #9921e8 0%, #5f72be 74%)`,
+  },
   color: {
     primary: COLORS.blue[500],
     secondary: COLORS.red[500],
@@ -136,6 +139,9 @@ export const LIGHT_THEME: ITheme = {
 export const DARK_THEME: ITheme = {
   isMobile: false,
   isTablet: false,
+  scroll: {
+    primary: `linear-gradient(315deg, #89d4cf 0%, #6e45e1 74%)`,
+  },
   color: {
     primary: COLORS.blue[300],
     secondary: COLORS.red[300],

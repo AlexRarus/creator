@@ -4,9 +4,13 @@ import { IBlock } from 'src/dal/blocks/interfaces';
 import { TargetBlockTypePreview } from 'src/containers/app/block';
 import Button from 'src/components/button';
 import { IPage } from 'src/dal/pages/interfaces';
+import { useHistory } from 'react-router-dom';
+import PaletteIcon from '@mui/icons-material/Palette';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import SettingsIcon from '@mui/icons-material/Settings';
 import EditIcon from '@mui/icons-material/Edit';
+// import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
+import SwapVertIcon from '@mui/icons-material/SwapVert';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { copyTextToClipboard } from 'src/utils/copyToClipboard';
 import { v4 as uuidv4 } from 'uuid';
@@ -18,6 +22,7 @@ import { ITheme } from 'src/dal/themes/interface';
 import { PagePreview } from '../page-preview';
 import { reorder } from '../utils';
 
+import { getStyleLockHorizontalGrag } from './utils';
 import {
   // FormWrapper,
   FormHeader,
@@ -32,6 +37,8 @@ import {
   BlockActionWrapper,
   FormWrapperDroppable,
   DraggableItem,
+  DragIcon,
+  DragHandleZone,
 } from './style';
 import { IconButton } from './icon-button';
 import { PageSettingsModal, TabValue } from './page-settings-modal';
@@ -67,6 +74,7 @@ export const PageForm = (props: IProps) => {
   const [pageSettingsModalTab, setPageSettingsModalTab] = useState<TabValue | null>(null);
   const [copyBlinkId, setCopyBlinkId] = useState<string>();
   const [selectedBlock, setSelectedBlock] = useState<IBlock<any> | INewBlock | null>(null);
+  const history = useHistory();
 
   useEffect(() => {
     if (data.blocks) {
@@ -108,6 +116,16 @@ export const PageForm = (props: IProps) => {
     setPageSettingsModalTab(activeTab);
   const closePageSettingsModal = () => setPageSettingsModalTab(null);
 
+  const toThemesPage = () => history.push(`/profile/${username}/themes/`);
+
+  const onClickEditBlock = (block: IBlock<any>) => (event: any) => {
+    setSelectedBlock(block);
+  };
+
+  const onClickStopPropagation = (event: any) => {
+    event.stopPropagation();
+  };
+
   return (
     <>
       {isShowPreview && (
@@ -141,46 +159,68 @@ export const PageForm = (props: IProps) => {
           </FormHeader>
           <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
             <Droppable droppableId='droppable'>
-              {(provided: any, snapshot: any) => (
-                <FormWrapperDroppable
-                  selectedTheme={selectedTheme}
-                  isDraggingOver={snapshot.isDraggingOver}
-                  verticalGap={32}
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}>
-                  <GridColumn alignItems='center'>
-                    {listItems.map((block: IBlock<any>, index) => (
-                      <Draggable key={block.id} draggableId={`${block.id}`} index={index}>
-                        {(provided: any, snapshot: any) => (
-                          <DraggableItem
-                            isDragging={snapshot.isDragging}
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            key={block.id}>
-                            <BlockActionWrapper onClick={() => setSelectedBlock(block)}>
-                              <TargetBlockTypePreview selectedTheme={selectedTheme} block={block} />
-                            </BlockActionWrapper>
-                          </DraggableItem>
-                        )}
-                      </Draggable>
-                    ))}
-                  </GridColumn>
-                </FormWrapperDroppable>
-              )}
+              {(provided: any, snapshot: any) => {
+                return (
+                  <FormWrapperDroppable
+                    width={isMobile ? window.innerWidth : 500}
+                    selectedTheme={null}
+                    isDraggingOver={snapshot.isDraggingOver}
+                    // addHeight={snapshot.isDragging ? provided?.draggableProps?.style?.height || 0}
+                    verticalGap={32}
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}>
+                    <GridColumn alignItems='center'>
+                      {listItems.map((block: IBlock<any>, index) => (
+                        <Draggable key={block.id} draggableId={`${block.id}`} index={index}>
+                          {(provided: any, snapshot: any) => (
+                            <DraggableItem
+                              onClick={onClickEditBlock(block)}
+                              isDragging={snapshot.isDragging}
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              style={getStyleLockHorizontalGrag(
+                                provided?.draggableProps?.style,
+                                snapshot
+                              )}
+                              index={index + 1}
+                              key={block.id}>
+                              <DragHandleZone
+                                onClick={onClickStopPropagation}
+                                isDragging={snapshot.isDragging}
+                                {...provided.dragHandleProps}>
+                                <DragIcon isDragging={snapshot.isDragging}>
+                                  <SwapVertIcon />
+                                </DragIcon>
+                              </DragHandleZone>
+                              <BlockActionWrapper>
+                                <TargetBlockTypePreview selectedTheme={null} block={block} />
+                              </BlockActionWrapper>
+                            </DraggableItem>
+                          )}
+                        </Draggable>
+                      ))}
+                    </GridColumn>
+                  </FormWrapperDroppable>
+                );
+              }}
             </Droppable>
           </DragDropContext>
         </>
       )}
       <FormFooter>
-        {isShowPreview && (
+        {isShowPreview && isMobile && (
           <IconButton onClick={hidePagePreview} isActive={true}>
             <EditIcon />
           </IconButton>
         )}
-        {!isShowPreview && (
-          <IconButton onClick={showPagePreview} disabled={!isMobile}>
+        {!isShowPreview && isMobile && (
+          <IconButton onClick={showPagePreview}>
             <VisibilityIcon />
+          </IconButton>
+        )}
+        {!isMobile && (
+          <IconButton onClick={toThemesPage}>
+            <PaletteIcon />
           </IconButton>
         )}
         <AddBlockButtonWrapper>

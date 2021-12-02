@@ -25,7 +25,7 @@ export const BlocksTypesContainer = observer((props: IProps) => {
         types.map((type: IBlockType) => (
           <BlockTypeItem key={type.slug} type={type} onClick={onSelectBlockType} />
         ))}
-      {types.length === 0 && 'Нет типов в БД'}
+      {types.length === 0 && 'Нет доступных типов'}
     </BlocksTypesContainerWrapper>
   );
 });

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { rgba } from 'polished';
 import { COLORS } from 'src/components/theme';
 
 export const ThemesWrapper = styled.div`
@@ -53,11 +54,11 @@ export const SwiperWrapper = styled.div<{ width?: number }>`
   }
 `;
 
-export const PhoneWrapper = styled.div<{ isSelected?: boolean }>`
+export const PhoneWrapper = styled.div<{ isSelected?: boolean; color: string }>`
   position: relative;
   width: 320px;
   height: 560px;
-  border: 7px solid transparent;
+  border: 2px solid ${({ color }) => color};
   border-radius: 30px;
   overflow: hidden;
   ${({ theme }) =>
@@ -132,4 +133,16 @@ export const EmptyBlock = styled.div`
   font-size: 20px;
   font-weight: 500;
   text-align: center;
+`;
+
+export const SuccessLabel = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+
+  & svg {
+    margin-left: 8px;
+  }
 `;
