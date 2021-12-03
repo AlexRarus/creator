@@ -7,8 +7,8 @@ User = get_user_model()
 
 class BlockType(models.Model):
     SLUG_CHOICES = (
-        ("text", "Текст"),
-        ("button", "Кнопка"),
+        ("text", "text"),
+        ("button", "button"),
     )
     author = models.ForeignKey(
         User,
