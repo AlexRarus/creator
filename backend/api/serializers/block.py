@@ -22,9 +22,9 @@ class BlockReadSerializer(serializers.ModelSerializer):
     )
 
     def get_data(self, obj):
-        if obj.type == "text":
+        if obj.type.slug == "text":
             return TypeTextSerializer(obj.text).data
-        if obj.type == "link":
+        if obj.type.slug == "button":
             return ButtonSerializerRead(obj.button).data
 
     class Meta:
