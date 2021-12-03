@@ -147,7 +147,7 @@ export const AvatarEditModal = (props: IProps) => {
             <FileUploaderField>
               {Boolean(sourceFile) && <FileUploaderLabel>Выбран файл: </FileUploaderLabel>}
               <ControlledField name='sourceFile' control={control}>
-                <FileUploader maxSize={25} title='Выбрать новый файл' accept='.jpeg,.png' />
+                <FileUploader maxSize={25} title='Выбрать новый файл' accept='.jpeg,.png,.webp' />
               </ControlledField>
             </FileUploaderField>
           </ControlsWrapper>

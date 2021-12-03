@@ -11,6 +11,7 @@ from .models.block_type import BlockType
 from .models.image import Image
 from .models.page import Page
 from .models.section import Section
+from .models.types.button import ButtonType
 from .pagination import CustomPagination
 from .permissions import (
     IsAuthorPermission,
@@ -24,6 +25,7 @@ from .serializers.block_type import BlockTypeSerializer
 from .serializers.image import ImageSerializer
 from .serializers.page import PageReadSerializer, PageWriteSerializer
 from .serializers.section import SectionSerializer
+from .serializers.types.button import ButtonTypeSerializerRead
 
 
 class PageViewSet(viewsets.ModelViewSet):
@@ -99,7 +101,11 @@ class BlockViewSet(viewsets.ModelViewSet):
             author=self.request.user,
             slug=self.request.data["page_slug"],
         )
-        serializer.save(author=self.request.user, page=page)
+        serializer.save(
+            author=self.request.user,
+            page=page,
+            type=BlockType.objects.get(slug=self.request.data["type"]),
+        )
 
 
 class BlockTypesViewSet(mixins.ListModelMixin, GenericViewSet):
@@ -107,8 +113,11 @@ class BlockTypesViewSet(mixins.ListModelMixin, GenericViewSet):
     permission_classes = (AllowAny,)
     serializer_class = BlockTypeSerializer
 
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+
+class BlockButtonTypesViewSet(mixins.ListModelMixin, GenericViewSet):
+    queryset = ButtonType.objects.all()
+    permission_classes = (AllowAny,)
+    serializer_class = ButtonTypeSerializerRead
 
 
 class SectionViewSet(viewsets.ModelViewSet):
