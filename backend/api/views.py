@@ -10,8 +10,8 @@ from .models.block import Block
 from .models.block_type import BlockType
 from .models.image import Image
 from .models.page import Page
-from .models.section import Section
 from .models.types.button import ButtonType
+from .models.types.section import Section
 from .pagination import CustomPagination
 from .permissions import (
     IsAuthorPermission,
@@ -20,11 +20,10 @@ from .permissions import (
     IsPagePermission,
 )
 from .serializers.avatar import AvatarExistsExceptionError, AvatarSerializer
-from .serializers.block import BlockReadSerializer, BlockWriteSerializer
+from .serializers.block import BlockSerializerRead, BlockSerializerWrite
 from .serializers.block_type import BlockTypeSerializer
 from .serializers.image import ImageSerializer
 from .serializers.page import PageReadSerializer, PageWriteSerializer
-from .serializers.section import SectionSerializer
 from .serializers.types.button import ButtonTypeSerializerRead
 
 
@@ -92,8 +91,8 @@ class BlockViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         if self.action == "retrieve" or self.action == "list":
-            return BlockReadSerializer
-        return BlockWriteSerializer
+            return BlockSerializerRead
+        return BlockSerializerWrite
 
     def perform_create(self, serializer):
         page = get_object_or_404(
@@ -101,6 +100,7 @@ class BlockViewSet(viewsets.ModelViewSet):
             author=self.request.user,
             slug=self.request.data["page_slug"],
         )
+
         serializer.save(
             author=self.request.user,
             page=page,
@@ -118,15 +118,6 @@ class BlockButtonTypesViewSet(mixins.ListModelMixin, GenericViewSet):
     queryset = ButtonType.objects.all()
     permission_classes = (AllowAny,)
     serializer_class = ButtonTypeSerializerRead
-
-
-class SectionViewSet(viewsets.ModelViewSet):
-    queryset = Section.objects.all()
-    permission_classes = (IsAuthorPermission,)
-    serializer_class = SectionSerializer
-
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
 
 
 class AvatarViewSet(

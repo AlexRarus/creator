@@ -4,7 +4,7 @@ from api.models.relations import PageBlockRelation
 from django.db.models import Prefetch
 from rest_framework import serializers
 
-from .block import BlockReadSerializer
+from .block import BlockSerializerRead
 
 
 class PageWriteSerializer(serializers.ModelSerializer):
@@ -15,7 +15,6 @@ class PageWriteSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         blocks = validated_data.pop("blocks")
-        print(validated_data)
         page = Page.objects.create(**validated_data)
 
         for order, block in enumerate(blocks):
@@ -62,7 +61,7 @@ class PageWriteSerializer(serializers.ModelSerializer):
 
 class PageReadSerializer(serializers.ModelSerializer):
     author = serializers.PrimaryKeyRelatedField(read_only=True)
-    blocks = BlockReadSerializer(read_only=True, many=True)
+    blocks = BlockSerializerRead(read_only=True, many=True)
 
     class Meta:
         model = Page

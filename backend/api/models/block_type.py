@@ -9,6 +9,7 @@ class BlockType(models.Model):
     SLUG_CHOICES = (
         ("text", "text"),
         ("button", "button"),
+        ("section", "section"),
     )
     author = models.ForeignKey(
         User,

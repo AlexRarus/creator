@@ -6,7 +6,6 @@ from .views import (
     BlockViewSet,
     ImageViewSet,
     PageViewSet,
-    SectionViewSet,
 )
 
 router_v1 = CustomDefaultRouter()
@@ -25,7 +24,6 @@ router_v1.register(
 router_v1.register("v1/blocks", BlockViewSet)
 router_v1.register("v1/block_types", BlockTypesViewSet)
 router_v1.register("v1/block_button_types", BlockButtonTypesViewSet)
-router_v1.register("v1/sections", SectionViewSet)
 router_v1.register("v1/avatar", AvatarViewSet)
 router_v1.register("v1/images", ImageViewSet)
 

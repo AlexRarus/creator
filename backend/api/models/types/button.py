@@ -51,6 +51,6 @@ class Button(models.Model):
         return self.label[:20]
 
     class Meta:
-        verbose_name = "Кнопка (тип блока)"
-        verbose_name_plural = "Кнопка (тип блока)"
+        verbose_name = "[Контент Блока] Кнопка"
+        verbose_name_plural = "[Контент Блока] Кнопка"
         ordering = ("id",)

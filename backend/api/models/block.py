@@ -2,8 +2,8 @@ from django.contrib.auth import get_user_model
 from django.db import models
 
 from .block_type import BlockType
-from .section import Section
 from .types.button import Button
+from .types.section import Section
 from .types.text import Text
 
 User = get_user_model()
@@ -23,14 +23,6 @@ class Block(models.Model):
         on_delete=models.SET_NULL,
         null=True,
     )
-    section = models.ForeignKey(
-        Section,
-        related_name="blocks",
-        verbose_name="Секция",
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-    )
     text = models.ForeignKey(
         Text,
         verbose_name='Контент блока с типом "text"',
@@ -41,6 +33,13 @@ class Block(models.Model):
     button = models.ForeignKey(
         Button,
         verbose_name='Контент блока с типом "button"',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+    section = models.ForeignKey(
+        Section,
+        verbose_name='Контент блока с типом "section"',
         on_delete=models.SET_NULL,
         null=True,
         blank=True,

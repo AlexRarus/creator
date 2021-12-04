@@ -8,24 +8,29 @@ from api.serializers.types.button import (
 )
 from api.serializers.types.text import TypeTextSerializer, block_text_update
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 
-class BlockReadSerializer(serializers.ModelSerializer):
+class BlockSerializerRead(serializers.ModelSerializer):
     type = serializers.CharField(read_only=True, source="type.slug")
     author = serializers.PrimaryKeyRelatedField(read_only=True)
     data = serializers.SerializerMethodField(read_only=True)
-    page_slugs = serializers.SlugRelatedField(
-        source="pages",
-        slug_field="slug",
-        read_only=True,
-        many=True,
-    )
+    # page_slugs = serializers.SlugRelatedField(
+    #     source="pages",
+    #     slug_field="slug",
+    #     read_only=True,
+    #     many=True,
+    # )
 
     def get_data(self, obj):
         if obj.type.slug == "text":
             return TypeTextSerializer(obj.text).data
         if obj.type.slug == "button":
             return ButtonSerializerRead(obj.button).data
+        if obj.type.slug == "section":
+            from api.serializers.types.section import SectionSerializerRead
+
+            return SectionSerializerRead(obj.section).data
 
     class Meta:
         model = Block
@@ -33,13 +38,12 @@ class BlockReadSerializer(serializers.ModelSerializer):
             "id",
             "author",
             "type",
-            "section",
             "data",
-            "page_slugs",
+            # "page_slugs",
         )  # динамический набор полей
 
 
-class BlockWriteSerializer(serializers.ModelSerializer):
+class BlockSerializerWrite(serializers.ModelSerializer):
     type = serializers.CharField(read_only=True, source="type.slug")
     author = serializers.PrimaryKeyRelatedField(read_only=True)
     data = serializers.SerializerMethodField(read_only=True)
@@ -52,25 +56,38 @@ class BlockWriteSerializer(serializers.ModelSerializer):
             return TypeTextSerializer(block.text).data
         if block.type.slug == "button":
             return ButtonSerializerRead(block.button).data
+        if block.type.slug == "section":
+            from api.serializers.types.section import SectionSerializerRead
+
+            return SectionSerializerRead(block.section).data
 
     def create(self, validated_data):
-        page = validated_data.pop("page")
+        page = validated_data.pop("page", None)
+
         data = self.initial_data.pop("data")
         block = Block.objects.create(**validated_data)
 
-        if block.type.slug == "text":
-            block.text = Text.objects.create(**data)
-        if block.type.slug == "button":
-            button_type_slug = data.pop("type")
-            button_type = ButtonType.objects.get(slug=button_type_slug)
-            block.button = Button.objects.create(**data, type=button_type)
+        try:
+            if block.type.slug == "text":
+                block.text = Text.objects.create(**data)
+            if block.type.slug == "button":
+                button_type_slug = data.pop("type")
+                button_type = ButtonType.objects.get(slug=button_type_slug)
+                block.button = Button.objects.create(**data, type=button_type)
+            if block.type.slug == "section":
+                from api.serializers.types.section import create_section
 
-        PageBlockRelation.objects.create(
-            page=page,
-            block=block,
-            order=page.blocks.count(),
-        )
-        block.save()
+                block.section = create_section(data)
+
+            PageBlockRelation.objects.create(
+                page=page,
+                block=block,
+                order=page.blocks.count(),
+            )
+            block.save()
+        except Exception:
+            block.delete()
+            raise ValidationError({"error": ["блок не создан"]})
 
         return block
 
@@ -83,6 +100,10 @@ class BlockWriteSerializer(serializers.ModelSerializer):
             block_text_update(block.text, data)
         if block.type.slug == "button":
             block_button_update(block.button, data)
+        if block.type.slug == "section":
+            from api.serializers.types.section import update_section
+
+            update_section(block.section, data)
 
         return block
 
@@ -92,7 +113,6 @@ class BlockWriteSerializer(serializers.ModelSerializer):
             "id",
             "author",
             "type",
-            "section",
             "data",
             "page",
         )  # динамический набор полей в поле data

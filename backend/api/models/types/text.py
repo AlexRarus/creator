@@ -8,6 +8,6 @@ class Text(models.Model):
         return self.text[:20]
 
     class Meta:
-        verbose_name = "Текст (тип блока)"
-        verbose_name_plural = "Текст (тип блока)"
+        verbose_name = "[Контент Блока] Текст"
+        verbose_name_plural = "[Контент Блока] Текст"
         ordering = ("id",)
