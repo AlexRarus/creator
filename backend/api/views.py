@@ -109,7 +109,7 @@ class BlockViewSet(viewsets.ModelViewSet):
 
 
 class BlockTypesViewSet(mixins.ListModelMixin, GenericViewSet):
-    queryset = BlockType.objects.all()
+    queryset = BlockType.objects.filter(in_list=True)
     permission_classes = (AllowAny,)
     serializer_class = BlockTypeSerializer
 

@@ -33,6 +33,10 @@ class BlockType(models.Model):
         related_name="block_types",
         null=True,
     )
+    in_list = models.BooleanField(
+        verbose_name="Получать этот тип при запросе списка типов",
+        default=True,
+    )
 
     def __str__(self):
         return f"{self.slug}"
