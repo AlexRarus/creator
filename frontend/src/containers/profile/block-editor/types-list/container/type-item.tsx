@@ -16,7 +16,7 @@ export const BlockTypeItem = (props: IProps) => {
 
   return (
     <TypeItemStyled onClick={onClickHandler}>
-      {typeIconsMap[type.id]}
+      {typeIconsMap[type.slug]}
       <TypeLabel>{type.label}</TypeLabel>
     </TypeItemStyled>
   );

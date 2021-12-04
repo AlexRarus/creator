@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { GridColumn } from 'src/components/grid';
 import { IBlock } from 'src/dal/blocks/interfaces';
-import { TargetBlockTypePreview } from 'src/containers/app/block';
 import Button from 'src/components/button';
 import { IPage } from 'src/dal/pages/interfaces';
 import { useHistory } from 'react-router-dom';
@@ -9,23 +7,18 @@ import PaletteIcon from '@mui/icons-material/Palette';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import SettingsIcon from '@mui/icons-material/Settings';
 import EditIcon from '@mui/icons-material/Edit';
-import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
-// import SwapVertIcon from '@mui/icons-material/SwapVert';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { copyTextToClipboard } from 'src/utils/copyToClipboard';
 import { v4 as uuidv4 } from 'uuid';
 import { BlockEditorModal } from 'src/containers/profile/block-editor';
 import { isMobile } from 'react-device-detect';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { ITheme } from 'src/dal/themes/interface';
-import { typeIconsMap } from 'src/containers/profile/block-editor/types-list/utils';
+import Popup from 'src/components/popup';
+import { USER_MENU_BACKGROUND } from 'src/components/menu/user-menu/style';
 
 import { PagePreview } from '../page-preview';
-import { reorder } from '../utils';
 
-import { getStyleLockHorizontalGrag } from './utils';
 import {
-  // FormWrapper,
   FormHeader,
   LinkToPageField,
   LinkToPageLabel,
@@ -35,16 +28,15 @@ import {
   PageSlug,
   FormFooter,
   AddBlockButtonWrapper,
-  BlockActionWrapper,
-  FormWrapperDroppable,
-  DraggableItem,
-  DragIcon,
-  DragHandleZone,
-  DragIconBox,
+  SettingsPopupList,
+  SettingsItemButton,
+  AcceptButton,
+  CancelButton,
 } from './style';
 import { IconButton } from './icon-button';
 import { PageSettingsModal, TabValue } from './page-settings-modal';
 import { BlinkMessage } from './blink-message';
+import { DroppableList } from './droppable-list';
 
 interface IProps {
   data: IPage;
@@ -55,6 +47,79 @@ interface IProps {
   onUpdatePageForm: (slug?: string) => void;
   onDragEndPagesAction: (list: number[]) => void;
 }
+
+const TEST_LIST = [
+  {
+    id: 1,
+    author: 1,
+    type: 'text',
+    section: null,
+    data: {
+      text: '<p>текстттт</p>',
+    },
+    page_slugs: ['new_page'],
+  },
+  {
+    id: 2,
+    author: 1,
+    type: 'text',
+    section: null,
+    data: {
+      text: '<p>теккст</p>',
+    },
+    page_slugs: ['new_page'],
+  },
+  {
+    id: 21,
+    author: 1,
+    type: 'text',
+    section: null,
+    data: {
+      text: '<p>тasfsdfasfsеккст</p>',
+    },
+    page_slugs: ['new_page'],
+  },
+  {
+    id: 241,
+    author: 1,
+    type: 'text',
+    section: null,
+    data: {
+      text: '<p>тasff asdf asdf asdf sdfasfsеккст</p>',
+    },
+    page_slugs: ['new_page'],
+  },
+  {
+    id: 4,
+    author: 1,
+    type: 'text',
+    section: null,
+    data: {
+      text: '<p style="text-align: center;">фывафыва</p>',
+    },
+    page_slugs: ['new_page'],
+  },
+  {
+    id: 5,
+    author: 1,
+    type: 'text',
+    section: null,
+    data: {
+      text: '<p><span style="background-color: #e03e2d;">фывафываффывафывафыв</span></p>',
+    },
+    page_slugs: ['new_page'],
+  },
+  {
+    id: 6,
+    author: 1,
+    type: 'text',
+    section: null,
+    data: {
+      text: '<p>фывфыафы</p>\n<p>фывафыва</p>',
+    },
+    page_slugs: ['new_page'],
+  },
+];
 
 interface INewBlock {
   id: 'new';
@@ -71,41 +136,61 @@ export const PageForm = (props: IProps) => {
     onDragEndPagesAction,
     selectedTheme,
   } = props;
-  const [listItems, setListItems] = useState<any[]>([]);
+  const [listItems, setListItems] = useState<any[]>(TEST_LIST);
   const [isShowPreview, setIsShowPreview] = useState(false);
   const [pageSettingsModalTab, setPageSettingsModalTab] = useState<TabValue | null>(null);
   const [copyBlinkId, setCopyBlinkId] = useState<string>();
   const [selectedBlock, setSelectedBlock] = useState<IBlock<any> | INewBlock | null>(null);
+  const [openerElement, openerRefCallback] = useState<HTMLDivElement | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isCheckBlocks, setCheckBlocks] = useState(false);
+  const [checkedList, setCheckedList] = useState<any[]>([]);
   const history = useHistory();
 
+  const openSettingsPopupHandler = () => setIsOpen(true);
+  const closeSettingsPopupHandler = () => setIsOpen(false);
+  const startCheckBlocks = () => setCheckBlocks(true);
+  const cancelCheckBlocks = () => {
+    setCheckedList([]);
+    setCheckBlocks(false);
+  };
+  const acceptUnionBlocks = () => {
+    const insertIndex = listItems.findIndex((item: any) =>
+      checkedList.some((checkedId) => checkedId === item.id)
+    );
+    const newSubBlocks = listItems.filter((item) =>
+      checkedList.some((checkedId) => checkedId === item.id)
+    );
+    const newMainList = listItems.filter(
+      (item) => !checkedList.some((checkedId) => checkedId === item.id)
+    );
+
+    newMainList.splice(insertIndex, 0, { id: `section-${insertIndex}`, items: newSubBlocks });
+    setListItems(newMainList);
+    setCheckedList([]);
+    setCheckBlocks(false);
+  };
+
+  const deleteSection = (sectionId: any) => (event: any) => {
+    event.stopPropagation();
+    const insertIndex = listItems.findIndex((item: any) => item.id === sectionId);
+    const subBlocks = listItems[insertIndex]?.items;
+    const newMainList = [...listItems];
+
+    newMainList.splice(insertIndex, 1, ...subBlocks);
+    setListItems(newMainList);
+  };
+
   useEffect(() => {
+    // TODO для теста изменяем данные
     if (data.blocks) {
-      setListItems(data.blocks);
+      // setListItems(data.blocks);
     }
   }, [data]);
 
   const onCopyToClipboard = () => {
     copyTextToClipboard(`${window.location.origin}/${username}/${pageSlug}`);
     setCopyBlinkId(uuidv4());
-  };
-
-  const onDragEnd = (result: any) => {
-    // dropped outside the list
-    if (!result.destination) {
-      return;
-    }
-
-    const items = reorder(listItems, result.source.index, result.destination.index);
-    const listIds = items.map((item) => item.id);
-    setListItems(items);
-    onDragEndPagesAction(listIds);
-  };
-
-  const onDragStart = () => {
-    // good times
-    if (window.navigator.vibrate) {
-      window.navigator.vibrate(100);
-    }
   };
 
   const showPagePreview = () => setIsShowPreview(true);
@@ -119,14 +204,6 @@ export const PageForm = (props: IProps) => {
   const closePageSettingsModal = () => setPageSettingsModalTab(null);
 
   const toThemesPage = () => history.push(`/profile/${username}/themes/`);
-
-  const onClickEditBlock = (block: IBlock<any>) => (event: any) => {
-    setSelectedBlock(block);
-  };
-
-  const onClickStopPropagation = (event: any) => {
-    event.stopPropagation();
-  };
 
   return (
     <>
@@ -159,57 +236,17 @@ export const PageForm = (props: IProps) => {
               <EditIcon />
             </IconButton>
           </FormHeader>
-          <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
-            <Droppable droppableId='droppable'>
-              {(provided: any, snapshot: any) => {
-                return (
-                  <FormWrapperDroppable
-                    width={isMobile ? window.innerWidth : 500}
-                    selectedTheme={null}
-                    isDraggingOver={snapshot.isDraggingOver}
-                    // addHeight={snapshot.isDragging ? provided?.draggableProps?.style?.height || 0}
-                    verticalGap={32}
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}>
-                    <GridColumn alignItems='center'>
-                      {listItems.map((block: IBlock<any>, index) => (
-                        <Draggable key={block.id} draggableId={`${block.id}`} index={index}>
-                          {(provided: any, snapshot: any) => (
-                            <DraggableItem
-                              onClick={onClickEditBlock(block)}
-                              isDragging={snapshot.isDragging}
-                              ref={provided.innerRef}
-                              {...provided.dragHandleProps}
-                              {...provided.draggableProps}
-                              style={getStyleLockHorizontalGrag(
-                                provided?.draggableProps?.style,
-                                snapshot
-                              )}
-                              index={index + 1}
-                              key={block.id}>
-                              <DragHandleZone
-                                onClick={onClickStopPropagation}
-                                isDragging={snapshot.isDragging}>
-                                <DragIcon isDragging={snapshot.isDragging}>
-                                  {typeIconsMap[1]}
-                                </DragIcon>
-                              </DragHandleZone>
-                              <DragIconBox>
-                                <DragIndicatorIcon />
-                              </DragIconBox>
-                              <BlockActionWrapper>
-                                <TargetBlockTypePreview selectedTheme={null} block={block} />
-                              </BlockActionWrapper>
-                            </DraggableItem>
-                          )}
-                        </Draggable>
-                      ))}
-                    </GridColumn>
-                  </FormWrapperDroppable>
-                );
-              }}
-            </Droppable>
-          </DragDropContext>
+          <DroppableList
+            data={data}
+            isCheckBlocks={isCheckBlocks}
+            listItems={listItems}
+            setListItems={setListItems}
+            checkedList={checkedList}
+            setCheckedList={setCheckedList}
+            setSelectedBlock={setSelectedBlock}
+            onDragEndPagesAction={onDragEndPagesAction}
+            deleteSection={deleteSection}
+          />
         </>
       )}
       <FormFooter>
@@ -237,10 +274,40 @@ export const PageForm = (props: IProps) => {
             Добавить блок
           </Button>
         </AddBlockButtonWrapper>
-        <IconButton onClick={openPageSettingsModal()} disabled={isShowPreview}>
+        <IconButton
+          refCallback={openerRefCallback as any}
+          onClick={openSettingsPopupHandler}
+          isOpen={isOpen}
+          disabled={isShowPreview}>
           <SettingsIcon />
         </IconButton>
+        <Popup
+          isOpen={isOpen}
+          onClose={closeSettingsPopupHandler}
+          openerElement={openerElement}
+          horizontalAlign='end'
+          verticalAlign='start'
+          position='top'
+          maxHeight={320}
+          plateMargin={0}
+          zIndex={99}
+          background={USER_MENU_BACKGROUND}
+          hasBorder={false}
+          hasShadow={false}
+          borderRadius='4px 4px 0px 4px'
+          hasPointer={false}>
+          <SettingsPopupList>
+            <SettingsItemButton onClick={openPageSettingsModal()}>Настройки</SettingsItemButton>
+            <SettingsItemButton onClick={startCheckBlocks}>Изменить</SettingsItemButton>
+          </SettingsPopupList>
+        </Popup>
       </FormFooter>
+      {isCheckBlocks && (
+        <>
+          <AcceptButton onClick={acceptUnionBlocks}>Объединить</AcceptButton>
+          <CancelButton onClick={cancelCheckBlocks}>Отмена</CancelButton>
+        </>
+      )}
       {pageSettingsModalTab && (
         <PageSettingsModal
           onClose={closePageSettingsModal}

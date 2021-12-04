@@ -5,12 +5,14 @@ import { IconButtonWrapper } from './style';
 interface IProps {
   children: any;
   onClick(): any;
+  isOpen?: boolean;
   isActive?: boolean;
   disabled?: boolean;
+  refCallback?: any;
 }
 
 export const IconButton = (props: IProps) => {
-  const { children, onClick, isActive = false, disabled = false } = props;
+  const { children, onClick, isActive = false, disabled = false, refCallback, isOpen } = props;
 
   const clickHandler = () => {
     if (!disabled) {
@@ -19,7 +21,12 @@ export const IconButton = (props: IProps) => {
   };
 
   return (
-    <IconButtonWrapper onClick={clickHandler} isActive={isActive} disabled={disabled}>
+    <IconButtonWrapper
+      ref={refCallback}
+      onClick={clickHandler}
+      isActive={isActive}
+      isOpen={isOpen}
+      disabled={disabled}>
       {children}
     </IconButtonWrapper>
   );
