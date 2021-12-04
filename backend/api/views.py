@@ -10,8 +10,8 @@ from .models.block import Block
 from .models.block_type import BlockType
 from .models.image import Image
 from .models.page import Page
+from .models.relations import PageBlockRelation
 from .models.types.button import ButtonType
-from .models.types.section import Section
 from .pagination import CustomPagination
 from .permissions import (
     IsAuthorPermission,
@@ -100,12 +100,39 @@ class BlockViewSet(viewsets.ModelViewSet):
             author=self.request.user,
             slug=self.request.data["page_slug"],
         )
-
         serializer.save(
             author=self.request.user,
             page=page,
             type=BlockType.objects.get(slug=self.request.data["type"]),
         )
+
+    def perform_destroy(self, instance):
+        if instance.type.slug == "section":
+            # находим связь блока со страницей
+            page_relations = PageBlockRelation.objects.filter(block=instance)
+            for page_relation in page_relations:
+                # находим все блоки прикрепленные к странице в сортировке
+                # создаем из них list
+                page = page_relation.page
+                order = page_relation.order
+                page_blocks_list = list(
+                    page.blocks.order_by("pageblockrelation__order").all()
+                )
+                section_blocks_list = list(
+                    instance.section.blocks.order_by(
+                        "sectionblockrelation__order"
+                    ).all()
+                )
+                page_blocks_list[order:order] = section_blocks_list
+                page.blocks.clear()  # открепляем все блоки от страницы
+                # прикрепляем в новом порядке
+                for block in page_blocks_list:
+                    PageBlockRelation.objects.update_or_create(
+                        page=page,
+                        block=block,
+                        order=order,
+                    )
+        instance.delete()
 
 
 class BlockTypesViewSet(mixins.ListModelMixin, GenericViewSet):

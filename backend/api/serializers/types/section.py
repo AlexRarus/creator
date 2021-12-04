@@ -1,5 +1,5 @@
 from api.models.block import Block
-from api.models.relations import SectionBlockRelation
+from api.models.relations import PageBlockRelation, SectionBlockRelation
 from api.models.types.section import Section
 from api.serializers.block import BlockSerializerRead
 from django.db.models import Prefetch
@@ -24,12 +24,16 @@ def create_section(data):
     blocks = Block.objects.filter(id__in=blocks_ids)
     section = Section.objects.create(**data)
 
+    #  прикрепляем блоки к секции
     for order, block in enumerate(blocks):
         SectionBlockRelation.objects.update_or_create(
             section=section,
             block=block,
             order=order,
         )
+
+    #  открепляем блоки от страницы
+    PageBlockRelation.objects.filter(block__in=blocks).delete()
 
     return section
 
@@ -50,6 +54,9 @@ def update_section(section, data):
                 block=block,
                 order=order,
             )
+
+        #  открепляем блоки от страницы
+        PageBlockRelation.objects.filter(block__in=blocks).delete()
 
     # для того чтобы возвращалась нужная сортировка
     return Section.objects.prefetch_related(

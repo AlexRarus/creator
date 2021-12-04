@@ -26,21 +26,21 @@ class Block(models.Model):
     text = models.ForeignKey(
         Text,
         verbose_name='Контент блока с типом "text"',
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         null=True,
         blank=True,
     )
     button = models.ForeignKey(
         Button,
         verbose_name='Контент блока с типом "button"',
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         null=True,
         blank=True,
     )
     section = models.ForeignKey(
         Section,
         verbose_name='Контент блока с типом "section"',
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         null=True,
         blank=True,
     )

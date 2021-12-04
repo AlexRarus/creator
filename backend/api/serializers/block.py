@@ -11,6 +11,10 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 
+class UnknowTypeError(Exception):
+    pass
+
+
 class BlockSerializerRead(serializers.ModelSerializer):
     type = serializers.CharField(read_only=True, source="type.slug")
     author = serializers.PrimaryKeyRelatedField(read_only=True)
@@ -65,29 +69,45 @@ class BlockSerializerWrite(serializers.ModelSerializer):
         page = validated_data.pop("page", None)
 
         data = self.initial_data.pop("data")
+        order = self.initial_data.pop("index", page.blocks.count())  # от 0
+
         block = Block.objects.create(**validated_data)
 
         try:
             if block.type.slug == "text":
                 block.text = Text.objects.create(**data)
-            if block.type.slug == "button":
+            elif block.type.slug == "button":
                 button_type_slug = data.pop("type")
                 button_type = ButtonType.objects.get(slug=button_type_slug)
                 block.button = Button.objects.create(**data, type=button_type)
-            if block.type.slug == "section":
+            elif block.type.slug == "section":
                 from api.serializers.types.section import create_section
 
                 block.section = create_section(data)
+            else:
+                raise UnknowTypeError
 
-            PageBlockRelation.objects.create(
-                page=page,
-                block=block,
-                order=page.blocks.count(),
-            )
             block.save()
-        except Exception:
+
+            # устанавливаем блок в нужную позицию (order)
+            page_blocks_list = list(
+                page.blocks.order_by("pageblockrelation__order").all()
+            )  # create list
+            page_blocks_list.insert(order, block)
+            page.blocks.clear()  # открепляем все блоки от страницы
+            for order, item in enumerate(page_blocks_list):
+                PageBlockRelation.objects.update_or_create(
+                    page=page,
+                    block=item,
+                    order=order,
+                )
+
+        except UnknowTypeError:
+            raise ValidationError({"error": ["неизвестный тип блока"]})
+        except Exception as err:
             block.delete()
-            raise ValidationError({"error": ["блок не создан"]})
+            raise err
+            # raise ValidationError({"error": ["блок не создан"]})
 
         return block
 
