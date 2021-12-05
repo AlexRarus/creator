@@ -1,6 +1,6 @@
 from api.models.block import Block
 from api.models.page import Page
-from api.models.relations import PageBlockRelation
+from api.models.relations import PageBlockRelation, SectionBlockRelation
 from django.db.models import Prefetch
 from rest_framework import serializers
 
@@ -23,6 +23,10 @@ class PageWriteSerializer(serializers.ModelSerializer):
                 block=block,
                 order=order,
             )
+
+        #  открепляем блоки от секций
+        SectionBlockRelation.objects.filter(block__in=blocks).delete()
+
         return page
 
     def update(self, page, validated_data):
@@ -39,6 +43,9 @@ class PageWriteSerializer(serializers.ModelSerializer):
                     block=block,
                     order=order,
                 )
+
+            #  открепляем блоки от секций
+            SectionBlockRelation.objects.filter(block__in=blocks).delete()
 
         # для того чтобы возвращалась нужная сортировка
         return Page.objects.prefetch_related(
