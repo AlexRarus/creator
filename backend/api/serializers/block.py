@@ -7,6 +7,7 @@ from api.serializers.types.button import (
     block_button_update,
 )
 from api.serializers.types.text import TypeTextSerializer, block_text_update
+from django.db.models import Prefetch
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
@@ -109,7 +110,13 @@ class BlockSerializerWrite(serializers.ModelSerializer):
             raise err
             # raise ValidationError({"error": ["блок не создан"]})
 
-        return block
+        # для того чтобы возвращалась нужная сортировка
+        return Block.objects.prefetch_related(
+            Prefetch(
+                "section__blocks",
+                queryset=Block.objects.order_by("sectionblockrelation__order"),
+            ),
+        ).get(id=block.id)
 
     def update(self, block, validated_data):
         data = self.initial_data.pop("data")
@@ -125,7 +132,13 @@ class BlockSerializerWrite(serializers.ModelSerializer):
 
             update_section(block.section, data)
 
-        return block
+        # для того чтобы возвращалась нужная сортировка
+        return Block.objects.prefetch_related(
+            Prefetch(
+                "section__blocks",
+                queryset=Block.objects.order_by("sectionblockrelation__order"),
+            ),
+        ).get(id=block.id)
 
     class Meta:
         model = Block

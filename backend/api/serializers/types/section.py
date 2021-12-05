@@ -21,7 +21,9 @@ class SectionSerializerRead(serializers.ModelSerializer):
 
 def create_section(data):
     blocks_ids = data.pop("blocks")
-    blocks = Block.objects.filter(id__in=blocks_ids)
+    blocks_queryset = Block.objects.filter(id__in=blocks_ids)
+    # сохраняем сортировку блоков как они пришли в запросе
+    blocks = [blocks_queryset.get(id=block_id) for block_id in blocks_ids]
     section = Section.objects.create(**data)
 
     #  прикрепляем блоки к секции
@@ -46,7 +48,10 @@ def update_section(section, data):
     section.save()
 
     if blocks_ids is not None:
-        blocks = Block.objects.filter(id__in=blocks_ids)
+        blocks_queryset = Block.objects.filter(id__in=blocks_ids)
+        # сохраняем сортировку блоков как они пришли в запросе
+        blocks = [blocks_queryset.get(id=block_id) for block_id in blocks_ids]
+
         section.blocks.clear()
         for order, block in enumerate(blocks):
             SectionBlockRelation.objects.update_or_create(
@@ -58,10 +63,4 @@ def update_section(section, data):
         #  открепляем блоки от страницы
         PageBlockRelation.objects.filter(block__in=blocks).delete()
 
-    # для того чтобы возвращалась нужная сортировка
-    return Section.objects.prefetch_related(
-        Prefetch(
-            "blocks",
-            queryset=Block.objects.order_by("sectionblockrelation__order"),
-        ),
-    ).get(id=section.id)
+    return section

@@ -55,6 +55,10 @@ class PageViewSet(viewsets.ModelViewSet):
                 "blocks",
                 queryset=Block.objects.order_by("pageblockrelation__order"),
             ),
+            Prefetch(
+                "blocks__section__blocks",
+                queryset=Block.objects.order_by("sectionblockrelation__order"),
+            ),
         ).filter(author__username=author_username)
 
     def get_object(self):
