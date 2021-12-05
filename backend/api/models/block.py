@@ -23,23 +23,26 @@ class Block(models.Model):
         on_delete=models.SET_NULL,
         null=True,
     )
-    text = models.ForeignKey(
+    text = models.OneToOneField(
         Text,
         verbose_name='Контент блока с типом "text"',
+        related_name="block",
         on_delete=models.CASCADE,
         null=True,
         blank=True,
     )
-    button = models.ForeignKey(
+    button = models.OneToOneField(
         Button,
         verbose_name='Контент блока с типом "button"',
+        related_name="block",
         on_delete=models.CASCADE,
         null=True,
         blank=True,
     )
-    section = models.ForeignKey(
+    section = models.OneToOneField(
         Section,
         verbose_name='Контент блока с типом "section"',
+        related_name="block",
         on_delete=models.CASCADE,
         null=True,
         blank=True,

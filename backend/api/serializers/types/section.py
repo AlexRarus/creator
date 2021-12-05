@@ -2,11 +2,25 @@ from api.models.block import Block
 from api.models.relations import PageBlockRelation, SectionBlockRelation
 from api.models.types.section import Section
 from api.serializers.block import BlockSerializerRead
-from django.db.models import Prefetch
 from rest_framework import serializers
 
 
 class SectionSerializerRead(serializers.ModelSerializer):
+    # При создании или редактировании секции
+    backgroundFile = serializers.FileField(
+        use_url=False,
+        allow_empty_file=True,
+        required=False,
+        allow_null=True,
+        write_only=True,
+    )
+    # При чтении будет приходить поле backgroundUrl
+    backgroundUrl = serializers.FileField(
+        source="backgroundFile",
+        use_url=False,
+        read_only=True,
+    )
+
     blocks = BlockSerializerRead(read_only=True, many=True)
 
     class Meta:
@@ -16,6 +30,13 @@ class SectionSerializerRead(serializers.ModelSerializer):
             "blocks",
             "label",
             "background",
+            "backgroundFile",  # Запись
+            "backgroundUrl",  # Чтение
+            "borderRadius",
+            "paddingTop",
+            "paddingBottom",
+            "paddingRight",
+            "paddingLeft",
         )
 
 
