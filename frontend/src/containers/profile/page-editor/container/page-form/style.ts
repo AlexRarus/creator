@@ -163,7 +163,7 @@ export const FormWrapperDroppable = styled(Grid)<{
   flex-grow: 1;
 
   width: ${({ width }) => width}px;
-  padding: 24px 20px 64px 20px;
+  padding: 24px 28px 64px 24px;
 
   color: inherit;
   background: ${({ selectedTheme, isDraggingOver, theme }) =>
@@ -174,62 +174,6 @@ export const FormWrapperDroppable = styled(Grid)<{
   height: 100%;
   ${({ theme }) => !theme?.isMobile && 'overflow: auto;'}
 `;
-
-const getSectionStyles = (
-  isSection?: boolean,
-  isPrevSection?: boolean,
-  isNextSection?: boolean
-) => {
-  // если первый элемент секции
-  if (isSection && !isPrevSection && isNextSection) {
-    return css`
-      margin: 10px 2px 2px 2px;
-      &:after {
-        display: block;
-        top: -10px;
-        height: calc(100% + 12px);
-        border-radius: 10px 10px 0 0;
-      }
-    `;
-  }
-  // если средний элемент секции
-  if (isSection && isPrevSection && isNextSection) {
-    return css`
-      margin: 2px;
-      &:after {
-        display: block;
-        top: -2px;
-        height: calc(100% + 4px);
-        border-radius: 0;
-      }
-    `;
-  }
-
-  // если последний элемент в секции
-  if (isSection && isPrevSection && !isNextSection) {
-    return css`
-      margin: 2px 2px 10px 2px;
-      &:after {
-        display: block;
-        top: -2px;
-        height: calc(100% + 12px);
-        border-radius: 0 0 10px 10px;
-      }
-    `;
-  }
-  // если один элемент в секции
-  if (isSection && !isPrevSection && !isNextSection) {
-    return css`
-      margin: 10px 2px;
-      &:after {
-        top: 50%;
-        transform: translateY(-50%);
-        display: block;
-      }
-    `;
-  }
-  return '';
-};
 
 export const DraggableItem = styled.div<{ isDragging: boolean; isSubItem?: boolean }>`
   position: relative;
@@ -341,11 +285,13 @@ export const DeleteSection = styled.div`
   position: absolute;
   top: 4px;
   right: 4px;
-  height: 12px;
+  padding: 2px 3px;
+  height: 16px;
   border-radius: 6px;
   font-size: 12px;
-  background: #2ee59d;
   cursor: pointer;
+  color: ${({ theme }) => theme?.background?.primary};
+  background: ${({ theme }) => theme?.textColor?.primary};
 `;
 
 export const SectionWrapper = styled.div<{ isDragging: boolean }>`
@@ -384,16 +330,29 @@ export const SettingsItemButton = styled.div`
 `;
 
 export const CustomCheckbox = styled.div<{ isChecked?: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: absolute;
-  right: -16px;
-  top: 8px;
-  width: 16px;
-  height: 16px;
+  right: -24px;
+  top: 4px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   border: 2px solid
     ${({ isChecked, theme }) => (isChecked ? '#2EE59D' : theme.borderColor.contrast)};
   background: ${({ isChecked }) => (isChecked ? '#2EE59D' : 'inherit')};
   cursor: pointer;
+
+  &:before {
+    content: '';
+    width: 8px;
+    height: 4px;
+    border-bottom: 2px solid ${({ theme }) => theme?.background?.primary};
+    border-left: 2px solid ${({ theme }) => theme?.background?.primary};
+    opacity: ${({ isChecked }) => (isChecked ? 1 : 0)};
+    transform: rotate(-45deg) translate(1px, -1px);
+  }
 `;
 
 export const AcceptButton = styled.div`
@@ -405,8 +364,10 @@ export const AcceptButton = styled.div`
   justify-content: center;
   height: 32px;
   border-radius: 16px;
-  background: #2ee59d;
-  color: ${COLORS.grey[200]};
+  padding: 4px 6px;
+  color: ${({ theme }) => theme?.textColor?.primary};
+  background: ${({ theme }) => theme?.background?.primary};
+  border: 2px solid ${({ theme }) => theme?.textColor?.primary};
   cursor: pointer;
 `;
 
@@ -419,7 +380,9 @@ export const CancelButton = styled.div`
   justify-content: center;
   height: 32px;
   border-radius: 16px;
-  background: ${COLORS.red[400]};
+  padding: 4px 6px;
   color: ${({ theme }) => theme?.textColor?.primary};
+  background: ${({ theme }) => theme?.background?.primary};
+  border: 2px solid ${({ theme }) => theme?.textColor?.primary};
   cursor: pointer;
 `;

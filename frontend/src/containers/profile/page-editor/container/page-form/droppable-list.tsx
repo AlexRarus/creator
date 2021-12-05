@@ -34,8 +34,9 @@ interface IProps {
   checkedList: any[];
   setCheckedList: any;
   setSelectedBlock: any;
-  onDragEndPagesAction: any;
-  deleteSection: any;
+  onDragEndAction: any;
+  deleteSection: (id: any) => (event: any) => void;
+  updateSection: (id: any, blocks: any[], background?: string) => void;
 }
 
 export const DroppableList = (props: IProps) => {
@@ -48,7 +49,8 @@ export const DroppableList = (props: IProps) => {
     setCheckedList,
     setSelectedBlock,
     deleteSection,
-    onDragEndPagesAction,
+    updateSection,
+    onDragEndAction,
   } = props;
 
   const onClickCheckbox = (id: any) => (event: any) => {
@@ -79,26 +81,30 @@ export const DroppableList = (props: IProps) => {
       const items = reorder(listItems, result.source.index, result.destination.index);
       const listIds = items.map((item) => item.id);
       setListItems(items);
-      // onDragEndPagesAction(listIds);
+      onDragEndAction(listIds);
     } else {
-      const section = listItems.find((item: any) => item.id === result.type);
-      const sectionBlocks = reorder(section?.items, result.source.index, result.destination.index);
-      // const listSectionIds = sectionBlocks.map((item) => item.id);
+      const section = listItems.find((item: any) => String(item.id) === result.type);
+      const sectionBlocks = reorder(
+        section?.data?.blocks,
+        result.source.index,
+        result.destination.index
+      );
+
+      const sectionBlocksIds = sectionBlocks.map((block) => block.id);
       const newList = [...listItems];
       const updatedList = newList.map((item) => {
-        if (item.id === result.type) {
-          return { ...item, items: sectionBlocks };
+        if (String(item.id) === result.type) {
+          return { ...item, data: { blocks: sectionBlocks } };
         }
         return item;
       });
-
+      //
       setListItems(updatedList);
-      // onDragEndPagesAction(listIds);
+      updateSection(section.id, sectionBlocksIds);
     }
   };
 
   const onDragStart = () => {
-    // good times
     if (window.navigator.vibrate) {
       window.navigator.vibrate(100);
     }
@@ -129,7 +135,7 @@ export const DroppableList = (props: IProps) => {
                   return (
                     <Draggable key={block.id} draggableId={`${block.id}`} index={index}>
                       {(provided: any, snapshot: any) =>
-                        block.items ? (
+                        block.type === 'section' ? (
                           <SectionDraggable
                             isDragging={snapshot.isDragging}
                             ref={provided.innerRef}
@@ -147,9 +153,7 @@ export const DroppableList = (props: IProps) => {
                                 <ViewAgendaIcon fontSize={'small'} />
                               </DragIcon>
                             </SectionHandleZone>
-                            <DeleteSection onClick={deleteSection(block.id)}>
-                              разъединить
-                            </DeleteSection>
+                            <DeleteSection onClick={deleteSection(block.id)}>удалить</DeleteSection>
                             <DroppableSection
                               section={block}
                               isDragging={snapshot.isDragging}

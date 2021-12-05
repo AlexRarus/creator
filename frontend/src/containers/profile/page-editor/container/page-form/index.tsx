@@ -14,7 +14,7 @@ import { BlockEditorModal } from 'src/containers/profile/block-editor';
 import { isMobile } from 'react-device-detect';
 import { ITheme } from 'src/dal/themes/interface';
 import Popup from 'src/components/popup';
-import { USER_MENU_BACKGROUND } from 'src/components/menu/user-menu/style';
+import { USER_MENU_BACKGROUND, UserMenuWrapper } from 'src/components/menu/user-menu/style';
 
 import { PagePreview } from '../page-preview';
 
@@ -35,6 +35,7 @@ import {
 } from './style';
 import { IconButton } from './icon-button';
 import { PageSettingsModal, TabValue } from './page-settings-modal';
+import { SectionModal } from './section-modal';
 import { BlinkMessage } from './blink-message';
 import { DroppableList } from './droppable-list';
 
@@ -45,81 +46,12 @@ interface IProps {
   isUpdating: boolean;
   selectedTheme: ITheme | null;
   onUpdatePageForm: (slug?: string) => void;
-  onDragEndPagesAction: (list: number[]) => void;
+  updatePartPageDataAction: () => void;
+  onDragEndAction: (list: number[]) => void;
+  createBlockAction: (data: any) => void;
+  updateBlockAction: (data: any) => void;
+  deleteBlockAction: (id: any) => void;
 }
-
-const TEST_LIST = [
-  {
-    id: 1,
-    author: 1,
-    type: 'text',
-    section: null,
-    data: {
-      text: '<p>текстттт</p>',
-    },
-    page_slugs: ['new_page'],
-  },
-  {
-    id: 2,
-    author: 1,
-    type: 'text',
-    section: null,
-    data: {
-      text: '<p>теккст</p>',
-    },
-    page_slugs: ['new_page'],
-  },
-  {
-    id: 21,
-    author: 1,
-    type: 'text',
-    section: null,
-    data: {
-      text: '<p>тasfsdfasfsеккст</p>',
-    },
-    page_slugs: ['new_page'],
-  },
-  {
-    id: 241,
-    author: 1,
-    type: 'text',
-    section: null,
-    data: {
-      text: '<p>тasff asdf asdf asdf sdfasfsеккст</p>',
-    },
-    page_slugs: ['new_page'],
-  },
-  {
-    id: 4,
-    author: 1,
-    type: 'text',
-    section: null,
-    data: {
-      text: '<p style="text-align: center;">фывафыва</p>',
-    },
-    page_slugs: ['new_page'],
-  },
-  {
-    id: 5,
-    author: 1,
-    type: 'text',
-    section: null,
-    data: {
-      text: '<p><span style="background-color: #e03e2d;">фывафываффывафывафыв</span></p>',
-    },
-    page_slugs: ['new_page'],
-  },
-  {
-    id: 6,
-    author: 1,
-    type: 'text',
-    section: null,
-    data: {
-      text: '<p>фывфыафы</p>\n<p>фывафыва</p>',
-    },
-    page_slugs: ['new_page'],
-  },
-];
 
 interface INewBlock {
   id: 'new';
@@ -133,12 +65,16 @@ export const PageForm = (props: IProps) => {
     pageSlug,
     isUpdating,
     onUpdatePageForm,
-    onDragEndPagesAction,
+    onDragEndAction,
+    createBlockAction,
+    updateBlockAction,
+    deleteBlockAction,
     selectedTheme,
   } = props;
-  const [listItems, setListItems] = useState<any[]>(TEST_LIST);
+  const [listItems, setListItems] = useState<any[]>([]);
   const [isShowPreview, setIsShowPreview] = useState(false);
   const [pageSettingsModalTab, setPageSettingsModalTab] = useState<TabValue | null>(null);
+  const [isOpenSectionModal, setOpenSectionModal] = useState<boolean>(false);
   const [copyBlinkId, setCopyBlinkId] = useState<string>();
   const [selectedBlock, setSelectedBlock] = useState<IBlock<any> | INewBlock | null>(null);
   const [openerElement, openerRefCallback] = useState<HTMLDivElement | null>(null);
@@ -147,6 +83,7 @@ export const PageForm = (props: IProps) => {
   const [checkedList, setCheckedList] = useState<any[]>([]);
   const history = useHistory();
 
+  const toggleSectionModal = () => setOpenSectionModal(!isOpenSectionModal);
   const openSettingsPopupHandler = () => setIsOpen(true);
   const closeSettingsPopupHandler = () => setIsOpen(false);
   const startCheckBlocks = () => setCheckBlocks(true);
@@ -154,37 +91,42 @@ export const PageForm = (props: IProps) => {
     setCheckedList([]);
     setCheckBlocks(false);
   };
-  const acceptUnionBlocks = () => {
+
+  const acceptUnionBlocks = (sectionCommonData?: any) => {
     const insertIndex = listItems.findIndex((item: any) =>
       checkedList.some((checkedId) => checkedId === item.id)
     );
     const newSubBlocks = listItems.filter((item) =>
       checkedList.some((checkedId) => checkedId === item.id)
     );
-    const newMainList = listItems.filter(
-      (item) => !checkedList.some((checkedId) => checkedId === item.id)
-    );
+    const subBlocksIds = newSubBlocks.map((block) => block.id);
+    // const newMainList = listItems.filter(
+    //   (item) => !checkedList.some((checkedId) => checkedId === item.id)
+    // );
 
-    newMainList.splice(insertIndex, 0, { id: `section-${insertIndex}`, items: newSubBlocks });
-    setListItems(newMainList);
+    // create section
+    createBlockAction({
+      pageSlug,
+      type: 'section',
+      index: insertIndex,
+      data: { blocks: subBlocksIds, ...sectionCommonData },
+    });
     setCheckedList([]);
     setCheckBlocks(false);
   };
 
   const deleteSection = (sectionId: any) => (event: any) => {
     event.stopPropagation();
-    const insertIndex = listItems.findIndex((item: any) => item.id === sectionId);
-    const subBlocks = listItems[insertIndex]?.items;
-    const newMainList = [...listItems];
+    deleteBlockAction(sectionId);
+  };
 
-    newMainList.splice(insertIndex, 1, ...subBlocks);
-    setListItems(newMainList);
+  const updateSection = (sectionId: any, blocks?: any[], commonData?: any) => {
+    updateBlockAction({ id: sectionId, data: { blocks, ...commonData } });
   };
 
   useEffect(() => {
-    // TODO для теста изменяем данные
     if (data.blocks) {
-      // setListItems(data.blocks);
+      setListItems(data.blocks);
     }
   }, [data]);
 
@@ -244,8 +186,9 @@ export const PageForm = (props: IProps) => {
             checkedList={checkedList}
             setCheckedList={setCheckedList}
             setSelectedBlock={setSelectedBlock}
-            onDragEndPagesAction={onDragEndPagesAction}
+            onDragEndAction={onDragEndAction}
             deleteSection={deleteSection}
+            updateSection={updateSection}
           />
         </>
       )}
@@ -277,34 +220,36 @@ export const PageForm = (props: IProps) => {
         <IconButton
           refCallback={openerRefCallback as any}
           onClick={openSettingsPopupHandler}
+          onMouseLeave={closeSettingsPopupHandler}
+          onMouseEnter={openSettingsPopupHandler}
           isOpen={isOpen}
           disabled={isShowPreview}>
           <SettingsIcon />
+          <Popup
+            isOpen={isOpen}
+            onClose={closeSettingsPopupHandler}
+            openerElement={openerElement}
+            horizontalAlign='end'
+            verticalAlign='start'
+            position='top'
+            maxHeight={320}
+            plateMargin={0}
+            zIndex={99}
+            background={USER_MENU_BACKGROUND}
+            hasBorder={false}
+            hasShadow={false}
+            borderRadius='4px 4px 0px 4px'
+            hasPointer={false}>
+            <SettingsPopupList>
+              <SettingsItemButton onClick={openPageSettingsModal()}>Настройки</SettingsItemButton>
+              <SettingsItemButton onClick={startCheckBlocks}>Добавить секцию</SettingsItemButton>
+            </SettingsPopupList>
+          </Popup>
         </IconButton>
-        <Popup
-          isOpen={isOpen}
-          onClose={closeSettingsPopupHandler}
-          openerElement={openerElement}
-          horizontalAlign='end'
-          verticalAlign='start'
-          position='top'
-          maxHeight={320}
-          plateMargin={0}
-          zIndex={99}
-          background={USER_MENU_BACKGROUND}
-          hasBorder={false}
-          hasShadow={false}
-          borderRadius='4px 4px 0px 4px'
-          hasPointer={false}>
-          <SettingsPopupList>
-            <SettingsItemButton onClick={openPageSettingsModal()}>Настройки</SettingsItemButton>
-            <SettingsItemButton onClick={startCheckBlocks}>Изменить</SettingsItemButton>
-          </SettingsPopupList>
-        </Popup>
       </FormFooter>
       {isCheckBlocks && (
         <>
-          <AcceptButton onClick={acceptUnionBlocks}>Объединить</AcceptButton>
+          <AcceptButton onClick={toggleSectionModal}>Объединить</AcceptButton>
           <CancelButton onClick={cancelCheckBlocks}>Отмена</CancelButton>
         </>
       )}
@@ -315,6 +260,9 @@ export const PageForm = (props: IProps) => {
           activeTabValue={pageSettingsModalTab as TabValue}
           pageData={data}
         />
+      )}
+      {isOpenSectionModal && (
+        <SectionModal onSuccess={acceptUnionBlocks} onClose={toggleSectionModal} />
       )}
       {selectedBlock && (
         <BlockEditorModal

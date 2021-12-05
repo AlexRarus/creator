@@ -129,6 +129,7 @@ export const NotificationItemWrapper = styled.div<IItemProps>`
   opacity: 1;
   animation: ${getAnimation} ${getAnimationTime}ms linear forwards;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  background: ${({ theme }) => theme?.background?.primary};
 
   &:last-child {
     margin-bottom: 0;

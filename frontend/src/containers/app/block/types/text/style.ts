@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { ITheme } from 'src/dal/themes/interface';
 
 export const TextBlockStyled = styled.div<{

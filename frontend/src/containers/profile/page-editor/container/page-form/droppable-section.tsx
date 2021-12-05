@@ -17,11 +17,12 @@ import { getStyleLockHorizontalGrag } from './utils';
 
 export const DroppableSection = (props: any) => {
   const { section, isDragging, onClickEditBlock } = props;
+  const blocks = section?.data?.blocks;
   return (
     <Droppable droppableId={`droppable-${section.id}`} type={`${section.id}`}>
       {(provided, snapshot) => (
         <SectionWrapper ref={provided.innerRef} isDragging={isDragging}>
-          {section.items.map((block: any, index: number) => {
+          {blocks?.map((block: any, index: number) => {
             return (
               <Draggable
                 key={`${section.id}-${index}`}

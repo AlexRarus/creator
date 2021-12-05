@@ -67,7 +67,7 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
           {label}
         </Label>
       )}
-      {placeholder && value.length <= 0 && (
+      {placeholder && (value?.length <= 0 || !value) && (
         <Placeholder
           isFocused={isFocused}
           dimension={dimension}
