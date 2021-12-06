@@ -10,7 +10,7 @@ class ButtonTypeSerializerRead(serializers.ModelSerializer):
     class Meta:
         model = ButtonType
         fields = (
-            "value",
+            "slug",
             "pricingPlan",
         )
 
