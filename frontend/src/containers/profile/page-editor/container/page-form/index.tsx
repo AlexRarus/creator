@@ -262,7 +262,14 @@ export const PageForm = (props: IProps) => {
         />
       )}
       {isOpenSectionModal && (
-        <SectionModal onSuccess={acceptUnionBlocks} onClose={toggleSectionModal} />
+        <SectionModal
+          onSuccess={acceptUnionBlocks}
+          onClose={toggleSectionModal}
+          selectedTheme={selectedTheme}
+          previewList={listItems.filter((item) =>
+            checkedList.some((checkedId) => checkedId === item.id)
+          )}
+        />
       )}
       {selectedBlock && (
         <BlockEditorModal

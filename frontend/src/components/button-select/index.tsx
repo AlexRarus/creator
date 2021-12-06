@@ -78,8 +78,7 @@ export default function ButtonSelect(props: IProps) {
         isCloseOnClick={false}
         plateMargin={4}
         maxHeight={maxMenuHeight || 300}
-        isFixed={true}
-      >
+        isFixed={true}>
         <OptionsListOuter ref={optionsListRef} componentWidth={componentWidth}>
           <OptionsListInner>
             {options &&
@@ -88,8 +87,7 @@ export default function ButtonSelect(props: IProps) {
                   key={`${option.value}-${i}`}
                   isActive={value ? value.value === option.value : false}
                   ref={value && value.value === option.value ? activeOptionRef : null}
-                  onClick={changeHandler(option)}
-                >
+                  onClick={changeHandler(option)}>
                   {option.label}
                 </Option>
               ))}

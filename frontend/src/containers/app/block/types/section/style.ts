@@ -13,15 +13,12 @@ interface ISection {
 
 export const SectionBlock = styled.div<ISection>`
   width: 100%;
-  padding-top: ${({ paddingTop }) => paddingTop || 20}px;
-  padding-bottom: ${({ paddingBottom }) => paddingBottom || 20}px;
-  padding-right: ${({ paddingRight }) => paddingRight || 14}px;
-  padding-left: ${({ paddingLeft }) => paddingLeft || 12}px;
-  border-radius: ${({ borderRadius }) => borderRadius || 0}px;
-  background: ${({ background }) => {
-    console.log(background);
-    return background || 'inherit';
-  }};
+  padding-top: ${({ paddingTop }) => paddingTop}px;
+  padding-bottom: ${({ paddingBottom }) => paddingBottom}px;
+  padding-right: ${({ paddingRight }) => paddingRight}px;
+  padding-left: ${({ paddingLeft }) => paddingLeft}px;
+  border-radius: ${({ borderRadius }) => borderRadius}px;
+  background: ${({ background }) => background || 'inherit'};
   ${({ backgroundUrl }) =>
     backgroundUrl
       ? css`
