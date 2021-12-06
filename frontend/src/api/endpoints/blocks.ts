@@ -11,6 +11,7 @@ export interface IBlocksAPI {
 
 export interface IWriteBlock<TypeData> {
   id?: string; // при редактировании
+  index?: number; // index куда поставить созданный элемент
   page_slug?: string; // при создании
   type?: string; // при создании
   data: TypeData; // всегда

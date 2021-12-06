@@ -1,4 +1,5 @@
 import styled, { createGlobalStyle, css } from 'styled-components';
+import { rgba } from 'polished';
 import { MEDIA, FONTS, ITheme } from 'src/components/theme';
 
 export const GlobalStyleApp = createGlobalStyle<any>`  

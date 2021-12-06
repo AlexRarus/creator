@@ -36,6 +36,30 @@ export default class DalBlocksStore {
     }
   });
 
+  public createBlockAction = flow(function* (
+    this: DalBlocksStore,
+    { type, index, data, pageSlug }
+  ) {
+    try {
+      yield this.API.createBlock({ index, type, data, page_slug: pageSlug });
+      this.rootStore.dalPagesStore.syncSelectPageAction();
+    } catch (e) {
+      console.log('createBlockAction', e);
+    }
+  });
+
+  public updateBlockAction = flow(function* (
+    this: DalBlocksStore,
+    { id, type, index, data, pageSlug }
+  ) {
+    try {
+      yield this.API.updateBlock({ id, index, type, data, page_slug: pageSlug });
+      this.rootStore.dalPagesStore.syncSelectPageAction();
+    } catch (e) {
+      console.log('updateBlockAction', e);
+    }
+  });
+
   public deleteBlockAction = flow(function* (this: DalBlocksStore, id: number) {
     try {
       yield this.API.deleteBlock(id);

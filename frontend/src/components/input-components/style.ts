@@ -128,7 +128,7 @@ export const getInputFontSize = (props: IComponentWrapperProps) => {
     case 's':
       return '14px';
     case 'm':
-      return '14px';
+      return '16px';
     case 'l':
       return '16px';
     case 'xxl':

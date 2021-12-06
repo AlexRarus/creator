@@ -20,6 +20,7 @@ interface IInputStyledProps extends IComponentWrapperProps {
   iconWrapperWidth: number;
   type?: string;
   kind?: TKind;
+  textAlign?: string;
 }
 
 const getInputBackground = (props: IInputStyledProps) => {
@@ -58,7 +59,18 @@ export const InputStyled = styled.input<IInputStyledProps>`
   outline: none;
   border: none;
   padding-right: ${({ iconWrapperWidth }) => iconWrapperWidth}px;
+  text-align: ${({ textAlign }) => textAlign || 'inherit'};
   ${getInputStyles}
+
+  ::-webkit-outer-spin-button,
+  ::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  [type='number'] {
+    -moz-appearance: textfield;
+  }
 `;
 InputStyled.defaultProps = {
   theme: LIGHT_THEME,

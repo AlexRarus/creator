@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Modal, { MobileSize } from 'src/components/modal';
 import { Form } from 'src/components/form';
 import { useForm } from 'react-hook-form';
-import { InputRange } from 'src/components/input-range';
+import InputRange from 'src/components/input-range';
 import { ControlledField } from 'src/components/controlled-field';
 import { useSubmitAvatarForm } from 'src/api/hooks/submit-forms/auth/useSubmitAvatarForm';
 import { FileUploader } from 'src/components/file-uploader';

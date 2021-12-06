@@ -3,6 +3,7 @@ import { IBlock } from 'src/dal/blocks/interfaces';
 import { ITheme } from 'src/dal/themes/interface';
 
 import { TextPreview } from './types/text';
+import { SectionPreview } from './types/section';
 
 interface IProps {
   block: IBlock<any>;
@@ -16,6 +17,8 @@ export const TargetBlockTypePreview = (props: IProps) => {
   switch (block.type) {
     case 'text':
       return <TextPreview onClick={onClick} selectedTheme={selectedTheme} {...props} />;
+    case 'section':
+      return <SectionPreview section={block} selectedTheme={selectedTheme} />;
     default:
       return <div onClick={onClick}>Unknown block type</div>;
   }

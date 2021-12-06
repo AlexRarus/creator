@@ -6,6 +6,7 @@ import { FORM_FOOTER_HEIGHT } from '../style';
 interface IPropsStyled {
   disabled: boolean;
   isActive: boolean;
+  isOpen?: boolean;
 }
 
 const getFillIcon = (props: IPropsStyled) => {
@@ -61,6 +62,8 @@ export const IconButtonWrapper = styled.div<IPropsStyled>`
   }
 
   svg {
+    transition: all 300ms;
+    ${({ isOpen }) => isOpen && 'transform: rotate(90deg);'}
     fill: ${getFillIcon};
   }
 
