@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { rgba } from 'polished';
 import { COLORS } from 'src/components/theme';
 
 export const ThemesWrapper = styled.div`

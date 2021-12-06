@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { MEDIA } from 'src/components/theme';
 import Link from 'src/components/link';
 
 export const FooterWrapper = styled.div`

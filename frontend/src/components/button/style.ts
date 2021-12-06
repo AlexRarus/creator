@@ -73,7 +73,6 @@ const getButtonStyles = (props: IButtonStyledProps) => {
   const { kind, theme } = props;
   const buttonTheme = theme?.component?.button;
 
-  console.warn('kind: ', kind);
   switch (kind) {
     case 'air':
       return css`

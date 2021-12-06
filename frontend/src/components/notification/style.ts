@@ -26,20 +26,6 @@ interface INotificationHeaderProps {
 const TOP_POSITION = 50;
 const HORIZONTAL_PADDING = 10;
 
-const levelBackgroundsMap = {
-  success: COLORS.green[200],
-  warning: COLORS.orange[200],
-  error: COLORS.pink[200],
-  info: COLORS.blue[200],
-};
-
-const levelColorsMap = {
-  success: COLORS.green[800],
-  warning: COLORS.orange[800],
-  error: COLORS.red[800],
-  info: COLORS.blue[800],
-};
-
 const open = () => keyframes`
   from {
     left: 0%;

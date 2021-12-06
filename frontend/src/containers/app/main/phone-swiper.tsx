@@ -6,7 +6,7 @@ import SwiperCore, { Autoplay, Pagination, Navigation, EffectCards } from 'swipe
 // Import Swiper styles
 import 'swiper/swiper-bundle.css';
 
-import { ScreenImage, SwiperOfPhone, SwiperWrapper } from './style';
+import { ScreenImage, SwiperWrapper } from './style';
 import MobilePhone from './assets/test-image.jpg';
 import MobilePhone1 from './assets/test-image1.jpg';
 import MobilePhone2 from './assets/test-image2.jpeg';

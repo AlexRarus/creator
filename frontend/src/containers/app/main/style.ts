@@ -26,43 +26,6 @@ const calcPhoneWidth = ({ theme, width }: any) => {
   return width;
 };
 
-export const getPhonePosition = ({ theme, screenOrder }: any) => {
-  const { isTablet, isMobile } = theme;
-  if (isMobile) {
-    return screenOrder === 1
-      ? css`
-          top: 40px;
-          right: 40px;
-        `
-      : css`
-          top: 56px;
-          left: 40px;
-        `;
-  }
-
-  if (isTablet) {
-    return screenOrder === 1
-      ? css`
-          bottom: 140px;
-          right: 14px;
-        `
-      : css`
-          bottom: 160px;
-          right: 160px;
-        `;
-  }
-
-  return screenOrder === 1
-    ? css`
-        bottom: -40px;
-        right: 40px;
-      `
-    : css`
-        bottom: -100px;
-        right: 240px;
-      `;
-};
-
 const calcCarouselWidth = ({ theme, width, length = 1 }: any) => {
   const { isMobile, isTablet } = theme;
   if (isMobile || isTablet) {
@@ -131,27 +94,6 @@ const getStartRowStyles = (props: any) => {
     button {
       margin-left: 16px;
     }
-  `;
-};
-
-const getStylesExamplesBlock = ({ theme }: any) => {
-  const { isMobile, isTablet } = theme;
-
-  if (isMobile) {
-    return css`
-      width: auto;
-      flex-direction: column;
-    `;
-  }
-
-  if (isTablet) {
-    return css`
-      margin-left: 24px;
-    `;
-  }
-
-  return css`
-    margin-left: 80px;
   `;
 };
 
@@ -299,18 +241,6 @@ export const StartRow = styled.div`
   ${getStartRowStyles}
 `;
 
-export const ScreenOfPhone = styled.div<ScreenViewport>`
-  position: absolute;
-  ${getPhonePosition}
-  border-radius: 24px;
-  display: flex;
-  width: ${calcPhoneWidth}px;
-  height: ${({ theme, width }) => calcPhoneWidth({ theme, width }) * 2}px;
-  overflow: hidden;
-  z-index: 1;
-  box-sizing: content-box;
-`;
-
 export const ScreenImage = styled.div<ICarouselItem>`
   width: ${calcPhoneWidth}px;
   height: ${({ theme, width }) => calcPhoneWidth({ theme, width }) * 2}px;
@@ -327,11 +257,6 @@ export const ScreensList = styled.div<ICarousel>`
   left: ${calcCarouselLeft}px;
   width: ${calcCarouselWidth}px;
   transition: all 0.3s;
-`;
-
-export const LandingExamplesBlock = styled.div`
-  display: flex;
-  ${getStylesExamplesBlock}
 `;
 
 export const LeftExample = styled.div`
@@ -582,18 +507,6 @@ export const AllowScreensList = styled.div<ICarousel>`
   top: ${calcAllowCarouselTop}px;
   height: ${calcAllowCarouselHeight}px;
   transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-`;
-
-export const SwiperOfPhone = styled.div<ScreenViewport>`
-  position: absolute;
-  ${getPhonePosition}
-  border-radius: 24px;
-  display: flex;
-  width: ${calcPhoneWidth}px;
-  height: ${({ theme, width }) => calcPhoneWidth({ theme, width }) * 2}px;
-  overflow: hidden;
-  z-index: 1;
-  box-sizing: content-box;
 `;
 
 export const SwiperWrapper = styled.div<{ width?: number }>`

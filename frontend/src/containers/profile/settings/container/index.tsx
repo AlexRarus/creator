@@ -12,7 +12,7 @@ interface IProps {
 }
 
 export const SettingsContainer = observer((props: IProps) => {
-  const { isLoading, user, getMeAction } = useMapStoreToProps();
+  const { isLoading, user, getMeAction, selectedPage } = useMapStoreToProps();
   const { username } = props;
 
   if (user && user?.username !== username) {
@@ -29,7 +29,7 @@ export const SettingsContainer = observer((props: IProps) => {
       {!isLoading && user && (
         <>
           <AvatarBlock user={user} onSuccessChange={onSuccessChangeAvatar} />
-          <AccountDataBlock user={user} />
+          <AccountDataBlock user={user} selectedPage={selectedPage} />
         </>
       )}
     </SettingsWrapper>

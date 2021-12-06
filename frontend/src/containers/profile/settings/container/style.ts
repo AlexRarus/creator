@@ -4,7 +4,11 @@ import { COLORS, MEDIA } from 'src/components/theme';
 export const SettingsWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  padding: 15px 20px;
+
+  ${MEDIA.max768({
+    padding: '15px 10px',
+  })}
 `;
 
 export const BlockWrapper = styled.div`
@@ -50,12 +54,15 @@ export const BlockTitle = styled.div`
 
 export const BlockDescription = styled.div`
   font-size: 14px;
+  line-height: 18px;
   margin: 10px 0 5px;
   color: ${COLORS.grey[500]};
 `;
 
 export const BlockContent = styled.div`
   background: ${COLORS.white};
+  border: 1px solid ${COLORS.grey[300]};
+  border-radius: 2px;
 
   ${MEDIA.max768({
     fontSize: '28px',

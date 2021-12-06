@@ -33,7 +33,6 @@ export const AvatarEditModal = (props: IProps) => {
   const [avatarEditorWrapper, avatarEditorWrapperRefCallback] = useState<HTMLDivElement | null>(
     null
   );
-  const [initialized, setInitialized] = useState(false);
   const [position, setPosition] = useState({ x: 0.5, y: 0.5 });
   const [imageSize, setImageSize] = useState<number>(DEFAULT_IMAGE_SIZE);
   const [editor, editorRefCallback] = useState<any>();
@@ -53,7 +52,7 @@ export const AvatarEditModal = (props: IProps) => {
   const rotate = watch('rotate');
 
   useEffect(() => {
-    if (!initialized && imageInfo) {
+    if (imageInfo) {
       // инициализация канваса сразу после того как загрузилось изображение
       const { width: imageWidth, height: imageHeight } = imageInfo;
       const halfCanvasImageWindow = imageSize / 2;
@@ -61,7 +60,6 @@ export const AvatarEditModal = (props: IProps) => {
       const shiftYToCenterCanvasWindow = halfCanvasImageWindow / (imageHeight * scale);
       const positionCenterX = avatar ? avatar.x + shiftXToCenterCanvasWindow : 0.5;
       const positionCenterY = avatar ? avatar.y + shiftYToCenterCanvasWindow : 0.5;
-      setInitialized(true);
 
       // инициализация центра области preview
       setPosition({
@@ -71,7 +69,7 @@ export const AvatarEditModal = (props: IProps) => {
       // инициализация borderRadius
       setValue('borderRadius', avatar ? (avatar.borderRadius / 100) * imageSize : maxBorderRadius);
     }
-  }, [imageSize, imageInfo, avatar, scale]);
+  }, [imageInfo]);
 
   useEffect(() => {
     if (avatarEditorWrapper) {
@@ -133,7 +131,10 @@ export const AvatarEditModal = (props: IProps) => {
   const onPositionChange = (position: { x: number; y: number }) => setPosition(position);
   const onLoadSuccess = (imageInfo: any) => setImageInfo(imageInfo);
 
-  const image: any = sourceFile || `${window.location.origin}/media/${avatar?.source}`;
+  const avatarSource: any = avatar?.source
+    ? `${window.location.origin}/media/${avatar?.source}`
+    : '';
+  const image: any = sourceFile || avatarSource;
 
   return (
     <Modal
