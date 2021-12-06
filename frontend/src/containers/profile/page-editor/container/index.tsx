@@ -30,8 +30,12 @@ export const PageEditorContainer = observer((props: IProps) => {
     getMyPageBySlugAction,
     data,
     selectPageAction,
-    updateMyPageAction,
+    updatePageBlocksAction,
+    updatePartPageDataAction,
+    deleteBlockAction,
     selectedTheme,
+    createBlockAction,
+    updateBlockAction,
   } = useMapStoreToProps();
   const { username, pageSlug } = props;
   const { replace } = useHistory();
@@ -50,6 +54,7 @@ export const PageEditorContainer = observer((props: IProps) => {
   }, [pageSlug, data]);
 
   const onUpdatePageForm = (slug?: string) => {
+    console.log('onUpdatePageForm');
     if (slug) {
       replace(`/profile/${username}/pages/${slug}`);
     } else {
@@ -57,14 +62,14 @@ export const PageEditorContainer = observer((props: IProps) => {
     }
   };
 
-  const onDragEndPagesAction = (listIds?: any[]) => {
+  const onDragEndAction = (listIds?: any[]) => {
     const reqData = {
       id: data?.id,
       label: data?.label,
       blocks: listIds, // id блоков в том порядке в котором они должны сохраниться
       slug: pageSlug,
     };
-    updateMyPageAction(reqData);
+    updatePageBlocksAction(reqData);
   };
 
   return (
@@ -85,7 +90,11 @@ export const PageEditorContainer = observer((props: IProps) => {
                       pageSlug={pageSlug}
                       isUpdating={isUpdating}
                       onUpdatePageForm={onUpdatePageForm}
-                      onDragEndPagesAction={onDragEndPagesAction}
+                      onDragEndAction={onDragEndAction}
+                      createBlockAction={createBlockAction}
+                      deleteBlockAction={deleteBlockAction}
+                      updateBlockAction={updateBlockAction}
+                      updatePartPageDataAction={updatePartPageDataAction}
                     />
                   </EditorWrapper>
                 </GridColumn>
@@ -114,7 +123,11 @@ export const PageEditorContainer = observer((props: IProps) => {
                 isUpdating={isUpdating}
                 pageSlug={pageSlug}
                 onUpdatePageForm={onUpdatePageForm}
-                onDragEndPagesAction={onDragEndPagesAction}
+                onDragEndAction={onDragEndAction}
+                createBlockAction={createBlockAction}
+                deleteBlockAction={deleteBlockAction}
+                updateBlockAction={updateBlockAction}
+                updatePartPageDataAction={updatePartPageDataAction}
               />
             </FlexBlock>
           </StyledMobileView>

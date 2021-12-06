@@ -16,7 +16,7 @@ export const TextPreview = (props: IProps) => {
   return (
     <TextBlockStyled
       selectedTheme={selectedTheme}
-      dangerouslySetInnerHTML={{ __html: block.data.text }}
+      dangerouslySetInnerHTML={{ __html: block?.data?.text }}
     />
   );
 };

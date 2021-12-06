@@ -17,6 +17,7 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
     icon: Icon = '',
     value = '',
     placeholder = '',
+    textAlign,
     ...inputProps
   } = props;
   const [componentElement, componentRefCallback] = useState<HTMLElement | null>(null);
@@ -67,7 +68,7 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
           {label}
         </Label>
       )}
-      {placeholder && value.length <= 0 && (
+      {placeholder && (value?.length <= 0 || !value) && (
         <Placeholder
           isFocused={isFocused}
           dimension={dimension}
@@ -88,6 +89,7 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
         disabled={disabled}
         dimension={dimension}
         iconWrapperWidth={iconWrapperWidth}
+        textAlign={textAlign}
       />
       <IconWrapper kind={kind} ref={iconWrapperRefCallback} dimension={dimension}>
         {Icon && <Icon />}

@@ -49,6 +49,7 @@ export default class DalPagesStore {
   getMyPagesAction = flow(function* (this: DalPagesStore) {
     try {
       this.isLoading = true;
+      console.log('getMyPagesAction');
       const responsePages = yield this.API.getMyPages();
       this.total = responsePages.data?.total || 0;
       this.pages = responsePages.data?.list || null;
@@ -67,6 +68,7 @@ export default class DalPagesStore {
   getMyPageBySlugAction = flow(function* (this: DalPagesStore, pageSlug: string) {
     try {
       this.isLoading = true;
+      console.log('getMyPageBySlugAction');
       const response = yield this.API.getMyPageBySlug(pageSlug);
       this.selectedPage = response.data;
       this.isLoading = false;
@@ -76,10 +78,10 @@ export default class DalPagesStore {
     }
   });
 
-  updateMyPageAction = flow(function* (this: DalPagesStore, data: IWritePage) {
+  updateMyPageAction = flow(function* (this: DalPagesStore) {
     try {
       this.isUpdating = true;
-      yield this.API.updatePage(data);
+      console.log('updateMyPageAction');
       const response = yield this.API.getMyPageBySlug(this.selectedPage?.slug as string);
       this.selectedPage = response.data;
       this.isUpdating = false;
@@ -89,16 +91,31 @@ export default class DalPagesStore {
     }
   });
 
+  updatePageBlocksAction = flow(function* (this: DalPagesStore, data: IWritePage) {
+    try {
+      this.isUpdating = true;
+      yield this.API.updatePage(data);
+      const response = yield this.API.getMyPageBySlug(this.selectedPage?.slug as string);
+      console.log('updatePageBlocksAction');
+      this.selectedPage = response.data;
+      this.isUpdating = false;
+    } catch (e) {
+      console.log('updatePageBlocksAction', e);
+      this.isUpdating = false;
+    }
+  });
+
   // синхронизирование данных страницы с бэком
   syncSelectPageAction = flow(function* (this: DalPagesStore) {
     try {
-      this.isLoading = true;
+      this.isUpdating = true;
+      console.log('syncSelectPageAction');
       const response = yield this.API.getMyPageBySlug(this.selectedPage?.slug as string);
       this.selectedPage = response.data;
-      this.isLoading = false;
+      this.isUpdating = false;
     } catch (e) {
       console.log('syncSelectPageAction', e);
-      this.isLoading = false;
+      this.isUpdating = false;
     }
   });
 

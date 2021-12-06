@@ -1,7 +1,6 @@
 export interface IBlock<TData> {
   id: number;
   type: string;
-  section: number;
   data: TData;
 }
 
