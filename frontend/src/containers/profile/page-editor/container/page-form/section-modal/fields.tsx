@@ -62,7 +62,7 @@ export const SectionFields = (props: IProps) => {
         '1024px': 12, // 12 колонок при ширине экрана 1024 и меньше
         '1280px': 12, // 12 колонок при ширине экрана 1280 и меньше
       }}>
-      <GridColumn size={3}>
+      <GridColumn size={5}>
         <MicroRow>
           <MicroLabel>Отступ сверху:</MicroLabel>
           <MicroInputWrapper>
@@ -83,7 +83,7 @@ export const SectionFields = (props: IProps) => {
           <MicroPostfix>px</MicroPostfix>
         </MicroRow>
       </GridColumn>
-      <GridColumn size={3}>
+      <GridColumn size={5}>
         <MicroRow>
           <MicroLabel>Отступ снизу:</MicroLabel>
           <MicroInputWrapper>
@@ -104,7 +104,7 @@ export const SectionFields = (props: IProps) => {
           <MicroPostfix>px</MicroPostfix>
         </MicroRow>
       </GridColumn>
-      <GridColumn size={3}>
+      <GridColumn size={5}>
         <MicroRow>
           <MicroLabel>Отступ слева:</MicroLabel>
           <MicroInputWrapper>
@@ -125,7 +125,7 @@ export const SectionFields = (props: IProps) => {
           <MicroPostfix>px</MicroPostfix>
         </MicroRow>
       </GridColumn>
-      <GridColumn size={3}>
+      <GridColumn size={5}>
         <MicroRow>
           <MicroLabel>Отступ справа:</MicroLabel>
           <MicroInputWrapper>
