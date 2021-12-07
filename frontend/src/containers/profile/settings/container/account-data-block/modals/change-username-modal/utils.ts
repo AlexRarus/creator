@@ -1,4 +1,4 @@
-import { ISetUsername as DataForServer } from 'src/api/endpoints/auth';
+import { IUpdateUsername as DataForServer } from 'src/api/endpoints/auth';
 
 import { RawData } from './interfaces';
 

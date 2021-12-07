@@ -12,7 +12,7 @@ export interface IAuthAPI {
   resetPasswordConfirm(data: IResetPasswordConfirmData): AxiosResponse<any>; // устанавливаем новый пароль
   setAvatar(data: FormData): AxiosResponse<any>; // создание (изменение) аватара
   setEmail(data: ISetEmail): AxiosResponse<any>; // изменение email
-  setUsername(data: ISetUsername): AxiosResponse<any>; // изменение username
+  updateUsername(data: IUpdateUsername): AxiosResponse<any>; // изменение username
   setPassword(data: ISetPassword): AxiosResponse<any>; // изменение password
   checkValidUsername(data: ICheckValidUsername): AxiosResponse<any>; // проверка валидности username
 }
