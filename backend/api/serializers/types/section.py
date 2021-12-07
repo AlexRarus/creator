@@ -66,6 +66,12 @@ def update_section(section, data):
 
     section.label = data.get("label", section.label)
     section.background = data.get("background", section.background)
+    section.background = data.get("paddingTop", section.paddingTop)
+    section.background = data.get("paddingRight", section.paddingRight)
+    section.background = data.get("paddingBottom", section.paddingBottom)
+    section.background = data.get("paddingLeft", section.paddingLeft)
+    section.background = data.get("borderRadius", section.borderRadius)
+
     section.save()
 
     if blocks_ids is not None:
