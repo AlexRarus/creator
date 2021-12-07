@@ -85,7 +85,7 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name="Section",
+            name="DroppableSection",
             fields=[
                 (
                     "id",

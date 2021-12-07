@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
-from .section import Section
+from .section import DroppableSection
 from .types.text import Text
 
 User = get_user_model()
@@ -16,7 +16,7 @@ class Block(models.Model):
     )
     type = models.CharField(max_length=255, verbose_name="Тип блока")
     section = models.ForeignKey(
-        Section,
+        DroppableSection,
         related_name="blocks",
         verbose_name="Секция",
         on_delete=models.SET_NULL,

@@ -4,7 +4,7 @@ from django.db import models
 User = get_user_model()
 
 
-class Section(models.Model):
+class DroppableSection(models.Model):
     author = models.ForeignKey(
         User,
         verbose_name="Автор",

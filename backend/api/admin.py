@@ -7,7 +7,7 @@ from .models.block_type import BlockType
 from .models.image import Image
 from .models.page import Page
 from .models.relations import PageBlockRelation
-from .models.section import Section
+from .models.section import DroppableSection
 from .models.types.text import Text
 
 
@@ -103,7 +103,7 @@ class PageBlockRelationAdmin(admin.ModelAdmin):
     empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
 
 
-@admin.register(Section)
+@admin.register(DroppableSection)
 class SectionAdmin(admin.ModelAdmin):
     list_display = (
         "id",

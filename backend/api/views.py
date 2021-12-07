@@ -10,7 +10,7 @@ from .models.block import Block
 from .models.block_type import BlockType
 from .models.image import Image
 from .models.page import Page
-from .models.section import Section
+from .models.section import DroppableSection
 from .pagination import CustomPagination
 from .permissions import (
     IsAuthorPermission,
@@ -112,7 +112,7 @@ class BlockTypesViewSet(mixins.ListModelMixin, GenericViewSet):
 
 
 class SectionViewSet(viewsets.ModelViewSet):
-    queryset = Section.objects.all()
+    queryset = DroppableSection.objects.all()
     permission_classes = (IsAuthorPermission,)
     serializer_class = SectionSerializer
 
