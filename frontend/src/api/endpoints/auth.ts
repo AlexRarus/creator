@@ -10,8 +10,10 @@ export interface IAuthAPI {
   logoutAll(): AxiosResponse<any>; // прибиваем все токены
   resetPassword(data: IResetPasswordData): AxiosResponse<any>; // отправляем код для восстановления пароля на email
   resetPasswordConfirm(data: IResetPasswordConfirmData): AxiosResponse<any>; // устанавливаем новый пароль
-  setPassword(data: ISetPassword): AxiosResponse<any>; // меняем пароль пароль
   setAvatar(data: FormData): AxiosResponse<any>; // создание (изменение) аватара
+  setEmail(data: ISetEmail): AxiosResponse<any>; // изменение email
+  setUsername(data: ISetUsername): AxiosResponse<any>; // изменение email
+  setPassword(data: ISetPassword): AxiosResponse<any>; // изменение email
 }
 
 export interface ILoginData {
@@ -47,11 +49,6 @@ export interface ILogoutData {
   refresh: string;
 }
 
-export interface ISetPassword {
-  current_password: string;
-  new_password: string;
-}
-
 export interface ISetAvatar {
   x: number;
   y: number;
@@ -62,6 +59,19 @@ export interface ISetAvatar {
   rotate: number;
   sourceFile?: File;
   previewFile?: File;
+}
+
+export interface ISetEmail {
+  email: string;
+}
+
+export interface ISetUsername {
+  username: string;
+}
+
+export interface ISetPassword {
+  current_password: string;
+  new_password: string;
 }
 
 const getConfig = () => ({
@@ -108,11 +118,6 @@ const getConfig = () => ({
     method: 'POST',
     data,
   }),
-  setPassword: (data: ISetPassword) => ({
-    url: `/auth/users/set_password/`,
-    method: 'POST',
-    data,
-  }),
   setAvatar: (data: FormData) => ({
     url: `/avatar/`,
     method: 'POST',
@@ -120,6 +125,21 @@ const getConfig = () => ({
     headers: {
       'Content-Type': 'multipart/form-data',
     },
+    data,
+  }),
+  setEmail: (data: ISetEmail) => ({
+    url: `/auth/users/set_email/`, // todo уточнить endpoint
+    method: 'POST',
+    data,
+  }),
+  setUsername: (data: ISetUsername) => ({
+    url: `/auth/users/set_username/`,
+    method: 'POST',
+    data,
+  }),
+  setPassword: (data: ISetPassword) => ({
+    url: `/auth/users/set_password/`,
+    method: 'POST',
     data,
   }),
 });

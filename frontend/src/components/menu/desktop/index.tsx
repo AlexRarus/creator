@@ -8,7 +8,6 @@ import Button from 'src/components/button';
 
 import { UserMenu } from '../user-menu';
 import { MENU_HEIGHT } from '../constants';
-// import { ButtonLink } from '../style';
 import { IMenuItem } from '../interfaces';
 
 import {
@@ -18,7 +17,6 @@ import {
   RightSide,
   Logo,
   MenuItem,
-  ThemeModeButton,
 } from './style';
 
 interface IProps {

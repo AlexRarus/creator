@@ -20,7 +20,6 @@ import {
   WelcomeTitle,
   WelcomeSpan,
   StartRow,
-  LandingExamplesBlock,
   ExamplesLinks,
   ExampleLink,
   ExamplesHeader,

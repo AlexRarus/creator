@@ -6,8 +6,10 @@ from .models.block import Block
 from .models.block_type import BlockType
 from .models.image import Image
 from .models.page import Page
-from .models.relations import PageBlockRelation
-from .models.section import DroppableSection
+from .models.pricing_plan import PricingPlan
+from .models.relations import PageBlockRelation, SectionBlockRelation
+from .models.types.button import Button, ButtonType
+from .models.types.section import Section
 from .models.types.text import Text
 
 
@@ -72,6 +74,7 @@ class BlockTypeAdmin(admin.ModelAdmin):
         "author",
         "slug",
         "label",
+        "pricingPlan",
     )
     search_fields = (
         "id",
@@ -87,7 +90,6 @@ class BlockAdmin(admin.ModelAdmin):
         "id",
         "author",
         "type",
-        "section",
     )
     search_fields = ("id",)
     empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
@@ -103,14 +105,27 @@ class PageBlockRelationAdmin(admin.ModelAdmin):
     empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
 
 
-@admin.register(DroppableSection)
-class SectionAdmin(admin.ModelAdmin):
+@admin.register(SectionBlockRelation)
+class SectionBlockRelationAdmin(admin.ModelAdmin):
+    list_display = (
+        "section",
+        "block",
+        "order",
+    )
+    empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
+
+
+@admin.register(PricingPlan)
+class PricingPlanAdmin(admin.ModelAdmin):
     list_display = (
         "id",
-        "author",
-        "name",
+        "slug",
+        "title",
     )
-    search_fields = ("name",)
+    search_fields = (
+        "slug",
+        "title",
+    )
     empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
 
 
@@ -121,4 +136,42 @@ class TextAdmin(admin.ModelAdmin):
         "text",
     )
     search_fields = ("text",)
+    empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
+
+
+@admin.register(Button)
+class ButtonAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "label",
+        "description",
+        "value",
+        "type",
+    )
+    search_fields = ("label",)
+    empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
+
+
+@admin.register(ButtonType)
+class ButtonTypeAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "slug",
+        "pricingPlan",
+    )
+    search_fields = ("slug",)
+    empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
+
+
+@admin.register(Section)
+class SectionAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "label",
+        "background",
+    )
+    search_fields = (
+        "label",
+        "background",
+    )
     empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY

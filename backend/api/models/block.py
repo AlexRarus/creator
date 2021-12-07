@@ -1,7 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
-from .section import DroppableSection
+from .block_type import BlockType
+from .types.button import Button
+from .types.section import Section
 from .types.text import Text
 
 User = get_user_model()
@@ -14,19 +16,34 @@ class Block(models.Model):
         related_name="blocks",
         on_delete=models.CASCADE,
     )
-    type = models.CharField(max_length=255, verbose_name="Тип блока")
-    section = models.ForeignKey(
-        DroppableSection,
+    type = models.ForeignKey(
+        BlockType,
         related_name="blocks",
-        verbose_name="Секция",
+        verbose_name="Тип блока",
         on_delete=models.SET_NULL,
+        null=True,
+    )
+    text = models.OneToOneField(
+        Text,
+        verbose_name='Контент блока с типом "text"',
+        related_name="block",
+        on_delete=models.CASCADE,
         null=True,
         blank=True,
     )
-    text = models.ForeignKey(
-        Text,
-        verbose_name='Контент блока с типом "text"',
-        on_delete=models.SET_NULL,
+    button = models.OneToOneField(
+        Button,
+        verbose_name='Контент блока с типом "button"',
+        related_name="block",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
+    section = models.OneToOneField(
+        Section,
+        verbose_name='Контент блока с типом "section"',
+        related_name="block",
+        on_delete=models.CASCADE,
         null=True,
         blank=True,
     )
