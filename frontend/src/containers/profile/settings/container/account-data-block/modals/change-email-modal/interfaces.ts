@@ -1,8 +1,9 @@
 export type FormInputs = {
-  email?: string;
+  newEmail?: string;
+  currentPassword?: string;
 };
 
 // входные значение с формы создание
 export interface RawData extends FormInputs {
-  // меняем поля если надо
+  // добавочные данные которых нет на форме
 }

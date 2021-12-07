@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { AxiosResponse } from 'axios';
 import API from 'src/api/index';
-import { ISetUsername as DataForServer } from 'src/api/endpoints/auth';
+import { IUpdateUsername as DataForServer } from 'src/api/endpoints/auth';
 
 export const useSubmitUsernameForm = <FormInputs>() => {
   const [isLoading, setIsLoading] = useState(false);
@@ -11,7 +11,7 @@ export const useSubmitUsernameForm = <FormInputs>() => {
   const sendRequest = useCallback(async (dataForServer: DataForServer) => {
     setIsLoading(true);
     try {
-      const response: AxiosResponse<any> = await API.endpoints.auth.setUsername(dataForServer);
+      const response: AxiosResponse<any> = await API.endpoints.auth.updateUsername(dataForServer);
       setData(response.data);
       setErrors(null);
     } catch (error) {

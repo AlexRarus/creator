@@ -12,8 +12,9 @@ export interface IAuthAPI {
   resetPasswordConfirm(data: IResetPasswordConfirmData): AxiosResponse<any>; // устанавливаем новый пароль
   setAvatar(data: FormData): AxiosResponse<any>; // создание (изменение) аватара
   setEmail(data: ISetEmail): AxiosResponse<any>; // изменение email
-  setUsername(data: ISetUsername): AxiosResponse<any>; // изменение email
-  setPassword(data: ISetPassword): AxiosResponse<any>; // изменение email
+  setUsername(data: ISetUsername): AxiosResponse<any>; // изменение username
+  setPassword(data: ISetPassword): AxiosResponse<any>; // изменение password
+  checkValidUsername(data: ICheckValidUsername): AxiosResponse<any>; // проверка валидности username
 }
 
 export interface ILoginData {
@@ -61,17 +62,26 @@ export interface ISetAvatar {
   previewFile?: File;
 }
 
+// установка новой почты требует пароля
 export interface ISetEmail {
-  email: string;
+  current_password: string;
+  new_email: string;
 }
 
-export interface ISetUsername {
-  username: string;
-}
-
+// установка нового пароля требует текущего пароля
 export interface ISetPassword {
   current_password: string;
   new_password: string;
+}
+
+// просто нужно подобрать не занятый username (есть валидация)
+export interface IUpdateUsername {
+  username: string;
+}
+
+// доступно дня НЕ ЗАЛОГИНЕНЫХ пользователей
+export interface ICheckValidUsername {
+  username: string;
 }
 
 const getConfig = () => ({
@@ -128,17 +138,22 @@ const getConfig = () => ({
     data,
   }),
   setEmail: (data: ISetEmail) => ({
-    url: `/auth/users/set_email/`, // todo уточнить endpoint
-    method: 'POST',
-    data,
-  }),
-  setUsername: (data: ISetUsername) => ({
-    url: `/auth/users/set_username/`,
+    url: `/auth/users/set_email/`,
     method: 'POST',
     data,
   }),
   setPassword: (data: ISetPassword) => ({
     url: `/auth/users/set_password/`,
+    method: 'POST',
+    data,
+  }),
+  updateUsername: (data: IUpdateUsername) => ({
+    url: `/auth/users/update_username/`,
+    method: 'POST',
+    data,
+  }),
+  checkValidUsername: (data: ICheckValidUsername) => ({
+    url: `/auth/users/check_valid_username/`,
     method: 'POST',
     data,
   }),

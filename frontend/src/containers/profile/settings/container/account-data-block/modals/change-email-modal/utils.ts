@@ -4,5 +4,6 @@ import { RawData } from './interfaces';
 
 // преобразовываем типы и меняем поля если надо
 export const prepareDataForServer = (rawData: RawData): DataForServer => ({
-  email: rawData.email as string,
+  new_email: rawData.newEmail as string,
+  current_password: rawData.currentPassword as string,
 });

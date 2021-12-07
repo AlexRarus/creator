@@ -5,5 +5,5 @@ export type FormInputs = {
 
 // входные значение с формы создание
 export interface RawData extends FormInputs {
-  // меняем поля если надо
+  // добавочные данные которых нет на форме
 }

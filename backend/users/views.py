@@ -1,7 +1,9 @@
 from django.contrib.auth import logout
+from djoser.views import UserViewSet
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
-from rest_framework.permissions import AllowAny
+from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.exceptions import TokenBackendError, TokenError
@@ -11,10 +13,44 @@ from rest_framework_simplejwt.token_blacklist.models import (
 )
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from .serializers import CheckValidUsernameSerializer, UpdateUsernameSerializer
+
 
 class CsrfExemptSessionAuthentication(SessionAuthentication):
     def enforce_csrf(self, request):
         return
+
+
+class CustomUserViewSet(UserViewSet):
+    def get_permissions(self):
+        if self.action == "check_valid_username":
+            self.permission_classes = [AllowAny]
+        if self.action == "update_username":
+            self.permission_classes = [IsAuthenticated]
+        return super().get_permissions()
+
+    def get_serializer_class(self):
+        if self.action == "check_valid_username":
+            return CheckValidUsernameSerializer
+        if self.action == "update_username":
+            return UpdateUsernameSerializer
+        return super().get_serializer_class()
+
+    @action(["post"], detail=False)
+    def update_username(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = self.request.user
+        user.username = serializer.data["username"]
+        user.save()
+        return Response(status=status.HTTP_200_OK)
+
+    @action(["post"], detail=False)
+    def check_valid_username(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        return Response(status=status.HTTP_200_OK, data=serializer.data)
 
 
 class LogoutView(APIView):

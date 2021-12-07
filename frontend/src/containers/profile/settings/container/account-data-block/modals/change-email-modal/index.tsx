@@ -18,12 +18,8 @@ interface IProps {
 }
 
 export const ChangeEmailModal = (props: IProps) => {
-  const { onClose, onSuccess, user } = props;
-  const { handleSubmit, formState, setError, control } = useForm<FormInputs>({
-    defaultValues: {
-      email: user?.email || '',
-    },
-  });
+  const { onClose, onSuccess } = props;
+  const { handleSubmit, formState, setError, control } = useForm<FormInputs>();
   const { isValid } = formState;
   const [submitEmailForm, isLoading, data, errors] = useSubmitEmailForm<Record<any, any>>();
 
@@ -72,13 +68,21 @@ export const ChangeEmailModal = (props: IProps) => {
     <Modal onClose={onClose} mobileSize={MobileSize.L} title='Изменение электронной почты'>
       <Form onAction={onAction} isValid={isValid} isLoading={isLoading}>
         <ControlledField
-          name='email'
+          name='newEmail'
           control={control}
           rules={{
             ...required(),
             ...emailVal(),
           }}>
-          <InputText label='Введите почту' />
+          <InputText label='Введите новую почту' />
+        </ControlledField>
+        <ControlledField
+          name='currentPassword'
+          control={control}
+          rules={{
+            ...required(),
+          }}>
+          <InputText label='Пароль' />
         </ControlledField>
       </Form>
     </Modal>
