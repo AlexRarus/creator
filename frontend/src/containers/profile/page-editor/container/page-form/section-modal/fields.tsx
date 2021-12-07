@@ -23,11 +23,11 @@ import {
 interface IProps {
   formDefaultValues: FormInputs | null;
   selectedTheme: ITheme | null;
-  previewList?: any[];
+  section?: IBlock<any> | null;
 }
 
 export const SectionFields = (props: IProps) => {
-  const { formDefaultValues, selectedTheme, previewList } = props;
+  const { formDefaultValues, selectedTheme, section } = props;
   const { watch, control } = useFormContext(); // так как Fields рендерятся внутри FormProvider, в контексте доступны значения формы
   const paddingTop = watch('paddingTop');
   const paddingBottom = watch('paddingBottom');
@@ -37,10 +37,10 @@ export const SectionFields = (props: IProps) => {
   const borderRadius = watch('borderRadius');
 
   const previewSection: IBlock<any> = {
-    id: 0,
+    id: section?.id as number,
     type: 'section',
     data: {
-      blocks: previewList,
+      blocks: section?.data?.blocks,
       paddingTop,
       paddingBottom,
       paddingLeft,
@@ -169,7 +169,9 @@ export const SectionFields = (props: IProps) => {
       </GridColumn>
       <GridColumn>
         <BackgroundPreview selectedTheme={selectedTheme}>
-          <TargetBlockTypePreview block={previewSection} selectedTheme={selectedTheme} />
+          {previewSection?.data?.blocks && (
+            <TargetBlockTypePreview block={previewSection} selectedTheme={selectedTheme} />
+          )}
         </BackgroundPreview>
       </GridColumn>
     </Grid>

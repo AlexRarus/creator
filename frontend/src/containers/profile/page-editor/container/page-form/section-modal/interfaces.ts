@@ -6,6 +6,7 @@ export type FormInputs = {
   paddingBottom?: string;
   paddingRight?: string;
   paddingLeft?: string;
+  [key: string]: any;
 };
 
 // входные значение с формы создание

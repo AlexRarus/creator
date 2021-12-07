@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react';
 import Modal, { MobileSize, DesktopSize } from 'src/components/modal';
 import { useForm, FormProvider } from 'react-hook-form';
 import { Form } from 'src/components/form';
 import { ITheme } from 'src/dal/themes/interface';
-import { COLORS } from 'src/components/theme';
+import { IBlock } from 'src/dal/blocks/interfaces';
 
 import { FormInputs, RawData } from './interfaces';
-// import { prepareDataForServer, pageTabs, getActions } from './utils';
 import { useMapStoreToProps } from './selectors';
 import { AddSectionContent } from './style';
 import { SectionFields } from './fields';
@@ -15,21 +14,13 @@ import { SectionFields } from './fields';
 interface IProps {
   onClose(): void;
   selectedTheme: ITheme | null;
-  onSuccess(data?: any): void;
-  previewList?: any[];
-  sectionId?: any;
+  onCreate(data?: any): void;
+  onUpdate(sectionId: any, blocks?: any[], commonData?: any): void;
+  section: IBlock<any> | null;
 }
 
 export const SectionModal = observer((props: IProps) => {
-  const { onClose, onSuccess, sectionId, selectedTheme, previewList } = props;
-  const [formDefaultValues] = useState({
-    paddingTop: '20',
-    paddingBottom: '20',
-    paddingRight: '10',
-    paddingLeft: '10',
-    background: COLORS.deepPurple.A400,
-    borderRadius: '0',
-  });
+  const { onClose, onCreate, onUpdate, section, selectedTheme } = props;
   const { deleteBlockAction } = useMapStoreToProps();
   // todo хук useForm создает форму и возвращает методы и состояние формы
   // todo все поля зарегистрированные в форме управляются этой формой
@@ -44,11 +35,14 @@ export const SectionModal = observer((props: IProps) => {
   const submit = (formInputs: FormInputs) => {
     try {
       const rawData: RawData = { ...formInputs };
-
-      onSuccess(rawData);
-
-      // await createBlockAction(rawData);
-      // await updateMyPageAction({ slug: selectedPage?.slug });
+      // если ID не шаблонный, значит секция уже создана и ее нужно обновить
+      if ((section?.id as number) > -1) {
+        const blockIds = section?.data?.blocks?.map((block: IBlock<any>) => block.id);
+        onUpdate(section?.id, blockIds, rawData);
+      } else {
+        // если ID шаблонный - значит секции еще нет, и ее надо создать
+        onCreate(rawData);
+      }
       onClose();
     } catch (error) {
       console.log('что-то пошло не так');
@@ -66,7 +60,7 @@ export const SectionModal = observer((props: IProps) => {
         onClose();
         break;
       case 'delete':
-        deleteBlockAction(sectionId);
+        deleteBlockAction(section?.id as number);
         onClose();
         break;
       default:
@@ -86,8 +80,8 @@ export const SectionModal = observer((props: IProps) => {
           <AddSectionContent>
             <SectionFields
               selectedTheme={selectedTheme}
-              formDefaultValues={formDefaultValues}
-              previewList={previewList}
+              formDefaultValues={section?.data}
+              section={section}
             />
           </AddSectionContent>
         </FormProvider>

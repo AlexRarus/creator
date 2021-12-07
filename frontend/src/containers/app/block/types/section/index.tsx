@@ -16,7 +16,7 @@ export const SectionPreview = (props: IProps) => {
 
   return (
     <SectionBlock {...section.data}>
-      {subBlocks.map((block: any, index: number) => (
+      {subBlocks?.map((block: any, index: number) => (
         <TargetBlockTypePreview key={index} block={block} selectedTheme={selectedTheme} />
       ))}
     </SectionBlock>

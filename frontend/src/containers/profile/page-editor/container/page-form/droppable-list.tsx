@@ -5,6 +5,8 @@ import { TargetBlockTypePreview } from 'src/containers/app/block';
 import { IPage } from 'src/dal/pages/interfaces';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { isMobile } from 'react-device-detect';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { typeIconsMap } from 'src/containers/profile/block-editor/types-list/utils';
@@ -22,7 +24,9 @@ import {
   SectionDraggable,
   CustomCheckbox,
   SectionHandleZone,
-  DeleteSection,
+  DeleteBlockButton,
+  EditBlockButton,
+  BlockActionsRow,
 } from './style';
 import { DroppableSection } from './droppable-section';
 
@@ -34,8 +38,9 @@ interface IProps {
   checkedList: any[];
   setCheckedList: any;
   setSelectedBlock: any;
+  onSelectSection: any;
   onDragEndAction: any;
-  deleteSection: (id: any) => (event: any) => void;
+  deleteBlock: (id: any) => (event: any) => void;
   updateSection: (id: any, blocks: any[], background?: string) => void;
 }
 
@@ -48,13 +53,17 @@ export const DroppableList = (props: IProps) => {
     checkedList,
     setCheckedList,
     setSelectedBlock,
-    deleteSection,
+    onSelectSection,
+    deleteBlock,
     updateSection,
     onDragEndAction,
   } = props;
 
   const onClickCheckbox = (id: any) => (event: any) => {
     event.stopPropagation();
+    if (!isCheckBlocks) {
+      return;
+    }
     if (checkedList.some((item: any) => item === id)) {
       const newList = [...checkedList];
       setCheckedList(newList.filter((item) => item !== id));
@@ -72,6 +81,7 @@ export const DroppableList = (props: IProps) => {
 
   const onDragEnd = (result: any) => {
     // dropped outside the list
+    console.log(result);
     if (!result.destination) {
       //console.log("no-change");
       return;
@@ -114,6 +124,10 @@ export const DroppableList = (props: IProps) => {
     setSelectedBlock(block);
   };
 
+  const onClickEditSection = (block: IBlock<any>) => (event: any) => {
+    onSelectSection(block);
+  };
+
   const onClickStopPropagation = (event: any) => {
     event.stopPropagation();
   };
@@ -125,6 +139,7 @@ export const DroppableList = (props: IProps) => {
           return (
             <FormWrapperDroppable
               width={isMobile ? window.innerWidth : 500}
+              isCheckBlocks={isCheckBlocks}
               selectedTheme={null}
               isDraggingOver={snapshot.isDraggingOver}
               verticalGap={32}
@@ -153,16 +168,25 @@ export const DroppableList = (props: IProps) => {
                                 <ViewAgendaIcon fontSize={'small'} />
                               </DragIcon>
                             </SectionHandleZone>
-                            <DeleteSection onClick={deleteSection(block.id)}>удалить</DeleteSection>
+                            <BlockActionsRow>
+                              <EditBlockButton onClick={onClickEditSection(block)}>
+                                <EditIcon fontSize={'small'} />
+                                изменить
+                              </EditBlockButton>
+                              <DeleteBlockButton onClick={deleteBlock(block.id)}>
+                                <DeleteForeverIcon fontSize={'small'} />
+                                удалить
+                              </DeleteBlockButton>
+                            </BlockActionsRow>
                             <DroppableSection
                               section={block}
                               isDragging={snapshot.isDragging}
                               onClickEditBlock={onClickEditBlock}
+                              deleteBlock={deleteBlock}
                             />
                           </SectionDraggable>
                         ) : (
                           <DraggableItem
-                            onClick={onClickEditBlock(block)}
                             isDragging={snapshot.isDragging}
                             ref={provided.innerRef}
                             {...provided.dragHandleProps}
@@ -181,15 +205,25 @@ export const DroppableList = (props: IProps) => {
                                   {typeIconsMap[block.type]}
                                 </DragIcon>
                               </DragHandleZone>
-                              <DragIconBox>
-                                <DragIndicatorIcon />
-                              </DragIconBox>
-                              {isCheckBlocks && (
-                                <CustomCheckbox
-                                  onClick={onClickCheckbox(block.id)}
-                                  isChecked={checkedList.some((id: any) => id === block.id)}
-                                />
-                              )}
+                              <BlockActionsRow>
+                                <EditBlockButton onClick={onClickEditBlock(block)}>
+                                  <EditIcon fontSize={'small'} />
+                                  изменить
+                                </EditBlockButton>
+                                <DeleteBlockButton onClick={deleteBlock(block.id)}>
+                                  <DeleteForeverIcon fontSize={'small'} />
+                                  удалить
+                                </DeleteBlockButton>
+                              </BlockActionsRow>
+                              {/* TODO подумать куда деть эти иконки */}
+                              {/*<DragIconBox>*/}
+                              {/*  <DragIndicatorIcon fontSize={'small'} />*/}
+                              {/*</DragIconBox>*/}
+                              <CustomCheckbox
+                                onClick={onClickCheckbox(block.id)}
+                                isCheckBlocks={isCheckBlocks}
+                                isChecked={checkedList.some((id: any) => id === block.id)}
+                              />
                               <BlockActionWrapper>
                                 <TargetBlockTypePreview selectedTheme={null} block={block} />
                               </BlockActionWrapper>

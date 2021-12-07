@@ -157,20 +157,22 @@ export const FormWrapperDroppable = styled(Grid)<{
   isDraggingOver: boolean;
   selectedTheme: ITheme | null;
   width?: number;
+  isCheckBlocks?: boolean;
 }>`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
 
   width: ${({ width }) => width}px;
-  padding: 24px 28px 64px 24px;
+  padding: ${({ isCheckBlocks }) =>
+    isCheckBlocks ? '24px 32px 64px 20px' : '24px 20px 64px 20px'};
+  transition: padding 100ms;
 
   color: inherit;
   background: ${({ selectedTheme, isDraggingOver, theme }) =>
     isDraggingOver
       ? rgba(selectedTheme ? selectedTheme.background : theme.background.primary, 0.9)
       : selectedTheme?.background || theme.background.primary};
-  width: 100%;
   height: 100%;
   ${({ theme }) => !theme?.isMobile && 'overflow: auto;'}
 `;
@@ -180,20 +182,18 @@ export const DraggableItem = styled.div<{ isDragging: boolean; isSubItem?: boole
   width: calc(100% - 4px);
   padding-left: 48px;
   padding-right: 32px;
-  margin: ${({ isSubItem }) => (isSubItem ? '2px' : '6px 2px')};
+  margin: 2px;
 
   &:before {
     content: '';
     position: absolute;
     left: 0px;
     top: 0px;
-    width: calc(100% - 4px);
+    width: 100%;
     height: 100%;
     background: ${({ isDragging }) =>
       isDragging ? rgba(COLORS.white, 0.15) : rgba(COLORS.white, 0.2)};
     border-radius: 12px;
-    border: 1px dashed;
-    border-color: ${({ isDragging }) => (isDragging ? rgba(COLORS.black, 0.1) : 'transparent')};
     box-shadow: ${({ isDragging }) =>
       !isDragging ? `0px 0px 10px ${rgba(COLORS.grey[900], 0.1)}` : 'none'};
     transition: all 200ms;
@@ -223,7 +223,7 @@ export const DragHandleZone = styled.div<{ isDragging: boolean }>`
   border-radius: 6px;
   box-shadow: ${({ isDragging }) =>
     isDragging ? '0px 15px 20px rgba(46, 229, 157, 0.4)' : 'none'};
-  background: ${({ isDragging, theme }) => (isDragging ? '#2EE59D' : '#7d2ae8')};
+  background: ${({ isDragging }) => (isDragging ? '#2EE59D' : '#7d2ae8')};
 `;
 
 export const DragIconBox = styled.div`
@@ -234,29 +234,28 @@ export const DragIconBox = styled.div`
   top: 50%;
   transform: translateY(-50%);
   right: 4px;
-  height: 32px;
-  width: 32px;
+  height: 20px;
+  width: 20px;
   border-radius: 6px;
+  transform: rotate(90deg);
 `;
 
 export const SectionDraggable = styled.div<{ isDragging: boolean }>`
   position: relative;
-  width: calc(100% - 4px);
-  padding: 32px 4px 4px 4px;
-  margin: 8px 2px;
+  width: 100%;
+  padding: 40px 4px 4px 4px;
+  margin: 2px;
 
   &:before {
     content: '';
     position: absolute;
     left: 0px;
     top: 0px;
-    width: calc(100% - 4px);
+    width: 100%;
     height: 100%;
     background: ${({ isDragging }) =>
       isDragging ? rgba(COLORS.white, 0.15) : rgba(COLORS.white, 0.2)};
     border-radius: 12px;
-    border: 1px dashed;
-    border-color: ${({ isDragging }) => (isDragging ? rgba(COLORS.black, 0.1) : 'transparent')};
     box-shadow: ${({ isDragging }) =>
       !isDragging ? `0px 0px 10px ${rgba(COLORS.grey[900], 0.1)}` : 'none'};
     transition: all 200ms;
@@ -278,26 +277,10 @@ export const SectionHandleZone = styled.div<{ isDragging: boolean }>`
   background: ${({ isDragging, theme }) => (isDragging ? '#2EE59D' : '#7d2ae8')};
 `;
 
-export const DeleteSection = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  padding: 2px 3px;
-  height: 16px;
-  border-radius: 6px;
-  font-size: 12px;
-  cursor: pointer;
-  color: ${({ theme }) => theme?.background?.primary};
-  background: ${({ theme }) => theme?.textColor?.primary};
-`;
-
 export const SectionWrapper = styled.div<{ isDragging: boolean }>`
   position: relative;
-  padding: 1px;
-  width: calc(100% - 4px);
+  padding: 1px 0px;
+  width: 100%;
   border-radius: 10px;
   background-color: ${({ theme }) => theme?.background?.primary || 'inherit'};
 `;
@@ -329,20 +312,22 @@ export const SettingsItemButton = styled.div`
   user-select: none;
 `;
 
-export const CustomCheckbox = styled.div<{ isChecked?: boolean }>`
+export const CustomCheckbox = styled.div<{ isChecked?: boolean; isCheckBlocks?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
   position: absolute;
-  right: -24px;
+  right: -28px;
   top: 4px;
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   border: 2px solid
     ${({ isChecked, theme }) => (isChecked ? '#2EE59D' : theme.borderColor.contrast)};
   background: ${({ isChecked }) => (isChecked ? '#2EE59D' : 'inherit')};
   cursor: pointer;
+  opacity: ${({ isCheckBlocks }) => (isCheckBlocks ? 1 : 0)};
+  transition: all: 150ms;
 
   &:before {
     content: '';
@@ -385,4 +370,29 @@ export const CancelButton = styled.div`
   background: ${({ theme }) => theme?.background?.primary};
   border: 2px solid ${({ theme }) => theme?.textColor?.primary};
   cursor: pointer;
+`;
+
+export const BlockActionsRow = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 6px;
+  right: 8px;
+`;
+
+export const EditBlockButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 6px;
+  height: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: ${({ theme }) => theme?.background?.primary};
+  background: ${({ theme }) => theme?.textColor?.primary};
+`;
+
+export const DeleteBlockButton = styled(EditBlockButton)`
+  margin-left: 8px;
 `;

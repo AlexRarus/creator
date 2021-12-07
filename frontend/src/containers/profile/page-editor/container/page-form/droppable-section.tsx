@@ -1,9 +1,11 @@
 import React from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
+import { TargetBlockTypePreview } from 'src/containers/app/block';
 
 import { typeIconsMap } from '../../../block-editor/types-list/utils';
-import { TargetBlockTypePreview } from '../../../../app/block';
 
 import {
   SectionWrapper,
@@ -12,11 +14,14 @@ import {
   DragIcon,
   DragIconBox,
   BlockActionWrapper,
+  EditBlockButton,
+  DeleteBlockButton,
+  BlockActionsRow,
 } from './style';
 import { getStyleLockHorizontalGrag } from './utils';
 
 export const DroppableSection = (props: any) => {
-  const { section, isDragging, onClickEditBlock } = props;
+  const { section, isDragging, onClickEditBlock, deleteBlock } = props;
   const blocks = section?.data?.blocks;
   return (
     <Droppable droppableId={`droppable-${section.id}`} type={`${section.id}`}>
@@ -30,7 +35,7 @@ export const DroppableSection = (props: any) => {
                 index={index}>
                 {(provided, snapshot) => (
                   <DraggableItem
-                    onClick={onClickEditBlock(block)}
+                    isSubItem={true}
                     isDragging={snapshot.isDragging}
                     ref={provided.innerRef}
                     {...provided.dragHandleProps}
@@ -42,9 +47,19 @@ export const DroppableSection = (props: any) => {
                         {typeIconsMap[block.type]}
                       </DragIcon>
                     </DragHandleZone>
-                    <DragIconBox>
-                      <DragIndicatorIcon />
-                    </DragIconBox>
+                    <BlockActionsRow>
+                      <EditBlockButton onClick={onClickEditBlock(block)}>
+                        <EditIcon fontSize={'small'} />
+                        изменить
+                      </EditBlockButton>
+                      <DeleteBlockButton onClick={deleteBlock(block.id)}>
+                        <DeleteForeverIcon fontSize={'small'} />
+                        удалить
+                      </DeleteBlockButton>
+                    </BlockActionsRow>
+                    {/*<DragIconBox>*/}
+                    {/*  <DragIndicatorIcon />*/}
+                    {/*</DragIconBox>*/}
                     <BlockActionWrapper>
                       <TargetBlockTypePreview selectedTheme={null} block={block} />
                     </BlockActionWrapper>
