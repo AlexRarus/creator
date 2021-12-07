@@ -11,6 +11,7 @@ from .models.block_type import BlockType
 from .models.image import Image
 from .models.page import Page
 from .models.relations import PageBlockRelation
+from .models.theme import Theme
 from .models.types.button import ButtonType
 from .pagination import CustomPagination
 from .permissions import (
@@ -24,6 +25,7 @@ from .serializers.block import BlockSerializerRead, BlockSerializerWrite
 from .serializers.block_type import BlockTypeSerializer
 from .serializers.image import ImageSerializer
 from .serializers.page import PageReadSerializer, PageWriteSerializer
+from .serializers.theme import ThemeSerializer
 from .serializers.types.button import ButtonTypeSerializerRead
 
 
@@ -210,6 +212,18 @@ class ImageViewSet(viewsets.ModelViewSet):
     queryset = Image.objects.all()
     permission_classes = (IsImagePermission,)
     serializer_class = ImageSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
+    def perform_update(self, serializer):
+        serializer.save(author=self.request.user)
+
+
+class ThemeViewSet(viewsets.ModelViewSet):
+    queryset = Theme.objects.all()
+    permission_classes = (IsAuthorPermission,)
+    serializer_class = ThemeSerializer
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)

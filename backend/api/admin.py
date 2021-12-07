@@ -8,6 +8,7 @@ from .models.image import Image
 from .models.page import Page
 from .models.pricing_plan import PricingPlan
 from .models.relations import PageBlockRelation, SectionBlockRelation
+from .models.theme import Theme
 from .models.types.button import Button, ButtonType
 from .models.types.section import Section
 from .models.types.text import Text
@@ -61,6 +62,23 @@ class PageAdmin(admin.ModelAdmin):
     )
     search_fields = (
         "id",
+        "label",
+        "slug",
+    )
+    empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
+
+
+@admin.register(Theme)
+class ThemeAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "author",
+        "label",
+        "slug",
+    )
+    search_fields = (
+        "id",
+        "author",
         "label",
         "slug",
     )

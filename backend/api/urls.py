@@ -6,6 +6,7 @@ from .views import (
     BlockViewSet,
     ImageViewSet,
     PageViewSet,
+    ThemeViewSet,
 )
 
 router_v1 = CustomDefaultRouter()
@@ -26,5 +27,6 @@ router_v1.register("v1/block_types", BlockTypesViewSet)
 router_v1.register("v1/block_button_types", BlockButtonTypesViewSet)
 router_v1.register("v1/avatar", AvatarViewSet)
 router_v1.register("v1/images", ImageViewSet)
+router_v1.register("v1/themes", ThemeViewSet)
 
 urlpatterns = router_v1.urls
