@@ -10,10 +10,9 @@ interface IProps {
   isOpen?: boolean;
   isActive?: boolean;
   disabled?: boolean;
-  refCallback?: any;
 }
 
-export const IconButton = (props: IProps) => {
+export const IconButton = React.forwardRef((props: IProps, ref: any) => {
   const {
     children,
     onClick,
@@ -21,7 +20,6 @@ export const IconButton = (props: IProps) => {
     onMouseEnter,
     isActive = false,
     disabled = false,
-    refCallback,
     isOpen,
   } = props;
 
@@ -41,7 +39,7 @@ export const IconButton = (props: IProps) => {
 
   return (
     <IconButtonWrapper
-      ref={refCallback}
+      ref={ref}
       onClick={clickHandler}
       onMouseLeave={handleMouseLeave}
       onMouseEnter={handleMouseEnter}
@@ -51,4 +49,6 @@ export const IconButton = (props: IProps) => {
       {children}
     </IconButtonWrapper>
   );
-};
+});
+
+IconButton.displayName = 'IconButton';

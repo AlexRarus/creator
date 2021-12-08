@@ -19,7 +19,7 @@ interface IProps {
 
 export const ChangeUsernameModal = (props: IProps) => {
   const { onClose, onSuccess, user } = props;
-  const { handleSubmit, formState, setError, control, watch } = useForm<FormInputs>({
+  const { handleSubmit, formState, setError, control } = useForm<FormInputs>({
     defaultValues: {
       username: user?.username || '',
     },

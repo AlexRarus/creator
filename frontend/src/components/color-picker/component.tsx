@@ -10,7 +10,6 @@ export const ColorPicker = React.forwardRef((props: IProps, ref: any) => {
   const { value, onChange, dimension = 'm', label, ...inputProps } = props;
   const [isOpenPicker, setOpenPicker] = useState(false);
   const [componentElement, componentRefCallback] = useState<HTMLElement | null>(null);
-  const [isFocused, setIsFocused] = useState(false);
   const [uniqId] = useState(uuidv4());
   const innerRef = useRef();
   const currentRef = ref || innerRef;
@@ -37,11 +36,9 @@ export const ColorPicker = React.forwardRef((props: IProps, ref: any) => {
   };
 
   const blurHandler = (e: FocusEvent<HTMLInputElement>) => {
-    setIsFocused(false);
     inputProps.onBlur && inputProps.onBlur(e);
   };
   const focusHandler = (e: FocusEvent<HTMLInputElement>) => {
-    setIsFocused(true);
     inputProps.onFocus && inputProps.onFocus(e);
   };
 

@@ -14,7 +14,7 @@ import { BlockEditorModal } from 'src/containers/profile/block-editor';
 import { isMobile } from 'react-device-detect';
 import { ITheme } from 'src/dal/themes/interface';
 import Popup from 'src/components/popup';
-import { USER_MENU_BACKGROUND, UserMenuWrapper } from 'src/components/menu/user-menu/style';
+import { USER_MENU_BACKGROUND } from 'src/components/menu/user-menu/style';
 
 import { PagePreview } from '../page-preview';
 
@@ -71,7 +71,7 @@ export const PageForm = (props: IProps) => {
     deleteBlockAction,
     selectedTheme,
   } = props;
-  const [listItems, setListItems] = useState<any[]>([]);
+  const [blocks, setBlocks] = useState<any[]>([]);
   const [isShowPreview, setIsShowPreview] = useState(false);
   const [pageSettingsModalTab, setPageSettingsModalTab] = useState<TabValue | null>(null);
   const [isOpenSectionModal, setOpenSectionModal] = useState<boolean>(false);
@@ -80,7 +80,7 @@ export const PageForm = (props: IProps) => {
   const [openerElement, openerRefCallback] = useState<HTMLDivElement | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isCheckBlocks, setCheckBlocks] = useState(false);
-  const [checkedList, setCheckedList] = useState<any[]>([]);
+  const [checkedBlockIds, setCheckedBlockIds] = useState<any[]>([]);
   const history = useHistory();
 
   const toggleSectionModal = () => setOpenSectionModal(!isOpenSectionModal);
@@ -88,20 +88,20 @@ export const PageForm = (props: IProps) => {
   const closeSettingsPopupHandler = () => setIsOpen(false);
   const startCheckBlocks = () => setCheckBlocks(true);
   const cancelCheckBlocks = () => {
-    setCheckedList([]);
+    setCheckedBlockIds([]);
     setCheckBlocks(false);
   };
 
   const acceptUnionBlocks = (sectionCommonData?: any) => {
-    const insertIndex = listItems.findIndex((item: any) =>
-      checkedList.some((checkedId) => checkedId === item.id)
+    const insertIndex = blocks.findIndex((block: IBlock<any>) =>
+      checkedBlockIds.some((checkedBlockId: number) => checkedBlockId === block.id)
     );
-    const newSubBlocks = listItems.filter((item) =>
-      checkedList.some((checkedId) => checkedId === item.id)
+    const newSubBlocks = blocks.filter((block: IBlock<any>) =>
+      checkedBlockIds.some((checkedBlockId: number) => checkedBlockId === block.id)
     );
     const subBlocksIds = newSubBlocks.map((block) => block.id);
-    // const newMainList = listItems.filter(
-    //   (item) => !checkedList.some((checkedId) => checkedId === item.id)
+    // const newMainList = blocks.filter(
+    //   (block: IBlock<any>) => !checkedBlockIds.some((checkedBlockId: number) => checkedBlockId === block.id)
     // );
 
     // create section
@@ -111,7 +111,7 @@ export const PageForm = (props: IProps) => {
       index: insertIndex,
       data: { blocks: subBlocksIds, ...sectionCommonData },
     });
-    setCheckedList([]);
+    setCheckedBlockIds([]);
     setCheckBlocks(false);
   };
 
@@ -120,13 +120,13 @@ export const PageForm = (props: IProps) => {
     deleteBlockAction(sectionId);
   };
 
-  const updateSection = (sectionId: any, blocks?: any[], commonData?: any) => {
-    updateBlockAction({ id: sectionId, data: { blocks, ...commonData } });
+  const updateSection = (sectionId: any, blocks?: number[], sectionData?: any) => {
+    updateBlockAction({ id: sectionId, data: { blocks, ...sectionData } });
   };
 
   useEffect(() => {
     if (data.blocks) {
-      setListItems(data.blocks);
+      setBlocks(data.blocks);
     }
   }, [data]);
 
@@ -181,10 +181,10 @@ export const PageForm = (props: IProps) => {
           <DroppableList
             data={data}
             isCheckBlocks={isCheckBlocks}
-            listItems={listItems}
-            setListItems={setListItems}
-            checkedList={checkedList}
-            setCheckedList={setCheckedList}
+            blocks={blocks}
+            setBlocks={setBlocks}
+            checkedBlockIds={checkedBlockIds}
+            setCheckedBlockIds={setCheckedBlockIds}
             setSelectedBlock={setSelectedBlock}
             onDragEndAction={onDragEndAction}
             deleteSection={deleteSection}
@@ -218,7 +218,7 @@ export const PageForm = (props: IProps) => {
           </Button>
         </AddBlockButtonWrapper>
         <IconButton
-          refCallback={openerRefCallback as any}
+          ref={openerRefCallback as any}
           onClick={openSettingsPopupHandler}
           onMouseLeave={closeSettingsPopupHandler}
           onMouseEnter={openSettingsPopupHandler}
@@ -266,8 +266,8 @@ export const PageForm = (props: IProps) => {
           onSuccess={acceptUnionBlocks}
           onClose={toggleSectionModal}
           selectedTheme={selectedTheme}
-          previewList={listItems.filter((item) =>
-            checkedList.some((checkedId) => checkedId === item.id)
+          previewList={blocks.filter((block: IBlock<any>) =>
+            checkedBlockIds.some((checkedBlockId: number) => checkedBlockId === block.id)
           )}
         />
       )}

@@ -1,9 +1,10 @@
 import React from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
+import { IBlock, ISectionData } from 'src/dal/blocks/interfaces';
+import { TargetBlockTypePreview } from 'src/containers/app/block';
 
 import { typeIconsMap } from '../../../block-editor/types-list/utils';
-import { TargetBlockTypePreview } from '../../../../app/block';
 
 import {
   SectionWrapper,
@@ -15,14 +16,20 @@ import {
 } from './style';
 import { getStyleLockHorizontalGrag } from './utils';
 
-export const DroppableSection = (props: any) => {
+interface IProps {
+  section: IBlock<ISectionData>;
+  isDragging: boolean;
+  onClickEditBlock: (block: IBlock<any>) => (event: any) => void;
+}
+
+export const DroppableSection = (props: IProps) => {
   const { section, isDragging, onClickEditBlock } = props;
   const blocks = section?.data?.blocks;
   return (
     <Droppable droppableId={`droppable-${section.id}`} type={`${section.id}`}>
       {(provided, snapshot) => (
         <SectionWrapper ref={provided.innerRef} isDragging={isDragging}>
-          {blocks?.map((block: any, index: number) => {
+          {blocks?.map((block: IBlock<any>, index: number) => {
             return (
               <Draggable
                 key={`${section.id}-${index}`}

@@ -38,7 +38,7 @@ export const SectionModal = observer((props: IProps) => {
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
-  const { formState, setError, handleSubmit } = methods;
+  const { formState, handleSubmit } = methods;
   const { isValid } = formState;
 
   const submit = (formInputs: FormInputs) => {

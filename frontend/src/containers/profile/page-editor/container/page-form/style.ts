@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { rgba } from 'polished';
 import { Grid } from 'src/components/grid';
 import { COLORS, MEDIA } from 'src/components/theme';

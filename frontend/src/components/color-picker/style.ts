@@ -49,8 +49,8 @@ export const ColoredPalette = styled.div<{ background?: string }>`
 `;
 
 export const InputStyled = styled.input`
-  width: 0px;
-  height: 0px;
+  width: 0;
+  height: 0;
 `;
 
 export const Label = styled.div`
