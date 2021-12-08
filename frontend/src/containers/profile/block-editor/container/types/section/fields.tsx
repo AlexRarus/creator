@@ -6,49 +6,17 @@ import { maxLength } from 'src/utils/validators';
 import InputText from 'src/components/input-text';
 import InputRange from 'src/components/input-range';
 import ColorPicker from 'src/components/color-picker';
-import { ITheme } from 'src/dal/themes/interface';
-import { IBlock } from 'src/dal/blocks/interfaces';
-import { TargetBlockTypePreview } from 'src/containers/app/block';
 
 import { FormInputs } from './interfaces';
-import {
-  MicroRow,
-  MicroLabel,
-  MicroInputWrapper,
-  MicroPostfix,
-  BackgroundPreview,
-  RangeLabel,
-} from './style';
+import { MicroRow, MicroLabel, MicroInputWrapper, MicroPostfix, RangeLabel } from './style';
 
 interface IProps {
   formDefaultValues: FormInputs | null;
-  selectedTheme: ITheme | null;
-  previewList?: any[];
 }
 
 export const SectionFields = (props: IProps) => {
-  const { formDefaultValues, selectedTheme, previewList } = props;
-  const { watch, control } = useFormContext(); // так как Fields рендерятся внутри FormProvider, в контексте доступны значения формы
-  const paddingTop = watch('paddingTop');
-  const paddingBottom = watch('paddingBottom');
-  const paddingLeft = watch('paddingLeft');
-  const paddingRight = watch('paddingRight');
-  const background = watch('background');
-  const borderRadius = watch('borderRadius');
-
-  const previewSection: IBlock<any> = {
-    id: 0,
-    type: 'section',
-    data: {
-      blocks: previewList,
-      paddingTop,
-      paddingBottom,
-      paddingLeft,
-      paddingRight,
-      background,
-      borderRadius,
-    },
-  };
+  const { formDefaultValues } = props;
+  const { control } = useFormContext(); // так как Fields рендерятся внутри FormProvider, в контексте доступны значения формы
 
   return (
     <Grid
@@ -72,11 +40,11 @@ export const SectionFields = (props: IProps) => {
               rules={{ ...maxLength(99) }}
               formDefaultValues={formDefaultValues}>
               <InputText
-                textAlign={'right'}
-                type={'number'}
-                dimension={'m'}
-                kind={'formed'}
-                align={'right'}
+                textAlign='right'
+                type='number'
+                dimension='m'
+                kind='formed'
+                align='right'
               />
             </ControlledField>
           </MicroInputWrapper>
@@ -93,11 +61,11 @@ export const SectionFields = (props: IProps) => {
               rules={{ ...maxLength(99) }}
               formDefaultValues={formDefaultValues}>
               <InputText
-                textAlign={'right'}
-                type={'number'}
-                dimension={'m'}
-                kind={'formed'}
-                align={'right'}
+                textAlign='right'
+                type='number'
+                dimension='m'
+                kind='formed'
+                align='right'
               />
             </ControlledField>
           </MicroInputWrapper>
@@ -114,11 +82,11 @@ export const SectionFields = (props: IProps) => {
               rules={{ ...maxLength(99) }}
               formDefaultValues={formDefaultValues}>
               <InputText
-                textAlign={'right'}
-                type={'number'}
-                dimension={'m'}
-                kind={'formed'}
-                align={'right'}
+                textAlign='right'
+                type='number'
+                dimension='m'
+                kind='formed'
+                align='right'
               />
             </ControlledField>
           </MicroInputWrapper>
@@ -135,11 +103,11 @@ export const SectionFields = (props: IProps) => {
               rules={{ ...maxLength(99) }}
               formDefaultValues={formDefaultValues}>
               <InputText
-                textAlign={'right'}
-                type={'number'}
-                dimension={'m'}
-                kind={'formed'}
-                align={'right'}
+                textAlign='right'
+                type='number'
+                dimension='m'
+                kind='formed'
+                align='right'
               />
             </ControlledField>
           </MicroInputWrapper>
@@ -152,7 +120,7 @@ export const SectionFields = (props: IProps) => {
           control={control}
           rules={{ ...maxLength(99) }}
           formDefaultValues={formDefaultValues}>
-          <ColorPicker label={'Цвет фона'} />
+          <ColorPicker label='Цвет фона' />
         </ControlledField>
       </GridColumn>
       <GridColumn size={6}>
@@ -166,11 +134,6 @@ export const SectionFields = (props: IProps) => {
             <InputRange isFakeLabel={true} min={0} max={50} />
           </ControlledField>
         </MicroRow>
-      </GridColumn>
-      <GridColumn>
-        <BackgroundPreview selectedTheme={selectedTheme}>
-          <TargetBlockTypePreview block={previewSection} selectedTheme={selectedTheme} />
-        </BackgroundPreview>
       </GridColumn>
     </Grid>
   );

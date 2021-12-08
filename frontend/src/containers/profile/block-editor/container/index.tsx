@@ -15,6 +15,8 @@ interface IProps {
   blockId: number | 'new';
   isCloning: boolean;
   setIsCloning(isCloning: boolean): void;
+  blockData?: any;
+  blockIndex?: number;
 }
 
 // контейнер форма создания блока, можно нарисовать в любом месте приложения (в модалке или на отдельной странице)

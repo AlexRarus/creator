@@ -1,8 +1,11 @@
 import styled from 'styled-components';
 import { ITheme } from 'src/dal/themes/interface';
 
-export const AddSectionContent = styled.div`
-  padding: 20px;
+export const SectionFormWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex-grow: 1;
 `;
 
 export const Label = styled.div`

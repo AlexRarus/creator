@@ -2,12 +2,14 @@
 export interface AdditionalData {
   pageSlug: string;
   blockType: string;
-  blockId?: string;
+  blockId?: number;
+  index?: number; // от 0 (нуля) в какую позицию на странице должен встать блок
 }
 
 export interface DataForServer<FormInputs> {
   data: FormInputs;
   page_slug: string;
   type: string;
-  id: string;
+  id: number;
+  index?: number; // от 0 (нуля) в какую позицию на странице должен встать блок
 }

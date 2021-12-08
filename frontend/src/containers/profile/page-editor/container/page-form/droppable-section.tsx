@@ -14,17 +14,23 @@ import {
   DragIconBox,
   BlockActionWrapper,
 } from './style';
-import { getStyleLockHorizontalGrag } from './utils';
+import { getStyleLockHorizontalDrag } from './utils';
 
 interface IProps {
   section: IBlock<ISectionData>;
   isDragging: boolean;
-  onClickEditBlock: (block: IBlock<any>) => (event: any) => void;
+  setSelectedBlock(block: IBlock<any>): void;
 }
 
 export const DroppableSection = (props: IProps) => {
-  const { section, isDragging, onClickEditBlock } = props;
+  const { section, isDragging, setSelectedBlock } = props;
   const blocks = section?.data?.blocks;
+
+  const onClickEditBlock = (block: IBlock<any>) => (event: any) => {
+    event.stopPropagation(); // останавливаем всплытие чтобы не нарваться на редактирование секции
+    setSelectedBlock(block);
+  };
+
   return (
     <Droppable droppableId={`droppable-${section.id}`} type={`${section.id}`}>
       {(provided, snapshot) => (
@@ -42,7 +48,7 @@ export const DroppableSection = (props: IProps) => {
                     ref={provided.innerRef}
                     {...provided.dragHandleProps}
                     {...provided.draggableProps}
-                    style={getStyleLockHorizontalGrag(provided?.draggableProps?.style, snapshot)}
+                    style={getStyleLockHorizontalDrag(provided?.draggableProps?.style, snapshot)}
                     key={block.id}>
                     <DragHandleZone isDragging={snapshot.isDragging}>
                       <DragIcon isDragging={snapshot.isDragging}>

@@ -10,7 +10,7 @@ export interface IBlocksAPI {
 }
 
 export interface IWriteBlock<TypeData> {
-  id?: string; // при редактировании
+  id?: number; // при редактировании
   index?: number; // index куда поставить созданный элемент
   page_slug?: string; // при создании
   type?: string; // при создании

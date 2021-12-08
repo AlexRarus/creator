@@ -49,6 +49,7 @@ class BlocksFormStore {
 
   resetAction = () => {
     this.initialized = false;
+    this.block = null;
   };
 }
 

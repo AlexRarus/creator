@@ -1,4 +1,4 @@
-export function getStyleLockHorizontalGrag(style: any, snapshot: any) {
+export function getStyleLockHorizontalDrag(style: any, snapshot: any) {
   if (style.transform) {
     const axisLockY = `translate(0px${style.transform.slice(
       style?.transform?.indexOf(','),

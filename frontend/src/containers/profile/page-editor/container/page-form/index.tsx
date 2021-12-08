@@ -35,7 +35,6 @@ import {
 } from './style';
 import { IconButton } from './icon-button';
 import { PageSettingsModal, TabValue } from './page-settings-modal';
-import { SectionModal } from './section-modal';
 import { BlinkMessage } from './blink-message';
 import { DroppableList } from './droppable-list';
 
@@ -46,7 +45,6 @@ interface IProps {
   isUpdating: boolean;
   selectedTheme: ITheme | null;
   onUpdatePageForm: (slug?: string) => void;
-  updatePartPageDataAction: () => void;
   onDragEndAction: (list: number[]) => void;
   createBlockAction: (data: any) => void;
   updateBlockAction: (data: any) => void;
@@ -56,6 +54,8 @@ interface IProps {
 interface INewBlock {
   id: 'new';
   type?: string;
+  data?: any;
+  index?: number;
 }
 
 export const PageForm = (props: IProps) => {
@@ -66,54 +66,40 @@ export const PageForm = (props: IProps) => {
     isUpdating,
     onUpdatePageForm,
     onDragEndAction,
-    createBlockAction,
     updateBlockAction,
     deleteBlockAction,
     selectedTheme,
   } = props;
-  const [blocks, setBlocks] = useState<any[]>([]);
+  const [blocks, setBlocks] = useState<IBlock<any>[]>([]);
   const [isShowPreview, setIsShowPreview] = useState(false);
   const [pageSettingsModalTab, setPageSettingsModalTab] = useState<TabValue | null>(null);
-  const [isOpenSectionModal, setOpenSectionModal] = useState<boolean>(false);
   const [copyBlinkId, setCopyBlinkId] = useState<string>();
   const [selectedBlock, setSelectedBlock] = useState<IBlock<any> | INewBlock | null>(null);
   const [openerElement, openerRefCallback] = useState<HTMLDivElement | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isCheckBlocks, setCheckBlocks] = useState(false);
-  const [checkedBlockIds, setCheckedBlockIds] = useState<any[]>([]);
+  const [checkedBlocks, setCheckedBlocks] = useState<IBlock<any>[]>([]);
+  const [checkedBlockSmallestIndex, setCheckedBlockSmallestIndex] = useState<number>();
   const history = useHistory();
 
-  const toggleSectionModal = () => setOpenSectionModal(!isOpenSectionModal);
   const openSettingsPopupHandler = () => setIsOpen(true);
   const closeSettingsPopupHandler = () => setIsOpen(false);
   const startCheckBlocks = () => setCheckBlocks(true);
   const cancelCheckBlocks = () => {
-    setCheckedBlockIds([]);
+    setCheckedBlocks([]);
     setCheckBlocks(false);
   };
 
-  const acceptUnionBlocks = (sectionCommonData?: any) => {
-    const insertIndex = blocks.findIndex((block: IBlock<any>) =>
-      checkedBlockIds.some((checkedBlockId: number) => checkedBlockId === block.id)
-    );
-    const newSubBlocks = blocks.filter((block: IBlock<any>) =>
-      checkedBlockIds.some((checkedBlockId: number) => checkedBlockId === block.id)
-    );
-    const subBlocksIds = newSubBlocks.map((block) => block.id);
-    // const newMainList = blocks.filter(
-    //   (block: IBlock<any>) => !checkedBlockIds.some((checkedBlockId: number) => checkedBlockId === block.id)
-    // );
+  useEffect(() => {
+    if (data.blocks) {
+      setBlocks(data.blocks);
+    }
+  }, [data]);
 
-    // create section
-    createBlockAction({
-      pageSlug,
-      type: 'section',
-      index: insertIndex,
-      data: { blocks: subBlocksIds, ...sectionCommonData },
-    });
-    setCheckedBlockIds([]);
-    setCheckBlocks(false);
-  };
+  useEffect(() => {
+    const indexes = checkedBlocks.map((checkedBlock: IBlock<any>) => blocks.indexOf(checkedBlock));
+    setCheckedBlockSmallestIndex(Math.max(0, Math.min(...indexes)));
+  }, [blocks, checkedBlocks]);
 
   const deleteSection = (sectionId: any) => (event: any) => {
     event.stopPropagation();
@@ -124,12 +110,6 @@ export const PageForm = (props: IProps) => {
     updateBlockAction({ id: sectionId, data: { blocks, ...sectionData } });
   };
 
-  useEffect(() => {
-    if (data.blocks) {
-      setBlocks(data.blocks);
-    }
-  }, [data]);
-
   const onCopyToClipboard = () => {
     copyTextToClipboard(`${window.location.origin}/${username}/${pageSlug}`);
     setCopyBlinkId(uuidv4());
@@ -138,7 +118,14 @@ export const PageForm = (props: IProps) => {
   const showPagePreview = () => setIsShowPreview(true);
   const hidePagePreview = () => setIsShowPreview(false);
 
-  const openAddBlockModal = () => setSelectedBlock({ id: 'new' });
+  const openAddBlockModal = (blockType?: string, initBlockData?: any, index?: number) => () =>
+    setSelectedBlock({
+      id: 'new',
+      type: blockType,
+      data: initBlockData,
+      index,
+    });
+
   const closeAddBlockModal = () => setSelectedBlock(null);
 
   const openPageSettingsModal = (activeTab = TabValue.LINK) => () =>
@@ -146,6 +133,9 @@ export const PageForm = (props: IProps) => {
   const closePageSettingsModal = () => setPageSettingsModalTab(null);
 
   const toThemesPage = () => history.push(`/profile/${username}/themes/`);
+
+  // todo на успешную отправку формы нужно вызвать onUpdatePageForm БЕЗ аргументов
+  const onSuccessSubmitBlock = () => onUpdatePageForm();
 
   return (
     <>
@@ -183,8 +173,8 @@ export const PageForm = (props: IProps) => {
             isCheckBlocks={isCheckBlocks}
             blocks={blocks}
             setBlocks={setBlocks}
-            checkedBlockIds={checkedBlockIds}
-            setCheckedBlockIds={setCheckedBlockIds}
+            checkedBlocks={checkedBlocks}
+            setCheckedBlocks={setCheckedBlocks}
             setSelectedBlock={setSelectedBlock}
             onDragEndAction={onDragEndAction}
             deleteSection={deleteSection}
@@ -210,9 +200,9 @@ export const PageForm = (props: IProps) => {
         )}
         <AddBlockButtonWrapper>
           <Button
-            kind={'formed'}
-            dimension={'l'}
-            onClick={openAddBlockModal}
+            kind='formed'
+            dimension='l'
+            onClick={openAddBlockModal()}
             disabled={isShowPreview}>
             Добавить блок
           </Button>
@@ -249,7 +239,14 @@ export const PageForm = (props: IProps) => {
       </FormFooter>
       {isCheckBlocks && (
         <>
-          <AcceptButton onClick={toggleSectionModal}>Объединить</AcceptButton>
+          <AcceptButton
+            onClick={openAddBlockModal(
+              'section',
+              { blocks: checkedBlocks },
+              checkedBlockSmallestIndex
+            )}>
+            Объединить
+          </AcceptButton>
           <CancelButton onClick={cancelCheckBlocks}>Отмена</CancelButton>
         </>
       )}
@@ -261,21 +258,13 @@ export const PageForm = (props: IProps) => {
           pageData={data}
         />
       )}
-      {isOpenSectionModal && (
-        <SectionModal
-          onSuccess={acceptUnionBlocks}
-          onClose={toggleSectionModal}
-          selectedTheme={selectedTheme}
-          previewList={blocks.filter((block: IBlock<any>) =>
-            checkedBlockIds.some((checkedBlockId: number) => checkedBlockId === block.id)
-          )}
-        />
-      )}
       {selectedBlock && (
         <BlockEditorModal
           blockId={selectedBlock.id}
           blockType={selectedBlock.type}
-          onSuccess={onUpdatePageForm}
+          blockData={selectedBlock.data}
+          blockIndex={selectedBlock?.index}
+          onSuccess={onSuccessSubmitBlock}
           onClose={closeAddBlockModal}
           username={username}
           pageSlug={pageSlug}

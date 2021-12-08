@@ -11,7 +11,9 @@ interface IProps {
   username: string;
   pageSlug: string;
   blockId: number | 'new';
+  blockData?: any;
   blockType?: string;
+  blockIndex?: number;
 }
 
 const getTitle = (isNew: boolean, isCloning: boolean) => {
@@ -39,7 +41,11 @@ export const BlockEditorModal = (props: IProps) => {
     onSuccess();
   };
   const onCancel = () => {
-    onResetBlockType();
+    if (initBlockType === 'section') {
+      onClose();
+    } else {
+      onResetBlockType();
+    }
   };
 
   return (

@@ -11,7 +11,7 @@ import { typeIconsMap } from 'src/containers/profile/block-editor/types-list/uti
 
 import { reorder } from '../utils';
 
-import { getStyleLockHorizontalGrag } from './utils';
+import { getStyleLockHorizontalDrag } from './utils';
 import {
   BlockActionWrapper,
   FormWrapperDroppable,
@@ -31,8 +31,8 @@ interface IProps {
   isCheckBlocks: boolean;
   blocks: IBlock<any>[];
   setBlocks: (blocks: IBlock<any>[]) => void;
-  checkedBlockIds: number[];
-  setCheckedBlockIds: (blockIds: number[]) => void;
+  checkedBlocks: IBlock<any>[];
+  setCheckedBlocks: (blocks: IBlock<any>[]) => void;
   setSelectedBlock: any;
   onDragEndAction: any;
   deleteSection: (id: any) => (event: any) => void;
@@ -45,20 +45,20 @@ export const DroppableList = (props: IProps) => {
     isCheckBlocks,
     blocks,
     setBlocks,
-    checkedBlockIds,
-    setCheckedBlockIds,
+    checkedBlocks,
+    setCheckedBlocks,
     setSelectedBlock,
     deleteSection,
     updateSection,
     onDragEndAction,
   } = props;
 
-  const onClickCheckbox = (id: number) => (event: any) => {
+  const onClickCheckbox = (clickedBlock: IBlock<any>) => (event: any) => {
     event.stopPropagation();
-    if (checkedBlockIds.some((blockId: number) => blockId === id)) {
-      setCheckedBlockIds(checkedBlockIds.filter((blockId: number) => blockId !== id));
+    if (checkedBlocks.includes(clickedBlock)) {
+      setCheckedBlocks(checkedBlocks.filter((block: IBlock<any>) => block !== clickedBlock));
     } else {
-      setCheckedBlockIds([...checkedBlockIds, id]);
+      setCheckedBlocks([...checkedBlocks, clickedBlock]);
     }
   };
 
@@ -140,11 +140,12 @@ export const DroppableList = (props: IProps) => {
                       {(provided: any, snapshot: any) =>
                         block.type === 'section' ? (
                           <SectionDraggable
+                            onClick={onClickEditBlock(block)}
                             isDragging={snapshot.isDragging}
                             ref={provided.innerRef}
                             {...provided.dragHandleProps}
                             {...provided.draggableProps}
-                            style={getStyleLockHorizontalGrag(
+                            style={getStyleLockHorizontalDrag(
                               provided?.draggableProps?.style,
                               snapshot
                             )}
@@ -153,14 +154,14 @@ export const DroppableList = (props: IProps) => {
                               onClick={onClickStopPropagation}
                               isDragging={snapshot.isDragging}>
                               <DragIcon isDragging={snapshot.isDragging}>
-                                <ViewAgendaIcon fontSize={'small'} />
+                                <ViewAgendaIcon fontSize='small' />
                               </DragIcon>
                             </SectionHandleZone>
                             <DeleteSection onClick={deleteSection(block.id)}>удалить</DeleteSection>
                             <DroppableSection
                               section={block}
                               isDragging={snapshot.isDragging}
-                              onClickEditBlock={onClickEditBlock}
+                              setSelectedBlock={setSelectedBlock}
                             />
                           </SectionDraggable>
                         ) : (
@@ -170,7 +171,7 @@ export const DroppableList = (props: IProps) => {
                             ref={provided.innerRef}
                             {...provided.dragHandleProps}
                             {...provided.draggableProps}
-                            style={getStyleLockHorizontalGrag(
+                            style={getStyleLockHorizontalDrag(
                               provided?.draggableProps?.style,
                               snapshot
                             )}
@@ -189,10 +190,8 @@ export const DroppableList = (props: IProps) => {
                               </DragIconBox>
                               {isCheckBlocks && (
                                 <CustomCheckbox
-                                  onClick={onClickCheckbox(block.id)}
-                                  isChecked={checkedBlockIds.some(
-                                    (blockId: number) => blockId === block.id
-                                  )}
+                                  onClick={onClickCheckbox(block)}
+                                  isChecked={checkedBlocks.includes(block)}
                                 />
                               )}
                               <BlockActionWrapper>

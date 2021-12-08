@@ -28,10 +28,10 @@ export const PageEditorContainer = observer((props: IProps) => {
     isLoading,
     isUpdating,
     getMyPageBySlugAction,
+    updateMyPageAction,
     data,
     selectPageAction,
     updatePageBlocksAction,
-    updatePartPageDataAction,
     deleteBlockAction,
     selectedTheme,
     createBlockAction,
@@ -53,12 +53,12 @@ export const PageEditorContainer = observer((props: IProps) => {
     }
   }, [pageSlug, data]);
 
+  // todo передавать slug ТОЛЬКО если он изменился в настройках страницы
   const onUpdatePageForm = (slug?: string) => {
-    console.log('onUpdatePageForm');
     if (slug) {
       replace(`/profile/${username}/pages/${slug}`);
     } else {
-      getMyPageBySlugAction(pageSlug);
+      updateMyPageAction();
     }
   };
 
@@ -94,7 +94,6 @@ export const PageEditorContainer = observer((props: IProps) => {
                       createBlockAction={createBlockAction}
                       deleteBlockAction={deleteBlockAction}
                       updateBlockAction={updateBlockAction}
-                      updatePartPageDataAction={updatePartPageDataAction}
                     />
                   </EditorWrapper>
                 </GridColumn>
@@ -127,7 +126,6 @@ export const PageEditorContainer = observer((props: IProps) => {
                 createBlockAction={createBlockAction}
                 deleteBlockAction={deleteBlockAction}
                 updateBlockAction={updateBlockAction}
-                updatePartPageDataAction={updatePartPageDataAction}
               />
             </FlexBlock>
           </StyledMobileView>

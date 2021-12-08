@@ -1,18 +1,19 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { useForm, FormProvider } from 'react-hook-form';
-import { useSubmitBlockForm } from 'src/api/hooks/submit-forms/block/useSubmitBlockForm';
 import { Form } from 'src/components/form';
 import { Tabs, TabContainer, useTabs } from 'src/components/tabs';
+import { useSubmitBlockForm } from 'src/api/hooks/submit-forms/block/useSubmitBlockForm';
+import { IBlock } from 'src/dal/blocks/interfaces';
 
 import { FormWrapper } from '../../style';
-import { blockActions } from '../../utils';
 
-import { TextFormWrapper } from './style';
+import { FormInputs, RawData } from './interfaces';
 import { useMapStoreToProps } from './selectors';
-import { FormInputs } from './interfaces';
-import { prepareDataForServer, blockTabs, TabValue } from './utils';
-import { TextBlockFields } from './fields';
+import { SectionFormWrapper } from './style';
+import { SectionFields } from './fields';
+import { SectionPreview } from './preview';
+import { TabValue, blockTabs, prepareDataForServer, blockActions } from './utils';
 
 interface IProps {
   username: string;
@@ -22,12 +23,11 @@ interface IProps {
   onSuccess(data: any): void;
   onCancel(): void;
   onClose(): void;
-  isCloning: boolean;
-  setIsCloning(isCloning: boolean): void;
+  blockData?: any; // TODO для этой формы обязательно нужно передать { blocks: IBlock<any>[] }
   blockIndex?: number;
 }
 
-export const TextForm = observer((props: IProps) => {
+export const SectionForm = observer((props: IProps) => {
   const {
     pageSlug,
     blockType,
@@ -35,25 +35,34 @@ export const TextForm = observer((props: IProps) => {
     onSuccess,
     onCancel,
     onClose,
-    isCloning,
-    setIsCloning,
+    blockData,
     blockIndex,
   } = props;
-  const { formDefaultValues, deleteBlockAction } = useMapStoreToProps();
   const [tabs, activeTab, onChangeTab] = useTabs(blockTabs);
+  const { formDefaultValues, deleteBlockAction, selectedTheme } = useMapStoreToProps();
+  // todo хук useForm создает форму и возвращает методы и состояние формы
+  // todo все поля зарегистрированные в форме управляются этой формой
+  // todo поле можно зарегистрировать (например) при помощи обертки <ControlledField> и "methods.control"
   const methods = useForm<FormInputs>({
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
-  const { formState, setError, handleSubmit } = methods;
+  const { formState, handleSubmit, setError } = methods;
   const { isValid } = formState;
   const [submitBlockEditor, isLoading, data, errors] = useSubmitBlockForm<FormInputs>();
-  const isEditing = blockId !== 'new' && !isCloning;
-  const submit = async (data: FormInputs) => {
-    const rawData: any = { data, pageSlug, blockType };
+  const isEditing = blockId !== 'new';
+  const blocks = blockData?.blocks as IBlock<any>[]; // TODO Ожидаем { blocks: IBlock<any>[] }
+
+  const submit = async (formInputs: FormInputs) => {
+    const rawData: RawData = {
+      formInputs,
+      blocks: blocks.map((block: IBlock<any>) => block.id),
+      pageSlug,
+      blockType,
+    };
 
     if (isEditing) {
-      rawData.blockId = blockId;
+      rawData.blockId = blockId as number;
     }
 
     if (blockIndex !== undefined) {
@@ -88,7 +97,7 @@ export const TextForm = observer((props: IProps) => {
     switch (actionId) {
       case 'submit':
         handleSubmit(submit)();
-        // тут фому не закрываем так как с бэка могли вернуться ошибки
+        // тут фому НЕ закрываем так как с бэка могли вернуться ошибки
         break;
       case 'cancel':
         onCancel();
@@ -97,17 +106,13 @@ export const TextForm = observer((props: IProps) => {
         deleteBlockAction(blockId as number);
         onClose();
         break;
-      case 'clone':
-        console.log('CLONE');
-        setIsCloning(true);
-        break;
       default:
         console.warn('Unknown action type', actionId);
     }
   };
 
   return (
-    <TextFormWrapper>
+    <SectionFormWrapper>
       <Tabs tabs={tabs} activeTab={activeTab} onChangeTab={onChangeTab} />
       <Form
         onAction={onAction}
@@ -116,18 +121,18 @@ export const TextForm = observer((props: IProps) => {
         submitActionLabel='Сохранить'>
         <FormProvider {...methods}>
           <FormWrapper>
-            <TabContainer value={TabValue.text} activeTabValue={activeTab.value}>
-              <TextBlockFields formDefaultValues={formDefaultValues} />
+            <TabContainer value={TabValue.section} activeTabValue={activeTab.value}>
+              <SectionFields formDefaultValues={formDefaultValues} />
+            </TabContainer>
+            <TabContainer value={TabValue.preview} activeTabValue={activeTab.value}>
+              <SectionPreview selectedTheme={selectedTheme} blocks={blocks} />
             </TabContainer>
             <TabContainer value={TabValue.settings} activeTabValue={activeTab.value}>
               Tab settings content
             </TabContainer>
-            <TabContainer value={TabValue.section} activeTabValue={activeTab.value}>
-              Tab section content
-            </TabContainer>
           </FormWrapper>
         </FormProvider>
       </Form>
-    </TextFormWrapper>
+    </SectionFormWrapper>
   );
 });

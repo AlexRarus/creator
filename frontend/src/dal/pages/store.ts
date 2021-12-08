@@ -79,6 +79,7 @@ export default class DalPagesStore {
   });
 
   updateMyPageAction = flow(function* (this: DalPagesStore) {
+    // todo при обновлении выставляем флаг isUpdating а не isLoading
     try {
       this.isUpdating = true;
       console.log('updateMyPageAction');
