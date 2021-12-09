@@ -2,6 +2,7 @@ import React from 'react';
 
 import { TextForm } from './text';
 import { SectionForm } from './section';
+import { AvatarForm } from './avatar';
 
 interface IProps {
   username: string;
@@ -23,6 +24,8 @@ export const TargetTypeForm = (props: IProps) => {
       return <TextForm {...props} />;
     case 'section':
       return <SectionForm {...props} />;
+    case 'avatar':
+      return <AvatarForm {...props} />;
     default:
       return <div>Unknown block type</div>;
   }

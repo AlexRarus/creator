@@ -2,6 +2,7 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { TargetBlockTypePreview } from 'src/containers/app/block';
 import { IBlock } from 'src/dal/blocks/interfaces';
+import { ISectionData } from 'src/dal/blocks/data-interfaces';
 import { ITheme } from 'src/dal/themes/interface';
 
 import { BackgroundPreview } from './style';
@@ -21,7 +22,7 @@ export const SectionPreview = (props: IProps) => {
   const background = watch('background');
   const borderRadius = watch('borderRadius');
 
-  const previewData: IBlock<any> = {
+  const previewData: IBlock<ISectionData> = {
     id: 0,
     type: 'section',
     data: {

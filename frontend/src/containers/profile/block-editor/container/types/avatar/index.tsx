@@ -8,11 +8,12 @@ import { Tabs, TabContainer, useTabs } from 'src/components/tabs';
 import { FormWrapper } from '../../style';
 import { blockActions } from '../../utils';
 
-import { TextFormWrapper } from './style';
+import { AvatarFormWrapper } from './style';
 import { useMapStoreToProps } from './selectors';
 import { FormInputs, RawData } from './interfaces';
 import { prepareDataForServer, blockTabs, TabValue } from './utils';
-import { TextBlockFields } from './fields';
+import { AvatarBlockFields } from './fields';
+import { AvatarPreview } from './preview';
 
 interface IProps {
   username: string;
@@ -27,7 +28,7 @@ interface IProps {
   blockIndex?: number;
 }
 
-export const TextForm = observer((props: IProps) => {
+export const AvatarForm = observer((props: IProps) => {
   const {
     pageSlug,
     blockType,
@@ -39,7 +40,7 @@ export const TextForm = observer((props: IProps) => {
     setIsCloning,
     blockIndex,
   } = props;
-  const { formDefaultValues, deleteBlockAction } = useMapStoreToProps();
+  const { formDefaultValues, deleteBlockAction, selectedTheme } = useMapStoreToProps();
   const [tabs, activeTab, onChangeTab] = useTabs(blockTabs);
   const methods = useForm<FormInputs>({
     mode: 'onChange',
@@ -108,7 +109,7 @@ export const TextForm = observer((props: IProps) => {
   };
 
   return (
-    <TextFormWrapper>
+    <AvatarFormWrapper>
       <Tabs tabs={tabs} activeTab={activeTab} onChangeTab={onChangeTab} />
       <Form
         onAction={onAction}
@@ -117,11 +118,9 @@ export const TextForm = observer((props: IProps) => {
         submitActionLabel='Сохранить'>
         <FormProvider {...methods}>
           <FormWrapper>
-            <TabContainer value={TabValue.text} activeTabValue={activeTab.value}>
-              <TextBlockFields formDefaultValues={formDefaultValues} />
-            </TabContainer>
-            <TabContainer value={TabValue.preview} activeTabValue={activeTab.value}>
-              Tab preview content
+            <TabContainer value={TabValue.editor} activeTabValue={activeTab.value}>
+              <AvatarPreview selectedTheme={selectedTheme} />
+              <AvatarBlockFields formDefaultValues={formDefaultValues} />
             </TabContainer>
             <TabContainer value={TabValue.settings} activeTabValue={activeTab.value}>
               Tab settings content
@@ -129,6 +128,6 @@ export const TextForm = observer((props: IProps) => {
           </FormWrapper>
         </FormProvider>
       </Form>
-    </TextFormWrapper>
+    </AvatarFormWrapper>
   );
 });

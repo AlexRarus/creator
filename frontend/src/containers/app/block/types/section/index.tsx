@@ -6,12 +6,12 @@ import { TargetBlockTypePreview } from 'src/containers/app/block';
 import { SectionBlock } from './style';
 
 interface IProps {
-  section: IBlock<any>;
+  block: IBlock<any>;
   selectedTheme: ITheme | null;
 }
 
 export const SectionPreview = (props: IProps) => {
-  const { section, selectedTheme } = props;
+  const { block: section, selectedTheme } = props;
   const subBlocks = section?.data?.blocks;
 
   return (

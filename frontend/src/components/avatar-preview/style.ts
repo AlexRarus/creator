@@ -1,28 +1,43 @@
 import styled from 'styled-components';
-import { COLORS, MEDIA } from 'src/components/theme';
+import { COLORS } from 'src/components/theme';
+
+import { TDimension } from '../input-components';
 
 interface IAvatarPreviewProps {
   borderRadius: number;
-  size?: number;
+  dimension: TDimension;
 }
 
 interface IAvatarImageProps {
   isLoaded: boolean;
 }
 
+const getSize = ({ dimension }: IAvatarPreviewProps) => {
+  switch (dimension) {
+    case 'xxl':
+      return '180px';
+    case 'xl':
+      return '150px';
+    case 'l':
+      return '120px';
+    case 'm':
+      return '90px';
+    case 's':
+      return '60px';
+    case 'xs':
+      return '30px';
+    default:
+      return '90px';
+  }
+};
 export const AvatarPreviewWrapper = styled.div<IAvatarPreviewProps>`
   position: relative;
-  width: ${({ size = 80 }) => size}px;
-  height: ${({ size = 80 }) => size}px;
+  width: ${getSize};
+  height: ${getSize};
   border-radius: ${({ borderRadius }) => borderRadius}%;
   background: ${COLORS.grey[300]};
   border: 1px solid ${COLORS.grey[300]};
   overflow: hidden;
-
-  ${MEDIA.max768({
-    width: `${({ size = 60 }) => size}px`,
-    height: `${({ size = 60 }) => size}px`,
-  })}
 `;
 
 export const DefaultBackground = styled.div<IAvatarPreviewProps>`
@@ -35,16 +50,9 @@ export const DefaultBackground = styled.div<IAvatarPreviewProps>`
 
   svg {
     position: absolute;
-    width: ${({ size = 80 }) => size}px;
-    height: ${({ size = 80 }) => size}px;
+    width: ${getSize};
+    height: ${getSize};
     fill: ${COLORS.white};
-
-    ${({ size = 60 }) =>
-      MEDIA.max768({
-        position: 'absolute',
-        width: `${size}px`,
-        height: `${size}px`,
-      })}
   }
 `;
 

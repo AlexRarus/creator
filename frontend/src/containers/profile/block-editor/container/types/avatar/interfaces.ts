@@ -2,7 +2,7 @@ import { AdditionalData } from '../../interfaces';
 
 // поля формы
 export type FormInputs = {
-  text?: string;
+  dimension?: string;
 };
 
 // входные значение с формы создание

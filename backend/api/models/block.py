@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 
 from .block_type import BlockType
+from .types.avatar import AvatarBlock
 from .types.button import Button
 from .types.section import Section
 from .types.text import Text
@@ -42,6 +43,14 @@ class Block(models.Model):
     section = models.OneToOneField(
         Section,
         verbose_name='Контент блока с типом "section"',
+        related_name="block",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
+    avatar = models.OneToOneField(
+        AvatarBlock,
+        verbose_name='Контент блока с типом "avatar"',
         related_name="block",
         on_delete=models.CASCADE,
         null=True,

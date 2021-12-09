@@ -13,26 +13,22 @@ export const prepareDataForServer = (rawData: RawData): DataForServer<FormInputs
   page_slug: rawData.pageSlug, // меняем поле для отправки на бэк
   type: rawData.blockType, // меняем поле для отправки на бэк
   id: rawData.blockId as any, // id может не быть поэтому any
+  index: rawData.index as any, // id может не быть поэтому any
 });
 
 export const prepareDataToFormValues = (block: IBlock<FormInputs> | null): FormInputs => ({
-  text: block?.data?.text,
+  dimension: block?.data?.dimension || 'm',
 });
 
 export enum TabValue {
-  text = 'text',
-  preview = 'preview',
+  editor = 'editor',
   settings = 'settings',
 }
 
 export const blockTabs: ITab[] = [
   {
-    value: TabValue.text,
-    label: 'Текст',
-  },
-  {
-    value: TabValue.preview,
-    label: 'Предпросмотр',
+    value: TabValue.editor,
+    label: 'Редактирование',
   },
   {
     value: TabValue.settings,
