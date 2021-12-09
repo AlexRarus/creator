@@ -1,5 +1,6 @@
 from api.models.block import Block
 from api.models.relations import PageBlockRelation
+from api.serializers.avatar import AvatarSerializer
 from api.serializers.types.avatar import (
     BlockAvatarSerializer,
     block_avatar_create,
@@ -16,18 +17,29 @@ from api.serializers.types.text import (
     block_text_create,
     block_text_update,
 )
+from django.contrib.auth import get_user_model
 from django.db.models import Prefetch
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
+
+User = get_user_model()
 
 
 class UnknowTypeError(Exception):
     pass
 
 
+class BlockAuthorSerializerRead(serializers.ModelSerializer):
+    avatar = AvatarSerializer(read_only=True)
+
+    class Meta:
+        fields = ("avatar",)
+        model = User
+
+
 class BlockSerializerRead(serializers.ModelSerializer):
     type = serializers.CharField(read_only=True, source="type.slug")
-    author = serializers.PrimaryKeyRelatedField(read_only=True)
+    author = BlockAuthorSerializerRead(read_only=True)
     data = serializers.SerializerMethodField(read_only=True)
     # page_slugs = serializers.SlugRelatedField(
     #     source="pages",

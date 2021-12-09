@@ -62,6 +62,19 @@ export default class DalAuthStore {
     }
   });
 
+  public updateMeAction = flow(function* (this: DalAuthStore) {
+    try {
+      const response: AxiosResponse<any> = yield this.API.getMe();
+      this.user = (response && response.data) || null;
+    } catch (err) {
+      console.log(err, 'DalAuthStore');
+      addNotificationItem({
+        level: 'error',
+        message: 'Произошла ошибка на сервере',
+      });
+    }
+  });
+
   public loginAction = flow(function* (this: DalAuthStore, data: ILoginData) {
     try {
       const response: AxiosResponse<any> = yield this.API.login(data);

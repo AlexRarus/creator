@@ -5,6 +5,7 @@ import { Form } from 'src/components/form';
 import { Tabs, TabContainer, useTabs } from 'src/components/tabs';
 import { useSubmitBlockForm } from 'src/api/hooks/submit-forms/block/useSubmitBlockForm';
 import { IBlock } from 'src/dal/blocks/interfaces';
+import { IUser } from 'src/dal/auth/interfaces';
 
 import { FormWrapper } from '../../style';
 
@@ -39,7 +40,7 @@ export const SectionForm = observer((props: IProps) => {
     blockIndex,
   } = props;
   const [tabs, activeTab, onChangeTab] = useTabs(blockTabs);
-  const { formDefaultValues, deleteBlockAction, selectedTheme } = useMapStoreToProps();
+  const { formDefaultValues, deleteBlockAction, selectedTheme, user } = useMapStoreToProps();
   // todo хук useForm создает форму и возвращает методы и состояние формы
   // todo все поля зарегистрированные в форме управляются этой формой
   // todo поле можно зарегистрировать (например) при помощи обертки <ControlledField> и "methods.control"
@@ -125,7 +126,7 @@ export const SectionForm = observer((props: IProps) => {
               <SectionFields formDefaultValues={formDefaultValues} />
             </TabContainer>
             <TabContainer value={TabValue.preview} activeTabValue={activeTab.value}>
-              <SectionPreview selectedTheme={selectedTheme} blocks={blocks} />
+              <SectionPreview selectedTheme={selectedTheme} blocks={blocks} user={user as IUser} />
             </TabContainer>
             <TabContainer value={TabValue.settings} activeTabValue={activeTab.value}>
               Tab settings content

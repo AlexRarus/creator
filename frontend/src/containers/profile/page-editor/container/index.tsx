@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 import { useHistory } from 'react-router-dom';
 import { BrowserView } from 'react-device-detect';
@@ -36,10 +36,12 @@ export const PageEditorContainer = observer((props: IProps) => {
     selectedTheme,
     createBlockAction,
     updateBlockAction,
+    user,
   } = useMapStoreToProps();
   const { username, pageSlug } = props;
   const { replace } = useHistory();
   const isAuthor = useIsAuthor(username);
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
     if (isAuthor) {
@@ -48,8 +50,16 @@ export const PageEditorContainer = observer((props: IProps) => {
   }, [isAuthor, pageSlug]);
 
   useEffect(() => {
+    // некоторые блоки зависят от юзера, есди он изменился нужно обновить страницу
+    if (initialized && isAuthor) {
+      updateMyPageAction();
+    }
+  }, [user]);
+
+  useEffect(() => {
     if (!isLoading && data) {
       selectPageAction(data);
+      setInitialized(true); // считаем страницу готовой когда получили data
     }
   }, [pageSlug, data]);
 

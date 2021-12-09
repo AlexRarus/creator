@@ -5,5 +5,6 @@ export function useMapStoreToProps() {
 
   return {
     user: dalAuthStore.user,
+    updateMeAction: dalAuthStore.updateMeAction,
   };
 }

@@ -4,6 +4,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { useSubmitBlockForm } from 'src/api/hooks/submit-forms/block/useSubmitBlockForm';
 import { Form } from 'src/components/form';
 import { Tabs, TabContainer, useTabs } from 'src/components/tabs';
+import { IUser } from 'src/dal/auth/interfaces';
 
 import { FormWrapper } from '../../style';
 import { blockActions } from '../../utils';
@@ -40,7 +41,7 @@ export const AvatarForm = observer((props: IProps) => {
     setIsCloning,
     blockIndex,
   } = props;
-  const { formDefaultValues, deleteBlockAction, selectedTheme } = useMapStoreToProps();
+  const { formDefaultValues, deleteBlockAction, selectedTheme, user } = useMapStoreToProps();
   const [tabs, activeTab, onChangeTab] = useTabs(blockTabs);
   const methods = useForm<FormInputs>({
     mode: 'onChange',
@@ -119,7 +120,7 @@ export const AvatarForm = observer((props: IProps) => {
         <FormProvider {...methods}>
           <FormWrapper>
             <TabContainer value={TabValue.editor} activeTabValue={activeTab.value}>
-              <AvatarPreview selectedTheme={selectedTheme} />
+              <AvatarPreview selectedTheme={selectedTheme} user={user as IUser} />
               <AvatarBlockFields formDefaultValues={formDefaultValues} />
             </TabContainer>
             <TabContainer value={TabValue.settings} activeTabValue={activeTab.value}>

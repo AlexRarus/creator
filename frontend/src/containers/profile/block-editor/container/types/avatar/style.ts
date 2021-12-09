@@ -19,3 +19,10 @@ export const PreviewWrapper = styled.div<PreviewProps>`
   background: ${({ selectedTheme }) => selectedTheme?.background || 'inherit'};
   color: ${({ selectedTheme }) => selectedTheme?.color || 'inherit'};
 `;
+
+export const AvatarEditModuleWrapper = styled.div`
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
