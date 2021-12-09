@@ -85,9 +85,6 @@ class PageViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user)
 
     def perform_update(self, serializer):
-        page = self.get_object()
-        if self.request.data.get("blocks"):
-            page.blocks.clear()
         serializer.save(author=self.request.user)
 
 

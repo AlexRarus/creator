@@ -9,6 +9,7 @@ from .models.page import Page
 from .models.pricing_plan import PricingPlan
 from .models.relations import PageBlockRelation, SectionBlockRelation
 from .models.theme import Theme
+from .models.types.avatar import AvatarBlock
 from .models.types.button import Button, ButtonType
 from .models.types.section import Section
 from .models.types.text import Text
@@ -154,6 +155,16 @@ class TextAdmin(admin.ModelAdmin):
         "text",
     )
     search_fields = ("text",)
+    empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
+
+
+@admin.register(AvatarBlock)
+class AvatarBlockAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "dimension",
+    )
+    search_fields = ("dimension",)
     empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
 
 
