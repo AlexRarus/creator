@@ -18,3 +18,20 @@ export interface ISectionData {
 export interface IAvatarData {
   dimension: TDimension;
 }
+
+export interface ITextData {
+  text: string;
+}
+
+export interface IListData {
+  iconSize?: string;
+  fontSize?: string;
+  template?: string;
+  items: IListItem[];
+}
+
+export interface IListItem {
+  id: number;
+  title: string;
+  description: string;
+}

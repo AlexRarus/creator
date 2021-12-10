@@ -5,6 +5,7 @@ import { ITheme } from 'src/dal/themes/interface';
 import { TextPreview } from './types/text';
 import { SectionPreview } from './types/section';
 import { AvatarPreview } from './types/avatar';
+import { ListPreview } from './types/list';
 
 interface IProps {
   block: IBlock<any>;
@@ -22,6 +23,8 @@ export const TargetBlockTypePreview = (props: IProps) => {
       return <SectionPreview selectedTheme={selectedTheme} {...props} />;
     case 'avatar':
       return <AvatarPreview selectedTheme={selectedTheme} {...props} />;
+    case 'list':
+      return <ListPreview selectedTheme={selectedTheme} {...props} />;
     default:
       return <div onClick={onClick}>Unknown block type</div>;
   }

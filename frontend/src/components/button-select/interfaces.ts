@@ -6,9 +6,9 @@ export interface IOption {
 }
 
 export interface IProps {
-  value: IOption;
+  value?: any;
   options: IOption[];
-  onChange(value: IOption): void;
+  onChange?(value: any): void;
   maxMenuHeight?: number;
   menuWidth?: number;
   dimension?: TDimension;

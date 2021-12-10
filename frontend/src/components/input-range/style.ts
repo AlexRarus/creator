@@ -14,6 +14,7 @@ export const InputRangeWrapper = styled.label`
   display: flex;
   flex-direction: column;
   padding-bottom: 14px;
+  width: 100%;
 `;
 
 export const InnerLabel = styled.div`

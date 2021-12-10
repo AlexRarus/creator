@@ -3,6 +3,7 @@ import React from 'react';
 import { TextForm } from './text';
 import { SectionForm } from './section';
 import { AvatarForm } from './avatar';
+import { ListForm } from './list';
 
 interface IProps {
   username: string;
@@ -26,6 +27,8 @@ export const TargetTypeForm = (props: IProps) => {
       return <SectionForm {...props} />;
     case 'avatar':
       return <AvatarForm {...props} />;
+    case 'list':
+      return <ListForm {...props} />;
     default:
       return <div>Unknown block type</div>;
   }

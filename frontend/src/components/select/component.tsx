@@ -84,8 +84,7 @@ export const Select = React.forwardRef((props: IProps, ref: any) => {
           htmlFor={`select-${inputProps.name}-${uniqId}`}
           isEmpty={!hasValue && !isFocusedSelect}
           dimension={dimension}
-          onClick={setFocus}
-        >
+          onClick={setFocus}>
           {label}
         </Label>
       )}

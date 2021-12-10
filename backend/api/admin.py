@@ -11,6 +11,7 @@ from .models.relations import PageBlockRelation, SectionBlockRelation
 from .models.theme import Theme
 from .models.types.avatar import AvatarBlock
 from .models.types.button import Button, ButtonType
+from .models.types.list import ListBlock, ListItemBlock, ListItemBlockRelation
 from .models.types.section import Section
 from .models.types.text import Text
 
@@ -202,5 +203,40 @@ class SectionAdmin(admin.ModelAdmin):
     search_fields = (
         "label",
         "background",
+    )
+    empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
+
+
+@admin.register(ListBlock)
+class ListBlockAdmin(admin.ModelAdmin):
+    list_display = ("id",)
+    # search_fields = (
+    #     "label",
+    #     "background",
+    # )
+    empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
+
+
+@admin.register(ListItemBlock)
+class ListItemBlockAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "title",
+        "description",
+    )
+    search_fields = (
+        "title",
+        "description",
+    )
+    empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
+
+
+@admin.register(ListItemBlockRelation)
+class ListItemBlockRelationAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "list",
+        "item",
+        "order",
     )
     empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY

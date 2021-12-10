@@ -13,11 +13,13 @@ import { TDimension, TKind } from './interfaces';
 interface IComponentWrapperProps {
   dimension: TDimension;
   theme: ITheme;
+  fontSizeInherit: boolean;
 }
 
 interface IInputStyledProps extends IComponentWrapperProps {
   disabled: boolean;
   iconWrapperWidth: number;
+  fontWeight: string;
   type?: string;
   kind?: TKind;
   textAlign?: string;
@@ -61,6 +63,7 @@ export const InputStyled = styled.input<IInputStyledProps>`
   padding-right: ${({ iconWrapperWidth }) => iconWrapperWidth}px;
   text-align: ${({ textAlign }) => textAlign || 'inherit'};
   ${getInputStyles}
+  font-weight: ${({ fontWeight }) => fontWeight};
 
   ::-webkit-outer-spin-button,
   ::-webkit-inner-spin-button {
@@ -83,7 +86,8 @@ export const ComponentWrapper = styled.div<IComponentWrapperProps>`
   width: 100%;
 
   ${InputStyled} {
-    font-size: ${getInputFontSize};
+    ${(props: IComponentWrapperProps) =>
+      !props.fontSizeInherit ? `font-size: ${getInputFontSize(props)}` : 'font-size: inherit'};
   }
 `;
 ComponentWrapper.defaultProps = {

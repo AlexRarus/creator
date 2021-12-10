@@ -1,5 +1,6 @@
 from api.models.block import Block
 from api.models.relations import PageBlockRelation
+from api.models.types.list import ListItemBlock
 from api.serializers.avatar import AvatarSerializer
 from api.serializers.types.avatar import (
     BlockAvatarSerializer,
@@ -11,6 +12,11 @@ from api.serializers.types.button import (
     BlockButtonSerializerWrite,
     block_button_create,
     block_button_update,
+)
+from api.serializers.types.list import (
+    BlockListSerializer,
+    block_list_create,
+    block_list_update,
 )
 from api.serializers.types.text import (
     BlockTextSerializer,
@@ -59,6 +65,8 @@ class BlockSerializerRead(serializers.ModelSerializer):
             return BlockSectionSerializer(block.section).data
         if block.type.slug == "avatar":
             return BlockAvatarSerializer(block.avatar).data
+        if block.type.slug == "list":
+            return BlockListSerializer(block.list).data
 
     class Meta:
         model = Block
@@ -90,6 +98,8 @@ class BlockSerializerWrite(serializers.ModelSerializer):
             return BlockSectionSerializer(block.section).data
         if block.type.slug == "avatar":
             return BlockAvatarSerializer(block.avatar).data
+        if block.type.slug == "list":
+            return BlockListSerializer(block.list).data
 
     def create(self, validated_data):
         page = validated_data.pop("page", None)
@@ -110,6 +120,8 @@ class BlockSerializerWrite(serializers.ModelSerializer):
                 block.section = block_section_create(data)
             elif block.type.slug == "avatar":
                 block.avatar = block_avatar_create(data)
+            elif block.type.slug == "list":
+                block.list = block_list_create(data)
             else:
                 raise UnknowTypeError
 
@@ -140,6 +152,12 @@ class BlockSerializerWrite(serializers.ModelSerializer):
                 "section__blocks",
                 queryset=Block.objects.order_by("sectionblockrelation__order"),
             ),
+            Prefetch(
+                "list__items",
+                queryset=ListItemBlock.objects.order_by(
+                    "listitemblockrelation__order"
+                ),
+            ),
         ).get(id=block.id)
 
     def update(self, block, validated_data):
@@ -157,6 +175,8 @@ class BlockSerializerWrite(serializers.ModelSerializer):
             block_section_update(block.section, data)
         elif block.type.slug == "avatar":
             block_avatar_update(block.avatar, data)
+        elif block.type.slug == "list":
+            block_list_update(block.list, data)
         else:
             raise UnknowTypeError
 
@@ -165,6 +185,12 @@ class BlockSerializerWrite(serializers.ModelSerializer):
             Prefetch(
                 "section__blocks",
                 queryset=Block.objects.order_by("sectionblockrelation__order"),
+            ),
+            Prefetch(
+                "list__items",
+                queryset=ListItemBlock.objects.order_by(
+                    "listitemblockrelation__order"
+                ),
             ),
         ).get(id=block.id)
 

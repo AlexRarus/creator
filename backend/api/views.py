@@ -13,6 +13,7 @@ from .models.page import Page
 from .models.relations import PageBlockRelation
 from .models.theme import Theme
 from .models.types.button import ButtonType
+from .models.types.list import ListItemBlock
 from .pagination import CustomPagination
 from .permissions import (
     IsAuthorPermission,
@@ -60,6 +61,12 @@ class PageViewSet(viewsets.ModelViewSet):
             Prefetch(
                 "blocks__section__blocks",
                 queryset=Block.objects.order_by("sectionblockrelation__order"),
+            ),
+            Prefetch(
+                "blocks__list__items",
+                queryset=ListItemBlock.objects.order_by(
+                    "listitemblockrelation__order"
+                ),
             ),
         ).filter(author__username=author_username)
 
