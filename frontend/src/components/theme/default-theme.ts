@@ -70,6 +70,28 @@ export const LIGHT_THEME: ITheme = {
         success: COLORS.green[500],
       },
     },
+    select: {
+      color: {
+        primary: COLORS.black,
+        secondary: COLORS.white,
+        disabled: COLORS.grey[700],
+        formed: COLORS.grey[900],
+      },
+      background: {
+        primary: 'inherit',
+        secondary: COLORS.grey[500],
+        disabled: COLORS.grey[400],
+        formed: COLORS.white,
+        hover: COLORS.grey[200],
+      },
+      borderColor: {
+        primary: COLORS.black,
+        secondary: COLORS.grey[500],
+        disabled: COLORS.grey[700],
+        formed: COLORS.grey[200],
+        hover: COLORS.yellow[700],
+      },
+    },
     input: {
       color: {
         primary: COLORS.black,
@@ -203,6 +225,27 @@ export const DARK_THEME: ITheme = {
         air: COLORS.indigo.A200,
         formed: COLORS.blue[400],
         success: COLORS.green[500],
+      },
+    },
+    select: {
+      color: {
+        primary: COLORS.grey[300],
+        secondary: COLORS.grey[300],
+        disabled: COLORS.grey[500],
+        formed: COLORS.grey[300],
+      },
+      background: {
+        primary: 'inherit',
+        secondary: COLORS.grey.A400,
+        disabled: COLORS.grey[400],
+        formed: COLORS.grey.A400,
+      },
+      borderColor: {
+        primary: COLORS.black,
+        secondary: COLORS.grey[500],
+        disabled: COLORS.grey.A400,
+        formed: COLORS.grey.A100,
+        hover: COLORS.grey.A200,
       },
     },
     input: {

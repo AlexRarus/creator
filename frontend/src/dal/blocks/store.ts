@@ -13,6 +13,7 @@ export default class DalBlocksStore {
   routerStore!: History;
 
   types: IBlockType[] = [];
+  buttonTypes: any[] = [];
   totalTypes = 0;
 
   public get API() {
@@ -31,6 +32,15 @@ export default class DalBlocksStore {
       const response: AxiosResponse<any> = yield this.API.getTypesList();
       this.types = response?.data?.list || [];
       this.totalTypes = response?.data?.total || 0;
+    } catch (e) {
+      console.log('getTypesListAction', e);
+    }
+  });
+
+  public getButtonTypesListAction = flow(function* (this: DalBlocksStore) {
+    try {
+      const response: AxiosResponse<any> = yield this.API.getButtonTypesList();
+      this.buttonTypes = response?.data?.list || [];
     } catch (e) {
       console.log('getTypesListAction', e);
     }

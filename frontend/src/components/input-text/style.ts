@@ -23,6 +23,7 @@ interface IInputStyledProps extends IComponentWrapperProps {
   type?: string;
   kind?: TKind;
   textAlign?: string;
+  markError?: boolean;
 }
 
 const getInputBackground = (props: IInputStyledProps) => {

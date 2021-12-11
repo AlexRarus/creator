@@ -3,10 +3,54 @@ import { COLORS, ITheme } from 'src/components/theme';
 
 import { TDimension } from './interfaces';
 
+const isErrorBorderStylesFormed = (props: IComponentWrapperProps) => {
+  const { theme, markError } = props;
+  if (markError) {
+    return css`
+      border-color: ${theme?.component?.notification?.background?.error};
+      &:hover {
+        border-color: ${theme?.component?.notification?.background?.error};
+      }
+
+      &:focus {
+        box-shadow: 0 0 0 1px ${theme?.component?.notification?.background?.error};
+      }
+
+      :-webkit-autofill,
+      :-webkit-autofill:hover,
+      :-webkit-autofill:focus,
+      :-webkit-autofill:active {
+        -webkit-text-fill-color: ${theme?.component?.notification?.background?.error} !important;
+        -webkit-box-shadow: 0 0 0px 1000px ${theme?.component?.notification?.background?.error}
+          inset;
+      }
+    `;
+  }
+  return css`
+    border-color: ${theme?.component?.input?.borderColor?.formed};
+    &:hover {
+      border-color: ${theme?.component?.input?.borderColor?.hover};
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 1px ${theme?.component?.input?.borderColor?.hover};
+    }
+
+    :-webkit-autofill,
+    :-webkit-autofill:hover,
+    :-webkit-autofill:focus,
+    :-webkit-autofill:active {
+      -webkit-text-fill-color: ${theme?.component?.input?.color?.formed} !important;
+      -webkit-box-shadow: 0 0 0px 1000px ${theme?.component?.input?.background?.formed} inset;
+    }
+  `;
+};
+
 interface IComponentWrapperProps {
   dimension: TDimension;
   theme: ITheme;
   kind?: string;
+  markError?: boolean;
 }
 
 interface IStatus {
@@ -40,27 +84,10 @@ export const getInputStyles = (props: IComponentWrapperProps) => {
       return css`
         border-radius: 3px;
         border: 1px solid;
-        border-color: ${({ theme }) => theme?.component?.input?.borderColor?.formed};
         padding: 0 12px;
         transition: all 200ms;
 
-        &:hover {
-          border-color: ${({ theme }) => theme?.component?.input?.borderColor?.hover};
-        }
-
-        &:focus {
-          box-shadow: 0 0 0 1px ${({ theme }) => theme?.component?.input?.borderColor?.hover};
-        }
-
-        :-webkit-autofill,
-        :-webkit-autofill:hover,
-        :-webkit-autofill:focus,
-        :-webkit-autofill:active {
-          -webkit-text-fill-color: ${({ theme }) =>
-            theme?.component?.input?.color?.formed} !important;
-          -webkit-box-shadow: 0 0 0px 1000px
-            ${({ theme }) => theme?.component?.input?.background?.formed} inset;
-        }
+        ${isErrorBorderStylesFormed(props)}
       `;
     default:
       return '';

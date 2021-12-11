@@ -98,6 +98,7 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
         textAlign={textAlign}
         fontSizeInherit={fontSizeInherit}
         fontWeight={fontWeight}
+        markError={markError}
       />
       <IconWrapper kind={kind} ref={iconWrapperRefCallback} dimension={dimension}>
         {Icon && <Icon />}

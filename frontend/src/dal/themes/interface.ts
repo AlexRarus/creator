@@ -3,4 +3,9 @@ export interface ITheme {
   background: string;
   color: string;
   headerColor: string;
+  button: {
+    background: string;
+    borderRadius: string;
+    color: string;
+  };
 }

@@ -7,6 +7,7 @@ export interface IBlocksAPI {
   partialUpdatePage(data: IWriteBlock<any>): AxiosResponse<any>; // обновление блока
   deleteBlock(blockId: number): AxiosResponse<any>;
   getTypesList(): AxiosResponse<any>;
+  getButtonTypesList(): AxiosResponse<any>;
 }
 
 export interface IWriteBlock<TypeData> {
@@ -43,6 +44,10 @@ const getConfig = () => ({
   }),
   getTypesList: () => ({
     url: `/block_types/`,
+    method: 'GET',
+  }),
+  getButtonTypesList: () => ({
+    url: `/block_button_types/`,
     method: 'GET',
   }),
 });
