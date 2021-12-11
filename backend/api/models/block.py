@@ -2,7 +2,9 @@ from django.contrib.auth import get_user_model
 from django.db import models
 
 from .block_type import BlockType
+from .types.avatar import AvatarBlock
 from .types.button import Button
+from .types.list import ListBlock
 from .types.section import Section
 from .types.text import Text
 
@@ -47,6 +49,37 @@ class Block(models.Model):
         null=True,
         blank=True,
     )
+    avatar = models.OneToOneField(
+        AvatarBlock,
+        verbose_name='Контент блока с типом "avatar"',
+        related_name="block",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
+    list = models.OneToOneField(
+        ListBlock,
+        verbose_name='Контент блока с типом "list"',
+        related_name="block",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
+
+    def delete(self, *args, **kwargs):
+        if self.type.slug == "text" and self.text is not None:
+            self.text.delete()
+        elif self.type.slug == "button" and self.button is not None:
+            self.button.delete()
+        elif self.type.slug == "section" and self.section is not None:
+            self.section.delete()
+        elif self.type.slug == "avatar" and self.avatar is not None:
+            self.avatar.delete()
+        elif self.type.slug == "list" and self.list is not None:
+            self.list.items.filter(lists=self.list).delete()
+            self.list.delete()
+
+        return super(self.__class__, self).delete(*args, **kwargs)
 
     def __str__(self):
         return f"{self.id} - {self.type}"

@@ -36,6 +36,7 @@ export default function ButtonSelect(props: IProps) {
   const optionsListRef: RefObject<HTMLDivElement> = useRef(null);
   const activeOptionRef: RefObject<HTMLDivElement> = useRef(null);
   const [componentWidth, setComponentWidth] = useState(menuWidth || 0);
+  const valueOption = options.find((option: IOption) => option.value === value) as IOption;
   const { DEVICE_THEME } = useThemeContext();
 
   const openMenu = () => setOpenMenu(true);
@@ -47,7 +48,7 @@ export default function ButtonSelect(props: IProps) {
     [menuIsOpen]
   );
   const changeHandler = (option: IOption) => () => {
-    onChange && onChange(option);
+    onChange && onChange(option.value);
     menuIsOpen && closeMenu();
   };
 
@@ -56,7 +57,7 @@ export default function ButtonSelect(props: IProps) {
       const componentWidth: number = openerElement?.getBoundingClientRect()?.width || 0;
       setComponentWidth(componentWidth);
     }
-  }, [value && value.label, menuIsOpen]);
+  }, [valueOption, valueOption.label, menuIsOpen]);
 
   useEffect(() => {
     if (menuIsOpen) {
@@ -75,7 +76,7 @@ export default function ButtonSelect(props: IProps) {
           width={width}
           onClick={openMenu}
           className={className}>
-          {value && value.label ? <span>{value.label}</span> : ''}
+          {valueOption && valueOption.label ? <span>{valueOption.label}</span> : ''}
           <ShivronIconBox isOpen={menuIsOpen}>
             <ShivronIcon />
           </ShivronIconBox>

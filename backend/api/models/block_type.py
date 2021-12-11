@@ -10,6 +10,8 @@ class BlockType(models.Model):
         ("text", "text"),
         ("button", "button"),
         ("section", "section"),
+        ("avatar", "avatar"),
+        ("list", "list"),
     )
     author = models.ForeignKey(
         User,

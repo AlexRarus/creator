@@ -1,1 +1,1 @@
-export type TDimension = 's' | 'm' | 'l' | 'xl' | 'xxl';
+export type TDimension = 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl';

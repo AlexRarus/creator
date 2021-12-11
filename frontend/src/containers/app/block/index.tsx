@@ -4,6 +4,8 @@ import { ITheme } from 'src/dal/themes/interface';
 
 import { TextPreview } from './types/text';
 import { SectionPreview } from './types/section';
+import { AvatarPreview } from './types/avatar';
+import { ListPreview } from './types/list';
 import { ButtonPreview } from './types/button';
 
 interface IProps {
@@ -19,7 +21,11 @@ export const TargetBlockTypePreview = (props: IProps) => {
     case 'text':
       return <TextPreview onClick={onClick} selectedTheme={selectedTheme} {...props} />;
     case 'section':
-      return <SectionPreview section={block} selectedTheme={selectedTheme} />;
+      return <SectionPreview selectedTheme={selectedTheme} {...props} />;
+    case 'avatar':
+      return <AvatarPreview selectedTheme={selectedTheme} {...props} />;
+    case 'list':
+      return <ListPreview selectedTheme={selectedTheme} {...props} />;
     case 'button':
       return <ButtonPreview selectedTheme={selectedTheme} {...props} />;
     default:

@@ -37,6 +37,7 @@ class PageWriteSerializer(serializers.ModelSerializer):
         page.save()
 
         if blocks is not None:
+            page.blocks.clear()  # очищаем блоки
             for order, block in enumerate(blocks):
                 PageBlockRelation.objects.update_or_create(
                     page=page,

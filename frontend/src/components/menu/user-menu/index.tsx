@@ -44,7 +44,7 @@ export const UserMenu = (props: IProps) => {
       onClick={openHandler}
       onMouseEnter={openHandler}
       onMouseLeave={closeHandler}>
-      <AvatarPreview size={30} avatar={user?.avatar} />
+      <AvatarPreview dimension='xs' avatar={user?.avatar} />
       <Popup
         isOpen={isOpen}
         onClose={closeHandler}

@@ -7,5 +7,5 @@ export type FormInputs = {
 
 // входные значение с формы создание
 export interface RawData extends AdditionalData {
-  data: FormInputs;
+  formInputs: FormInputs;
 }

@@ -1,27 +1,18 @@
-import React, { useState } from 'react';
-import { IAvatar, IUser } from 'src/dal/auth/interfaces';
+import React from 'react';
+import { IUser } from 'src/dal/auth/interfaces';
 import { AvatarPreview } from 'src/components/avatar-preview';
+import { AvatarEditModule } from 'src/containers/profile/settings/avatar-edit-module';
 
 import { BlockWrapper, BlockHeader, BlockTitle, BlockDescription, BlockContent } from '../style';
 
-import { AvatarEditModal } from './avatar-edit-modal';
-import { AvatarWrapper, ChangeButton } from './style';
+import { AvatarWrapper, AvatarEditModuleWrapper } from './style';
 
 interface IProps {
   user: IUser;
-  onSuccessChange(): void;
 }
 
 export const AvatarBlock = (props: IProps) => {
-  const { user, onSuccessChange } = props;
-  const [isOpenAvatarEditModal, setIsOpenAvatarEditModal] = useState(false);
-
-  const openAvatarEditModal = () => setIsOpenAvatarEditModal(true);
-  const closeAvatarEditModal = () => setIsOpenAvatarEditModal(false);
-
-  const onSuccess = (data: IAvatar) => {
-    onSuccessChange();
-  };
+  const { user } = props;
 
   return (
     <BlockWrapper>
@@ -32,16 +23,11 @@ export const AvatarBlock = (props: IProps) => {
       <BlockContent>
         <AvatarWrapper>
           <AvatarPreview avatar={user.avatar} />
-          <ChangeButton onClick={openAvatarEditModal}>редактировать</ChangeButton>
+          <AvatarEditModuleWrapper>
+            <AvatarEditModule />
+          </AvatarEditModuleWrapper>
         </AvatarWrapper>
       </BlockContent>
-      {isOpenAvatarEditModal && (
-        <AvatarEditModal
-          avatar={user.avatar}
-          onClose={closeAvatarEditModal}
-          onSuccess={onSuccess}
-        />
-      )}
     </BlockWrapper>
   );
 };

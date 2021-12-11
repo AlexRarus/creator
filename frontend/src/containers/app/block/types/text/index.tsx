@@ -1,12 +1,12 @@
 import React from 'react';
 import { IBlock } from 'src/dal/blocks/interfaces';
+import { ITextData } from 'src/dal/blocks/data-interfaces';
 import { ITheme } from 'src/dal/themes/interface';
 
-import { TextData } from './interfaces';
 import { TextBlockStyled } from './style';
 
 interface IProps {
-  block: IBlock<TextData>;
+  block: IBlock<ITextData>;
   selectedTheme: ITheme | null;
 }
 

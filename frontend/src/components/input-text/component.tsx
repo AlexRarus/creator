@@ -18,6 +18,8 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
     value = '',
     placeholder = '',
     textAlign,
+    fontSizeInherit = false,
+    fontWeight = 'normal',
     ...inputProps
   } = props;
   const [componentElement, componentRefCallback] = useState<HTMLElement | null>(null);
@@ -58,7 +60,11 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
   };
 
   return (
-    <ComponentWrapper dimension={dimension} ref={componentRefCallback} onClick={clickHandler}>
+    <ComponentWrapper
+      dimension={dimension}
+      ref={componentRefCallback}
+      onClick={clickHandler}
+      fontSizeInherit={fontSizeInherit}>
       {label && (
         <Label
           htmlFor={`input-text-${inputProps.name}-${uniqId}`}
@@ -90,6 +96,8 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
         dimension={dimension}
         iconWrapperWidth={iconWrapperWidth}
         textAlign={textAlign}
+        fontSizeInherit={fontSizeInherit}
+        fontWeight={fontWeight}
         markError={markError}
       />
       <IconWrapper kind={kind} ref={iconWrapperRefCallback} dimension={dimension}>

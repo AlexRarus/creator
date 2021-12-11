@@ -1,24 +1,51 @@
 from api.models.block import Block
 from api.models.relations import PageBlockRelation
-from api.models.types.button import Button, ButtonType
-from api.models.types.text import Text
+from api.models.types.list import ListItemBlock
+from api.serializers.avatar import AvatarSerializer
+from api.serializers.types.avatar import (
+    BlockAvatarSerializer,
+    block_avatar_create,
+    block_avatar_update,
+)
 from api.serializers.types.button import (
-    ButtonSerializerRead,
+    BlockButtonSerializerRead,
+    BlockButtonSerializerWrite,
+    block_button_create,
     block_button_update,
 )
-from api.serializers.types.text import TypeTextSerializer, block_text_update
+from api.serializers.types.list import (
+    BlockListSerializer,
+    block_list_create,
+    block_list_update,
+)
+from api.serializers.types.text import (
+    BlockTextSerializer,
+    block_text_create,
+    block_text_update,
+)
+from django.contrib.auth import get_user_model
 from django.db.models import Prefetch
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
+
+User = get_user_model()
 
 
 class UnknowTypeError(Exception):
     pass
 
 
+class BlockAuthorSerializerRead(serializers.ModelSerializer):
+    avatar = AvatarSerializer(read_only=True)
+
+    class Meta:
+        fields = ("avatar",)
+        model = User
+
+
 class BlockSerializerRead(serializers.ModelSerializer):
     type = serializers.CharField(read_only=True, source="type.slug")
-    author = serializers.PrimaryKeyRelatedField(read_only=True)
+    author = BlockAuthorSerializerRead(read_only=True)
     data = serializers.SerializerMethodField(read_only=True)
     # page_slugs = serializers.SlugRelatedField(
     #     source="pages",
@@ -27,15 +54,19 @@ class BlockSerializerRead(serializers.ModelSerializer):
     #     many=True,
     # )
 
-    def get_data(self, obj):
-        if obj.type.slug == "text":
-            return TypeTextSerializer(obj.text).data
-        if obj.type.slug == "button":
-            return ButtonSerializerRead(obj.button).data
-        if obj.type.slug == "section":
-            from api.serializers.types.section import SectionSerializerRead
+    def get_data(self, block):
+        if block.type.slug == "text":
+            return BlockTextSerializer(block.text).data
+        if block.type.slug == "button":
+            return BlockButtonSerializerRead(block.button).data
+        if block.type.slug == "section":
+            from api.serializers.types.section import BlockSectionSerializer
 
-            return SectionSerializerRead(obj.section).data
+            return BlockSectionSerializer(block.section).data
+        if block.type.slug == "avatar":
+            return BlockAvatarSerializer(block.avatar).data
+        if block.type.slug == "list":
+            return BlockListSerializer(block.list).data
 
     class Meta:
         model = Block
@@ -58,13 +89,17 @@ class BlockSerializerWrite(serializers.ModelSerializer):
         # так как это сериализатор Write то этот метод будет вызываться
         # в ответ на создание или обновление
         if block.type.slug == "text":
-            return TypeTextSerializer(block.text).data
+            return BlockTextSerializer(block.text).data
         if block.type.slug == "button":
-            return ButtonSerializerRead(block.button).data
+            return BlockButtonSerializerWrite(block.button).data
         if block.type.slug == "section":
-            from api.serializers.types.section import SectionSerializerRead
+            from api.serializers.types.section import BlockSectionSerializer
 
-            return SectionSerializerRead(block.section).data
+            return BlockSectionSerializer(block.section).data
+        if block.type.slug == "avatar":
+            return BlockAvatarSerializer(block.avatar).data
+        if block.type.slug == "list":
+            return BlockListSerializer(block.list).data
 
     def create(self, validated_data):
         page = validated_data.pop("page", None)
@@ -76,15 +111,17 @@ class BlockSerializerWrite(serializers.ModelSerializer):
 
         try:
             if block.type.slug == "text":
-                block.text = Text.objects.create(**data)
+                block.text = block_text_create(data)
             elif block.type.slug == "button":
-                button_type_slug = data.pop("type")
-                button_type = ButtonType.objects.get(slug=button_type_slug)
-                block.button = Button.objects.create(**data, type=button_type)
+                block.button = block_button_create(data)
             elif block.type.slug == "section":
-                from api.serializers.types.section import create_section
+                from api.serializers.types.section import block_section_create
 
-                block.section = create_section(data)
+                block.section = block_section_create(data)
+            elif block.type.slug == "avatar":
+                block.avatar = block_avatar_create(data)
+            elif block.type.slug == "list":
+                block.list = block_list_create(data)
             else:
                 raise UnknowTypeError
 
@@ -108,13 +145,18 @@ class BlockSerializerWrite(serializers.ModelSerializer):
         except Exception as err:
             block.delete()
             raise err
-            # raise ValidationError({"error": ["блок не создан"]})
 
         # для того чтобы возвращалась нужная сортировка
         return Block.objects.prefetch_related(
             Prefetch(
                 "section__blocks",
                 queryset=Block.objects.order_by("sectionblockrelation__order"),
+            ),
+            Prefetch(
+                "list__items",
+                queryset=ListItemBlock.objects.order_by(
+                    "listitemblockrelation__order"
+                ),
             ),
         ).get(id=block.id)
 
@@ -125,18 +167,30 @@ class BlockSerializerWrite(serializers.ModelSerializer):
 
         if block.type.slug == "text":
             block_text_update(block.text, data)
-        if block.type.slug == "button":
+        elif block.type.slug == "button":
             block_button_update(block.button, data)
-        if block.type.slug == "section":
-            from api.serializers.types.section import update_section
+        elif block.type.slug == "section":
+            from api.serializers.types.section import block_section_update
 
-            update_section(block.section, data)
+            block_section_update(block.section, data)
+        elif block.type.slug == "avatar":
+            block_avatar_update(block.avatar, data)
+        elif block.type.slug == "list":
+            block_list_update(block.list, data)
+        else:
+            raise UnknowTypeError
 
         # для того чтобы возвращалась нужная сортировка
         return Block.objects.prefetch_related(
             Prefetch(
                 "section__blocks",
                 queryset=Block.objects.order_by("sectionblockrelation__order"),
+            ),
+            Prefetch(
+                "list__items",
+                queryset=ListItemBlock.objects.order_by(
+                    "listitemblockrelation__order"
+                ),
             ),
         ).get(id=block.id)
 

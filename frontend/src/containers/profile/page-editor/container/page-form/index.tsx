@@ -126,7 +126,10 @@ export const PageForm = (props: IProps) => {
       index,
     });
 
-  const closeAddBlockModal = () => setSelectedBlock(null);
+  const closeAddBlockModal = () => {
+    console.log('closeAddBlockModal');
+    setSelectedBlock(null);
+  };
 
   const openPageSettingsModal = (activeTab = TabValue.LINK) => () =>
     setPageSettingsModalTab(activeTab);

@@ -20,5 +20,7 @@ export interface IProps extends Partial<IInputProps> {
   kind?: TKind;
   icon?: FunctionComponent;
   placeholder?: string;
+  fontSizeInherit?: boolean;
+  fontWeight?: string;
   [key: string]: any;
 }

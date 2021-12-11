@@ -10,7 +10,7 @@ import { blockActions } from '../../utils';
 
 import { TextFormWrapper } from './style';
 import { useMapStoreToProps } from './selectors';
-import { FormInputs } from './interfaces';
+import { FormInputs, RawData } from './interfaces';
 import { prepareDataForServer, blockTabs, TabValue } from './utils';
 import { TextBlockFields } from './fields';
 
@@ -49,11 +49,12 @@ export const TextForm = observer((props: IProps) => {
   const { isValid } = formState;
   const [submitBlockEditor, isLoading, data, errors] = useSubmitBlockForm<FormInputs>();
   const isEditing = blockId !== 'new' && !isCloning;
-  const submit = async (data: FormInputs) => {
-    const rawData: any = { data, pageSlug, blockType };
+
+  const submit = async (formInputs: FormInputs) => {
+    const rawData: RawData = { formInputs, pageSlug, blockType };
 
     if (isEditing) {
-      rawData.blockId = blockId;
+      rawData.blockId = blockId as number;
     }
 
     if (blockIndex !== undefined) {
@@ -119,11 +120,11 @@ export const TextForm = observer((props: IProps) => {
             <TabContainer value={TabValue.text} activeTabValue={activeTab.value}>
               <TextBlockFields formDefaultValues={formDefaultValues} />
             </TabContainer>
+            <TabContainer value={TabValue.preview} activeTabValue={activeTab.value}>
+              Tab preview content
+            </TabContainer>
             <TabContainer value={TabValue.settings} activeTabValue={activeTab.value}>
               Tab settings content
-            </TabContainer>
-            <TabContainer value={TabValue.section} activeTabValue={activeTab.value}>
-              Tab section content
             </TabContainer>
           </FormWrapper>
         </FormProvider>

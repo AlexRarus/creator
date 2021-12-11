@@ -5,7 +5,7 @@ from api.serializers.block import BlockSerializerRead
 from rest_framework import serializers
 
 
-class SectionSerializerRead(serializers.ModelSerializer):
+class BlockSectionSerializer(serializers.ModelSerializer):
     # При создании или редактировании секции
     backgroundFile = serializers.FileField(
         use_url=False,
@@ -40,7 +40,7 @@ class SectionSerializerRead(serializers.ModelSerializer):
         )
 
 
-def create_section(data):
+def block_section_create(data):
     blocks_ids = data.pop("blocks")
     blocks_queryset = Block.objects.filter(id__in=blocks_ids)
     # сохраняем сортировку блоков как они пришли в запросе
@@ -61,22 +61,23 @@ def create_section(data):
     return section
 
 
-def update_section(section, data):
+def block_section_update(section_instance, data):
     blocks_ids = data.pop("blocks", None)
 
+    # обновляем только те свойства которые пришли
     for attr, value in data.items():
-        setattr(section, attr, value)
-    section.save()
+        setattr(section_instance, attr, value)
+    section_instance.save()
 
     if blocks_ids is not None:
         blocks_queryset = Block.objects.filter(id__in=blocks_ids)
         # сохраняем сортировку блоков как они пришли в запросе
         blocks = [blocks_queryset.get(id=block_id) for block_id in blocks_ids]
 
-        section.blocks.clear()
+        section_instance.blocks.clear()
         for order, block in enumerate(blocks):
             SectionBlockRelation.objects.update_or_create(
-                section=section,
+                section=section_instance,
                 block=block,
                 order=order,
             )
@@ -84,4 +85,4 @@ def update_section(section, data):
         #  открепляем блоки от страницы
         PageBlockRelation.objects.filter(block__in=blocks).delete()
 
-    return section
+    return section_instance
