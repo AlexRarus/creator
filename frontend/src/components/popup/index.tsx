@@ -509,6 +509,7 @@ export default function Popup(props: IProps) {
           scrollBarWidth={0}
           borderColor={borderColor}
           borderRadius={borderRadius}
+          background={background}
           hasBorder={hasBorder}
           hasShadow={hasShadow}>
           <ChildrenWrapper>

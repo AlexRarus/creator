@@ -12,6 +12,11 @@ const defaultTheme = {
   background: COLORS.grey[200],
   color: COLORS.grey[900],
   headerColor: COLORS.grey[900],
+  button: {
+    background: COLORS.deepPurple[500],
+    borderRadius: '4px',
+    color: COLORS.grey[900],
+  },
 };
 
 const initialThemes: ITheme[] = [
@@ -20,36 +25,66 @@ const initialThemes: ITheme[] = [
     background: COLORS.grey[200],
     color: COLORS.grey[900],
     headerColor: COLORS.grey[900],
+    button: {
+      background: COLORS.deepPurple[500],
+      borderRadius: '4',
+      color: COLORS.grey[900],
+    },
   },
   {
     id: 1,
     background: COLORS.deepPurple[800],
     color: COLORS.white,
     headerColor: COLORS.white,
+    button: {
+      background: COLORS.deepPurple[500],
+      borderRadius: '4',
+      color: COLORS.grey[900],
+    },
   },
   {
     id: 2,
     background: COLORS.yellow[700],
     color: COLORS.grey[900],
     headerColor: COLORS.grey[900],
+    button: {
+      background: COLORS.deepPurple[500],
+      borderRadius: '4',
+      color: COLORS.grey[900],
+    },
   },
   {
     id: 3,
     background: COLORS.brown[500],
     color: COLORS.grey[900],
     headerColor: COLORS.grey[900],
+    button: {
+      background: COLORS.deepPurple[500],
+      borderRadius: '4',
+      color: COLORS.grey[900],
+    },
   },
   {
     id: 4,
     background: COLORS.green[600],
     color: COLORS.grey[900],
     headerColor: COLORS.grey[900],
+    button: {
+      background: COLORS.deepPurple[500],
+      borderRadius: '4',
+      color: COLORS.grey[900],
+    },
   },
   {
     id: 5,
     background: COLORS.pink[600],
     color: COLORS.grey[900],
     headerColor: COLORS.grey[900],
+    button: {
+      background: COLORS.deepPurple[500],
+      borderRadius: '4',
+      color: COLORS.grey[900],
+    },
   },
 ];
 

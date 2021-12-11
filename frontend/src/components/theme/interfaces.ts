@@ -49,6 +49,7 @@ export interface ITheme extends IThemeBase {
   };
   component: {
     button: IThemeBase;
+    select: IThemeBase;
     input: IThemeBase;
     link: IThemeBase;
     buttonLink: IThemeBase;

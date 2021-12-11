@@ -1,10 +1,76 @@
 import styled, { css } from 'styled-components';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import { COLORS } from 'src/components/theme';
 import { rgba } from 'polished';
-import { TDimension } from 'src/components/input-components';
 
-import { IOptionsProps, IOptionProps } from './interfaces';
+import { IOptionsProps, IOptionProps, IPropsStyles } from './interfaces';
+
+export const getSelectStyles = (props: IPropsStyles) => {
+  switch (props.kind) {
+    case 'formed':
+      return css`
+        border-radius: 3px;
+        border: 1px solid;
+        border-color: ${({ theme }) => theme?.component?.select?.borderColor?.formed};
+        padding: 0 12px;
+        transition: all 200ms;
+
+        &:hover {
+          border-color: ${({ theme }) => theme?.component?.select?.borderColor?.hover};
+        }
+
+        &:focus {
+          box-shadow: 0 0 0 1px ${({ theme }) => theme?.component?.select?.borderColor?.hover};
+        }
+      `;
+    default:
+      return '';
+  }
+};
+
+export const getSelectHeight = (props: IPropsStyles) => {
+  switch (props.dimension) {
+    case 's':
+      return '24px';
+    case 'm':
+      return '28px';
+    case 'l':
+      return '32px';
+    case 'xl':
+      return '40px';
+    case 'xxl':
+      return '60px';
+    default:
+      return '32px';
+  }
+};
+
+const getSelectBackground = (props: IPropsStyles) => {
+  const { theme, disabled, kind } = props;
+  let propKey = 'primary';
+
+  if (kind) {
+    propKey = kind;
+  }
+
+  if (disabled) {
+    propKey = 'disabled';
+  }
+  const background = theme.component.select.background;
+  return background && background[propKey];
+};
+const getSelectColor = (props: IPropsStyles) => {
+  const { theme, kind, disabled } = props;
+  let propKey = 'primary';
+
+  if (kind) {
+    propKey = kind;
+  }
+
+  if (disabled) {
+    propKey = 'disabled';
+  }
+  return theme.component.select.color[propKey];
+};
 
 const dimensionPadding = {
   l: css`
@@ -43,27 +109,21 @@ export const ButtonSelectWrapper = styled.div<{
   width: ${({ width }) => (width ? `${width}` : 'fit-content')};
 `;
 
-export const ButtonStyled = styled.div<{
-  dimension: TDimension;
-  width?: string;
-}>`
+export const ButtonStyled = styled.div<IPropsStyles>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
   display: flex;
   align-items: center;
   border-radius: 4px;
-  border: 1px solid ${COLORS.blue[400]};
   box-sizing: border-box;
   cursor: pointer;
-  height: 40px;
-  padding: 0 21px 0 23px;
+  height: ${getSelectHeight};
+  background: ${getSelectBackground};
+  color: ${getSelectColor};
+  ${getSelectStyles}
   width: ${({ width }) => (width ? `${width}` : 'auto')};
-
-  ${({ dimension }) => dimensionPadding[dimension]};
-  ${({ dimension }) => dimensionFont[dimension]};
-
-  outline: none;
-  background-color: transparent;
-  color: ${COLORS.blue[400]};
 
   span {
     text-overflow: ellipsis;
@@ -75,8 +135,14 @@ export const ButtonStyled = styled.div<{
 
 export const ShivronIcon = styled(ExpandMore)`
   cursor: pointer;
-  fill: ${COLORS.blue[400]};
+`;
+
+export const ShivronIconBox = styled.div<{ isOpen?: boolean }>`
   margin-left: auto;
+
+  ${ShivronIcon} {
+    transform: rotate(${({ isOpen }) => (isOpen ? 180 : 0)}deg);
+  }
 `;
 
 export const OptionsListOuter = styled.div<IOptionsProps>`
@@ -87,23 +153,36 @@ export const OptionsListInner = styled.div<IOptionsProps>`
   position: relative;
   display: flex;
   flex-direction: column;
-  background: ${COLORS.white};
-  box-shadow: 0 0 4px ${rgba(COLORS.black, 0.2)};
-  padding: 14px 0;
+  box-shadow: 0 0 4px ${({ theme }) => rgba(theme?.textColor?.primary, 0.2)};
+  padding: 8px 0;
   border-radius: 4px;
   overflow: hidden;
 `;
 
 export const Option = styled.div<IOptionProps>`
-  padding: 10px 24px;
-  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   position: relative;
   z-index: 1;
-  color: ${({ isActive }) => (isActive ? COLORS.lightBlue[400] : COLORS.black)};
+  padding: 8px 12px;
+  background: ${(props) => (props?.isActive ? getSelectBackground(props) : 'inherit')};
+  color: ${getSelectColor};
 
   &:hover {
-    background: ${rgba(COLORS.lightBlue[400], 0.3)};
-    color: ${({ isActive }) => (isActive ? COLORS.blueGrey[300] : COLORS.black)};
+    background: ${getSelectBackground};
   }
+`;
+
+export const OptionIcon = styled.div`
+  margin-right: 4px;
+`;
+
+export const OptionLabel = styled.div`
+  margin: 0 4px;
+`;
+
+export const OptionChecked = styled.div`
+  margin-left: auto;
 `;
