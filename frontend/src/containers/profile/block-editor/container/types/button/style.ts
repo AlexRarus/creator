@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import ButtonSelect from 'src/components/button-select';
 // import { ITheme } from 'src/dal/themes/interface';
 
-export const SectionFormWrapper = styled.div`
+export const ButtonFormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;

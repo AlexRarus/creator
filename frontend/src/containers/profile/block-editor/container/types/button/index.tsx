@@ -9,7 +9,7 @@ import { FormWrapper } from '../../style';
 
 import { FormInputs, RawData, DataToServer } from './interfaces';
 import { useMapStoreToProps } from './selectors';
-import { SectionFormWrapper } from './style';
+import { ButtonFormWrapper } from './style';
 import { ButtonFields } from './fields';
 import { TabValue, blockTabs, prepareDataForServer, blockActions } from './utils';
 
@@ -107,7 +107,7 @@ export const ButtonForm = observer((props: IProps) => {
   };
 
   return (
-    <SectionFormWrapper>
+    <ButtonFormWrapper>
       <Tabs tabs={tabs} activeTab={activeTab} onChangeTab={onChangeTab} />
       <Form
         onAction={onAction}
@@ -125,6 +125,6 @@ export const ButtonForm = observer((props: IProps) => {
           </FormWrapper>
         </FormProvider>
       </Form>
-    </SectionFormWrapper>
+    </ButtonFormWrapper>
   );
 });
