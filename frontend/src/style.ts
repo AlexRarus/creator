@@ -33,13 +33,13 @@ export const GlobalStyleApp = createGlobalStyle<any>`
     overflow-x: hidden;
     display: ${({ appType }) => (appType === 'web' ? 'table-cell' : 'block')};
     
-    ${({ theme }: { theme: ITheme }) =>
+    ${({ theme, appType }) =>
       theme?.isMobile
         ? css`
             position: relative;
             max-width: 100%;
             overflow-x: hidden;
-            overflow-y: hidden;
+            overflow-y: ${appType === 'web' ? 'scroll' : 'hidden'};
             text-rendering: optimizeLegibility;
           `
         : css``}

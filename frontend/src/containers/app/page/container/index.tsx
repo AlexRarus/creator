@@ -6,6 +6,7 @@ import { TargetBlockTypePreview } from 'src/containers/app/block';
 import { IBlock } from 'src/dal/blocks/interfaces';
 import { IPage } from 'src/dal/pages/interfaces';
 import { ITheme } from 'src/dal/themes/interface';
+import { useAppTypeContext } from 'src/providers/app-type-provider';
 
 import { useMapStoreToProps } from './selectors';
 import { PageWrapper } from './style';
@@ -21,6 +22,7 @@ export const PageContainer = observer((props: IProps) => {
   const { isLoading, getPageBySlugAction, data } = useMapStoreToProps();
   const { username, pageSlug, previewData, selectedTheme } = props;
   const isAuthor = useIsAuthor(username);
+  const { appType } = useAppTypeContext();
 
   useEffect(() => {
     // если передали данные для предпросмотра то НЕ запрашиваем страницу с бэка
@@ -32,7 +34,11 @@ export const PageContainer = observer((props: IProps) => {
   const resultData = previewData || data;
 
   return (
-    <PageWrapper selectedTheme={selectedTheme}>
+    <PageWrapper
+      isApp={appType === 'app'}
+      // высота блока для скролла = screenHeight - верхнее меню - нижний блок кнопок
+      blockViewHeight={window?.innerHeight - 64 - 64}
+      selectedTheme={selectedTheme}>
       {isLoading && 'Loading...'}
       {resultData && (
         <Grid verticalGap={16}>
