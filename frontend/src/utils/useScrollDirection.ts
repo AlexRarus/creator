@@ -36,8 +36,8 @@ export const useScrollDirection = (
 
   // scroll-event-listen
   useEffect(() => {
-    document.body.addEventListener('scroll', updateScrollValue);
-    return () => document.body.removeEventListener('scroll', updateScrollValue);
+    window.addEventListener('scroll', updateScrollValue);
+    return () => window.removeEventListener('scroll', updateScrollValue);
   }, []);
 
   const updateScrollValue = useCallback(
