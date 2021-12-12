@@ -11,5 +11,6 @@ export const PageWrapper = styled.div<{
   flex-grow: 1;
   padding: 48px 24px 24px 24px;
   height: ${({ isApp, blockViewHeight }) => (isApp ? `${blockViewHeight}px` : '100%')};
+  overflow: auto;
   background: ${({ selectedTheme }) => selectedTheme?.background || 'inherit'};
 `;
