@@ -57,7 +57,7 @@ export default function ButtonSelect(props: IProps) {
       const componentWidth: number = openerElement?.getBoundingClientRect()?.width || 0;
       setComponentWidth(componentWidth);
     }
-  }, [valueOption, valueOption.label, menuIsOpen]);
+  }, [valueOption, valueOption?.label, menuIsOpen]);
 
   useEffect(() => {
     if (menuIsOpen) {

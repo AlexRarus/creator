@@ -157,10 +157,15 @@ export const FormWrapperDroppable = styled(Grid)<{
   isDraggingOver: boolean;
   selectedTheme: ITheme | null;
   width?: number;
+  appType?: string;
+  viewBlockHeight?: number;
 }>`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  height: ${({ appType, viewBlockHeight }) =>
+    appType === 'web' ? '100%' : `${viewBlockHeight}px`};
+  overflow-x: ${({ theme }) => (theme?.isMobile ? 'scroll' : 'auto')};
 
   width: ${({ width }) => width}px;
   padding: 24px 28px 64px 24px;
@@ -171,7 +176,6 @@ export const FormWrapperDroppable = styled(Grid)<{
       ? rgba(selectedTheme ? selectedTheme.background : theme.background.primary, 0.9)
       : selectedTheme?.background || theme.background.primary};
   width: 100%;
-  height: 100%;
   ${({ theme }) => !theme?.isMobile && 'overflow: auto;'}
 `;
 

@@ -31,7 +31,7 @@ export const GlobalStyleApp = createGlobalStyle<any>`
     color: ${({ theme }) => theme.textColor?.primary};
     width: 100%;
     overflow-x: hidden;
-    display: table-cell;
+    display: ${({ appType }) => (appType === 'web' ? 'table-cell' : 'block')};
     
     ${({ theme }: { theme: ITheme }) =>
       theme?.isMobile
@@ -39,7 +39,7 @@ export const GlobalStyleApp = createGlobalStyle<any>`
             position: relative;
             max-width: 100%;
             overflow-x: hidden;
-            overflow-y: scroll;
+            overflow-y: hidden;
             text-rendering: optimizeLegibility;
           `
         : css``}
