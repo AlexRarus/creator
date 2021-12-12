@@ -31,15 +31,15 @@ export const GlobalStyleApp = createGlobalStyle<any>`
     color: ${({ theme }) => theme.textColor?.primary};
     width: 100%;
     overflow-x: hidden;
-    display: table-cell;
+    display: ${({ appType }) => (appType === 'web' ? 'table-cell' : 'block')};
     
-    ${({ theme }: { theme: ITheme }) =>
+    ${({ theme, appType }) =>
       theme?.isMobile
         ? css`
             position: relative;
             max-width: 100%;
             overflow-x: hidden;
-            overflow-y: scroll;
+            overflow-y: ${appType === 'web' ? 'scroll' : 'hidden'};
             text-rendering: optimizeLegibility;
           `
         : css``}

@@ -9,6 +9,7 @@ import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import { isMobile } from 'react-device-detect';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { typeIconsMap } from 'src/containers/profile/block-editor/types-list/utils';
+import { useAppTypeContext } from 'src/providers/app-type-provider';
 
 import { reorder } from '../utils';
 
@@ -53,6 +54,8 @@ export const DroppableList = (props: IProps) => {
     updateSection,
     onDragEndAction,
   } = props;
+  // определяем тип приложения (для телефонов чтобы корректно работал днд и скролл приложения)
+  const { appType } = useAppTypeContext();
 
   const onClickCheckbox = (clickedBlock: IBlock<any>) => (event: any) => {
     event.stopPropagation();
@@ -133,6 +136,9 @@ export const DroppableList = (props: IProps) => {
               isDraggingOver={snapshot.isDraggingOver}
               verticalGap={32}
               {...provided.droppableProps}
+              appType={appType}
+              // высота блока для скролла = screenHeight - верхнее меню - нижний блок кнопок - ссылка на страницу
+              viewBlockHeight={window?.innerHeight - 64 - 64 - 60}
               ref={provided.innerRef}>
               <GridColumn alignItems='center'>
                 {blocks.map((block: IBlock<any>, index: number) => {
