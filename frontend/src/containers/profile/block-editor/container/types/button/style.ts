@@ -25,3 +25,11 @@ export const Button = styled.button`
 `;
 
 export const ButtonSelectStyled = styled(ButtonSelect)``;
+
+export const KindsList = styled.div`
+  padding: 20px;
+`;
+
+export const KindWrapper = styled.div`
+  width: 100%;
+`;

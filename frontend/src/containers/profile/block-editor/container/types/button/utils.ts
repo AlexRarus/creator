@@ -20,6 +20,7 @@ export const prepareDataForServer = ({
     description: formInputs.description,
     type: formInputs?.typeOption?.value,
     value: formInputs?.value,
+    kind: formInputs?.kind,
   },
   page_slug: pageSlug, // меняем поле для отправки на бэк
   type: blockType, // меняем поле для отправки на бэк
@@ -30,6 +31,7 @@ export const prepareDataForServer = ({
 export enum TabValue {
   button = 'button',
   preview = 'preview',
+  kind = 'kind',
   settings = 'settings',
 }
 
@@ -39,8 +41,8 @@ export const blockTabs: ITab[] = [
     label: 'Кнопка',
   },
   {
-    value: TabValue.preview,
-    label: 'Предпросмотр',
+    value: TabValue.kind,
+    label: 'Вид',
   },
   {
     value: TabValue.settings,
@@ -56,3 +58,17 @@ export const blockActions: IAction[] = [
     needConfirm: true,
   },
 ];
+
+export const prepareDataForKinds = (kindsList: any[], selectedKind?: string) =>
+  kindsList.map((kind) => ({
+    id: 0,
+    type: 'button',
+    author: {},
+    data: {
+      label: selectedKind === kind ? 'Выбрана' : 'Заголовок',
+      description: kind,
+      value: '',
+      type: 'phone',
+      kind,
+    },
+  }));
