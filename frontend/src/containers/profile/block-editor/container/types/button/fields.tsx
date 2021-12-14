@@ -20,6 +20,7 @@ const placeholderMap = {
   web: 'https://',
   link: '/',
   phone: '+7 123 123 45 56',
+  sms: '+7 123 123 45 56',
   email: 'example@emapmle.com',
 };
 
@@ -85,7 +86,7 @@ export const ButtonFields = (props: IProps) => {
           formDefaultValues={formDefaultValues}>
           <InputMask
             placeholder={placeholderMap[typeOption]}
-            mask={typeOption?.value}
+            mask={typeOption}
             dimension='l'
             kind='formed'
           />
