@@ -5,7 +5,7 @@ import auth from './endpoints/auth';
 import pages from './endpoints/pages';
 import themes from './endpoints/themes';
 import blocks from './endpoints/blocks';
-import media from './endpoints/media';
+import images from './endpoints/images';
 import { axiosInstance } from './axios-instance';
 
 // кофигурации запросов на сервер для разных end-points
@@ -14,7 +14,7 @@ const domains = {
   auth,
   pages,
   blocks,
-  media,
+  images,
   themes,
 };
 

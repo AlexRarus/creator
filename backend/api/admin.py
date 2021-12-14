@@ -21,11 +21,14 @@ class ImageAdmin(admin.ModelAdmin):
     list_display = (
         "author",
         "file",
+        "block_type",
+        "common",
     )
     search_fields = (
         "id",
         "author",
         "file",
+        "block_type",
     )
     empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
 
@@ -175,6 +178,7 @@ class ButtonAdmin(admin.ModelAdmin):
         "id",
         "label",
         "description",
+        "kind",
         "value",
         "type",
     )

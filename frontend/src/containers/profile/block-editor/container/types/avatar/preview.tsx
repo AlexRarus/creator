@@ -5,7 +5,7 @@ import { IBlock } from 'src/dal/blocks/interfaces';
 import { IAvatarData } from 'src/dal/blocks/data-interfaces';
 import { ITheme } from 'src/dal/themes/interface';
 import { IUser } from 'src/dal/auth/interfaces';
-import { AvatarEditModule } from 'src/containers/profile/settings/avatar-edit-module';
+import { AvatarEditModule } from 'src/modules/avatar-edit-module';
 
 import { PreviewWrapper, AvatarEditModuleWrapper } from './style';
 

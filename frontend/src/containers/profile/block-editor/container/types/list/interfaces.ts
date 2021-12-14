@@ -6,7 +6,12 @@ export interface IListItem {
   id: any;
   title?: string;
   description?: string;
-  // imageSrc?: string;
+  icon?: IListItemIcon;
+}
+
+export interface IListItemIcon {
+  id: number;
+  src: string;
 }
 
 // поля формы

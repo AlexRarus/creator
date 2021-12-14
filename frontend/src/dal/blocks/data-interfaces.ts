@@ -1,6 +1,7 @@
 import { TDimension } from 'src/components/input-components';
 
 import { IBlock } from './interfaces';
+import { IImage } from '../images/interfaces';
 
 export interface ISectionData {
   id?: number;
@@ -23,6 +24,13 @@ export interface ITextData {
   text: string;
 }
 
+export interface IListDataWrite {
+  iconSize?: string;
+  fontSize?: string;
+  template?: string;
+  items: IListItemWrite[];
+}
+
 export interface IListData {
   iconSize?: string;
   fontSize?: string;
@@ -30,8 +38,15 @@ export interface IListData {
   items: IListItem[];
 }
 
+export interface IListItemWrite {
+  title?: string;
+  description?: string;
+  icon?: IImage;
+}
+
 export interface IListItem {
   id: number;
   title: string;
   description: string;
+  icon?: IImage;
 }

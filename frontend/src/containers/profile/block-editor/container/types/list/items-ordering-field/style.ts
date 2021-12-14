@@ -100,6 +100,12 @@ export const ItemFieldIconShape = styled.div<IListItemIconProps>`
   align-items: center;
   border: 1px solid ${COLORS.grey[400]};
   border-radius: 50%;
+  overflow: hidden;
+`;
+
+export const IconElement = styled.img`
+  max-width: 100%;
+  max-height: 100%;
 `;
 
 const getFontSize = (props: { fontSize: 's' | 'm' | 'l' }) => {

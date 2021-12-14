@@ -25,7 +25,7 @@ export enum TabValue {
   settings = 'settings',
 }
 
-export const blockTabs: ITab[] = [
+export const blockTabs: ITab<TabValue>[] = [
   {
     value: TabValue.editor,
     label: 'Редактирование',

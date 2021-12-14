@@ -4,9 +4,9 @@ import { ITab } from './interfaces';
 import { TabsWrapper, TabItem } from './style';
 
 interface IProps {
-  tabs: ITab[];
-  activeTab?: ITab;
-  onChangeTab?(tab: ITab): void;
+  tabs: ITab<any>[];
+  activeTab?: ITab<any>;
+  onChangeTab?(tab: ITab<any>): void;
   hasUnderline?: boolean;
   padding?: string;
 }
@@ -20,7 +20,7 @@ export const Tabs = (props: IProps) => {
 
   return (
     <TabsWrapper hasUnderline={hasUnderline} padding={padding}>
-      {tabs.map((tab: ITab) => (
+      {tabs.map((tab: ITab<any>) => (
         <TabItem
           key={tab.value}
           isActive={tab.value === activeTab?.value}

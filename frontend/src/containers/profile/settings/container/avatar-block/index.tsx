@@ -1,7 +1,7 @@
 import React from 'react';
 import { IUser } from 'src/dal/auth/interfaces';
 import { AvatarPreview } from 'src/components/avatar-preview';
-import { AvatarEditModule } from 'src/containers/profile/settings/avatar-edit-module';
+import { AvatarEditModule } from 'src/modules/avatar-edit-module';
 
 import { BlockWrapper, BlockHeader, BlockTitle, BlockDescription, BlockContent } from '../style';
 

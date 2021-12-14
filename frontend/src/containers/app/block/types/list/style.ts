@@ -77,6 +77,14 @@ export const ListItemIconShape = styled.div<IListItemIconProps>`
   align-items: center;
   border-radius: 50%;
   border: 1px solid ${COLORS.grey[400]};
+  overflow: hidden;
+`;
+
+export const IconElement = styled.img<{ isLoaded: boolean }>`
+  transition: all 200ms ease-out;
+  opacity: ${({ isLoaded }) => (isLoaded ? 1 : 0)};
+  max-width: 100%;
+  max-height: 100%;
 `;
 
 export const ListItemContent = styled.div`

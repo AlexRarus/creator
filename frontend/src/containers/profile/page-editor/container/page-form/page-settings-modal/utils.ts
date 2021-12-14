@@ -5,7 +5,7 @@ import { IAction } from 'src/components/form';
 
 import { FormInputs, RawData, TabValue } from './interfaces';
 
-export const pageTabs: ITab[] = [
+export const pageTabs: ITab<TabValue>[] = [
   {
     value: TabValue.LINK,
     label: 'Ссылка',

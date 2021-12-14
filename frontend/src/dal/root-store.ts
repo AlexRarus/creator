@@ -5,6 +5,7 @@ import DalAuthStore from './auth/store';
 import DalPagesStore from './pages/store';
 import DalBlocksStore from './blocks/store';
 import DalThemesStore from './themes/store';
+import DalImagesStore from './images/store';
 import BrowserHistoryStore from './browser-history-store';
 
 class RootStore implements IRootStore {
@@ -17,6 +18,7 @@ class RootStore implements IRootStore {
   dalPagesStore: DalPagesStore;
   dalBlocksStore: DalBlocksStore;
   dalThemesStore: DalThemesStore;
+  dalImagesStore: DalImagesStore;
 
   init() {
     if (!this.isInit) {
@@ -31,6 +33,7 @@ class RootStore implements IRootStore {
     this.dalAuthStore = new DalAuthStore(this, this.routing);
     this.dalPagesStore = new DalPagesStore(this, this.routing);
     this.dalThemesStore = new DalThemesStore(this, this.routing);
+    this.dalImagesStore = new DalImagesStore(this, this.routing);
     this.dalBlocksStore = new DalBlocksStore(this, this.routing);
 
     return this;

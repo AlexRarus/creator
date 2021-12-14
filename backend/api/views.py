@@ -1,6 +1,7 @@
 from django.db.models import Prefetch
 from django.shortcuts import get_object_or_404
 from rest_framework import mixins, status, viewsets
+from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
@@ -212,16 +213,63 @@ class AvatarViewSet(
             )
 
 
-class ImageViewSet(viewsets.ModelViewSet):
-    queryset = Image.objects.all()
+class ImageViewSet(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    mixins.DestroyModelMixin,
+    GenericViewSet,
+):
+    pagination_class = CustomPagination
     permission_classes = (IsImagePermission,)
     serializer_class = ImageSerializer
 
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+    def get_queryset(self):
+        block_type = self.kwargs.get("block_type")
+        return Image.objects.filter(block_type__slug=block_type)
 
-    def perform_update(self, serializer):
-        serializer.save(author=self.request.user)
+    def get_object(self):
+        if self.action in ["destroy"]:
+            # при удалении ждем массив ids в теле запроса
+            return None
+        return get_object_or_404(Image, pk=self.kwargs.get("pk"))
+
+    def perform_create(self, serializer):
+        block_type_slug = self.kwargs.get("block_type")
+        block_type = get_object_or_404(BlockType, slug=block_type_slug)
+        serializer.save(author=self.request.user, block_type=block_type)
+
+    def perform_destroy(self, instance):
+        # удаляем несколько элементов сразу
+        images_ids = self.request.data["imagesIds"]
+        Image.objects.filter(id__in=images_ids).delete()
+
+    @action(["get"], detail=False)
+    def common(self, request, *args, **kwargs):
+        queryset = self.get_queryset().filter(
+            common=True,
+        )
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+
+        return Response(status=status.HTTP_200_OK, data=serializer.data)
+
+    @action(["get"], detail=False)
+    def my(self, request, *args, **kwargs):
+        queryset = self.get_queryset().filter(
+            author=request.user,
+        )
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+
+        return Response(status=status.HTTP_200_OK, data=serializer.data)
 
 
 class ThemeViewSet(viewsets.ModelViewSet):
