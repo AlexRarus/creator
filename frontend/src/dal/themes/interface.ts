@@ -5,7 +5,7 @@ export interface ITheme {
   headerColor: string;
   button: {
     background: string;
-    borderRadius: string;
     color: string;
+    kind?: string;
   };
 }

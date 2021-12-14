@@ -14,8 +14,8 @@ const defaultTheme = {
   headerColor: COLORS.grey[900],
   button: {
     background: COLORS.deepPurple[500],
-    borderRadius: '4px',
     color: COLORS.grey[900],
+    kind: 'simple',
   },
 };
 
@@ -27,8 +27,8 @@ const initialThemes: ITheme[] = [
     headerColor: COLORS.grey[900],
     button: {
       background: COLORS.deepPurple[500],
-      borderRadius: '4',
       color: COLORS.grey[900],
+      kind: 'simple',
     },
   },
   {
@@ -38,8 +38,8 @@ const initialThemes: ITheme[] = [
     headerColor: COLORS.white,
     button: {
       background: COLORS.deepPurple[500],
-      borderRadius: '4',
       color: COLORS.grey[900],
+      kind: 'simple',
     },
   },
   {
@@ -49,8 +49,8 @@ const initialThemes: ITheme[] = [
     headerColor: COLORS.grey[900],
     button: {
       background: COLORS.deepPurple[500],
-      borderRadius: '4',
       color: COLORS.grey[900],
+      kind: 'simple',
     },
   },
   {
@@ -60,8 +60,8 @@ const initialThemes: ITheme[] = [
     headerColor: COLORS.grey[900],
     button: {
       background: COLORS.deepPurple[500],
-      borderRadius: '4',
       color: COLORS.grey[900],
+      kind: 'simple',
     },
   },
   {
@@ -71,8 +71,8 @@ const initialThemes: ITheme[] = [
     headerColor: COLORS.grey[900],
     button: {
       background: COLORS.deepPurple[500],
-      borderRadius: '4',
       color: COLORS.grey[900],
+      kind: 'simple',
     },
   },
   {
@@ -82,8 +82,8 @@ const initialThemes: ITheme[] = [
     headerColor: COLORS.grey[900],
     button: {
       background: COLORS.deepPurple[500],
-      borderRadius: '4',
       color: COLORS.grey[900],
+      kind: 'simple',
     },
   },
 ];
