@@ -9,6 +9,7 @@ export interface FormInputs {
     [key: string]: any;
   };
   value: string;
+  kind?: string;
 }
 
 // входные значение с формы создание
@@ -21,4 +22,5 @@ export interface DataToServer {
   description: string;
   type: string;
   value: string;
+  kind?: string;
 }

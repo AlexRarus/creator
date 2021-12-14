@@ -28,14 +28,11 @@ interface IProps {
   formDefaultValues: FormInputs | null;
 }
 
-// TODO добавить выбор типа и ввод value + можно добавить предпросмотр (мб выбор отклика)
-
 export const ButtonFields = (props: IProps) => {
   const { formDefaultValues, buttonTypes } = props;
   const { control, watch } = useFormContext(); // так как Fields рендерятся внутри FormProvider, в контексте доступны значения формы
   const typeOption = watch('typeOption');
 
-  console.log('buttonTypes: ', buttonTypes);
   return (
     <Grid
       gap={12}
@@ -80,14 +77,14 @@ export const ButtonFields = (props: IProps) => {
         </ControlledField>
       </GridColumn>
       <GridColumn size={8}>
-        {typeOption ? <Label>{inputLabelMap[typeOption?.value]}</Label> : <FakeLabel />}
+        {typeOption ? <Label>{inputLabelMap[typeOption]}</Label> : <FakeLabel />}
         <ControlledField
           name='value'
           control={control}
           rules={{ ...maxLength(99) }}
           formDefaultValues={formDefaultValues}>
           <InputMask
-            placeholder={placeholderMap[typeOption?.value]}
+            placeholder={placeholderMap[typeOption]}
             mask={typeOption?.value}
             dimension='l'
             kind='formed'
