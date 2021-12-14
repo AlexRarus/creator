@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { IListItem } from 'src/dal/blocks/data-interfaces';
 
 import {
@@ -8,6 +8,7 @@ import {
   ListItemIconShape,
   ListItemTitle,
   ListItemDescription,
+  IconElement,
 } from './style';
 
 interface IProps {
@@ -19,11 +20,24 @@ interface IProps {
 
 export const ListItem = (props: IProps) => {
   const { item, template, fontSize, iconSize = '30' } = props;
+  const [isLoadedIcon, setIsLoadedIcon] = useState(false);
+
+  const onLoadIcon = () => setIsLoadedIcon(true);
 
   return (
     <ListItemWrapper template={template} fontSize={fontSize} iconSize={parseInt(iconSize)}>
       <ListItemIconWrapper>
-        <ListItemIconShape iconSize={iconSize}>icon</ListItemIconShape>
+        <ListItemIconShape iconSize={iconSize}>
+          {item.icon ? (
+            <IconElement
+              src={`/media/${item.icon.src}`}
+              isLoaded={isLoadedIcon}
+              onLoad={onLoadIcon}
+            />
+          ) : (
+            ''
+          )}
+        </ListItemIconShape>
       </ListItemIconWrapper>
       <ListItemContent>
         <ListItemTitle>{item.title}</ListItemTitle>

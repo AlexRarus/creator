@@ -35,7 +35,7 @@ export const ItemField = (props: IProps) => {
     <ItemFieldWrapper iconSize={parseInt(iconSize)} template={template.value}>
       <ItemFieldIconWrapper>
         <ItemFieldIconShape iconSize={iconSize} ref={iconRefCallback}>
-          {icon ? <IconElement src={`/media/${icon.src}`} /> : 'icon'}
+          {icon ? <IconElement src={`/media/${icon.src}`} /> : ''}
         </ItemFieldIconShape>
       </ItemFieldIconWrapper>
       <ItemFieldContent fontSize={fontSize.value}>
