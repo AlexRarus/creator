@@ -6,8 +6,8 @@ export interface AdditionalData {
   index?: number; // от 0 (нуля) в какую позицию на странице должен встать блок
 }
 
-export interface DataForServer<FormInputs> {
-  data: FormInputs;
+export interface DataForServer<DataType> {
+  data: DataType;
   page_slug: string;
   type: string;
   id: number;

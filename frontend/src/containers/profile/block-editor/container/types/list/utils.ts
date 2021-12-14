@@ -1,5 +1,10 @@
 import { IBlock } from 'src/dal/blocks/interfaces';
-import { IListData, IListItem } from 'src/dal/blocks/data-interfaces';
+import {
+  IListDataWrite,
+  IListData,
+  IListItem,
+  IListItemWrite,
+} from 'src/dal/blocks/data-interfaces';
 import { ITab } from 'src/components/tabs';
 import { IOption } from 'src/components/select';
 
@@ -38,12 +43,16 @@ export const templateOptions: IOption[] = [
 ];
 
 // преобразовываем типы и меняем поля если надо
-export const prepareDataForServer = (rawData: RawData): DataForServer<IListData> => ({
+export const prepareDataForServer = (rawData: RawData): DataForServer<IListDataWrite> => ({
   data: {
     iconSize: rawData.formInputs.iconSize,
     fontSize: rawData.formInputs.fontSize?.value,
     template: rawData.formInputs.template?.value,
-    items: rawData.formInputs.items as IListItem[],
+    items: rawData?.formInputs?.items?.map((item: IListItemWrite) => ({
+      title: item?.title as string,
+      description: item?.description as string,
+      icon: item?.icon,
+    })) as IListItemWrite[],
   },
   page_slug: rawData.pageSlug, // меняем поле для отправки на бэк
   type: rawData.blockType, // меняем поле для отправки на бэк
@@ -67,7 +76,7 @@ export enum TabValue {
   settings = 'settings',
 }
 
-export const blockTabs: ITab[] = [
+export const blockTabs: ITab<TabValue>[] = [
   {
     value: TabValue.editor,
     label: 'Редактирование',

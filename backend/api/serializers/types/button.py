@@ -23,6 +23,7 @@ class BlockButtonSerializerRead(serializers.ModelSerializer):
         fields = (
             "label",
             "description",
+            "kind",
             "type",
             "value",
         )
@@ -38,6 +39,7 @@ class BlockButtonSerializerWrite(serializers.ModelSerializer):
         fields = (
             "label",
             "description",
+            "kind",
             "type",
             "value",
         )

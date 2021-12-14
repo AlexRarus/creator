@@ -26,7 +26,11 @@ router_v1.register("v1/blocks", BlockViewSet)
 router_v1.register("v1/block_types", BlockTypesViewSet)
 router_v1.register("v1/block_button_types", BlockButtonTypesViewSet)
 router_v1.register("v1/avatar", AvatarViewSet)
-router_v1.register("v1/images", ImageViewSet)
+router_v1.register(
+    "v1/images/(?P<block_type>[^/.]+)",
+    ImageViewSet,
+    "ImagesViewSet",
+)
 router_v1.register("v1/themes", ThemeViewSet)
 
 urlpatterns = router_v1.urls

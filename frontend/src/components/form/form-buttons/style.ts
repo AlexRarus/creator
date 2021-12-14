@@ -31,7 +31,7 @@ export const MobileButtonsList = styled.div`
 export const ActionsList = styled.div<{ width?: number; isMobile?: boolean }>`
   display: flex;
   flex-direction: column;
-  width: ${({ width }) => (width ? `${width}px` : 'auto')};
+  min-width: ${({ width }) => (width ? `${width}px` : 'auto')};
   overflow: hidden;
 
   ${({ isMobile }) =>

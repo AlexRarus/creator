@@ -39,6 +39,9 @@ class Button(models.Model):
     description = models.CharField(
         verbose_name="Описание", max_length=50, null=True, blank=True
     )
+    kind = models.CharField(
+        verbose_name="Тип отображения", max_length=50, null=True, blank=True
+    )
     type = models.ForeignKey(
         ButtonType,
         on_delete=models.CASCADE,

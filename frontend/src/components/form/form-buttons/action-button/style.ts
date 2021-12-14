@@ -20,7 +20,7 @@ export const ActionButtonStyled = styled.div<IAction>`
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 15px 0;
+  padding: 15px 10px;
   background: ${({ kind = 'secondary' }: IAction) => actionButtonBackground[kind]};
   color: ${({ disabled, kind = 'secondary' }: IAction) =>
     disabled ? COLORS.grey[500] : actionButtonColors[kind]};

@@ -2,14 +2,14 @@ import { IAuthAPI } from './endpoints/auth';
 import { IPagesAPI } from './endpoints/pages';
 import { IBlocksAPI } from './endpoints/blocks';
 import { IThemeAPI } from './endpoints/themes';
-import { IMediaAPI } from './endpoints/media';
+import { IImagesAPI } from './endpoints/images';
 
 export interface IAPI {
   auth: IAuthAPI;
   pages: IPagesAPI;
   blocks: IBlocksAPI;
   themes: IThemeAPI;
-  media: IMediaAPI;
+  images: IImagesAPI;
 }
 
 export interface IGetListParams {

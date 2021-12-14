@@ -1,3 +1,4 @@
+from api.models.image import Image
 from api.models.types.list import (
     ListBlock,
     ListItemBlock,
@@ -5,11 +6,15 @@ from api.models.types.list import (
 )
 from rest_framework import serializers
 
+from ..image import ImageSerializer
+
 
 class ListItemBlockSerializer(serializers.ModelSerializer):
     """
     Элемент списка
     """
+
+    icon = ImageSerializer()
 
     class Meta:
         model = ListItemBlock
@@ -17,6 +22,7 @@ class ListItemBlockSerializer(serializers.ModelSerializer):
             "id",
             "title",
             "description",
+            "icon",
         )
 
 
@@ -66,7 +72,13 @@ def block_list_update(list_instance, data):
     list_instance.items.filter(lists=list_instance).delete()
     # создаем и прикрепляем новые элементы к списку
     for order, item_data in enumerate(items):
-        item = ListItemBlock.objects.create(**item_data)
+        icon_data = item_data.pop("icon", None)
+        icon = None
+
+        if icon_data is not None:
+            icon = Image.objects.get(id=icon_data["id"])
+
+        item = ListItemBlock.objects.create(**item_data, icon=icon)
         ListItemBlockRelation.objects.create(
             list=list_instance,
             item=item,

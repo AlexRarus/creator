@@ -1,5 +1,7 @@
 from django.db import models
 
+from ..image import Image
+
 
 class ListBlock(models.Model):
     iconSize = models.CharField(
@@ -33,6 +35,14 @@ class ListItemBlock(models.Model):
     )
     description = models.CharField(
         verbose_name="Описание", max_length=255, blank=True, null=True
+    )
+    icon = models.ForeignKey(
+        Image,
+        related_name="list_items",
+        verbose_name="Иконка",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
     )
 
     def __str__(self):

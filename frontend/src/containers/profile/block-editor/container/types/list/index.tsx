@@ -4,7 +4,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { useSubmitBlockForm } from 'src/api/hooks/submit-forms/block/useSubmitBlockForm';
 import { Form } from 'src/components/form';
 import { Tabs, TabContainer, useTabs } from 'src/components/tabs';
-import { IListData } from 'src/dal/blocks/data-interfaces';
+import { IListDataWrite } from 'src/dal/blocks/data-interfaces';
 
 import { FormWrapper } from '../../style';
 import { blockActions } from '../../utils';
@@ -49,7 +49,7 @@ export const ListForm = observer((props: IProps) => {
   });
   const { formState, setError, handleSubmit } = methods;
   const { isValid } = formState;
-  const [submitBlockEditor, isLoading, data, errors] = useSubmitBlockForm<IListData>();
+  const [submitBlockEditor, isLoading, data, errors] = useSubmitBlockForm<IListDataWrite>();
   const isEditing = blockId !== 'new' && !isCloning;
 
   const submit = async (formInputs: FormInputs) => {

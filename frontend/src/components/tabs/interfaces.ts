@@ -1,4 +1,4 @@
-export interface ITab {
-  value: string;
+export interface ITab<TValue> {
+  value: TValue;
   label: string;
 }
