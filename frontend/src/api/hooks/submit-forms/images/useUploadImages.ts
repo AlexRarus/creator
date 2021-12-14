@@ -1,12 +1,15 @@
 import { useCallback, useState } from 'react';
+import { AxiosResponse } from 'axios';
 import API from 'src/api/index';
 import { v4 as uuidv4 } from 'uuid';
+import { IImage } from 'src/dal/images/interfaces';
 
 export interface IUploadingFile {
   guid: string; // уникальная строка
   isLoading: boolean;
   file: File;
   result: 'pending' | 'success' | 'fail';
+  data: null | IImage; // доступна только при успешной выгрузке
 }
 
 export const useUploadImages = (blockType: string) => {
@@ -23,6 +26,7 @@ export const useUploadImages = (blockType: string) => {
         isLoading: true,
         file,
         result: 'pending',
+        data: null,
       }))
     );
 
@@ -33,7 +37,10 @@ export const useUploadImages = (blockType: string) => {
         formData.append('file', file as File);
 
         try {
-          await API.endpoints.images.createImage(blockType, formData);
+          const response: AxiosResponse<any> = await API.endpoints.images.createImage(
+            blockType,
+            formData
+          );
 
           // обновляем статус выгружаемого файла
           setUploadingFiles((uploadingFiles) =>
@@ -43,6 +50,7 @@ export const useUploadImages = (blockType: string) => {
                     ...uploadingFile,
                     isLoading: false,
                     result: 'success',
+                    data: response.data,
                   }
                 : uploadingFile
             )

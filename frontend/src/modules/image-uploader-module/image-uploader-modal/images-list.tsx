@@ -41,6 +41,15 @@ export const ImagesList = (props: IProps) => {
   }, [isLoading, uploadingImages]);
 
   useEffect(() => {
+    if (uploadingImages.length) {
+      // значит есть только что загруженные изображение, отмечаем их сразу как выбранные
+      uploadingImages.forEach((uploadingImage: IUploadingFile) => {
+        const targetImage = images.find((image: IImage) => image.id === uploadingImage.data?.id);
+        if (targetImage) {
+          onClickImage(targetImage);
+        }
+      });
+    }
     clear();
   }, [images]);
 
