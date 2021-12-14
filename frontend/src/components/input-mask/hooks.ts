@@ -18,6 +18,7 @@ const formatInitialValue = (value?: string) => {
 export const useMask = (maskType?: string, onChange?: any) => {
   switch (maskType) {
     case 'phone':
+    case 'sms':
       const asYouTypeIns = new AsYouType();
       const onMaskedChange = (value: any) => {
         const formattedInitialVal = formatInitialValue(value);
