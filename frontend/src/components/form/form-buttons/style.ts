@@ -12,11 +12,19 @@ export const DesktopButtonsList = styled.div`
   margin-top: 20px;
 `;
 
+export const MobileButtonsListWrapper = styled.div`
+  padding: 0 10px 40px;
+  width: 100%;
+`;
+
 export const MobileButtonsList = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-  border-top: 1px solid ${COLORS.grey[400]};
+  border: 1px solid ${COLORS.grey[400]};
+  border-radius: 2px;
+  overflow: hidden;
+  height: 50px;
 
   ${ButtonStyled} {
     width: 50%;

@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { IImage } from 'src/dal/images/interfaces';
 
-import { useMapStoreToProps } from '../selectors';
+import { useMapStoreToProps } from '../../selectors';
+import { ImagesList } from '../images-list';
 
 import { MyImagesListWrapper } from './style';
-import { ImagesList } from './images-list';
 
 interface IProps {
   blockType: string;

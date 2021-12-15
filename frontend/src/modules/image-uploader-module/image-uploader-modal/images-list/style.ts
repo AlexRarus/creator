@@ -1,35 +1,35 @@
 import styled from 'styled-components';
 import { COLORS, MEDIA } from 'src/components/theme';
 
-export const CommonImagesListWrapper = styled.div`
+export const ImagesListWrapper = styled.div`
   display: flex;
-  justify-content: center;
-`;
-export const MyImagesListWrapper = styled.div`
-  display: flex;
-  justify-content: center;
+  flex-direction: column;
+  width: 100%;
 `;
 
-export const ImagesListWrapper = styled.div`
+export const ImagesListGrid = styled.div`
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 15px;
-  padding: 10px;
 
   ${MEDIA.max768({
     gridTemplateColumns: `repeat(3, 1fr)`,
+    gap: '10px',
   })}
 `;
 
 export const ImagesListEmptyMessage = styled.div`
+  width: 100%;
   color: ${COLORS.grey[500]};
   font-size: 16px;
+  user-select: none;
 `;
 
 export const ImageItemWrapper = styled.div<{ isSelected?: boolean }>`
   position: relative;
-  width: 90px;
-  height: 90px;
+  width: 100%;
+  height: 100px;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -41,45 +41,15 @@ export const ImageItemWrapper = styled.div<{ isSelected?: boolean }>`
     isSelected ? `2px solid ${COLORS.blue[600]}` : `1px solid ${COLORS.grey[500]}`};
 `;
 
-export const ImageItemSelectedIcon = styled.div`
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  top: 3px;
-  right: 3px;
-  border-radius: 50%;
-  background: ${COLORS.white};
-  overflow: hidden;
-  width: 15px;
-  height: 15px;
-
-  svg {
-    position: absolute;
-    color: ${COLORS.blue[600]};
-    font-size: 18px;
-  }
-`;
-
-export const UploadingImageItemWrapper = styled(ImageItemWrapper)`
-  cursor: not-allowed;
-`;
-
-export const ImageElement = styled.img<{ isLoaded?: boolean }>`
-  opacity: ${({ isLoaded = true }) => (isLoaded ? 1 : 0)};
-  max-width: 100%;
-  max-height: 100%;
-`;
-
 export const DropZoneWrapper = styled.div<{ isDragActive: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 90px;
-  height: 90px;
-  background: ${({ isDragActive }) => (isDragActive ? COLORS.green[300] : COLORS.blue[100])};
-  border: 2px solid ${COLORS.blue[600]};
+  width: 100%;
+  height: 100px;
+  background: ${({ isDragActive }) => (isDragActive ? COLORS.white : COLORS.grey[100])};
+  border: 1px dashed ${COLORS.grey[400]};
   border-radius: 2px;
   overflow: hidden;
   user-select: none;
@@ -87,7 +57,7 @@ export const DropZoneWrapper = styled.div<{ isDragActive: boolean }>`
 
   * {
     cursor: pointer;
-    color: ${COLORS.blue[600]};
+    color: ${COLORS.grey[400]};
   }
 `;
 

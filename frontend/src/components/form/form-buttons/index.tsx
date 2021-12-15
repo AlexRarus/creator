@@ -10,8 +10,15 @@ import { MobileActions } from './mobile-actions';
 import { Button } from './button';
 import { ActionButton } from './action-button';
 import type { IAction } from './action-button/interfaces';
+import {
+  FormButtonsWrapper,
+  DesktopButtonsList,
+  MobileButtonsListWrapper,
+  MobileButtonsList,
+  ActionsList,
+} from './style';
+
 export type { IAction } from './action-button/interfaces';
-import { FormButtonsWrapper, DesktopButtonsList, MobileButtonsList, ActionsList } from './style';
 
 interface IProps {
   onAction(actionId: string): void;
@@ -76,45 +83,47 @@ export const FormButtons = (props: IProps) => {
   return (
     <FormButtonsWrapper>
       <MobileView>
-        <MobileButtonsList>
-          {!actions?.length && (
+        <MobileButtonsListWrapper>
+          <MobileButtonsList>
+            {!actions?.length && (
+              <Button
+                kind='secondary'
+                hasBorder={false}
+                onClick={() => onAction('cancel')}
+                disabled={isLoading}>
+                <span>Отмена</span>
+              </Button>
+            )}
+            {actions?.length === 1 && (
+              <Button
+                kind='secondary'
+                {...actions[0]}
+                hasBorder={false}
+                onClick={() => actionClickHandler(actions[0])}
+                disabled={isLoading}>
+                <span>{actions[0].label}</span>
+              </Button>
+            )}
+            {actions && actions.length > 1 && (
+              <Button
+                kind='secondary'
+                hasBorder={false}
+                disabled={!actions?.length || isLoading}
+                onClick={openMobileActions}>
+                <MoreVertIcon />
+                <span>Действие</span>
+              </Button>
+            )}
             <Button
-              kind='secondary'
+              kind='primary'
               hasBorder={false}
-              onClick={() => onAction('cancel')}
-              disabled={isLoading}>
-              <span>Отмена</span>
+              onClick={() => onAction('submit')}
+              disabled={!isValid || isLoading}>
+              {isLoading && <Loader type='ring' size={30} color={COLORS.blue[300]} />}
+              {submitActionLabel}
             </Button>
-          )}
-          {actions?.length === 1 && (
-            <Button
-              kind='secondary'
-              {...actions[0]}
-              hasBorder={false}
-              onClick={() => actionClickHandler(actions[0])}
-              disabled={isLoading}>
-              <span>{actions[0].label}</span>
-            </Button>
-          )}
-          {actions && actions.length > 1 && (
-            <Button
-              kind='secondary'
-              hasBorder={false}
-              disabled={!actions?.length || isLoading}
-              onClick={openMobileActions}>
-              <MoreVertIcon />
-              <span>Действие</span>
-            </Button>
-          )}
-          <Button
-            kind='primary'
-            hasBorder={false}
-            onClick={() => onAction('submit')}
-            disabled={!isValid || isLoading}>
-            {isLoading && <Loader type='ring' size={30} color={COLORS.blue[300]} />}
-            {submitActionLabel}
-          </Button>
-        </MobileButtonsList>
+          </MobileButtonsList>
+        </MobileButtonsListWrapper>
         {isOpenMobileActions && (
           <MobileActions
             onClose={closeMobileActions}

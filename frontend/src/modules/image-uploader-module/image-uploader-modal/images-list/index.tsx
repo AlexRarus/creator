@@ -2,10 +2,9 @@ import React, { useEffect } from 'react';
 import { IImage } from 'src/dal/images/interfaces';
 import { useUploadImages, IUploadingFile } from 'src/api/hooks/submit-forms/images/useUploadImages';
 
-import { ImagesListWrapper, ImagesListEmptyMessage } from './style';
-import { ImageItem } from './image-item';
-import { UploadingImageItem } from './uploading-image-item';
 import { DropZone } from './drop-zone';
+import { ImagesListWrapper, ImagesListGrid, ImagesListEmptyMessage } from './style';
+import { ImageItem, UploadingImageItem } from './item';
 
 interface IProps {
   blockType: string;
@@ -64,20 +63,24 @@ export const ImagesList = (props: IProps) => {
       {!images.length && emptyListMessage && (
         <ImagesListEmptyMessage>{emptyListMessage}</ImagesListEmptyMessage>
       )}
-      {images.map((image: IImage) => (
-        <ImageItem
-          key={image.id}
-          image={image}
-          onClickImage={onClickImage}
-          isSelected={selectedImages.some((selectedImage: IImage) => selectedImage.id === image.id)}
-        />
-      ))}
-      {uploadingImages.map((uploadingImage: IUploadingFile) => (
-        <UploadingImageItem key={uploadingImage.guid} uploadingImage={uploadingImage} />
-      ))}
-      {addButton && (
-        <DropZone onChange={onChangeDropZone} multiple={isMulti} ref={dropZoneRefCallback} />
-      )}
+      <ImagesListGrid>
+        {images.map((image: IImage) => (
+          <ImageItem
+            key={image.id}
+            image={image}
+            onClickImage={onClickImage}
+            isSelected={selectedImages.some(
+              (selectedImage: IImage) => selectedImage.id === image.id
+            )}
+          />
+        ))}
+        {uploadingImages.map((uploadingImage: IUploadingFile) => (
+          <UploadingImageItem key={uploadingImage.guid} uploadingImage={uploadingImage} />
+        ))}
+        {addButton && (
+          <DropZone onChange={onChangeDropZone} multiple={isMulti} ref={dropZoneRefCallback} />
+        )}
+      </ImagesListGrid>
     </ImagesListWrapper>
   );
 };

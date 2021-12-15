@@ -8,8 +8,8 @@ import { Form } from 'src/components/form';
 import { useMapStoreToProps } from '../selectors';
 
 import { imagesTabs, TabValue, getMyImagesActions } from './utils';
-import { CommonImagesList } from './common-images';
-import { MyImagesList } from './my-images';
+import { CommonImagesList } from './tabs/common-images';
+import { MyImagesList } from './tabs/my-images';
 
 export type { ITab } from 'src/components/tabs';
 export { TabValue } from './utils';

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { IImage } from 'src/dal/images/interfaces';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
-import { ImageItemWrapper, ImageElement, ImageItemSelectedIcon } from './style';
+import { ImageItemOuter, ImageItemInner, ImageElement } from './style';
 
 interface IProps {
   image: IImage;
@@ -18,13 +17,10 @@ export const ImageItem = (props: IProps) => {
   const onClick = () => onClickImage(image);
 
   return (
-    <ImageItemWrapper isSelected={isSelected} onClick={onClick}>
-      <ImageElement src={`/media/${image.src}`} onLoad={onLoad} isLoaded={isLoaded} />
-      {isSelected && (
-        <ImageItemSelectedIcon>
-          <CheckCircleIcon />
-        </ImageItemSelectedIcon>
-      )}
-    </ImageItemWrapper>
+    <ImageItemOuter isSelected={isSelected} onClick={onClick}>
+      <ImageItemInner isSelected={isSelected}>
+        <ImageElement src={`/media/${image.src}`} onLoad={onLoad} isLoaded={isLoaded} />
+      </ImageItemInner>
+    </ImageItemOuter>
   );
 };
