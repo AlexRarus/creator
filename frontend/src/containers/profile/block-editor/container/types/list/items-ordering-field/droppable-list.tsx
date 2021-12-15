@@ -38,6 +38,13 @@ export const DroppableList = (props: IProps) => {
     }
   };
 
+  const removeDisabled = fields.length <= 1;
+  const removeHandler = (index: number) => {
+    if (!removeDisabled) {
+      onRemove(index);
+    }
+  };
+
   return (
     <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
       <Droppable type='list-editor' droppableId='droppable-list-editor'>
@@ -65,7 +72,9 @@ export const DroppableList = (props: IProps) => {
                       <DragIndicatorIconWrapper>
                         <DragIndicator />
                       </DragIndicatorIconWrapper>
-                      <RemoveIconWrapper onClick={() => onRemove(index)}>
+                      <RemoveIconWrapper
+                        disabled={removeDisabled}
+                        onClick={() => removeHandler(index)}>
                         <DeleteForeverOutlinedIcon />
                       </RemoveIconWrapper>
                     </DraggableItem>

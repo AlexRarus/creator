@@ -58,7 +58,7 @@ export const DragIndicatorIconWrapper = styled.div`
   }
 `;
 
-export const RemoveIconWrapper = styled.div`
+export const RemoveIconWrapper = styled.div<{ disabled: boolean }>`
   grid-area: remove-icon;
   display: flex;
   height: 100%;
@@ -66,11 +66,11 @@ export const RemoveIconWrapper = styled.div`
   align-items: center;
   justify-content: center;
   background: ${COLORS.white};
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 
   svg {
-    cursor: pointer;
-    color: ${COLORS.red[600]};
+    cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+    color: ${({ disabled }) => (disabled ? COLORS.grey[400] : COLORS.red[600])};
   }
 `;
 
