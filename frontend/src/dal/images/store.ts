@@ -63,10 +63,7 @@ export default class DalImagesStore {
     deletingImages: IImage[]
   ) {
     try {
-      yield this.API.deleteImages(
-        blockType,
-        deletingImages.map((image: IImage) => image.id)
-      );
+      yield this.API.deleteImages(deletingImages.map((image: IImage) => image.id));
       yield this.getMyImagesByBlockTypeAction(blockType);
     } catch (e) {
       console.log('deleteMyImagesAction', e);

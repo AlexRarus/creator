@@ -1,8 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
-from .block_type import BlockType
-
 User = get_user_model()
 
 
@@ -21,19 +19,21 @@ class Image(models.Model):
         blank=True,
         null=True,
     )
-    block_type = models.ForeignKey(
-        BlockType,
+    block_types = models.ManyToManyField(
+        "api.BlockType",
         related_name="images",
-        verbose_name="Тип блока для которого предназначена картинка",
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
+        verbose_name="Типы блоков для которых предназначена картинка",
     )
-    common = models.BooleanField(
+    is_common = models.BooleanField(
         default=False,
         verbose_name="Общая картинка",
         null=True,
         blank=True,
+    )
+    tags = models.ManyToManyField(
+        "api.ImageTag",
+        verbose_name="Теги",
+        related_name="images",
     )
 
     def __str__(self):
@@ -42,4 +42,27 @@ class Image(models.Model):
     class Meta:
         verbose_name = "Картинка"
         verbose_name_plural = "Картинки"
+        ordering = ("id",)
+
+
+class ImageTag(models.Model):
+    label = models.CharField(
+        max_length=35,
+        verbose_name="Наименование",
+        null=False,
+        blank=False,
+    )
+    slug = models.SlugField(
+        max_length=80,
+        verbose_name="Строковый идентификатор",
+        null=False,
+        blank=False,
+    )
+
+    def __str__(self):
+        return f"{self.label} ({self.slug})"
+
+    class Meta:
+        verbose_name = "Тег для поиска картинок"
+        verbose_name_plural = "Теги для поиска картинок"
         ordering = ("id",)

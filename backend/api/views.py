@@ -1,11 +1,13 @@
 from django.db.models import Prefetch
 from django.shortcuts import get_object_or_404
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
+from .filters import ImageFilter, ImageSearchFilter
 from .models.avatar import Avatar
 from .models.block import Block
 from .models.block_type import BlockType
@@ -219,13 +221,16 @@ class ImageViewSet(
     mixins.DestroyModelMixin,
     GenericViewSet,
 ):
+    queryset = Image.objects.all()
     pagination_class = CustomPagination
     permission_classes = (IsImagePermission,)
     serializer_class = ImageSerializer
-
-    def get_queryset(self):
-        block_type = self.kwargs.get("block_type")
-        return Image.objects.filter(block_type__slug=block_type)
+    filter_backends = (
+        DjangoFilterBackend,
+        ImageSearchFilter,
+    )
+    filter_class = ImageFilter
+    search_fields = ("^tags__label", "^tags__slug")
 
     def get_object(self):
         if self.action in ["destroy"]:
@@ -234,32 +239,33 @@ class ImageViewSet(
         return get_object_or_404(Image, pk=self.kwargs.get("pk"))
 
     def perform_create(self, serializer):
-        block_type_slug = self.kwargs.get("block_type")
-        block_type = get_object_or_404(BlockType, slug=block_type_slug)
-        serializer.save(author=self.request.user, block_type=block_type)
+        serializer.save(author=self.request.user)
 
     def perform_destroy(self, instance):
         # удаляем несколько элементов сразу
         images_ids = self.request.data["imagesIds"]
         Image.objects.filter(id__in=images_ids).delete()
 
-    @action(["get"], detail=False)
-    def common(self, request, *args, **kwargs):
-        queryset = self.get_queryset().filter(
-            common=True,
+    def list(self, request, *args, **kwargs):
+        """При запросе обычного списка изображений
+        возвращаем только те у которых is_common=True"""
+        queryset = self.filter_queryset(self.get_queryset()).filter(
+            is_common=True
         )
+
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
-
-        return Response(status=status.HTTP_200_OK, data=serializer.data)
+        return Response(serializer.data)
 
     @action(["get"], detail=False)
     def my(self, request, *args, **kwargs):
-        queryset = self.get_queryset().filter(
+        """При запросе списка изображений с модификатором /my/
+        возвращаем только те у которых author=request.user"""
+        queryset = self.filter_queryset(self.queryset).filter(
             author=request.user,
         )
         page = self.paginate_queryset(queryset)

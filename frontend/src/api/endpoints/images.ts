@@ -3,21 +3,27 @@ import { AxiosResponse } from 'axios';
 export interface IImagesAPI {
   getCommonImagesByBlockType(blockType: string): AxiosResponse<any>;
   getMyImagesByBlockType(blockType: string): AxiosResponse<any>;
-  createImage(blockType: string, data: FormData): AxiosResponse<any>;
-  deleteImages(blockType: string, imagesIds: number[]): AxiosResponse<any>;
+  createImage(data: FormData): AxiosResponse<any>;
+  deleteImages(imagesIds: number[]): AxiosResponse<any>;
 }
 
 const getConfig = () => ({
   getCommonImagesByBlockType: (blockType: string) => ({
-    url: `/images/${blockType}/common/`,
+    url: `/images/`,
     method: 'GET',
+    params: {
+      block_type: blockType,
+    },
   }),
   getMyImagesByBlockType: (blockType: string) => ({
-    url: `/images/${blockType}/my/`,
+    url: `/images/my/`,
     method: 'GET',
+    params: {
+      block_type: blockType,
+    },
   }),
-  createImage: (blockType: string, data: FormData) => ({
-    url: `/images/${blockType}/`,
+  createImage: (data: FormData) => ({
+    url: `/images/`,
     method: 'POST',
     timeout: 0,
     headers: {
@@ -25,8 +31,8 @@ const getConfig = () => ({
     },
     data,
   }),
-  deleteImages: (blockType: string, imagesIds: number[]) => ({
-    url: `/images/${blockType}/`,
+  deleteImages: (imagesIds: number[]) => ({
+    url: `/images/`,
     method: 'DELETE',
     data: {
       imagesIds,

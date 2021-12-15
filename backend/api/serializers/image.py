@@ -1,8 +1,15 @@
+from api.models.block_type import BlockType
 from api.models.image import Image
 from rest_framework import serializers
 
 
 class ImageSerializer(serializers.ModelSerializer):
+    block_types = serializers.SlugRelatedField(
+        slug_field="slug",
+        many=True,
+        queryset=BlockType.objects.all(),
+    )
+
     # При создании или редактировании картинки присылать поле file
     file = serializers.FileField(
         use_url=False,
@@ -25,15 +32,5 @@ class ImageSerializer(serializers.ModelSerializer):
             "file",  # Запись
             "src",  # Чтение
             "author",
+            "block_types",
         )
-
-    def update(self, image, validated_data):
-        # Если оставить поле file пустым, то оно не будет перезаписываться
-        validated_file = validated_data.get("file")
-
-        if validated_file:
-            image.file = validated_file
-
-        image.save()
-
-        return image

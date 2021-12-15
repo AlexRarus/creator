@@ -3,14 +3,8 @@ from django.db import models
 
 
 class ButtonType(models.Model):
-    SLUG_CHOICES = (
-        ("web", "web"),
-        ("phone", "phone"),
-        ("email", "email"),
-    )
     slug = models.SlugField(
         verbose_name="Действие",
-        choices=SLUG_CHOICES,
         max_length=50,
         unique=True,
     )

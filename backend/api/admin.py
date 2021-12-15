@@ -4,7 +4,7 @@ from django.contrib import admin
 from .models.avatar import Avatar
 from .models.block import Block
 from .models.block_type import BlockType
-from .models.image import Image
+from .models.image import Image, ImageTag
 from .models.page import Page
 from .models.pricing_plan import PricingPlan
 from .models.relations import PageBlockRelation, SectionBlockRelation
@@ -21,14 +21,25 @@ class ImageAdmin(admin.ModelAdmin):
     list_display = (
         "author",
         "file",
-        "block_type",
-        "common",
+        "is_common",
     )
     search_fields = (
         "id",
         "author",
         "file",
-        "block_type",
+    )
+    empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
+
+
+@admin.register(ImageTag)
+class ImageTagAdmin(admin.ModelAdmin):
+    list_display = (
+        "label",
+        "slug",
+    )
+    search_fields = (
+        "label",
+        "slug",
     )
     empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
 
