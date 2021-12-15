@@ -34,6 +34,7 @@ class Image(models.Model):
         "api.ImageTag",
         verbose_name="Теги",
         related_name="images",
+        blank=True,
     )
 
     def __str__(self):
