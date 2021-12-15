@@ -20,6 +20,7 @@ const placeholderMap = {
   web: 'https://',
   link: '/',
   phone: '+7 123 123 45 56',
+  sms: '+7 123 123 45 56',
   email: 'example@emapmle.com',
 };
 
@@ -40,8 +41,8 @@ export const ButtonFields = (props: IProps) => {
       breakPoints={{
         // все переданные здесь значения выставлены по-умолчанию
         // можно передать через контекст ThemeProvider theme: { gridBreakPoints: {...} }
-        '320px': 6, // 6 колонки при ширине экрана 320 и меньше
-        '530px': 6, // 6 колонок при ширине экрана 530 и меньше
+        '320px': 12, // 6 колонки при ширине экрана 320 и меньше
+        '530px': 12, // 6 колонок при ширине экрана 530 и меньше
         '950px': 12, // 12 колонок при ширине экрана 950 и меньше
         '1024px': 12, // 12 колонок при ширине экрана 1024 и меньше
         '1280px': 12, // 12 колонок при ширине экрана 1280 и меньше
@@ -66,8 +67,8 @@ export const ButtonFields = (props: IProps) => {
           <InputText dimension='l' kind='formed' />
         </ControlledField>
       </GridColumn>
-      <GridColumn size={4}>
-        <Label>Выберите тип:</Label>
+      <GridColumn size={3}>
+        <Label>Действие:</Label>
         <ControlledField
           name='typeOption'
           control={control}
@@ -76,7 +77,7 @@ export const ButtonFields = (props: IProps) => {
           <ButtonSelectStyled dimension='l' kind='formed' width={'100%'} options={buttonTypes} />
         </ControlledField>
       </GridColumn>
-      <GridColumn size={8}>
+      <GridColumn size={9}>
         {typeOption ? <Label>{inputLabelMap[typeOption]}</Label> : <FakeLabel />}
         <ControlledField
           name='value'
@@ -85,7 +86,7 @@ export const ButtonFields = (props: IProps) => {
           formDefaultValues={formDefaultValues}>
           <InputMask
             placeholder={placeholderMap[typeOption]}
-            mask={typeOption?.value}
+            mask={typeOption}
             dimension='l'
             kind='formed'
           />

@@ -68,7 +68,7 @@ export const prepareDataForKinds = (kindsList: any[], selectedKind?: string) =>
       label: selectedKind === kind ? 'Выбрана' : 'Заголовок',
       description: kind,
       value: '',
-      type: 'phone',
+      type: 'test_type',
       kind,
     },
   }));
