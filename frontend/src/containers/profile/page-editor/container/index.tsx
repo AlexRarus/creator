@@ -1,21 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 import { useHistory } from 'react-router-dom';
-import { BrowserView } from 'react-device-detect';
-import { Grid, GridColumn } from 'src/components/grid';
+import { GridColumn } from 'src/components/grid';
 import { useIsAuthor } from 'src/utils/useIsAuthor';
 import { DeviceContainer } from 'src/containers/profile/device-wrapper';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import EditIcon from '@mui/icons-material/Edit';
+import DoneIcon from '@mui/icons-material/Done';
+import CloseIcon from '@mui/icons-material/Close';
+import { copyTextToClipboard } from 'src/utils/copyToClipboard';
+import { v4 as uuidv4 } from 'uuid';
+import InputText from 'src/components/input-text';
 
+import { BlinkMessage } from './page-form/blink-message';
+import { PageSettingsModal, TabValue } from './page-form/page-settings-modal';
 import { PageForm } from './page-form';
 import { PagePreview } from './page-preview';
 import { useMapStoreToProps } from './selectors';
 import {
+  StyledGrid,
   DesktopPageWrapper,
-  // BlockWrapper,
+  StyledBrowserView,
   EditorWrapper,
   StyledMobileView,
   FlexBlock,
   ScaleBlock,
+  EditorHeader,
+  LinkCopyIndicator,
+  LinkToPageField,
+  LinkToPageLabel,
+  LinkToPageValue,
+  PageSlug,
+  PrefixPath,
+  ActionWrapper,
+  LinkActionBlock,
 } from './style';
 
 interface IProps {
@@ -39,9 +57,21 @@ export const PageEditorContainer = observer((props: IProps) => {
     user,
   } = useMapStoreToProps();
   const { username, pageSlug } = props;
+  const [pageSettingsModalTab, setPageSettingsModalTab] = useState<TabValue | null>(null);
+  const [copyBlinkId, setCopyBlinkId] = useState<string>();
+  const [isEditingLink, setEditingLink] = useState(false);
+  const [inputLinkValue, setLinkValue] = useState(pageSlug);
   const { replace } = useHistory();
   const isAuthor = useIsAuthor(username);
   const [initialized, setInitialized] = useState(false);
+
+  const openPageSettingsModal = (activeTab = TabValue.LINK) => () =>
+    setPageSettingsModalTab(activeTab);
+  const closePageSettingsModal = () => setPageSettingsModalTab(null);
+
+  const onChangeLink = (value: string) => {
+    setLinkValue(value);
+  };
 
   useEffect(() => {
     if (isAuthor) {
@@ -72,6 +102,19 @@ export const PageEditorContainer = observer((props: IProps) => {
     }
   };
 
+  const onToggleEditingLink = () => {
+    setEditingLink(!isEditingLink);
+    if (isEditingLink) {
+      setLinkValue(pageSlug);
+    }
+  };
+
+  const onSuccessEditingLink = () => {
+    setEditingLink(false);
+    setLinkValue(inputLinkValue);
+    onUpdatePageForm(inputLinkValue);
+  };
+
   const onDragEndAction = (listIds?: any[]) => {
     const reqData = {
       id: data?.id,
@@ -82,15 +125,52 @@ export const PageEditorContainer = observer((props: IProps) => {
     updatePageBlocksAction(reqData);
   };
 
+  const onCopyToClipboard = () => {
+    copyTextToClipboard(`${window.location.origin}/${username}/${pageSlug}`);
+    setCopyBlinkId(uuidv4());
+  };
+
   return (
     <>
       {!isAuthor && 'PageEditorContainer Error...'}
       {isLoading && isAuthor && 'Loading...'}
       {!isLoading && data !== null && (
         <>
-          <BrowserView>
+          <StyledBrowserView>
             <DesktopPageWrapper>
-              <Grid verticalGap={32}>
+              <EditorHeader>
+                <LinkToPageField onClick={onCopyToClipboard}>
+                  <LinkToPageLabel>Ссылка на страницу</LinkToPageLabel>
+                  <LinkToPageValue>
+                    <PrefixPath>
+                      {window.location.origin}/{username}
+                    </PrefixPath>
+                    {!isEditingLink ? (
+                      <PageSlug>/{pageSlug}</PageSlug>
+                    ) : (
+                      <InputText
+                        onChange={onChangeLink}
+                        value={inputLinkValue}
+                        dimension='s'
+                        autoFocus={true}
+                      />
+                    )}
+                  </LinkToPageValue>
+                  <LinkCopyIndicator>
+                    <BlinkMessage showId={copyBlinkId}>(Скопировано)</BlinkMessage>
+                    <ContentCopyIcon />
+                  </LinkCopyIndicator>
+                </LinkToPageField>
+                <LinkActionBlock>
+                  <ActionWrapper onClick={onToggleEditingLink}>
+                    {isEditingLink ? <CloseIcon /> : <EditIcon />}
+                  </ActionWrapper>
+                  <ActionWrapper isHide={!isEditingLink} onClick={onSuccessEditingLink}>
+                    <DoneIcon />
+                  </ActionWrapper>
+                </LinkActionBlock>
+              </EditorHeader>
+              <StyledGrid verticalGap={0}>
                 <GridColumn size={6} alignItems='center'>
                   <EditorWrapper isForm={true}>
                     <PageForm
@@ -104,6 +184,7 @@ export const PageEditorContainer = observer((props: IProps) => {
                       createBlockAction={createBlockAction}
                       deleteBlockAction={deleteBlockAction}
                       updateBlockAction={updateBlockAction}
+                      openPageSettingsModal={openPageSettingsModal}
                     />
                   </EditorWrapper>
                 </GridColumn>
@@ -120,11 +201,31 @@ export const PageEditorContainer = observer((props: IProps) => {
                     </DeviceContainer>
                   </ScaleBlock>
                 </GridColumn>
-              </Grid>
+              </StyledGrid>
             </DesktopPageWrapper>
-          </BrowserView>
+          </StyledBrowserView>
           <StyledMobileView>
             <FlexBlock>
+              <EditorHeader>
+                <LinkToPageField onClick={onCopyToClipboard}>
+                  <LinkToPageLabel>Ссылка на страницу</LinkToPageLabel>
+                  <LinkToPageValue>
+                    <PrefixPath>
+                      {window.location.origin}/{username}
+                    </PrefixPath>
+                    <PageSlug>/{pageSlug}</PageSlug>
+                  </LinkToPageValue>
+                  <LinkCopyIndicator>
+                    <BlinkMessage showId={copyBlinkId}>(Скопировано)</BlinkMessage>
+                    <ContentCopyIcon />
+                  </LinkCopyIndicator>
+                </LinkToPageField>
+                <LinkActionBlock>
+                  <ActionWrapper onClick={openPageSettingsModal(TabValue.LINK)}>
+                    <EditIcon />
+                  </ActionWrapper>
+                </LinkActionBlock>
+              </EditorHeader>
               <PageForm
                 data={data}
                 selectedTheme={selectedTheme}
@@ -136,9 +237,18 @@ export const PageEditorContainer = observer((props: IProps) => {
                 createBlockAction={createBlockAction}
                 deleteBlockAction={deleteBlockAction}
                 updateBlockAction={updateBlockAction}
+                openPageSettingsModal={openPageSettingsModal}
               />
             </FlexBlock>
           </StyledMobileView>
+          {pageSettingsModalTab && (
+            <PageSettingsModal
+              onClose={closePageSettingsModal}
+              onSuccess={onUpdatePageForm}
+              activeTabValue={pageSettingsModalTab as TabValue}
+              pageData={data}
+            />
+          )}
         </>
       )}
     </>

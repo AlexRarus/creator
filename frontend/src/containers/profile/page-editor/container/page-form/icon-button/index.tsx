@@ -4,7 +4,7 @@ import { IconButtonWrapper } from './style';
 
 interface IProps {
   children: any;
-  onClick(): any;
+  onClick?: any;
   onMouseLeave?: any;
   onMouseEnter?: any;
   isOpen?: boolean;
@@ -25,7 +25,7 @@ export const IconButton = React.forwardRef((props: IProps, ref: any) => {
 
   const clickHandler = () => {
     if (!disabled) {
-      onClick();
+      onClick && onClick();
     }
   };
 

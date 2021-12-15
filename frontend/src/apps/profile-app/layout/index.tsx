@@ -28,7 +28,7 @@ export function ProfileLayout(props: IProps) {
     <ProfileLayoutWrapper>
       <Menu isProfile={true} menuItems={menuItems} />
       <PageWrapper>{children}</PageWrapper>
-      <Footer />
+      {/*<Footer />*/}
     </ProfileLayoutWrapper>
   );
 }
