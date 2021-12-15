@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { IImage } from 'src/dal/images/interfaces';
+import Replies from 'src/components/replies';
 
 import { ImageItemOuter, ImageItemInner, ImageElement } from './style';
 
@@ -20,6 +21,7 @@ export const ImageItem = (props: IProps) => {
     <ImageItemOuter isSelected={isSelected} onClick={onClick}>
       <ImageItemInner isSelected={isSelected}>
         <ImageElement src={`/media/${image.src}`} onLoad={onLoad} isLoaded={isLoaded} />
+        <Replies />
       </ImageItemInner>
     </ImageItemOuter>
   );
