@@ -1,6 +1,15 @@
 from api.models.block_type import BlockType
-from api.models.image import Image
+from api.models.image import Image, ImageTag
 from rest_framework import serializers
+
+
+class ImageTagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ImageTag
+        fields = (
+            "label",
+            "slug",
+        )
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -9,6 +18,7 @@ class ImageSerializer(serializers.ModelSerializer):
         many=True,
         queryset=BlockType.objects.all(),
     )
+    tags = ImageTagSerializer(read_only=True, many=True)
 
     # При создании или редактировании картинки присылать поле file
     file = serializers.FileField(
@@ -33,4 +43,5 @@ class ImageSerializer(serializers.ModelSerializer):
             "src",  # Чтение
             "author",
             "block_types",
+            "tags",
         )

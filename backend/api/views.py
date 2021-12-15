@@ -230,7 +230,7 @@ class ImageViewSet(
         ImageSearchFilter,
     )
     filter_class = ImageFilter
-    search_fields = ("^tags__label", "^tags__slug")
+    search_fields = ("tags__label", "tags__slug")
 
     def get_object(self):
         if self.action in ["destroy"]:

@@ -24,4 +24,4 @@ class ImageFilter(django_filters.FilterSet):
 
 
 class ImageSearchFilter(filters.SearchFilter):
-    search_param = "tags"
+    search_param = "search"
