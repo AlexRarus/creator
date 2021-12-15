@@ -20,6 +20,7 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
     textAlign,
     fontSizeInherit = false,
     fontWeight = 'normal',
+    autoFocus,
     ...inputProps
   } = props;
   const [componentElement, componentRefCallback] = useState<HTMLElement | null>(null);
@@ -99,6 +100,7 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
         fontSizeInherit={fontSizeInherit}
         fontWeight={fontWeight}
         markError={markError}
+        autoFocus={autoFocus}
       />
       <IconWrapper kind={kind} ref={iconWrapperRefCallback} dimension={dimension}>
         {Icon && <Icon />}

@@ -7,9 +7,6 @@ import PaletteIcon from '@mui/icons-material/Palette';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import SettingsIcon from '@mui/icons-material/Settings';
 import EditIcon from '@mui/icons-material/Edit';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { copyTextToClipboard } from 'src/utils/copyToClipboard';
-import { v4 as uuidv4 } from 'uuid';
 import { BlockEditorModal } from 'src/containers/profile/block-editor';
 import { isMobile } from 'react-device-detect';
 import { ITheme } from 'src/dal/themes/interface';
@@ -19,13 +16,6 @@ import { USER_MENU_BACKGROUND } from 'src/components/menu/user-menu/style';
 import { PagePreview } from '../page-preview';
 
 import {
-  FormHeader,
-  LinkToPageField,
-  LinkToPageLabel,
-  LinkToPageValue,
-  LinkCopyIndicator,
-  PrefixPath,
-  PageSlug,
   FormFooter,
   AddBlockButtonWrapper,
   SettingsPopupList,
@@ -34,8 +24,6 @@ import {
   CancelButton,
 } from './style';
 import { IconButton } from './icon-button';
-import { PageSettingsModal, TabValue } from './page-settings-modal';
-import { BlinkMessage } from './blink-message';
 import { DroppableList } from './droppable-list';
 
 interface IProps {
@@ -49,6 +37,8 @@ interface IProps {
   createBlockAction: (data: any) => void;
   updateBlockAction: (data: any) => void;
   deleteBlockAction: (id: any) => void;
+
+  openPageSettingsModal: any;
 }
 
 interface INewBlock {
@@ -69,11 +59,11 @@ export const PageForm = (props: IProps) => {
     updateBlockAction,
     deleteBlockAction,
     selectedTheme,
+
+    openPageSettingsModal,
   } = props;
   const [blocks, setBlocks] = useState<IBlock<any>[]>([]);
   const [isShowPreview, setIsShowPreview] = useState(false);
-  const [pageSettingsModalTab, setPageSettingsModalTab] = useState<TabValue | null>(null);
-  const [copyBlinkId, setCopyBlinkId] = useState<string>();
   const [selectedBlock, setSelectedBlock] = useState<IBlock<any> | INewBlock | null>(null);
   const [openerElement, openerRefCallback] = useState<HTMLDivElement | null>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -110,11 +100,6 @@ export const PageForm = (props: IProps) => {
     updateBlockAction({ id: sectionId, data: { blocks, ...sectionData } });
   };
 
-  const onCopyToClipboard = () => {
-    copyTextToClipboard(`${window.location.origin}/${username}/${pageSlug}`);
-    setCopyBlinkId(uuidv4());
-  };
-
   const showPagePreview = () => setIsShowPreview(true);
   const hidePagePreview = () => setIsShowPreview(false);
 
@@ -130,10 +115,6 @@ export const PageForm = (props: IProps) => {
     console.log('closeAddBlockModal');
     setSelectedBlock(null);
   };
-
-  const openPageSettingsModal = (activeTab = TabValue.LINK) => () =>
-    setPageSettingsModalTab(activeTab);
-  const closePageSettingsModal = () => setPageSettingsModalTab(null);
 
   const toThemesPage = () => history.push(`/profile/${username}/themes/`);
 
@@ -153,24 +134,6 @@ export const PageForm = (props: IProps) => {
       )}
       {!isShowPreview && (
         <>
-          <FormHeader>
-            <LinkToPageField onClick={onCopyToClipboard}>
-              <LinkToPageLabel>Ссылка на страницу</LinkToPageLabel>
-              <LinkToPageValue>
-                <PrefixPath>
-                  {window.location.origin}/{username}
-                </PrefixPath>
-                <PageSlug>/{pageSlug}</PageSlug>
-              </LinkToPageValue>
-              <LinkCopyIndicator>
-                <BlinkMessage showId={copyBlinkId}>(Скопировано)</BlinkMessage>
-                <ContentCopyIcon />
-              </LinkCopyIndicator>
-            </LinkToPageField>
-            <IconButton onClick={openPageSettingsModal(TabValue.LINK)}>
-              <EditIcon />
-            </IconButton>
-          </FormHeader>
           <DroppableList
             data={data}
             isCheckBlocks={isCheckBlocks}
@@ -252,14 +215,6 @@ export const PageForm = (props: IProps) => {
           </AcceptButton>
           <CancelButton onClick={cancelCheckBlocks}>Отмена</CancelButton>
         </>
-      )}
-      {pageSettingsModalTab && (
-        <PageSettingsModal
-          onClose={closePageSettingsModal}
-          onSuccess={onUpdatePageForm}
-          activeTabValue={pageSettingsModalTab as TabValue}
-          pageData={data}
-        />
       )}
       {selectedBlock && (
         <BlockEditorModal
