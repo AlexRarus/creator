@@ -35,7 +35,7 @@ export const useUploadImages = (blockType: string) => {
       files.map(async (file: File) => {
         const formData = new FormData();
         formData.append('file', file as File);
-        formData.append('block_type', blockType);
+        formData.append('block_types', blockType);
 
         try {
           const response: AxiosResponse<any> = await API.endpoints.images.createImage(formData);

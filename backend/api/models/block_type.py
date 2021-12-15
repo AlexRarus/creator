@@ -25,6 +25,7 @@ class BlockType(models.Model):
     )
     slug = models.SlugField(
         verbose_name="slug",
+        unique=True,
         null=False,
         choices=SLUG_CHOICES,
     )
