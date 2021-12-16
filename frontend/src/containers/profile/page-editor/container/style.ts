@@ -21,9 +21,16 @@ export const BlockWrapper = styled.div`
   height: 100%;
 `;
 
+// TODO скалированный блок приходится поднимать вверх, для того чтобы он стоял как scale(1)
 export const ScaleBlock = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 100%;
-  transform: scale(0.85);
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: scale(0.85) translateX(-50%);
 `;
 
 export const EditorWrapper = styled.div<{ isForm: boolean }>`
@@ -46,12 +53,6 @@ export const StyledMobileView = styled(MobileView)`
 `;
 
 export const StyledBrowserView = styled(BrowserView)`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-`;
-
-export const FlexBlock = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -174,4 +175,40 @@ export const ActionWrapper = styled.div<{ isHide?: boolean }>`
   cursor: pointer;
   overflow: hidden;
   transition: all 200ms;
+`;
+
+export const PreviewWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+`;
+
+export const PreviewFooter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 64px;
+  width: 100%;
+  background: ${rgba(COLORS.grey[800], 0.85)};
+  color: ${COLORS.white};
+  display: flex;
+  flex-direction: row;
+  backdrop-filter: blur(4px);
+  z-index: 1;
+`;
+
+export const FooterMainButton = styled.div``;
+
+export const FlexBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 `;

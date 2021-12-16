@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { IBlock } from 'src/dal/blocks/interfaces';
-import Button from 'src/components/button';
 import { IPage } from 'src/dal/pages/interfaces';
 import { useHistory } from 'react-router-dom';
 import PaletteIcon from '@mui/icons-material/Palette';
@@ -12,6 +11,7 @@ import { isMobile } from 'react-device-detect';
 import { ITheme } from 'src/dal/themes/interface';
 import Popup from 'src/components/popup';
 import { USER_MENU_BACKGROUND } from 'src/components/menu/user-menu/style';
+import { AwesomeButton } from 'src/components/awesome-button';
 
 import { PagePreview } from '../page-preview';
 
@@ -165,13 +165,7 @@ export const PageForm = (props: IProps) => {
           </IconButton>
         )}
         <AddBlockButtonWrapper>
-          <Button
-            kind='formed'
-            dimension='l'
-            onClick={openAddBlockModal()}
-            disabled={isShowPreview}>
-            Добавить блок
-          </Button>
+          <AwesomeButton onClick={openAddBlockModal()}>Добавить блок</AwesomeButton>
         </AddBlockButtonWrapper>
         <IconButton
           ref={openerRefCallback as any}
