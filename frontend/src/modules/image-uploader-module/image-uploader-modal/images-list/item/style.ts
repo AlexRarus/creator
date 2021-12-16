@@ -53,7 +53,7 @@ export const ImageItemInner = styled.div<{
   height: 100%;
   background: ${({ isActive }) => (isActive ? COLORS.blue[400] : COLORS.white)};
   overflow: hidden;
-  border-radius: ${({ borderRadius = 10 }) => borderRadius}px;
+  border-radius: ${({ borderRadius = 0 }) => borderRadius}%;
   transition: all 200ms ease-out;
 
   ${({ isLoading }) =>
