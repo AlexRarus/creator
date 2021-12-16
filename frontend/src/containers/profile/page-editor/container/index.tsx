@@ -11,6 +11,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { copyTextToClipboard } from 'src/utils/copyToClipboard';
 import { v4 as uuidv4 } from 'uuid';
 import InputText from 'src/components/input-text';
+import { AwesomeButton } from 'src/components/awesome-button';
 
 import { BlinkMessage } from './page-form/blink-message';
 import { PageSettingsModal, TabValue } from './page-form/page-settings-modal';
@@ -23,7 +24,6 @@ import {
   StyledBrowserView,
   EditorWrapper,
   StyledMobileView,
-  FlexBlock,
   ScaleBlock,
   EditorHeader,
   LinkCopyIndicator,
@@ -34,6 +34,9 @@ import {
   PrefixPath,
   ActionWrapper,
   LinkActionBlock,
+  PreviewWrapper,
+  PreviewFooter,
+  FlexBlock,
 } from './style';
 
 interface IProps {
@@ -61,7 +64,7 @@ export const PageEditorContainer = observer((props: IProps) => {
   const [copyBlinkId, setCopyBlinkId] = useState<string>();
   const [isEditingLink, setEditingLink] = useState(false);
   const [inputLinkValue, setLinkValue] = useState(pageSlug);
-  const { replace } = useHistory();
+  const { replace, push } = useHistory();
   const isAuthor = useIsAuthor(username);
   const [initialized, setInitialized] = useState(false);
 
@@ -72,6 +75,8 @@ export const PageEditorContainer = observer((props: IProps) => {
   const onChangeLink = (value: string) => {
     setLinkValue(value);
   };
+
+  const toThemesPage = () => push(`/profile/${username}/themes/`);
 
   useEffect(() => {
     if (isAuthor) {
@@ -170,7 +175,7 @@ export const PageEditorContainer = observer((props: IProps) => {
                   </ActionWrapper>
                 </LinkActionBlock>
               </EditorHeader>
-              <StyledGrid verticalGap={0}>
+              <StyledGrid gap={0}>
                 <GridColumn size={6} alignItems='center'>
                   <EditorWrapper isForm={true}>
                     <PageForm
@@ -188,18 +193,25 @@ export const PageEditorContainer = observer((props: IProps) => {
                     />
                   </EditorWrapper>
                 </GridColumn>
-                <GridColumn size={6} alignItems='center'>
-                  <ScaleBlock>
-                    <DeviceContainer>
-                      <PagePreview
-                        data={data}
-                        selectedTheme={selectedTheme}
-                        isUpdating={isUpdating}
-                        username={username}
-                        pageSlug={pageSlug}
-                      />
-                    </DeviceContainer>
-                  </ScaleBlock>
+                <GridColumn size={6}>
+                  <PreviewWrapper>
+                    <ScaleBlock>
+                      <DeviceContainer>
+                        <PagePreview
+                          data={data}
+                          selectedTheme={selectedTheme}
+                          isUpdating={isUpdating}
+                          username={username}
+                          pageSlug={pageSlug}
+                        />
+                      </DeviceContainer>
+                    </ScaleBlock>
+                    <PreviewFooter>
+                      <AwesomeButton bubblesSize={12} onClick={toThemesPage}>
+                        Выберите тему
+                      </AwesomeButton>
+                    </PreviewFooter>
+                  </PreviewWrapper>
                 </GridColumn>
               </StyledGrid>
             </DesktopPageWrapper>
