@@ -31,8 +31,6 @@ export const ItemField = (props: IProps) => {
     control,
   });
 
-  console.log('icon', icon);
-
   return (
     <ItemFieldWrapper iconSize={parseInt(iconSize)} template={template.value}>
       <ItemFieldIconWrapper>

@@ -76,7 +76,10 @@ def block_list_update(list_instance, data):
         icon = None
 
         if icon_data is not None:
-            icon = Image.objects.get(id=icon_data["id"])
+            try:
+                icon = Image.objects.get(id=icon_data["id"])
+            except Image.DoesNotExist:
+                icon = None
 
         item = ListItemBlock.objects.create(**item_data, icon=icon)
         ListItemBlockRelation.objects.create(
