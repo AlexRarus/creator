@@ -93,13 +93,14 @@ export const ItemFieldIconWrapper = styled.div`
 
 export const ItemFieldIconShape = styled.div<IListItemIconProps>`
   grid-area: icon;
-  width: ${({ iconSize }) => iconSize}px;
-  height: ${({ iconSize }) => iconSize}px;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid ${COLORS.grey[400]};
-  border-radius: 50%;
+  width: ${({ iconSize }) => iconSize}px;
+  height: ${({ iconSize }) => iconSize}px;
+  border-radius: ${({ borderRadius }) => borderRadius}%;
+  background: ${COLORS.grey[300]};
   overflow: hidden;
 `;
 

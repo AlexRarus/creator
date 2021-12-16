@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-import { observer } from 'mobx-react';
 import Modal, { DesktopSize, MobileSize } from 'src/components/modal';
 import { IImage } from 'src/dal/images/interfaces';
 import { ITab, TabContainer, Tabs, useTabs } from 'src/components/tabs';
 import { Form } from 'src/components/form';
-
-import { useMapStoreToProps } from '../selectors';
 
 import { imagesTabs, TabValue, getMyImagesActions } from './utils';
 import { CommonImagesList } from './tabs/common-images';
@@ -21,6 +18,7 @@ interface IProps {
   value?: IImage | IImage[];
   isMulti?: boolean;
   tabs?: ITab<TabValue>[];
+  isEditable?: boolean; // возможность редактировать свои изображения
 }
 
 const setInitValue = (value?: IImage | IImage[]) => {
@@ -32,7 +30,7 @@ const setInitValue = (value?: IImage | IImage[]) => {
   return [];
 };
 
-export const ImageUploaderModal = observer((props: IProps) => {
+export const ImageUploaderModal = (props: IProps) => {
   const {
     onChange,
     onClose,
@@ -40,12 +38,12 @@ export const ImageUploaderModal = observer((props: IProps) => {
     value: initValue,
     isMulti = false,
     tabs: initTabs = imagesTabs,
+    isEditable,
   } = props;
   const [tabs, activeTab, onChangeTab] = useTabs(initTabs);
   const [commonSelectedImages, setCommonSelectedImages] = useState(setInitValue(initValue));
   const [mySelectedImages, setMySelectedImages] = useState(setInitValue(initValue));
   const [dropZoneElement, dropZoneRefCallback] = useState<HTMLElement | null>(null);
-  const { deleteMyImagesAction } = useMapStoreToProps();
 
   const onAction = (actionId: string) => {
     switch (actionId) {
@@ -60,44 +58,11 @@ export const ImageUploaderModal = observer((props: IProps) => {
       case 'cancel':
         onClose();
         break;
-      case 'delete':
-        deleteMyImagesAction(blockType, mySelectedImages);
-        break;
       case 'upload':
         dropZoneElement?.click();
         break;
       default:
         console.warn('Unknown action type', actionId);
-    }
-  };
-
-  const onClickCommonImage = (image: IImage) => {
-    const imageHasSelected = commonSelectedImages.some(
-      (selectedImage: IImage) => selectedImage.id === image.id
-    );
-    if (imageHasSelected) {
-      setCommonSelectedImages(
-        commonSelectedImages.filter((selectedImage: IImage) => selectedImage.id !== image.id)
-      );
-    } else if (isMulti) {
-      setCommonSelectedImages([...commonSelectedImages, image]);
-    } else {
-      setCommonSelectedImages([image]);
-    }
-  };
-
-  const onClickMyImage = (image: IImage) => {
-    const imageHasSelected = mySelectedImages.some(
-      (selectedImage: IImage) => selectedImage.id === image.id
-    );
-    if (imageHasSelected) {
-      setMySelectedImages(
-        mySelectedImages.filter((selectedImage: IImage) => selectedImage.id !== image.id)
-      );
-    } else if (isMulti) {
-      setMySelectedImages([...mySelectedImages, image]);
-    } else {
-      setMySelectedImages([image]);
     }
   };
 
@@ -113,8 +78,9 @@ export const ImageUploaderModal = observer((props: IProps) => {
             <CommonImagesList
               blockType={blockType}
               selectedImages={commonSelectedImages}
-              onClickImage={onClickCommonImage}
+              setSelectedImages={setCommonSelectedImages}
               emptyListMessage='Нет доступных изображений'
+              isMulti={isMulti}
             />
           )}
         </TabContainer>
@@ -123,12 +89,14 @@ export const ImageUploaderModal = observer((props: IProps) => {
             <MyImagesList
               blockType={blockType}
               selectedImages={mySelectedImages}
-              onClickImage={onClickMyImage}
+              setSelectedImages={setMySelectedImages}
               dropZoneRefCallback={dropZoneRefCallback}
+              isEditable={isEditable}
+              isMulti={isMulti}
             />
           )}
         </TabContainer>
       </Form>
     </Modal>
   );
-});
+};

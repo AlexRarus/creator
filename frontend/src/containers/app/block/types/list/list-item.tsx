@@ -27,10 +27,10 @@ export const ListItem = (props: IProps) => {
   return (
     <ListItemWrapper template={template} fontSize={fontSize} iconSize={parseInt(iconSize)}>
       <ListItemIconWrapper>
-        <ListItemIconShape iconSize={iconSize}>
+        <ListItemIconShape iconSize={iconSize} borderRadius={item?.icon?.borderRadius}>
           {item.icon ? (
             <IconElement
-              src={`/media/${item.icon.src}`}
+              src={`/media/${item.icon?.preview || item.icon?.src}`}
               isLoaded={isLoadedIcon}
               onLoad={onLoadIcon}
             />

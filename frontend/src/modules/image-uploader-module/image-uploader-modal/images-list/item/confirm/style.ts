@@ -1,7 +1,18 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { COLORS } from 'src/components/theme';
 
-import { ButtonStyled } from './button/style';
+import { ButtonStyled } from '../button/style';
+
+export const ConfirmContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+`;
+
+export const ConfirmMessage = styled.div`
+  padding: 10px;
+`;
 
 export const DesktopButtonsList = styled.div`
   display: flex;
@@ -12,17 +23,12 @@ export const DesktopButtonsList = styled.div`
   margin-top: 20px;
 `;
 
-export const MobileButtonsListWrapper = styled.div`
-  padding: 0 10px 40px;
-  width: 100%;
-`;
-
 export const MobileButtonsList = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-  border: 1px solid ${COLORS.grey[400]};
-  border-radius: 2px;
+  max-width: 100%;
+  border-top: 1px solid ${COLORS.grey[400]};
   overflow: hidden;
   height: 50px;
 
@@ -36,14 +42,7 @@ export const MobileButtonsList = styled.div`
   }
 `;
 
-export const ActionsList = styled.div<{ width?: number }>`
-  display: flex;
-  flex-direction: column;
-  min-width: ${({ width }) => (width ? `${width}px` : 'auto')};
-  overflow: hidden;
-`;
-
-export const FormButtonsWrapper = styled.div`
+export const ButtonsWrapper = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;

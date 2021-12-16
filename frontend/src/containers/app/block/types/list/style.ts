@@ -9,6 +9,7 @@ export interface IListItemProps {
 
 export interface IListItemIconProps {
   iconSize?: string;
+  borderRadius?: number;
 }
 
 export const ListBlockWrapper = styled.div`
@@ -70,13 +71,14 @@ export const ListItemIconWrapper = styled.div`
 
 export const ListItemIconShape = styled.div<IListItemIconProps>`
   grid-area: icon;
-  width: ${({ iconSize }) => iconSize}px;
-  height: ${({ iconSize }) => iconSize}px;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 50%;
-  border: 1px solid ${COLORS.grey[400]};
+  width: ${({ iconSize }) => iconSize}px;
+  height: ${({ iconSize }) => iconSize}px;
+  border-radius: ${({ borderRadius }) => borderRadius}%;
+  background: ${COLORS.grey[300]};
   overflow: hidden;
 `;
 

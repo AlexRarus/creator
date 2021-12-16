@@ -4,7 +4,7 @@ import { useUploadImages, IUploadingFile } from 'src/api/hooks/submit-forms/imag
 
 import { DropZone } from './drop-zone';
 import { ImagesListWrapper, ImagesListGrid, ImagesListEmptyMessage } from './style';
-import { ImageItem, UploadingImageItem } from './item';
+import { ImageItem, UploadingImageItem, IAction } from './item';
 
 interface IProps {
   blockType: string;
@@ -12,10 +12,13 @@ interface IProps {
   onClickImage(image: IImage): void;
   selectedImages: IImage[];
   refreshImages: () => void;
+  deleteImage?(image: IImage): void;
+  updateImage?(image: IImage): void;
   emptyListMessage?: string;
   addButton?: boolean;
   isMulti?: boolean;
   dropZoneRefCallback?: any;
+  imageActions?: IAction[];
 }
 
 export const ImagesList = (props: IProps) => {
@@ -23,12 +26,15 @@ export const ImagesList = (props: IProps) => {
     blockType,
     images,
     onClickImage,
+    deleteImage,
+    updateImage,
     selectedImages,
     refreshImages,
     emptyListMessage,
     addButton = false,
     isMulti = false,
     dropZoneRefCallback,
+    imageActions,
   } = props;
   const [uploadImages, isLoading, uploadingImages, clear] = useUploadImages(blockType);
 
@@ -72,6 +78,10 @@ export const ImagesList = (props: IProps) => {
             isSelected={selectedImages.some(
               (selectedImage: IImage) => selectedImage.id === image.id
             )}
+            actions={imageActions}
+            blockType={blockType}
+            deleteImage={deleteImage}
+            updateImage={updateImage}
           />
         ))}
         {uploadingImages.map((uploadingImage: IUploadingFile) => (

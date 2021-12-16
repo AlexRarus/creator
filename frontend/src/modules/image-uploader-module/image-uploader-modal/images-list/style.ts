@@ -42,7 +42,7 @@ export const ImageItemWrapper = styled.div<{ isSelected?: boolean }>`
 `;
 
 export const DropZoneWrapper = styled.div<{ isDragActive: boolean }>`
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
   justify-content: center;

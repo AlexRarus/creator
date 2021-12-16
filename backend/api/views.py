@@ -218,6 +218,7 @@ class AvatarViewSet(
 class ImageViewSet(
     mixins.ListModelMixin,
     mixins.CreateModelMixin,
+    mixins.UpdateModelMixin,
     mixins.DestroyModelMixin,
     GenericViewSet,
 ):
@@ -236,6 +237,9 @@ class ImageViewSet(
         if self.action in ["destroy"]:
             # при удалении ждем массив ids в теле запроса
             return None
+        if self.action in ["update"]:
+            # при удалении ждем массив ids в теле запроса
+            return get_object_or_404(Image, pk=self.request.data.get("id"))
         return get_object_or_404(Image, pk=self.kwargs.get("pk"))
 
     def perform_create(self, serializer):

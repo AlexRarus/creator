@@ -10,10 +10,11 @@ interface IProps {
   isMulti?: boolean; // возможность выбора нескольких изображений
   value?: IImage | IImage[]; // список выбранных изображений
   onChange?(value?: IImage | IImage[]): void;
+  isEditable?: boolean; // возможность редактировать свои изображения
 }
 
 export const ImageUploaderModule = observer((props: IProps) => {
-  const { openerElement, onChange, blockType, value, isMulti } = props;
+  const { openerElement, onChange, blockType, value, isMulti, isEditable } = props;
   const [isOpenImageUploaderModal, setIsOpenImageUploaderModal] = useState(false);
 
   const openImageUploaderModal = () => setIsOpenImageUploaderModal(true);
@@ -44,6 +45,7 @@ export const ImageUploaderModule = observer((props: IProps) => {
           onClose={closeImageUploaderModal}
           onChange={onChangeHandler}
           isMulti={isMulti}
+          isEditable={isEditable}
         />
       )}
     </>

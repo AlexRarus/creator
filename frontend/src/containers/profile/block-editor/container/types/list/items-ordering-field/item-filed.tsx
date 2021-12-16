@@ -31,11 +31,16 @@ export const ItemField = (props: IProps) => {
     control,
   });
 
+  console.log('icon', icon);
+
   return (
     <ItemFieldWrapper iconSize={parseInt(iconSize)} template={template.value}>
       <ItemFieldIconWrapper>
-        <ItemFieldIconShape iconSize={iconSize} ref={iconRefCallback}>
-          {icon ? <IconElement src={`/media/${icon.src}`} /> : ''}
+        <ItemFieldIconShape
+          iconSize={iconSize}
+          ref={iconRefCallback}
+          borderRadius={icon?.borderRadius}>
+          {icon ? <IconElement src={`/media/${icon.preview || icon.src}`} /> : ''}
         </ItemFieldIconShape>
       </ItemFieldIconWrapper>
       <ItemFieldContent fontSize={fontSize.value}>
@@ -47,7 +52,7 @@ export const ItemField = (props: IProps) => {
         </ControlledField>
       </ItemFieldContent>
       <ControlledField name={`items.${index}.icon`} control={control}>
-        <ImageUploaderModule openerElement={iconElement} blockType='list' />
+        <ImageUploaderModule openerElement={iconElement} blockType='list' isEditable={true} />
       </ControlledField>
     </ItemFieldWrapper>
   );

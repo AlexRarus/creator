@@ -20,13 +20,6 @@ export const imagesTabs: ITab<TabValue>[] = [
 
 export const getMyImagesActions = (selectedImages: IImage[]): IAction[] => [
   {
-    id: 'delete',
-    label: 'Удалить выбранные',
-    kind: 'delete',
-    disabled: !selectedImages.length,
-    needConfirm: true,
-  },
-  {
     id: 'upload',
     label: 'Загрузить',
   },

@@ -10,6 +10,7 @@ export enum MobileSize {
   S = '40%', // от высоты экрана (ширина всегда 100%)
   M = '60%',
   L = '90%',
+  XL = '100%',
 }
 export enum DesktopSize {
   S = '480px', // ширина модалки
