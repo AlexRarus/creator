@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { IBlock } from 'src/dal/blocks/interfaces';
+import Button from 'src/components/button';
 import { IPage } from 'src/dal/pages/interfaces';
 import { useHistory } from 'react-router-dom';
 import PaletteIcon from '@mui/icons-material/Palette';
