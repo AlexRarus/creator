@@ -36,5 +36,5 @@ export const CollapsedListItemTitle = styled.div`
 
 export const CollapsedListItemDescription = styled.div`
   font-weight: normal;
-  white-space: pre;
+  white-space: pre-line;
 `;
