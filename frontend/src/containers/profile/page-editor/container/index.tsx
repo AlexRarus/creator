@@ -64,7 +64,7 @@ export const PageEditorContainer = observer((props: IProps) => {
   const [copyBlinkId, setCopyBlinkId] = useState<string>();
   const [isEditingLink, setEditingLink] = useState(false);
   const [inputLinkValue, setLinkValue] = useState(pageSlug);
-  const { replace, push } = useHistory();
+  const { replace } = useHistory();
   const isAuthor = useIsAuthor(username);
   const [initialized, setInitialized] = useState(false);
 
@@ -75,8 +75,6 @@ export const PageEditorContainer = observer((props: IProps) => {
   const onChangeLink = (value: string) => {
     setLinkValue(value);
   };
-
-  const toThemesPage = () => push(`/profile/${username}/themes/`);
 
   useEffect(() => {
     if (isAuthor) {
@@ -207,9 +205,7 @@ export const PageEditorContainer = observer((props: IProps) => {
                       </DeviceContainer>
                     </ScaleBlock>
                     <PreviewFooter>
-                      <AwesomeButton bubblesSize={12} onClick={toThemesPage}>
-                        Выберите тему
-                      </AwesomeButton>
+                      <AwesomeButton>Button</AwesomeButton>
                     </PreviewFooter>
                   </PreviewWrapper>
                 </GridColumn>
