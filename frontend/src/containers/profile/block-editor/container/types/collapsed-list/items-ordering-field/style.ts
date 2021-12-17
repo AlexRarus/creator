@@ -72,15 +72,8 @@ export const RemoveIconWrapper = styled.div<{ disabled: boolean }>`
 export const ItemFieldWrapper = styled.div`
   position: relative;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   width: 100%;
   padding: 10px;
   background: ${COLORS.white};
-`;
-
-export const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  font-size: 16px;
 `;

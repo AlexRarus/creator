@@ -8,12 +8,19 @@ export const CollapsedListBlockWrapper = styled.div`
 
 export const CollapsedListItemWrapper = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   width: 100%;
   font-size: 16px;
 `;
 
-export const CollapsedTrigger = styled.div<{ isExpand: boolean }>`
+export const TitleWrapper = styled.div<{ isExpand: boolean }>`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 16px;
+  width: 100%;
+  cursor: pointer;
+
   svg {
     cursor: pointer;
     font-size: 30px;
@@ -22,12 +29,12 @@ export const CollapsedTrigger = styled.div<{ isExpand: boolean }>`
   }
 `;
 
-export const Content = styled.div`
+export const DescriptionWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
   font-size: 16px;
-  padding: 5px 0 0 5px;
+  width: 100%;
+  padding-left: 30px;
 `;
 
 export const CollapsedListItemTitle = styled.div`
