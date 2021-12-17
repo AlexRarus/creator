@@ -24,6 +24,9 @@ export const DroppableList = (props: IProps) => {
   const { fields, onChangeOrder, onRemove } = props;
   const [expandItemId, setExpandItemId] = useState<any>(fields[0] && fields[0].id);
 
+  const onExpand = (itemId: any) => {
+    setExpandItemId(itemId);
+  };
   const onExpandToggle = (itemId: any) => {
     setExpandItemId(expandItemId === itemId ? null : itemId);
   };
@@ -78,6 +81,7 @@ export const DroppableList = (props: IProps) => {
                         item={item}
                         index={index}
                         isExpand={item.id === expandItemId}
+                        onExpand={onExpand}
                         onExpandToggle={onExpandToggle}
                       />
                       <DragIndicatorIconWrapper>

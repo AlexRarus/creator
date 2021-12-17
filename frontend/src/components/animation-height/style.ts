@@ -11,6 +11,7 @@ export const AnimationHeightWrapper = styled.div<IAnimationProps>`
   flex-direction: column;
   transition: height ${({ time }) => time}ms;
   height: ${({ height }) => (height === null ? 'auto' : `${height}px`)};
+  width: 100%;
   opacity: ${({ initialized }) => (initialized ? 1 : 0)};
   position: ${({ initialized }) => (initialized ? 'static' : 'absolute')};
   overflow: hidden;
