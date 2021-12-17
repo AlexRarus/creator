@@ -15,12 +15,12 @@ export const AwesomeButton = ({ onClick, children }: IProps) => {
     // reset animation
     setTimeout(function () {
       setAnimate(false);
+      onClick && onClick();
     }, 500);
   };
 
   const handleClick = () => {
     animateButton();
-    onClick && onClick();
   };
 
   return (
