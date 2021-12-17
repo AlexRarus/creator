@@ -4,6 +4,7 @@ import { TextForm } from './text';
 import { SectionForm } from './section';
 import { AvatarForm } from './avatar';
 import { ListForm } from './list';
+import { CollapsedListForm } from './collapsed-list';
 import { ButtonForm } from './button';
 
 interface IProps {
@@ -30,6 +31,8 @@ export const TargetTypeForm = (props: IProps) => {
       return <AvatarForm {...props} />;
     case 'list':
       return <ListForm {...props} />;
+    case 'collapsed_list':
+      return <CollapsedListForm {...props} />;
     case 'button':
       return <ButtonForm {...props} />;
     default:

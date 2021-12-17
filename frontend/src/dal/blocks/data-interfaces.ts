@@ -24,6 +24,7 @@ export interface ITextData {
   text: string;
 }
 
+// list
 export interface IListDataWrite {
   iconSize?: string;
   fontSize?: string;
@@ -49,4 +50,24 @@ export interface IListItem {
   title: string;
   description: string;
   icon?: IImage;
+}
+
+// collapsed list
+export interface ICollapsedListDataWrite {
+  items: ICollapsedListItemWrite[];
+}
+
+export interface ICollapsedListData {
+  items: IListItem[];
+}
+
+export interface ICollapsedListItemWrite {
+  title?: string;
+  description?: string;
+}
+
+export interface ICollapsedListItem {
+  id: number;
+  title: string;
+  description: string;
 }

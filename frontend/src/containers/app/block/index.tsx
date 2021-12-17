@@ -6,6 +6,7 @@ import { TextPreview } from './types/text';
 import { SectionPreview } from './types/section';
 import { AvatarPreview } from './types/avatar';
 import { ListPreview } from './types/list';
+import { CollapsedListPreview } from './types/collapsed-list';
 import { ButtonPreview } from './types/button';
 
 interface IProps {
@@ -26,6 +27,8 @@ export const TargetBlockTypePreview = (props: IProps) => {
       return <AvatarPreview selectedTheme={selectedTheme} {...props} />;
     case 'list':
       return <ListPreview selectedTheme={selectedTheme} {...props} />;
+    case 'collapsed_list':
+      return <CollapsedListPreview selectedTheme={selectedTheme} {...props} />;
     case 'button':
       return <ButtonPreview selectedTheme={selectedTheme} {...props} />;
     default:

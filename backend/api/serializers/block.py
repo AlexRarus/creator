@@ -1,5 +1,6 @@
 from api.models.block import Block
 from api.models.relations import PageBlockRelation
+from api.models.types.collapsed_list import CollapsedListItemBlock
 from api.models.types.list import ListItemBlock
 from api.serializers.avatar import AvatarSerializer
 from api.serializers.types.avatar import (
@@ -12,6 +13,11 @@ from api.serializers.types.button import (
     BlockButtonSerializerWrite,
     block_button_create,
     block_button_update,
+)
+from api.serializers.types.collapsed_list import (
+    BlockCollapsedListSerializer,
+    block_collapsed_list_create,
+    block_collapsed_list_update,
 )
 from api.serializers.types.list import (
     BlockListSerializer,
@@ -67,6 +73,8 @@ class BlockSerializerRead(serializers.ModelSerializer):
             return BlockAvatarSerializer(block.avatar).data
         if block.type.slug == "list":
             return BlockListSerializer(block.list).data
+        if block.type.slug == "collapsed_list":
+            return BlockCollapsedListSerializer(block.collapsed_list).data
 
     class Meta:
         model = Block
@@ -100,6 +108,8 @@ class BlockSerializerWrite(serializers.ModelSerializer):
             return BlockAvatarSerializer(block.avatar).data
         if block.type.slug == "list":
             return BlockListSerializer(block.list).data
+        if block.type.slug == "collapsed_list":
+            return BlockCollapsedListSerializer(block.collapsed_list).data
 
     def create(self, validated_data):
         page = validated_data.pop("page", None)
@@ -122,6 +132,8 @@ class BlockSerializerWrite(serializers.ModelSerializer):
                 block.avatar = block_avatar_create(data)
             elif block.type.slug == "list":
                 block.list = block_list_create(data)
+            elif block.type.slug == "collapsed_list":
+                block.collapsed_list = block_collapsed_list_create(data)
             else:
                 raise UnknowTypeError
 
@@ -158,6 +170,12 @@ class BlockSerializerWrite(serializers.ModelSerializer):
                     "listitemblockrelation__order"
                 ),
             ),
+            Prefetch(
+                "collapsed_list__items",
+                queryset=CollapsedListItemBlock.objects.order_by(
+                    "collapsedlistitemblockrelation__order"
+                ),
+            ),
         ).get(id=block.id)
 
     def update(self, block, validated_data):
@@ -177,6 +195,8 @@ class BlockSerializerWrite(serializers.ModelSerializer):
             block_avatar_update(block.avatar, data)
         elif block.type.slug == "list":
             block_list_update(block.list, data)
+        elif block.type.slug == "collapsed_list":
+            block_collapsed_list_update(block.collapsed_list, data)
         else:
             raise UnknowTypeError
 
@@ -190,6 +210,12 @@ class BlockSerializerWrite(serializers.ModelSerializer):
                 "list__items",
                 queryset=ListItemBlock.objects.order_by(
                     "listitemblockrelation__order"
+                ),
+            ),
+            Prefetch(
+                "collapsed_list__items",
+                queryset=CollapsedListItemBlock.objects.order_by(
+                    "collapsedlistitemblockrelation__order"
                 ),
             ),
         ).get(id=block.id)

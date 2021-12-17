@@ -101,8 +101,7 @@ export function AnimationHeight(props: IProps) {
       ref={targetRefCallback}
       height={currentHeight}
       initialized={initialized}
-      time={time}
-    >
+      time={time}>
       {children}
     </AnimationHeightWrapper>
   );

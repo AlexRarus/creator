@@ -1,10 +1,5 @@
 import { IBlock } from 'src/dal/blocks/interfaces';
-import {
-  IListDataWrite,
-  IListData,
-  IListItem,
-  IListItemWrite,
-} from 'src/dal/blocks/data-interfaces';
+import { IListDataWrite, IListData, IListItemWrite } from 'src/dal/blocks/data-interfaces';
 import { ITab } from 'src/components/tabs';
 import { IOption } from 'src/components/select';
 
@@ -68,7 +63,7 @@ export const prepareDataToFormValues = (block: IBlock<IListData> | null): FormIn
   template:
     templateOptions.find((option: IOption) => option.value === block?.data?.template) ||
     templateOptions[0],
-  items: block?.data?.items || [],
+  items: block?.data?.items || [{ id: Math.random(), title: '', description: '' }],
 });
 
 export enum TabValue {

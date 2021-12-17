@@ -45,6 +45,7 @@ export const TextareaComponent = styled.div<{
   disabled?: boolean;
   error?: any;
   isFocused?: boolean;
+  fontSizeInherit?: boolean;
 }>`
   ${({ disabled }) => css`
     background-color: ${disabled ? COLORS.grey[200] : COLORS.white};
@@ -57,6 +58,7 @@ export const TextareaComponent = styled.div<{
   display: flex;
   align-items: flex-end;
   padding: 6px 0;
+  font-size: ${({ fontSizeInherit }) => (fontSizeInherit ? 'inherit' : '16px')};
 `;
 
 export const TextareaElementAutoresize = styled(Textarea)`

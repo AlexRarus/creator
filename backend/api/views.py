@@ -16,6 +16,7 @@ from .models.page import Page
 from .models.relations import PageBlockRelation
 from .models.theme import Theme
 from .models.types.button import ButtonType
+from .models.types.collapsed_list import CollapsedListItemBlock
 from .models.types.list import ListItemBlock
 from .pagination import CustomPagination
 from .permissions import (
@@ -69,6 +70,12 @@ class PageViewSet(viewsets.ModelViewSet):
                 "blocks__list__items",
                 queryset=ListItemBlock.objects.order_by(
                     "listitemblockrelation__order"
+                ),
+            ),
+            Prefetch(
+                "blocks__collapsed_list__items",
+                queryset=CollapsedListItemBlock.objects.order_by(
+                    "collapsedlistitemblockrelation__order"
                 ),
             ),
         ).filter(author__username=author_username)

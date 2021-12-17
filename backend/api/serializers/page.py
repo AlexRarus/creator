@@ -1,6 +1,8 @@
 from api.models.block import Block
 from api.models.page import Page
 from api.models.relations import PageBlockRelation, SectionBlockRelation
+from api.models.types.collapsed_list import CollapsedListItemBlock
+from api.models.types.list import ListItemBlock
 from django.db.models import Prefetch
 from rest_framework import serializers
 
@@ -53,6 +55,22 @@ class PageWriteSerializer(serializers.ModelSerializer):
             Prefetch(
                 "blocks",
                 queryset=Block.objects.order_by("pageblockrelation__order"),
+            ),
+            Prefetch(
+                "blocks__section__blocks",
+                queryset=Block.objects.order_by("sectionblockrelation__order"),
+            ),
+            Prefetch(
+                "blocks__list__items",
+                queryset=ListItemBlock.objects.order_by(
+                    "listitemblockrelation__order"
+                ),
+            ),
+            Prefetch(
+                "blocks__collapsed_list__items",
+                queryset=CollapsedListItemBlock.objects.order_by(
+                    "collapsedlistitemblockrelation__order"
+                ),
             ),
         ).get(id=page.id)
 

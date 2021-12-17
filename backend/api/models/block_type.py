@@ -12,6 +12,8 @@ class BlockType(models.Model):
         ("section", "section"),
         ("avatar", "avatar"),
         ("list", "list"),
+        ("collapsed_list", "collapsed_list"),
+        ("separator", "separator"),
     )
     author = models.ForeignKey(
         User,

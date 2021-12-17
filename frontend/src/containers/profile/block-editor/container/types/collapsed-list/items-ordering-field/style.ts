@@ -2,11 +2,6 @@ import styled from 'styled-components';
 import { ITheme } from 'src/dal/themes/interface';
 import { rgba } from 'polished';
 import { COLORS } from 'src/components/theme';
-import {
-  IListItemProps,
-  IListItemIconProps,
-  getGridTemplateAreas,
-} from 'src/containers/app/block/types/list/style';
 
 export const ItemsOrderingFieldWrapper = styled.div`
   display: flex;
@@ -74,57 +69,18 @@ export const RemoveIconWrapper = styled.div<{ disabled: boolean }>`
   }
 `;
 
-export const ItemFieldWrapper = styled.div<IListItemProps>`
+export const ItemFieldWrapper = styled.div`
   position: relative;
-  grid-area: item-field;
-  display: grid;
-  ${getGridTemplateAreas};
+  display: flex;
+  flex-direction: row;
   width: 100%;
-  padding: 10px 10px 10px 0;
+  padding: 10px;
   background: ${COLORS.white};
 `;
 
-export const ItemFieldIconWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-`;
-
-export const ItemFieldIconShape = styled.div<IListItemIconProps>`
-  grid-area: icon;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: ${({ iconSize }) => iconSize}px;
-  height: ${({ iconSize }) => iconSize}px;
-  border-radius: ${({ borderRadius }) => borderRadius}%;
-  background: ${COLORS.grey[300]};
-  overflow: hidden;
-`;
-
-export const IconElement = styled.img`
-  max-width: 100%;
-  max-height: 100%;
-`;
-
-const getFontSize = (props: { fontSize: 's' | 'm' | 'l' }) => {
-  switch (props.fontSize) {
-    case 's':
-      return '14px';
-    case 'm':
-      return '16px';
-    case 'l':
-      return '18px';
-    default:
-      return '16px';
-  }
-};
-
-export const ItemFieldContent = styled.div<{ fontSize: 's' | 'm' | 'l' }>`
-  grid-area: content;
+export const Content = styled.div`
   display: flex;
   flex-direction: column;
-  font-size: ${getFontSize};
+  flex-grow: 1;
+  font-size: 16px;
 `;

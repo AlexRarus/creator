@@ -4,6 +4,7 @@ from django.db import models
 from .block_type import BlockType
 from .types.avatar import AvatarBlock
 from .types.button import Button
+from .types.collapsed_list import CollapsedListBlock
 from .types.list import ListBlock
 from .types.section import Section
 from .types.text import Text
@@ -65,6 +66,14 @@ class Block(models.Model):
         null=True,
         blank=True,
     )
+    collapsed_list = models.OneToOneField(
+        CollapsedListBlock,
+        verbose_name='Контент блока с типом "collapsed_list"',
+        related_name="block",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
 
     def delete(self, *args, **kwargs):
         if self.type.slug == "text" and self.text is not None:
@@ -78,6 +87,14 @@ class Block(models.Model):
         elif self.type.slug == "list" and self.list is not None:
             self.list.items.filter(lists=self.list).delete()
             self.list.delete()
+        elif (
+            self.type.slug == "collapsed_list"
+            and self.collapsed_list is not None
+        ):
+            self.collapsed_list.items.filter(
+                lists=self.collapsed_list
+            ).delete()
+            self.collapsed_list.delete()
 
         return super(self.__class__, self).delete(*args, **kwargs)
 
