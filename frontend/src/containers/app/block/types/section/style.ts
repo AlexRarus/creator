@@ -19,12 +19,6 @@ export const SectionBlock = styled.div<ISection>`
   padding-left: ${({ paddingLeft }) => paddingLeft}px;
   border-radius: ${({ borderRadius }) => borderRadius}px;
   background: ${({ background }) => background || 'inherit'};
-  ${({ backgroundUrl }) =>
-    backgroundUrl
-      ? css`
-          background-image: url(${backgroundUrl});
-          background-repeat: no-repeat;
-          background-size: contain;
-        `
-      : ''}
+  background-repeat: no-repeat;
+  background-size: cover;
 `;

@@ -16,7 +16,8 @@ export const ButtonKinds = (props: IProps) => {
   const { selectedTheme } = props;
   const { watch, setValue } = useFormContext(); // так как Fields рендерятся внутри FormProvider, в контексте доступны значения формы
   const selectedKind = watch('kind');
-  const buttons = prepareDataForKinds(buttonKinds, selectedKind);
+  const icon = watch('icon');
+  const buttons = prepareDataForKinds(buttonKinds, selectedKind, icon);
 
   const onChangeKind = (kind: string) => () => {
     setValue('kind', kind);

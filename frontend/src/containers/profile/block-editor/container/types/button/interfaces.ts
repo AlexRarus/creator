@@ -10,6 +10,12 @@ export interface FormInputs {
   };
   value: string;
   kind?: string;
+  icon?: IButtonIcon;
+}
+
+export interface IButtonIcon {
+  id: number;
+  src: string;
 }
 
 // входные значение с формы создание
@@ -23,4 +29,5 @@ export interface DataToServer {
   type: string;
   value: string;
   kind?: string;
+  icon?: IButtonIcon;
 }

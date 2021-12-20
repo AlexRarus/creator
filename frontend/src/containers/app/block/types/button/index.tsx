@@ -2,7 +2,16 @@ import React from 'react';
 import { IBlock } from 'src/dal/blocks/interfaces';
 import { ITheme } from 'src/dal/themes/interface';
 
-import { ButtonBlock, Title, SubTitle, WebLink, InnerLink, ButtonContent } from './style';
+import {
+  ButtonBlock,
+  Title,
+  SubTitle,
+  WebLink,
+  InnerLink,
+  ButtonContent,
+  IconTemplateButton,
+  IconElement,
+} from './style';
 
 interface IProps {
   block: IBlock<any>;
@@ -13,12 +22,16 @@ export const ButtonPreview = (props: IProps) => {
   const { block, selectedTheme } = props;
   const buttonType = block?.data?.type;
   const buttonValue = block?.data?.value;
+  const buttonIcon = block?.data?.icon;
 
   return (
-    <ButtonBlock {...selectedTheme?.button} kind={block?.data?.kind}>
+    <ButtonBlock {...selectedTheme?.button} kind={block?.data?.kind} isIcon={!!buttonIcon}>
       <TypeWrapper buttonType={buttonType} value={buttonValue}>
         <Title>{block?.data?.label}</Title>
         <SubTitle>{block?.data?.description}</SubTitle>
+        <IconTemplateButton>
+          {buttonIcon ? <IconElement src={`/media/${buttonIcon.preview || buttonIcon.src}`} /> : ''}
+        </IconTemplateButton>
       </TypeWrapper>
     </ButtonBlock>
   );

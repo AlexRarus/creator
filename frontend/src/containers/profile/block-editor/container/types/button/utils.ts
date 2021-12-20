@@ -21,6 +21,7 @@ export const prepareDataForServer = ({
     type: formInputs?.typeOption?.value,
     value: formInputs?.value,
     kind: formInputs?.kind,
+    icon: formInputs?.icon,
   },
   page_slug: pageSlug, // меняем поле для отправки на бэк
   type: blockType, // меняем поле для отправки на бэк
@@ -59,7 +60,7 @@ export const blockActions: IAction[] = [
   },
 ];
 
-export const prepareDataForKinds = (kindsList: any[], selectedKind?: string) =>
+export const prepareDataForKinds = (kindsList: any[], selectedKind?: string, icon?: any) =>
   kindsList.map((kind) => ({
     id: 0,
     type: 'button',
@@ -70,5 +71,6 @@ export const prepareDataForKinds = (kindsList: any[], selectedKind?: string) =>
       value: '',
       type: 'test_type',
       kind,
+      icon,
     },
   }));

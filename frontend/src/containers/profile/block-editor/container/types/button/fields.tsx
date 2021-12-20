@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Grid, GridColumn } from 'src/components/grid';
 import { ControlledField } from 'src/components/controlled-field';
 import { maxLength } from 'src/utils/validators';
 import InputText from 'src/components/input-text';
 import InputMask from 'src/components/input-mask';
+import { ImageUploaderModule } from 'src/modules/image-uploader-module';
+import { TargetBlockTypePreview } from 'src/containers/app/block';
+
+import { ITheme } from '../../../../../../dal/themes/interface';
 
 import { FormInputs } from './interfaces';
-import { Label, FakeLabel, ButtonSelectStyled } from './style';
+import { Label, FakeLabel, ButtonSelectStyled, RefTemplateButton } from './style';
 
 const inputLabelMap = {
   web: 'Ссылка:',
@@ -27,12 +31,30 @@ const placeholderMap = {
 interface IProps {
   buttonTypes: any[];
   formDefaultValues: FormInputs | null;
+  selectedTheme: ITheme | null;
 }
 
 export const ButtonFields = (props: IProps) => {
-  const { formDefaultValues, buttonTypes } = props;
+  const { formDefaultValues, buttonTypes, selectedTheme } = props;
+  const [iconElement, iconRefCallback] = useState<HTMLElement | null>(null);
   const { control, watch } = useFormContext(); // так как Fields рендерятся внутри FormProvider, в контексте доступны значения формы
   const typeOption = watch('typeOption');
+  const icon = watch('icon');
+  const kind = watch('kind');
+
+  const defaultButton = {
+    id: 0,
+    type: 'button',
+    author: {},
+    data: {
+      label: 'Заголовок',
+      description: 'Описание',
+      value: '',
+      type: 'test_type',
+      kind,
+      icon,
+    },
+  };
 
   return (
     <Grid
@@ -90,6 +112,15 @@ export const ButtonFields = (props: IProps) => {
             dimension='l'
             kind='formed'
           />
+        </ControlledField>
+      </GridColumn>
+      <GridColumn size={12}>
+        <Label>Выберите иконку:</Label>
+        <RefTemplateButton ref={iconRefCallback}>
+          <TargetBlockTypePreview selectedTheme={selectedTheme} block={defaultButton} />
+        </RefTemplateButton>
+        <ControlledField name={`icon`} control={control}>
+          <ImageUploaderModule openerElement={iconElement} blockType='list' isEditable={true} />
         </ControlledField>
       </GridColumn>
     </Grid>
