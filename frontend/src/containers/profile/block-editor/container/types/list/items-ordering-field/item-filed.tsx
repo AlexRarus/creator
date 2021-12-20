@@ -3,16 +3,11 @@ import { ControlledField } from 'src/components/controlled-field';
 import InputText from 'src/components/input-text';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { ImageUploaderModule } from 'src/modules/image-uploader-module';
+import { ImageIcon } from 'src/components/image-icon';
 
 import { IListItem } from '../interfaces';
 
-import {
-  ItemFieldWrapper,
-  ItemFieldIconWrapper,
-  IconElement,
-  ItemFieldIconShape,
-  ItemFieldContent,
-} from './style';
+import { ItemFieldWrapper, ItemFieldIconWrapper, ItemFieldContent } from './style';
 
 interface IProps {
   index: number;
@@ -34,12 +29,7 @@ export const ItemField = (props: IProps) => {
   return (
     <ItemFieldWrapper iconSize={parseInt(iconSize)} template={template.value}>
       <ItemFieldIconWrapper>
-        <ItemFieldIconShape
-          iconSize={iconSize}
-          ref={iconRefCallback}
-          borderRadius={icon?.borderRadius}>
-          {icon ? <IconElement src={`/media/${icon.preview || icon.src}`} /> : ''}
-        </ItemFieldIconShape>
+        <ImageIcon icon={icon} size={iconSize} ref={iconRefCallback} />
       </ItemFieldIconWrapper>
       <ItemFieldContent fontSize={fontSize.value}>
         <ControlledField name={`items.${index}.title`} control={control}>

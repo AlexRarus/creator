@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { IListItem } from 'src/dal/blocks/data-interfaces';
+import { ImageIcon } from 'src/components/image-icon';
 
 import {
   ListItemWrapper,
   ListItemContent,
   ListItemIconWrapper,
-  ListItemIconShape,
   ListItemTitle,
   ListItemDescription,
-  IconElement,
 } from './style';
 
 interface IProps {
@@ -20,24 +19,11 @@ interface IProps {
 
 export const ListItem = (props: IProps) => {
   const { item, template, fontSize, iconSize = '30' } = props;
-  const [isLoadedIcon, setIsLoadedIcon] = useState(false);
-
-  const onLoadIcon = () => setIsLoadedIcon(true);
 
   return (
     <ListItemWrapper template={template} fontSize={fontSize} iconSize={parseInt(iconSize)}>
       <ListItemIconWrapper>
-        <ListItemIconShape iconSize={iconSize} borderRadius={item?.icon?.borderRadius}>
-          {item.icon ? (
-            <IconElement
-              src={`/media/${item.icon?.preview || item.icon?.src}`}
-              isLoaded={isLoadedIcon}
-              onLoad={onLoadIcon}
-            />
-          ) : (
-            ''
-          )}
-        </ListItemIconShape>
+        <ImageIcon icon={item.icon} iconColor='red' size={parseInt(iconSize)} />
       </ListItemIconWrapper>
       <ListItemContent>
         <ListItemTitle>{item.title}</ListItemTitle>

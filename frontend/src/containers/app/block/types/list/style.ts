@@ -69,26 +69,6 @@ export const ListItemIconWrapper = styled.div`
   justify-content: center;
 `;
 
-export const ListItemIconShape = styled.div<IListItemIconProps>`
-  grid-area: icon;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: ${({ iconSize }) => iconSize}px;
-  height: ${({ iconSize }) => iconSize}px;
-  border-radius: ${({ borderRadius }) => borderRadius}%;
-  background: ${COLORS.grey[300]};
-  overflow: hidden;
-`;
-
-export const IconElement = styled.img<{ isLoaded: boolean }>`
-  transition: all 200ms ease-out;
-  opacity: ${({ isLoaded }) => (isLoaded ? 1 : 0)};
-  max-width: 100%;
-  max-height: 100%;
-`;
-
 export const ListItemContent = styled.div`
   grid-area: content;
   display: flex;

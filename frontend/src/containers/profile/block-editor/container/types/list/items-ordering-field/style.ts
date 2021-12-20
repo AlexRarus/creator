@@ -91,24 +91,6 @@ export const ItemFieldIconWrapper = styled.div`
   justify-content: center;
 `;
 
-export const ItemFieldIconShape = styled.div<IListItemIconProps>`
-  grid-area: icon;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: ${({ iconSize }) => iconSize}px;
-  height: ${({ iconSize }) => iconSize}px;
-  border-radius: ${({ borderRadius }) => borderRadius}%;
-  background: ${COLORS.grey[300]};
-  overflow: hidden;
-`;
-
-export const IconElement = styled.img`
-  max-width: 100%;
-  max-height: 100%;
-`;
-
 const getFontSize = (props: { fontSize: 's' | 'm' | 'l' }) => {
   switch (props.fontSize) {
     case 's':

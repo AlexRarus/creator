@@ -42,7 +42,6 @@ export const ImageItemOuter = styled.div<{
 export const ImageItemInner = styled.div<{
   isLoading?: boolean;
   isActive?: boolean;
-  borderRadius?: number;
 }>`
   position: relative;
   display: flex;
@@ -53,7 +52,6 @@ export const ImageItemInner = styled.div<{
   height: 100%;
   background: ${({ isActive }) => (isActive ? COLORS.blue[400] : COLORS.white)};
   overflow: hidden;
-  border-radius: ${({ borderRadius = 0 }) => borderRadius}%;
   transition: all 200ms ease-out;
 
   ${({ isLoading }) =>
@@ -64,8 +62,7 @@ export const ImageItemInner = styled.div<{
       : ''};
 `;
 
-export const ImageElement = styled.img<{ isLoaded?: boolean }>`
-  opacity: ${({ isLoaded = true }) => (isLoaded ? 1 : 0)};
+export const ImageLoader = styled.img`
   max-width: 100%;
   max-height: 100%;
 `;

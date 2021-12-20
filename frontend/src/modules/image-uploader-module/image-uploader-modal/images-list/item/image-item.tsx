@@ -4,12 +4,13 @@ import { IImage } from 'src/dal/images/interfaces';
 import Replies from 'src/components/replies';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Popup from 'src/components/popup';
+import { ImageIcon } from 'src/components/image-icon';
 import { isMobile } from 'react-device-detect';
 
 import { useMapStoreToProps } from '../../../selectors';
 import { ImageEditorModal } from '../../../image-editor-modal';
 
-import { ImageItemOuter, ImageItemInner, ImageElement, ActionsButton, ActionsList } from './style';
+import { ImageItemOuter, ImageItemInner, ActionsButton, ActionsList } from './style';
 import { ActionConfirmModal } from './confirm/action-confirm';
 import { ActionButton } from './action-button';
 import { MobileActions } from './mobile-actions';
@@ -50,7 +51,6 @@ export const ImageItem = observer((props: IProps) => {
     deleteImage,
     updateImage,
   } = props;
-  const [isLoaded, setIsLoaded] = useState(false);
   const [isOpenDesktopActions, setIsOpenDesktopActions] = useState(false);
   const [isOpenMobileActions, setIsOpenMobileActions] = useState(false);
   const [desktopActionsElement, desktopActionsRefCallback] = useState<HTMLElement | null>(null);
@@ -70,7 +70,6 @@ export const ImageItem = observer((props: IProps) => {
     }
   }, [desktopActionsElement, imageOuterElement]);
 
-  const onLoad = () => setIsLoaded(true);
   const onClick = (e: any) => {
     // если кликнули на экшены, то не снимаем выдиление картинки если оно было
     if (!e.defaultPrevented || !isSelected) {
@@ -156,14 +155,8 @@ export const ImageItem = observer((props: IProps) => {
             <ActionIcon action={actions[0]} />
           </ActionsButton>
         )}
-        <ImageItemInner
-          isActive={isOpenDesktopActions || isOpenMobileActions}
-          borderRadius={image?.borderRadius}>
-          <ImageElement
-            src={`/media/${image.preview || image.src}`}
-            onLoad={onLoad}
-            isLoaded={isLoaded}
-          />
+        <ImageItemInner isActive={isOpenDesktopActions || isOpenMobileActions}>
+          <ImageIcon image={image} />
           <Replies />
         </ImageItemInner>
       </ImageItemOuter>
