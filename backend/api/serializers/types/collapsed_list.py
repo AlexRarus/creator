@@ -37,11 +37,16 @@ class BlockCollapsedListSerializer(serializers.ModelSerializer):
 
 def block_collapsed_list_create(data):
     items = data.pop("items")
-    collapsed_list_instance = CollapsedListBlock.objects.create(**data)
+
+    serializer = BlockCollapsedListSerializer(data=data)
+    serializer.is_valid(raise_exception=True)
+    collapsed_list_instance = serializer.save()
 
     #  создаем и прикрепляем элементы к списку
     for order, item_data in enumerate(items):
-        item = CollapsedListItemBlock.objects.create(**item_data)
+        item_serializer = CollapsedListItemBlockSerializer(data=item_data)
+        item_serializer.is_valid(raise_exception=True)
+        item = item_serializer.save()
         CollapsedListItemBlockRelation.objects.create(
             list=collapsed_list_instance,
             item=item,
@@ -54,10 +59,10 @@ def block_collapsed_list_create(data):
 def block_collapsed_list_update(collapsed_list_instance, data):
     items = data.pop("items")
 
-    # обновляем только те свойства которые пришли
-    for attr, value in data.items():
-        setattr(collapsed_list_instance, attr, value)
-    collapsed_list_instance.save()
+    serializer = BlockCollapsedListSerializer(
+        collapsed_list_instance, data=data, partial=True
+    )
+    serializer.is_valid(raise_exception=True)
 
     # удаляем все элементы списка которые у него были раньше
     collapsed_list_instance.items.filter(
@@ -65,11 +70,13 @@ def block_collapsed_list_update(collapsed_list_instance, data):
     ).delete()
     # создаем и прикрепляем новые элементы к списку
     for order, item_data in enumerate(items):
-        item = CollapsedListItemBlock.objects.create(**item_data)
+        item_serializer = CollapsedListItemBlockSerializer(data=item_data)
+        item_serializer.is_valid(raise_exception=True)
+        item = item_serializer.save()
         CollapsedListItemBlockRelation.objects.create(
             list=collapsed_list_instance,
             item=item,
             order=order,
         )
 
-    return collapsed_list_instance
+    return serializer.save()

@@ -9,7 +9,7 @@ from rest_framework import serializers
 from ..image import ImageSerializer
 
 
-class ListItemBlockSerializer(serializers.ModelSerializer):
+class ListItemBlockSerializerRead(serializers.ModelSerializer):
     """
     Элемент списка
     """
@@ -26,12 +26,22 @@ class ListItemBlockSerializer(serializers.ModelSerializer):
         )
 
 
+class ListItemBlockSerializerWrite(serializers.ModelSerializer):
+    icon = serializers.PrimaryKeyRelatedField(
+        allow_null=True, required=False, queryset=Image.objects.all()
+    )
+
+    class Meta:
+        model = ListItemBlock
+        fields = "__all__"
+
+
 class BlockListSerializer(serializers.ModelSerializer):
     """
     Список
     """
 
-    items = ListItemBlockSerializer(read_only=True, many=True)
+    items = ListItemBlockSerializerRead(read_only=True, many=True)
 
     class Meta:
         model = ListBlock
@@ -46,11 +56,16 @@ class BlockListSerializer(serializers.ModelSerializer):
 
 def block_list_create(data):
     items = data.pop("items")
-    list_instance = ListBlock.objects.create(**data)
+
+    serializer = BlockListSerializer(data=data)
+    serializer.is_valid(raise_exception=True)
+    list_instance = serializer.save()
 
     #  создаем и прикрепляем элементы к списку
     for order, item_data in enumerate(items):
-        item = ListItemBlock.objects.create(**item_data)
+        item_serializer = ListItemBlockSerializerWrite(data=item_data)
+        item_serializer.is_valid(raise_exception=True)
+        item = item_serializer.save()
         ListItemBlockRelation.objects.create(
             list=list_instance,
             item=item,
@@ -63,29 +78,21 @@ def block_list_create(data):
 def block_list_update(list_instance, data):
     items = data.pop("items")
 
-    # обновляем только те свойства которые пришли
-    for attr, value in data.items():
-        setattr(list_instance, attr, value)
-    list_instance.save()
+    serializer = BlockListSerializer(list_instance, data=data, partial=True)
+    serializer.is_valid(raise_exception=True)
 
     # удаляем все элементы списка которые у него были раньше
     list_instance.items.filter(lists=list_instance).delete()
     # создаем и прикрепляем новые элементы к списку
     for order, item_data in enumerate(items):
-        icon_id = item_data.pop("icon", None)
-        icon = None
+        item_serializer = ListItemBlockSerializerWrite(data=item_data)
+        item_serializer.is_valid(raise_exception=True)
+        item = item_serializer.save()
 
-        if icon_id is not None:
-            try:
-                icon = Image.objects.get(id=icon_id)
-            except Image.DoesNotExist:
-                icon = None
-
-        item = ListItemBlock.objects.create(**item_data, icon=icon)
         ListItemBlockRelation.objects.create(
             list=list_instance,
             item=item,
             order=order,
         )
 
-    return list_instance
+    return serializer.save()

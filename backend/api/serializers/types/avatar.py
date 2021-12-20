@@ -9,12 +9,15 @@ class BlockAvatarSerializer(serializers.ModelSerializer):
 
 
 def block_avatar_create(data):
-    return AvatarBlock.objects.create(**data)
+    serializer = BlockAvatarSerializer(data=data)
+    serializer.is_valid(raise_exception=True)
+    return serializer.save()
 
 
 def block_avatar_update(avatar_instance, data):
-    # обновляем только те свойства которые пришли
-    for attr, value in data.items():
-        setattr(avatar_instance, attr, value)
+    serializer = BlockAvatarSerializer(
+        avatar_instance, data=data, partial=True
+    )
+    serializer.is_valid(raise_exception=True)
 
-    avatar_instance.save()
+    return serializer.save()

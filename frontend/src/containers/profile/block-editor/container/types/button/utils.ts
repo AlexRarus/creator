@@ -18,7 +18,7 @@ export const prepareDataForServer = ({
   data: {
     label: formInputs.label,
     description: formInputs.description,
-    type: formInputs?.typeOption?.value,
+    type: formInputs?.typeOption,
     value: formInputs?.value,
     kind: formInputs?.kind,
     icon: formInputs?.icon?.id, // при прикреплении изображения нужно отправить его id

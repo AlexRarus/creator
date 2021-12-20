@@ -9,12 +9,13 @@ class BlockTextSerializer(serializers.ModelSerializer):
 
 
 def block_text_create(data):
-    return Text.objects.create(**data)
+    serializer = BlockTextSerializer(data=data)
+    serializer.is_valid(raise_exception=True)
+    return serializer.save()
 
 
 def block_text_update(text_instance, data):
-    # обновляем только те свойства которые пришли
-    for attr, value in data.items():
-        setattr(text_instance, attr, value)
+    serializer = BlockTextSerializer(text_instance, data=data, partial=True)
+    serializer.is_valid(raise_exception=True)
 
-    text_instance.save()
+    return serializer.save()

@@ -65,9 +65,11 @@ class BlockSerializerRead(serializers.ModelSerializer):
         if block.type.slug == "button":
             return BlockButtonSerializerRead(block.button).data
         if block.type.slug == "section":
-            from api.serializers.types.section import BlockSectionSerializer
+            from api.serializers.types.section import (
+                BlockSectionSerializerRead,
+            )
 
-            return BlockSectionSerializer(block.section).data
+            return BlockSectionSerializerRead(block.section).data
         if block.type.slug == "avatar":
             return BlockAvatarSerializer(block.avatar).data
         if block.type.slug == "list":
@@ -100,9 +102,11 @@ class BlockSerializerWrite(serializers.ModelSerializer):
         if block.type.slug == "button":
             return BlockButtonSerializerRead(block.button).data
         if block.type.slug == "section":
-            from api.serializers.types.section import BlockSectionSerializer
+            from api.serializers.types.section import (
+                BlockSectionSerializerRead,
+            )
 
-            return BlockSectionSerializer(block.section).data
+            return BlockSectionSerializerRead(block.section).data
         if block.type.slug == "avatar":
             return BlockAvatarSerializer(block.avatar).data
         if block.type.slug == "list":

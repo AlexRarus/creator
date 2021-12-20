@@ -4,10 +4,7 @@ import { AdditionalData } from '../../interfaces';
 export interface FormInputs {
   label: string;
   description: string;
-  typeOption: {
-    value: string;
-    [key: string]: any;
-  };
+  typeOption: string;
   value: string;
   kind?: string;
   icon?: IButtonIcon;

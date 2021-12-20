@@ -66,6 +66,8 @@ export const ButtonForm = observer((props: IProps) => {
       rawData.index = blockIndex;
     }
 
+    console.log('formInputs', formInputs);
+
     await submitBlockEditor(prepareDataForServer(rawData));
   };
 

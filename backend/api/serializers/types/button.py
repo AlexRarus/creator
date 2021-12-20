@@ -1,3 +1,4 @@
+from api.models.image import Image
 from api.models.types.button import Button, ButtonType
 from rest_framework import serializers
 
@@ -33,19 +34,29 @@ class BlockButtonSerializerRead(serializers.ModelSerializer):
         )
 
 
+class BlockButtonSerializerWrite(serializers.ModelSerializer):
+    type = serializers.SlugRelatedField(
+        slug_field="slug", queryset=ButtonType.objects.all()
+    )
+    icon = serializers.PrimaryKeyRelatedField(
+        allow_null=True, required=False, queryset=Image.objects.all()
+    )
+
+    class Meta:
+        model = Button
+        fields = "__all__"
+
+
 def block_button_create(data):
-    button_type_slug = data.pop("type")
-    button_type = ButtonType.objects.get(slug=button_type_slug)
-    return Button.objects.create(**data, type=button_type)
+    serializer = BlockButtonSerializerWrite(data=data)
+    serializer.is_valid(raise_exception=True)
+    return serializer.save()
 
 
 def block_button_update(button_instance, data):
-    # обновляем только те свойства которые пришли
-    for attr, value in data.items():
-        setattr(button_instance, attr, value)
+    serializer = BlockButtonSerializerWrite(
+        button_instance, data=data, partial=True
+    )
+    serializer.is_valid(raise_exception=True)
 
-    # в type кнопки придет slug а нужен pk
-    if data.get("type") is not None:
-        button_instance.type = ButtonType.objects.get(slug=data.get("type"))
-
-    button_instance.save()
+    return serializer.save()
