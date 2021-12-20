@@ -21,6 +21,7 @@ import {
   PictureCell,
   Label,
 } from './style';
+import { getColorsFromString, getPictureUrlFromString, getInitialBackgroundType } from './utils';
 
 interface IProps {
   formDefaultValues: FormInputs | null;
@@ -42,12 +43,23 @@ const backgroundTypes = [
 ];
 
 export const SectionFields = (props: IProps) => {
-  const [backgroundType, setBackgroundType] = useState('background');
-  const [firstColor, setFirstColor] = useState('#ffffff');
-  const [secondColor, setSecondColor] = useState('#ffffff');
-  const [picture, setPicture] = useState<any>();
-  const [pictureElement, pictureRefCallback] = useState<HTMLElement | null>(null);
   const { formDefaultValues } = props;
+  // находим несколько цветов в строке например linear-gradient(#ffffff, #111111) => ['#ffffff', '#111111'];
+  const initialColorsArray = getColorsFromString(formDefaultValues?.background);
+  // находим url картинки в строке который начинается с /images например url('/media/images/213.png') => ['/images/213/png'];
+  const initialUrlArray = getPictureUrlFromString(formDefaultValues?.background);
+  const initialFirstColor = initialColorsArray?.[0];
+  const initialSecondColor = initialColorsArray?.[1];
+  const initialPictureUrl = initialUrlArray?.[0] || undefined;
+
+  // для редактирования нужно выбрать начальный тип фона
+  const [backgroundType, setBackgroundType] = useState(
+    getInitialBackgroundType(initialFirstColor, initialSecondColor, initialPictureUrl)
+  );
+  const [firstColor, setFirstColor] = useState(initialFirstColor || '#ffffff');
+  const [secondColor, setSecondColor] = useState(initialSecondColor || '#ffffff');
+  const [picture, setPicture] = useState<any>({ src: initialPictureUrl });
+  const [pictureElement, pictureRefCallback] = useState<HTMLElement | null>(null);
   const { control, setValue } = useFormContext(); // так как Fields рендерятся внутри FormProvider, в контексте доступны значения формы
 
   useEffect(() => {
