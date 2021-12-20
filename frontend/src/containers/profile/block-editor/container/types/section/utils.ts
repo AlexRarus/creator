@@ -59,3 +59,22 @@ export const blockActions: IAction[] = [
     needConfirm: true,
   },
 ];
+
+export const getColorsFromString = (str?: string) =>
+  str ? str.match(/#(?:[0-9a-f]{3}){1,2}/gi) : [];
+export const getPictureUrlFromString = (str?: string) =>
+  str
+    ? str.match(
+        /\/images(|<(?:link|script|img)[^>]+(?:src|href)\s*=\s*)(?!['"]?(?:data|http))['"]?([^'")\s>]+)/g
+      )
+    : [];
+
+export const getInitialBackgroundType = (firstColor: any, secondColor: any, pictureUrl: any) => {
+  if (pictureUrl) {
+    return 'picture';
+  }
+  if (secondColor) {
+    return 'gradient';
+  }
+  return 'background';
+};

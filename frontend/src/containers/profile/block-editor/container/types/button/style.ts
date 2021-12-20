@@ -1,6 +1,12 @@
 import styled from 'styled-components';
 import ButtonSelect from 'src/components/button-select';
-// import { ITheme } from 'src/dal/themes/interface';
+import { COLORS } from 'src/components/theme';
+import {
+  IListItemProps,
+  IListItemIconProps,
+  getGridTemplateAreas,
+} from 'src/containers/app/block/types/list/style';
+// import { COLORS } from 'src/dal/themes/interface';
 
 export const ButtonFormWrapper = styled.div`
   display: flex;
@@ -31,5 +37,9 @@ export const KindsList = styled.div`
 `;
 
 export const KindWrapper = styled.div`
+  width: 100%;
+`;
+
+export const RefTemplateButton = styled.div`
   width: 100%;
 `;

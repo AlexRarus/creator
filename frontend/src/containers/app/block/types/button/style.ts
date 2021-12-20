@@ -2,6 +2,8 @@ import styled, { css, keyframes } from 'styled-components';
 import { rgba, darken, lighten } from 'polished';
 import { Link } from 'react-router-dom';
 
+import { IListItemIconProps } from '../list/style';
+
 interface IButton {
   background?: string;
   borderRadius?: string;
@@ -469,6 +471,7 @@ const getStyledButtonImpact = (kind?: string, background = '#fff') => {
 };
 
 export const ButtonBlock = styled.button<IButton>`
+  position: relative;
   display: flex;
   border-style: none;
   text-decoration: none;
@@ -479,6 +482,7 @@ export const ButtonBlock = styled.button<IButton>`
   color: ${({ color }) => color};
   background: ${({ background }) => background || 'inherit'};
   cursor: pointer;
+  ${({ isIcon }) => isIcon && 'padding-left: 44px;'}
   ${({ background, kind }) => getStyledButtonImpact(kind, background)}
 `;
 
@@ -522,4 +526,23 @@ export const ButtonContent = styled.div`
   justify-content: center;
   width: 100%:
   height: 100%;
+`;
+
+export const IconTemplateButton = styled.div<IListItemIconProps>`
+  grid-area: icon;
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  overflow: hidden;
+`;
+
+export const IconElement = styled.img`
+  max-width: 100%;
+  max-height: 100%;
 `;

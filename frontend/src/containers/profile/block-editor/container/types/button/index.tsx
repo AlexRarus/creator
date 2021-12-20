@@ -119,7 +119,11 @@ export const ButtonForm = observer((props: IProps) => {
         <FormProvider {...methods}>
           <FormWrapper>
             <TabContainer value={TabValue.button} activeTabValue={activeTab.value}>
-              <ButtonFields buttonTypes={buttonTypes} formDefaultValues={formDefaultValues?.data} />
+              <ButtonFields
+                selectedTheme={selectedTheme}
+                buttonTypes={buttonTypes}
+                formDefaultValues={formDefaultValues?.data}
+              />
             </TabContainer>
             <TabContainer value={TabValue.kind} activeTabValue={activeTab.value}>
               <ButtonKinds selectedTheme={selectedTheme} />
