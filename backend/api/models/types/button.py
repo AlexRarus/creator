@@ -1,6 +1,8 @@
 from api.models.pricing_plan import PricingPlan
 from django.db import models
 
+from ..image import Image
+
 
 class ButtonType(models.Model):
     slug = models.SlugField(
@@ -14,6 +16,14 @@ class ButtonType(models.Model):
         verbose_name="Тарифный план",
         related_name="button_types",
         null=True,
+    )
+    icon = models.ForeignKey(
+        Image,
+        related_name="buttons",
+        verbose_name="Иконка",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
     )
 
     def __str__(self):

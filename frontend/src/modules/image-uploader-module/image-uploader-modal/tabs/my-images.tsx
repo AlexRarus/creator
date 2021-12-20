@@ -33,31 +33,33 @@ const getImageActions = (isEditable: boolean) => {
 };
 
 interface IProps {
-  blockType: string;
   setSelectedImages(images: IImage[]): void;
   selectedImages: IImage[];
   emptyListMessage?: string;
   dropZoneRefCallback?: any;
   isEditable?: boolean;
   isMulti?: boolean;
+  blockType?: string; // для какого типа блока запросить (создать) изображения
+  tags?: string[]; // с какими тегами запросить (создать) изображения
 }
 
 export const MyImagesList = observer((props: IProps) => {
   const {
-    blockType,
     setSelectedImages,
     selectedImages,
     dropZoneRefCallback,
     isEditable = false,
     isMulti = false,
+    blockType,
+    tags,
   } = props;
-  const { myImages, getMyImagesByBlockTypeAction } = useMapStoreToProps();
+  const { myImages, getMyImagesAction } = useMapStoreToProps();
 
   useEffect(() => {
-    getMyImagesByBlockTypeAction(blockType);
-  }, [blockType]);
+    getMyImagesAction(blockType, tags);
+  }, [blockType, tags]);
 
-  const refreshImages = () => getMyImagesByBlockTypeAction(blockType);
+  const refreshImages = () => getMyImagesAction(blockType, tags);
 
   const onClickImage = (image: IImage) => {
     const imageHasSelected = selectedImages.some(

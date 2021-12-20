@@ -3,22 +3,17 @@ from api.models.image import Image, ImageTag
 from rest_framework import serializers
 
 
-class ImageTagSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ImageTag
-        fields = (
-            "label",
-            "slug",
-        )
-
-
 class ImageSerializer(serializers.ModelSerializer):
     block_types = serializers.SlugRelatedField(
         slug_field="slug",
         many=True,
         queryset=BlockType.objects.all(),
     )
-    tags = ImageTagSerializer(read_only=True, many=True)
+    tags = serializers.SlugRelatedField(
+        slug_field="slug",
+        many=True,
+        queryset=ImageTag.objects.all(),
+    )
 
     # При создании или редактировании картинки присылать поле file
     file = serializers.FileField(
@@ -42,7 +37,7 @@ class ImageSerializer(serializers.ModelSerializer):
         use_url=False,
         read_only=True,
     )
-    # При чтении будет приходить поле src
+    # При чтении будет приходить поле preview
     preview = serializers.FileField(
         source="previewFile",
         use_url=False,
@@ -50,8 +45,10 @@ class ImageSerializer(serializers.ModelSerializer):
     )
 
     def update(self, image, validated_data):
-        # вытаскиваем block_types из данных чтобы его нельзя было поменять
+        # вытаскиваем block_types и tags из данных
+        # чтобы его нельзя было поменять
         validated_data.pop("block_types")
+        validated_data.pop("tags")
         # Перезаписываем только те поля которые были переданы
         for attr, value in validated_data.items():
             setattr(image, attr, value)

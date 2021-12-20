@@ -29,18 +29,20 @@ export interface IAction {
 }
 
 interface IProps {
-  blockType: string;
   image: IImage;
   onClickImage(image: IImage): void;
   isSelected: boolean;
   actions?: IAction[];
   deleteImage?(image: IImage): void;
   updateImage?(image: IImage): void;
+  blockType?: string; // для какого типа блока запросить (создать) изображения
+  tags?: string[]; // с какими тегами запросить (создать) изображения
 }
 
 export const ImageItem = observer((props: IProps) => {
   const {
     blockType,
+    tags,
     image,
     onClickImage,
     isSelected,
@@ -57,7 +59,7 @@ export const ImageItem = observer((props: IProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [imageOuterElement, imageOuterRefCallback] = useState<HTMLElement | null>(null);
   const [imageOuterWidth, setImageOuterWidth] = useState(100);
-  const { deleteMyImagesAction, getMyImagesByBlockTypeAction } = useMapStoreToProps();
+  const { deleteMyImagesAction, getMyImagesAction } = useMapStoreToProps();
 
   useEffect(() => {
     if (desktopActionsElement) {
@@ -81,7 +83,7 @@ export const ImageItem = observer((props: IProps) => {
   const onAction = (actionId: string) => {
     switch (actionId) {
       case 'delete':
-        deleteMyImagesAction(blockType, [image]);
+        deleteMyImagesAction([image], blockType, tags);
         deleteImage && deleteImage(image);
         break;
       case 'edit':
@@ -92,7 +94,7 @@ export const ImageItem = observer((props: IProps) => {
     }
   };
   const onSuccessEditing = (image: IImage) => {
-    getMyImagesByBlockTypeAction(blockType);
+    getMyImagesAction(blockType, tags);
     updateImage && updateImage(image);
   };
 

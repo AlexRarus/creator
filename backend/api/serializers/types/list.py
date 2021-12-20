@@ -72,12 +72,12 @@ def block_list_update(list_instance, data):
     list_instance.items.filter(lists=list_instance).delete()
     # создаем и прикрепляем новые элементы к списку
     for order, item_data in enumerate(items):
-        icon_data = item_data.pop("icon", None)
+        icon_id = item_data.pop("icon", None)
         icon = None
 
-        if icon_data is not None:
+        if icon_id is not None:
             try:
-                icon = Image.objects.get(id=icon_data["id"])
+                icon = Image.objects.get(id=icon_id)
             except Image.DoesNotExist:
                 icon = None
 

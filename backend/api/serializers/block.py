@@ -10,7 +10,6 @@ from api.serializers.types.avatar import (
 )
 from api.serializers.types.button import (
     BlockButtonSerializerRead,
-    BlockButtonSerializerWrite,
     block_button_create,
     block_button_update,
 )
@@ -99,7 +98,7 @@ class BlockSerializerWrite(serializers.ModelSerializer):
         if block.type.slug == "text":
             return BlockTextSerializer(block.text).data
         if block.type.slug == "button":
-            return BlockButtonSerializerWrite(block.button).data
+            return BlockButtonSerializerRead(block.button).data
         if block.type.slug == "section":
             from api.serializers.types.section import BlockSectionSerializer
 

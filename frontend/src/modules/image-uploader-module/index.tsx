@@ -6,7 +6,8 @@ import { ImageUploaderModal } from './image-uploader-modal';
 
 interface IProps {
   openerElement: HTMLElement | null;
-  blockType: string;
+  blockType?: string; // для какого типа блока запросить (создать) изображения
+  tags?: string[]; // с какими тегами запросить (создать) изображения
   isMulti?: boolean; // возможность выбора нескольких изображений
   value?: IImage | IImage[]; // список выбранных изображений
   onChange?(value?: IImage | IImage[]): void;
@@ -14,7 +15,7 @@ interface IProps {
 }
 
 export const ImageUploaderModule = observer((props: IProps) => {
-  const { openerElement, onChange, blockType, value, isMulti, isEditable } = props;
+  const { openerElement, onChange, blockType, tags, value, isMulti, isEditable } = props;
   const [isOpenImageUploaderModal, setIsOpenImageUploaderModal] = useState(false);
 
   const openImageUploaderModal = () => setIsOpenImageUploaderModal(true);
@@ -41,6 +42,7 @@ export const ImageUploaderModule = observer((props: IProps) => {
       {isOpenImageUploaderModal && (
         <ImageUploaderModal
           blockType={blockType}
+          tags={tags}
           value={value}
           onClose={closeImageUploaderModal}
           onChange={onChangeHandler}

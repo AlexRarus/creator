@@ -7,7 +7,6 @@ import { ImagesListWrapper, ImagesListGrid, ImagesListEmptyMessage } from './sty
 import { ImageItem, UploadingImageItem, IAction } from './item';
 
 interface IProps {
-  blockType: string;
   images: IImage[];
   onClickImage(image: IImage): void;
   selectedImages: IImage[];
@@ -19,11 +18,14 @@ interface IProps {
   isMulti?: boolean;
   dropZoneRefCallback?: any;
   imageActions?: IAction[];
+  blockType?: string; // для какого типа блока запросить (создать) изображения
+  tags?: string[]; // с какими тегами запросить (создать) изображения
 }
 
 export const ImagesList = (props: IProps) => {
   const {
     blockType,
+    tags,
     images,
     onClickImage,
     deleteImage,
@@ -36,7 +38,7 @@ export const ImagesList = (props: IProps) => {
     dropZoneRefCallback,
     imageActions,
   } = props;
-  const [uploadImages, isLoading, uploadingImages, clear] = useUploadImages(blockType);
+  const [uploadImages, isLoading, uploadingImages, clear] = useUploadImages(blockType, tags);
 
   useEffect(() => {
     if (!isLoading && uploadingImages.length) {

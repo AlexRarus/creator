@@ -12,7 +12,7 @@ export interface IUploadingFile {
   data: null | IImage; // доступна только при успешной выгрузке
 }
 
-export const useUploadImages = (blockType: string) => {
+export const useUploadImages = (blockType?: string, tags?: string[]) => {
   const [isLoading, setIsLoading] = useState(false);
   const [uploadingFiles, setUploadingFiles] = useState<IUploadingFile[]>([]);
 
@@ -35,7 +35,16 @@ export const useUploadImages = (blockType: string) => {
       files.map(async (file: File) => {
         const formData = new FormData();
         formData.append('file', file as File);
-        formData.append('block_types', blockType);
+
+        // прикрепляем тип блока если есть
+        if (blockType) {
+          formData.append('block_types', blockType);
+        }
+
+        // прикрепляем теги если есть
+        tags?.forEach((tag: string) => {
+          formData.append('tags', tag);
+        });
 
         try {
           const response: AxiosResponse<any> = await API.endpoints.images.createImage(formData);

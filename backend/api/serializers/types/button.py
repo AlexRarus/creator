@@ -1,6 +1,8 @@
 from api.models.types.button import Button, ButtonType
 from rest_framework import serializers
 
+from ..image import ImageSerializer
+
 
 class ButtonTypeSerializerRead(serializers.ModelSerializer):
     pricingPlan = serializers.CharField(
@@ -17,6 +19,7 @@ class ButtonTypeSerializerRead(serializers.ModelSerializer):
 
 class BlockButtonSerializerRead(serializers.ModelSerializer):
     type = serializers.CharField(read_only=True, source="type.slug")
+    icon = ImageSerializer()
 
     class Meta:
         model = Button
@@ -26,22 +29,7 @@ class BlockButtonSerializerRead(serializers.ModelSerializer):
             "kind",
             "type",
             "value",
-        )
-
-
-class BlockButtonSerializerWrite(serializers.ModelSerializer):
-    type = serializers.PrimaryKeyRelatedField(
-        queryset=ButtonType.objects.all()
-    )
-
-    class Meta:
-        model = Button
-        fields = (
-            "label",
-            "description",
-            "kind",
-            "type",
-            "value",
+            "icon",
         )
 
 

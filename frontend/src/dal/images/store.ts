@@ -29,10 +29,14 @@ export default class DalImagesStore {
     makeAutoObservable(this, {}, { autoBind: true });
   }
 
-  getMyImagesByBlockTypeAction = flow(function* (this: DalImagesStore, blockType: string) {
+  getMyImagesAction = flow(function* (this: DalImagesStore, block_type?: string, tags?: string[]) {
     try {
       this.isLoadingMyImages = true;
-      const response = yield this.API.getMyImagesByBlockType(blockType);
+      const params = {
+        block_type,
+        tags,
+      };
+      const response = yield this.API.getMyImages(params);
       this.myImagesTotal = response.data?.total || 0;
       this.myImages = response.data?.list || null;
 
@@ -43,10 +47,20 @@ export default class DalImagesStore {
     }
   });
 
-  getCommonImagesByBlockTypeAction = flow(function* (this: DalImagesStore, blockType: string) {
+  getCommonImagesAction = flow(function* (
+    this: DalImagesStore,
+    block_type?: string,
+    tags?: string[],
+    search?: string
+  ) {
     try {
       this.isLoadingCommonImages = true;
-      const response = yield this.API.getCommonImagesByBlockType(blockType);
+      const params = {
+        block_type,
+        tags,
+        search,
+      };
+      const response = yield this.API.getCommonImages(params);
       this.commonImagesTotal = response.data?.total || 0;
       this.commonImages = response.data?.list || null;
 
@@ -59,12 +73,13 @@ export default class DalImagesStore {
 
   deleteMyImagesAction = flow(function* (
     this: DalImagesStore,
-    blockType: string,
-    deletingImages: IImage[]
+    deletingImages: IImage[],
+    block_type?: string,
+    tags?: string[]
   ) {
     try {
       yield this.API.deleteImages(deletingImages.map((image: IImage) => image.id));
-      yield this.getMyImagesByBlockTypeAction(blockType);
+      yield this.getMyImagesAction(block_type, tags);
     } catch (e) {
       console.log('deleteMyImagesAction', e);
     }

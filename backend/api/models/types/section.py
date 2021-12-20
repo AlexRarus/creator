@@ -3,6 +3,8 @@ import uuid
 from django.contrib.auth import get_user_model
 from django.db import models
 
+from ..image import Image
+
 User = get_user_model()
 
 
@@ -42,6 +44,14 @@ class Section(models.Model):
     background = models.CharField(
         verbose_name="Цвет фона",
         max_length=255,
+        null=True,
+        blank=True,
+    )
+    backgroundImage = models.ForeignKey(
+        Image,
+        related_name="sections",
+        verbose_name="Фоновое изображение",
+        on_delete=models.SET_NULL,
         null=True,
         blank=True,
     )

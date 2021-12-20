@@ -12,9 +12,10 @@ export type { ITab } from 'src/components/tabs';
 export { TabValue } from './utils';
 
 interface IProps {
-  blockType: string;
   onClose(): void;
   onChange(value?: IImage | IImage[]): void;
+  blockType?: string; // для какого типа блока запросить (создать) изображения
+  tags?: string[]; // с какими тегами запросить (создать) изображения
   value?: IImage | IImage[];
   isMulti?: boolean;
   tabs?: ITab<TabValue>[];
@@ -35,6 +36,7 @@ export const ImageUploaderModal = (props: IProps) => {
     onChange,
     onClose,
     blockType,
+    tags,
     value: initValue,
     isMulti = false,
     tabs: initTabs = imagesTabs,
@@ -77,6 +79,7 @@ export const ImageUploaderModal = (props: IProps) => {
           {activeTab.value === TabValue.common && (
             <CommonImagesList
               blockType={blockType}
+              tags={tags}
               selectedImages={commonSelectedImages}
               setSelectedImages={setCommonSelectedImages}
               emptyListMessage='Нет доступных изображений'
@@ -88,6 +91,7 @@ export const ImageUploaderModal = (props: IProps) => {
           {activeTab.value === TabValue.my && (
             <MyImagesList
               blockType={blockType}
+              tags={tags}
               selectedImages={mySelectedImages}
               setSelectedImages={setMySelectedImages}
               dropZoneRefCallback={dropZoneRefCallback}

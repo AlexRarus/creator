@@ -4,23 +4,12 @@ from api.models.types.section import Section
 from api.serializers.block import BlockSerializerRead
 from rest_framework import serializers
 
+from ..image import ImageSerializer
+
 
 class BlockSectionSerializer(serializers.ModelSerializer):
-    # При создании или редактировании секции
-    backgroundFile = serializers.FileField(
-        use_url=False,
-        allow_empty_file=True,
-        required=False,
-        allow_null=True,
-        write_only=True,
-    )
-    # При чтении будет приходить поле backgroundUrl
-    backgroundUrl = serializers.FileField(
-        source="backgroundFile",
-        use_url=False,
-        read_only=True,
-    )
-
+    # При чтении
+    backgroundImage = ImageSerializer(read_only=True)
     blocks = BlockSerializerRead(read_only=True, many=True)
 
     class Meta:
@@ -30,8 +19,7 @@ class BlockSectionSerializer(serializers.ModelSerializer):
             "blocks",
             "label",
             "background",
-            "backgroundFile",  # Запись
-            "backgroundUrl",  # Чтение
+            "backgroundImage",  # Чтение
             "borderRadius",
             "paddingTop",
             "paddingBottom",

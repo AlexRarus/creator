@@ -1,8 +1,8 @@
 import { AxiosResponse } from 'axios';
 
 export interface IImagesAPI {
-  getCommonImagesByBlockType(blockType: string): AxiosResponse<any>;
-  getMyImagesByBlockType(blockType: string): AxiosResponse<any>;
+  getCommonImages(params: any): AxiosResponse<any>;
+  getMyImages(params: any): AxiosResponse<any>;
   createImage(data: FormData): AxiosResponse<any>;
   updateImage(data: FormData): AxiosResponse<any>;
   deleteImages(imagesIds: number[]): AxiosResponse<any>;
@@ -23,19 +23,15 @@ export interface IWriteImage {
 }
 
 const getConfig = () => ({
-  getCommonImagesByBlockType: (blockType: string) => ({
+  getCommonImages: (params: any) => ({
     url: `/images/`,
     method: 'GET',
-    params: {
-      block_type: blockType,
-    },
+    params,
   }),
-  getMyImagesByBlockType: (blockType: string) => ({
+  getMyImages: (params: any) => ({
     url: `/images/my/`,
     method: 'GET',
-    params: {
-      block_type: blockType,
-    },
+    params,
   }),
   createImage: (data: FormData) => ({
     url: `/images/`,

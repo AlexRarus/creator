@@ -1,5 +1,10 @@
 import { IBlock } from 'src/dal/blocks/interfaces';
-import { IListDataWrite, IListData, IListItemWrite } from 'src/dal/blocks/data-interfaces';
+import {
+  IListDataWrite,
+  IListData,
+  IListItemWrite,
+  IListItem,
+} from 'src/dal/blocks/data-interfaces';
 import { ITab } from 'src/components/tabs';
 import { IOption } from 'src/components/select';
 
@@ -43,10 +48,10 @@ export const prepareDataForServer = (rawData: RawData): DataForServer<IListDataW
     iconSize: rawData.formInputs.iconSize,
     fontSize: rawData.formInputs.fontSize?.value,
     template: rawData.formInputs.template?.value,
-    items: rawData?.formInputs?.items?.map((item: IListItemWrite) => ({
+    items: rawData?.formInputs?.items?.map((item: Partial<IListItem>) => ({
       title: item?.title as string,
       description: item?.description as string,
-      icon: item?.icon,
+      icon: item?.icon?.id, // для прикрепления изображения нужно отправить его id
     })) as IListItemWrite[],
   },
   page_slug: rawData.pageSlug, // меняем поле для отправки на бэк

@@ -42,7 +42,7 @@ export interface IListData {
 export interface IListItemWrite {
   title?: string;
   description?: string;
-  icon?: IImage;
+  icon?: number;
 }
 
 export interface IListItem {

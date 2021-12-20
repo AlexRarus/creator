@@ -29,5 +29,5 @@ export interface DataToServer {
   type: string;
   value: string;
   kind?: string;
-  icon?: IButtonIcon;
+  icon?: number; // при прикреплении изображения нужно отправить его id
 }

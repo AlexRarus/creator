@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
+from .image import Image
+
 User = get_user_model()
 
 
@@ -24,19 +26,20 @@ class Theme(models.Model):
         max_length=255,
         unique=True,
     )
-    background_primary = models.CharField(
-        verbose_name="Цвет фона основной",
+    background = models.CharField(
+        verbose_name="Цвет фона",
         null=True,
         blank=True,
         max_length=255,
         default="white",
     )
-    background_secondary = models.CharField(
-        verbose_name="Цвет фона второстепенный",
+    backgroundImage = models.ForeignKey(
+        Image,
+        verbose_name="Фоновое изображение",
+        related_name="themes",
+        on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        max_length=255,
-        default="white",
     )
     color = models.CharField(
         verbose_name="Цвет текста",

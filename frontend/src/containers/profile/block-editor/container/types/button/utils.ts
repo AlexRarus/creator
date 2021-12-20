@@ -21,7 +21,7 @@ export const prepareDataForServer = ({
     type: formInputs?.typeOption?.value,
     value: formInputs?.value,
     kind: formInputs?.kind,
-    icon: formInputs?.icon,
+    icon: formInputs?.icon?.id, // при прикреплении изображения нужно отправить его id
   },
   page_slug: pageSlug, // меняем поле для отправки на бэк
   type: blockType, // меняем поле для отправки на бэк

@@ -210,7 +210,7 @@ export const SectionFields = (props: IProps) => {
           <ImageUploaderModule
             onChange={setPicture}
             openerElement={pictureElement}
-            blockType='list'
+            blockType='section'
             isEditable={true}
           />
         </PictureCell>

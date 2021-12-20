@@ -7,8 +7,8 @@ export function useMapStoreToProps() {
     user: dalAuthStore.user,
     myImages: dalImagesStore.myImages,
     commonImages: dalImagesStore.commonImages,
-    getMyImagesByBlockTypeAction: dalImagesStore.getMyImagesByBlockTypeAction,
-    getCommonImagesByBlockTypeAction: dalImagesStore.getCommonImagesByBlockTypeAction,
+    getMyImagesAction: dalImagesStore.getMyImagesAction,
+    getCommonImagesAction: dalImagesStore.getCommonImagesAction,
     deleteMyImagesAction: dalImagesStore.deleteMyImagesAction,
   };
 }

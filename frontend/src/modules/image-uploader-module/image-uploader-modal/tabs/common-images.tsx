@@ -8,22 +8,23 @@ import { ImagesList } from '../images-list';
 import { CommonImagesListWrapper } from './style';
 
 interface IProps {
-  blockType: string;
   setSelectedImages(images: IImage[]): void;
   selectedImages: IImage[];
   emptyListMessage: string;
   isMulti?: boolean;
+  blockType?: string; // для какого типа блока запросить (создать) изображения
+  tags?: string[]; // с какими тегами запросить (создать) изображения
 }
 
 export const CommonImagesList = observer((props: IProps) => {
-  const { blockType, setSelectedImages, selectedImages, emptyListMessage, isMulti } = props;
-  const { commonImages, getCommonImagesByBlockTypeAction } = useMapStoreToProps();
+  const { blockType, tags, setSelectedImages, selectedImages, emptyListMessage, isMulti } = props;
+  const { commonImages, getCommonImagesAction } = useMapStoreToProps();
 
   useEffect(() => {
-    getCommonImagesByBlockTypeAction(blockType);
-  }, [blockType]);
+    getCommonImagesAction(blockType, tags);
+  }, [blockType, tags]);
 
-  const refreshImages = () => getCommonImagesByBlockTypeAction(blockType);
+  const refreshImages = () => getCommonImagesAction(blockType, tags);
 
   const onClickCommonImage = (image: IImage) => {
     const imageHasSelected = selectedImages.some(

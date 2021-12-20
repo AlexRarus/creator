@@ -38,14 +38,8 @@ class ImageAdmin(admin.ModelAdmin):
 
 @admin.register(ImageTag)
 class ImageTagAdmin(admin.ModelAdmin):
-    list_display = (
-        "label",
-        "slug",
-    )
-    search_fields = (
-        "label",
-        "slug",
-    )
+    list_display = ("slug",)
+    search_fields = ("slug",)
     empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
 
 

@@ -18,6 +18,11 @@ def get_upload_path(image, filename):
 
 
 class Image(models.Model):
+    search = models.TextField(
+        verbose_name="Список слов для поиска картинки",
+        blank=True,
+        null=True,
+    )
     author = models.ForeignKey(
         User,
         related_name="images",
@@ -102,23 +107,17 @@ class Image(models.Model):
 
 
 class ImageTag(models.Model):
-    label = models.CharField(
-        max_length=35,
-        verbose_name="Наименование",
-        null=False,
-        blank=False,
-    )
     slug = models.SlugField(
         max_length=80,
-        verbose_name="Строковый идентификатор",
+        verbose_name="Слаг тега",
         null=False,
         blank=False,
     )
 
     def __str__(self):
-        return f"{self.label} ({self.slug})"
+        return f"{self.slug}"
 
     class Meta:
-        verbose_name = "Тег для поиска картинок"
-        verbose_name_plural = "Теги для поиска картинок"
+        verbose_name = "Тег для картинок"
+        verbose_name_plural = "Теги для картинок"
         ordering = ("id",)
