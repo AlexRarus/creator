@@ -7,6 +7,7 @@ from .types.button import Button
 from .types.collapsed_list import CollapsedListBlock
 from .types.list import ListBlock
 from .types.section import Section
+from .types.separator import Separator
 from .types.text import Text
 
 User = get_user_model()
@@ -74,6 +75,14 @@ class Block(models.Model):
         null=True,
         blank=True,
     )
+    separator = models.OneToOneField(
+        Separator,
+        verbose_name='Контент блока с типом "separator"',
+        related_name="block",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
 
     def delete(self, *args, **kwargs):
         if self.type.slug == "text" and self.text is not None:
@@ -95,6 +104,8 @@ class Block(models.Model):
                 lists=self.collapsed_list
             ).delete()
             self.collapsed_list.delete()
+        elif self.type.slug == "separator" and self.avatar is not None:
+            self.separator.delete()
 
         return super(self.__class__, self).delete(*args, **kwargs)
 

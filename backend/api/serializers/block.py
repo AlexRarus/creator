@@ -23,6 +23,11 @@ from api.serializers.types.list import (
     block_list_create,
     block_list_update,
 )
+from api.serializers.types.separator import (
+    BlockSeparatorSerializerRead,
+    block_separator_create,
+    block_separator_update,
+)
 from api.serializers.types.text import (
     BlockTextSerializer,
     block_text_create,
@@ -52,12 +57,6 @@ class BlockSerializerRead(serializers.ModelSerializer):
     type = serializers.CharField(read_only=True, source="type.slug")
     author = BlockAuthorSerializerRead(read_only=True)
     data = serializers.SerializerMethodField(read_only=True)
-    # page_slugs = serializers.SlugRelatedField(
-    #     source="pages",
-    #     slug_field="slug",
-    #     read_only=True,
-    #     many=True,
-    # )
 
     def get_data(self, block):
         if block.type.slug == "text":
@@ -76,6 +75,8 @@ class BlockSerializerRead(serializers.ModelSerializer):
             return BlockListSerializer(block.list).data
         if block.type.slug == "collapsed_list":
             return BlockCollapsedListSerializer(block.collapsed_list).data
+        if block.type.slug == "separator":
+            return BlockSeparatorSerializerRead(block.separator).data
 
     class Meta:
         model = Block
@@ -113,6 +114,8 @@ class BlockSerializerWrite(serializers.ModelSerializer):
             return BlockListSerializer(block.list).data
         if block.type.slug == "collapsed_list":
             return BlockCollapsedListSerializer(block.collapsed_list).data
+        if block.type.slug == "separator":
+            return BlockSeparatorSerializerRead(block.separator).data
 
     def create(self, validated_data):
         page = validated_data.pop("page", None)
@@ -137,6 +140,8 @@ class BlockSerializerWrite(serializers.ModelSerializer):
                 block.list = block_list_create(data)
             elif block.type.slug == "collapsed_list":
                 block.collapsed_list = block_collapsed_list_create(data)
+            elif block.type.slug == "separator":
+                block.separator = block_separator_create(data)
             else:
                 raise UnknowTypeError
 
@@ -200,6 +205,8 @@ class BlockSerializerWrite(serializers.ModelSerializer):
             block_list_update(block.list, data)
         elif block.type.slug == "collapsed_list":
             block_collapsed_list_update(block.collapsed_list, data)
+        elif block.type.slug == "separator":
+            block_separator_update(block.separator, data)
         else:
             raise UnknowTypeError
 

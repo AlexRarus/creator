@@ -18,6 +18,7 @@ from .models.types.collapsed_list import (
 )
 from .models.types.list import ListBlock, ListItemBlock, ListItemBlockRelation
 from .models.types.section import Section
+from .models.types.separator import Separator
 from .models.types.text import Text
 
 
@@ -283,5 +284,14 @@ class CollapsedListItemBlockRelationAdmin(admin.ModelAdmin):
         "list",
         "item",
         "order",
+    )
+    empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
+
+
+@admin.register(Separator)
+class SeparatorAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "value",
     )
     empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
