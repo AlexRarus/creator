@@ -1,5 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
+from django.template.defaultfilters import slugify
+from unidecode import unidecode
 
 from .image import Image
 
@@ -18,12 +22,12 @@ class Theme(models.Model):
         null=True,
         blank=True,
         max_length=255,
-        default="label",
+        default="my_theme",
     )
     slug = models.SlugField(
         verbose_name="Код темы",
-        blank=True,
         max_length=255,
+        blank=True,
         unique=True,
     )
     background = models.CharField(
@@ -62,3 +66,15 @@ class Theme(models.Model):
     class Meta:
         verbose_name = "Тема"
         verbose_name_plural = "Темы"
+
+
+@receiver(pre_save, sender=Theme)
+def set_slug(sender, instance, **kwargs):
+    if not instance.slug:
+        counter = 1
+        slug_label = slugify(unidecode(instance.label))
+        slug = f"{slug_label or instance.id}"
+        while Theme.objects.filter(slug=slug):
+            counter += 1
+            slug = f"{slug_label}_{counter}"
+        instance.slug = slug
