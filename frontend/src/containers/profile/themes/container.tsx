@@ -74,12 +74,12 @@ export const ThemesContainer = observer((props: any) => {
 
   return (
     <ThemesWrapper>
+      <ThemesHeader>
+        <ThemesHeaderTitle>Доступные темы</ThemesHeaderTitle>
+        <CreateButton onClick={() => openEditingThemeModal('new')}>Создать</CreateButton>
+      </ThemesHeader>
       {themes?.length > 0 ? (
         <>
-          <ThemesHeader>
-            <ThemesHeaderTitle>Доступные темы</ThemesHeaderTitle>
-            <CreateButton onClick={() => openEditingThemeModal('new')}>Создать</CreateButton>
-          </ThemesHeader>
           <SwiperWrapper width={window.innerWidth}>
             <Swiper
               effect={'coverflow'}
