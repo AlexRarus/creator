@@ -109,13 +109,26 @@ export default class DalThemesStore {
     makeAutoObservable(this, {}, { autoBind: true });
   }
 
+  getThemeByIdAction = flow(function* (this: DalThemesStore, id: number) {
+    try {
+      this.isLoading = true;
+      const response = yield this.API.getThemeById(id);
+      this.isLoading = false;
+      return response.data || null;
+    } catch (e) {
+      console.log('getThemeByIdAction', e);
+      this.isLoading = false;
+      return null;
+    }
+  });
+
   getThemesAction = flow(function* (this: DalThemesStore) {
     try {
       this.isLoading = true;
       // TODO нужно подключить к бэку
       const responseList = yield this.API.getThemesList();
-      this.total = 100; // responsePages.data?.total || 0;
-      this.themes = responseList; // responsePages.data?.list || null;
+      this.total = responseList.data?.total || 0;
+      this.themes = responseList.data?.list || null;
       this.isLoading = false;
     } catch (e) {
       console.log('getThemesAction', e);

@@ -11,10 +11,13 @@ import Button from 'src/components/button';
 // Import Swiper styles
 import 'swiper/swiper-bundle.css';
 
+import { ThemeEditModal } from './theme-edit-modal';
 import { useMapStoreToProps } from './selectors';
 import {
   ThemesWrapper,
   ThemesHeader,
+  ThemesHeaderTitle,
+  CreateButton,
   SwiperWrapper,
   ThemeItemBackground,
   ThemeItemText,
@@ -34,6 +37,7 @@ SwiperCore.use([Pagination, Navigation, EffectCoverflow]);
 export const ThemesContainer = observer((props: any) => {
   const { username } = props;
   const [activeTheme, setActiveTheme] = useState<ITheme | undefined>();
+  const [editingThemeId, setEditingThemeId] = useState<number | 'new' | null>(null);
   const { DEVICE_THEME } = useThemeContext();
   const {
     themes,
@@ -60,11 +64,22 @@ export const ThemesContainer = observer((props: any) => {
   const toEditPage = () =>
     history.push(`/profile/${username}/pages/${selectedPage?.slug || 'main'}`);
 
+  const closeEditingThemeModal = () => setEditingThemeId(null);
+  const openEditingThemeModal = (id: number | 'new') => setEditingThemeId(id);
+  const successEditingThemeModal = (data: any) => {
+    // todo обновляем список доступных тем
+    getThemesAction();
+    console.log('successEditingThemeModal', data);
+  };
+
   return (
     <ThemesWrapper>
       {themes?.length > 0 ? (
         <>
-          <ThemesHeader>Доступные темы</ThemesHeader>
+          <ThemesHeader>
+            <ThemesHeaderTitle>Доступные темы</ThemesHeaderTitle>
+            <CreateButton onClick={() => openEditingThemeModal('new')}>Создать</CreateButton>
+          </ThemesHeader>
           <SwiperWrapper width={window.innerWidth}>
             <Swiper
               effect={'coverflow'}
@@ -117,6 +132,13 @@ export const ThemesContainer = observer((props: any) => {
         </>
       ) : (
         <EmptyBlock>Нет доступных тем</EmptyBlock>
+      )}
+      {editingThemeId !== null && (
+        <ThemeEditModal
+          themeId={editingThemeId}
+          onClose={closeEditingThemeModal}
+          onSuccess={successEditingThemeModal}
+        />
       )}
     </ThemesWrapper>
   );

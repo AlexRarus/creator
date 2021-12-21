@@ -10,10 +10,30 @@ export const ThemesWrapper = styled.div`
 
 export const ThemesHeader = styled.div`
   display: flex;
+  width: 100%;
   align-items: center;
+  justify-content: space-between;
+  padding: ${({ theme }) => (theme?.isMobile ? '12px' : '20px')};
+`;
+
+export const ThemesHeaderTitle = styled.div`
+  display: flex;
   font-weight: 500;
   font-size: ${({ theme }) => (theme?.isMobile ? '18px' : '20px')};
-  padding: ${({ theme }) => (theme?.isMobile ? '12px' : '20px')};
+`;
+
+export const CreateButton = styled.div`
+  background: ${COLORS.white};
+  color: ${COLORS.black};
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 0 1px 8px ${COLORS.blue[500]};
+  cursor: pointer;
+  user-select: none;
+
+  * {
+    cursor: pointer;
+  }
 `;
 
 export const SwiperWrapper = styled.div<{ width?: number }>`
