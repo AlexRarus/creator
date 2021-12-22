@@ -4,7 +4,7 @@ import { History } from 'history';
 
 import { IRootStore } from '../interfaces';
 
-import { ITheme, IThemeType } from './interfaces';
+import { ITheme, IThemeType, IThemeWrite } from './interfaces';
 
 export default class DalThemesStore {
   rootStore!: IRootStore;
@@ -64,7 +64,7 @@ export default class DalThemesStore {
     }
   });
 
-  updateThemeAction = flow(function* (this: DalThemesStore, data: ITheme) {
+  updateThemeAction = flow(function* (this: DalThemesStore, data: IThemeWrite) {
     try {
       this.isLoading = true;
       yield this.API.updateTheme(data);

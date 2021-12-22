@@ -1,10 +1,12 @@
 import styled, { css, keyframes } from 'styled-components';
 import { rgba, darken, lighten } from 'polished';
 import { Link } from 'react-router-dom';
+import { ITheme } from 'src/dal/themes/interfaces';
 
 import { IListItemIconProps } from '../list/style';
 
 interface IButton {
+  selectedTheme?: ITheme | null;
   background?: string;
   borderRadius?: string;
   color?: string;
@@ -78,7 +80,14 @@ const glitch = keyframes`
 }
 `;
 
-const getStyledButtonImpact = (kind?: string, background = '#fff') => {
+const getStyledButtonImpact = (
+  selectedTheme?: ITheme | null,
+  buttonKind?: string,
+  buttonBackground?: string
+) => {
+  const kind = buttonKind || selectedTheme?.buttonKind || 'simple';
+  const background = buttonBackground || selectedTheme?.buttonBackground || '#000';
+
   switch (kind) {
     case 'simple':
       return css`
@@ -480,10 +489,10 @@ export const ButtonBlock = styled.button<IButton>`
   align-items: center;
   width: 100%;
   color: ${({ color }) => color};
-  background: ${({ background }) => background || 'inherit'};
+  background: ${({ selectedTheme }) => selectedTheme?.buttonBackground || 'inherit'};
   cursor: pointer;
   ${({ isIcon }) => isIcon && 'padding-left: 44px;'}
-  ${({ background, kind }) => getStyledButtonImpact(kind, background)}
+  ${({ selectedTheme, kind, background }) => getStyledButtonImpact(selectedTheme, kind, background)}
 `;
 
 export const Title = styled.div`
@@ -504,7 +513,7 @@ export const WebLink = styled.a`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%:
+  width: 100%;
   height: 100%;
 `;
 
@@ -514,17 +523,17 @@ export const InnerLink = styled(Link)`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%:
+  width: 100%;
   height: 100%;
 `;
 
 export const ButtonContent = styled.div`
-   display: flex;
+  display: flex;
   text-decoration: none;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%:
+  width: 100%;
   height: 100%;
 `;
 

@@ -25,7 +25,11 @@ export const ButtonPreview = (props: IProps) => {
   const buttonIcon = block?.data?.icon;
 
   return (
-    <ButtonBlock {...selectedTheme?.button} kind={block?.data?.kind} isIcon={!!buttonIcon}>
+    <ButtonBlock
+      selectedTheme={selectedTheme}
+      kind={block?.data?.kind}
+      background={block?.data?.background}
+      isIcon={!!buttonIcon}>
       <TypeWrapper buttonType={buttonType} value={buttonValue}>
         <Title>{block?.data?.label}</Title>
         <SubTitle>{block?.data?.description}</SubTitle>
