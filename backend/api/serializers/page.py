@@ -8,7 +8,7 @@ from django.db.models import Prefetch
 from rest_framework import serializers
 
 from .block import BlockSerializerRead
-from .theme import ThemeSerializer
+from .theme import ThemeSerializerRead
 
 User = get_user_model()
 
@@ -90,7 +90,7 @@ class PageWriteSerializer(serializers.ModelSerializer):
 
 
 class PageAuthorSerializer(serializers.ModelSerializer):
-    theme = ThemeSerializer(read_only=True)
+    theme = ThemeSerializerRead(read_only=True)
 
     class Meta:
         model = User

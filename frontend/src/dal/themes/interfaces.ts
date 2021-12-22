@@ -1,21 +1,23 @@
+import { IImage } from 'src/dal/images/interfaces';
+
 // типы полей при запросе темы с бэка
 export interface ITheme {
   id: number;
   author?: number; // id автора темы
   background: string;
+  backgroundImage?: IImage | null;
   color: string;
   headerColor: string;
-  button: {
-    background: string;
-    color: string;
-    kind?: string;
-  };
+  buttonBackground: string;
+  buttonColor: string;
+  buttonKind?: string;
 }
 
 // при создании-редактировании темы нужно отправить другие типы полей
 export interface IThemeWrite {
   id?: number;
   background?: string;
+  backgroundImage?: number; // id изображения
   color?: string;
   // и другие свойства, синхронизировать с ITheme
 }
@@ -23,5 +25,5 @@ export interface IThemeWrite {
 export interface IThemeType {
   id: number;
   slug: string;
-  pricingPlan: number; // todo пока число
+  pricingPlan: string;
 }

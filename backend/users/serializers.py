@@ -1,5 +1,5 @@
 from api.serializers.avatar import AvatarSerializer
-from api.serializers.theme import ThemeSerializer
+from api.serializers.theme import ThemeSerializerRead
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
@@ -9,7 +9,7 @@ User = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
     avatar = AvatarSerializer(read_only=True)
-    theme = ThemeSerializer(read_only=True)
+    theme = ThemeSerializerRead(read_only=True)
 
     class Meta:
         fields = (

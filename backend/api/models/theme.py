@@ -98,6 +98,24 @@ class Theme(models.Model):
         max_length=255,
         default="black",
     )
+    buttonBackground = models.CharField(
+        verbose_name="Цвет заливки кнопки",
+        null=True,
+        blank=True,
+        max_length=255,
+    )
+    buttonColor = models.CharField(
+        verbose_name="Цвет текста кнопки",
+        null=True,
+        blank=True,
+        max_length=255,
+    )
+    buttonKind = models.CharField(
+        verbose_name="Тип кнопок",
+        null=True,
+        blank=True,
+        max_length=255,
+    )
 
     def __str__(self):
         return self.slug

@@ -1,29 +1,23 @@
+from api.models.image import Image
 from api.models.theme import Theme
+from api.serializers.image import ImageSerializer
 from rest_framework import serializers
 
 
-class ThemeSerializer(serializers.ModelSerializer):
+class ThemeSerializerRead(serializers.ModelSerializer):
     author = serializers.PrimaryKeyRelatedField(read_only=True)
     type = serializers.CharField(read_only=True, source="type.slug")
+    backgroundImage = ImageSerializer()
 
-    def to_representation(self, obj):
-        # вызывается при чтении модели
-        representation = super().to_representation(obj)
-        # background = {
-        #     "primary": representation.pop("background_primary"),
-        #     "secondary": representation.pop("background_secondary"),
-        # }
-        # representation["background"] = background
-        return representation
+    class Meta:
+        model = Theme
+        fields = "__all__"
 
-    def to_internal_value(self, data):
-        # вызывается перед созданием/обновлением модели
-        # background = data.pop("background")
-        internal = super().to_internal_value(data)
-        # for attr, value in background.items():
-        #     setattr(internal, f"background_{attr}", value)
-        #
-        return internal
+
+class ThemeSerializerWrite(serializers.ModelSerializer):
+    backgroundImage = serializers.PrimaryKeyRelatedField(
+        allow_null=True, required=False, queryset=Image.objects.all()
+    )
 
     def update(self, instance, validated_data):
         # исключаем поле type для того чтобы его нельзя было изменить
@@ -36,13 +30,4 @@ class ThemeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Theme
-        fields = (
-            "id",
-            "author",
-            "type",
-            "label",
-            "slug",
-            "background",
-            "color",
-            "headerColor",
-        )
+        fields = "__all__"

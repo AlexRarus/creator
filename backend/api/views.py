@@ -30,7 +30,7 @@ from .serializers.block import BlockSerializerRead, BlockSerializerWrite
 from .serializers.block_type import BlockTypeSerializer
 from .serializers.image import ImageSerializer
 from .serializers.page import PageReadSerializer, PageWriteSerializer
-from .serializers.theme import ThemeSerializer
+from .serializers.theme import ThemeSerializerRead, ThemeSerializerWrite
 from .serializers.theme_type import ThemeTypeSerializer
 from .serializers.types.button import ButtonTypeSerializerRead
 
@@ -293,9 +293,13 @@ class ImageViewSet(
 class ThemeViewSet(viewsets.ModelViewSet):
     queryset = Theme.objects.all()
     permission_classes = (IsAuthorPermission,)
-    serializer_class = ThemeSerializer
     filter_backends = (DjangoFilterBackend,)
     filter_class = ThemeFilter
+
+    def get_serializer_class(self):
+        if self.action == "retrieve" or self.action == "list":
+            return ThemeSerializerRead
+        return ThemeSerializerWrite
 
     def perform_create(self, serializer):
         theme_type, created = ThemeType.objects.get_or_create(slug="custom")
