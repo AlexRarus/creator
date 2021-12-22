@@ -77,6 +77,11 @@ export const FormWrapperDroppable = styled(Grid)<{
 
 export const DraggableItem = styled.div<{ isDragging: boolean; isSubItem?: boolean }>`
   position: relative;
+  min-height: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: calc(100% - 4px);
   padding-left: 48px;
   padding-right: 32px;

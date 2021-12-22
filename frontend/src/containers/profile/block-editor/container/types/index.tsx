@@ -6,6 +6,7 @@ import { AvatarForm } from './avatar';
 import { ListForm } from './list';
 import { CollapsedListForm } from './collapsed-list';
 import { ButtonForm } from './button';
+import { SeparatorForm } from './separator';
 
 interface IProps {
   username: string;
@@ -35,6 +36,8 @@ export const TargetTypeForm = (props: IProps) => {
       return <CollapsedListForm {...props} />;
     case 'button':
       return <ButtonForm {...props} />;
+    case 'separator':
+      return <SeparatorForm {...props} />;
     default:
       return <div>Unknown block type</div>;
   }

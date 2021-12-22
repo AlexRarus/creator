@@ -8,6 +8,7 @@ import { AvatarPreview } from './types/avatar';
 import { ListPreview } from './types/list';
 import { CollapsedListPreview } from './types/collapsed-list';
 import { ButtonPreview } from './types/button';
+import { SeparatorPreview } from './types/separator';
 
 interface IProps {
   block: IBlock<any>;
@@ -31,6 +32,8 @@ export const TargetBlockTypePreview = (props: IProps) => {
       return <CollapsedListPreview selectedTheme={selectedTheme} {...props} />;
     case 'button':
       return <ButtonPreview selectedTheme={selectedTheme} {...props} />;
+    case 'separator':
+      return <SeparatorPreview selectedTheme={selectedTheme} {...props} />;
     default:
       return <div onClick={onClick}>Unknown block type</div>;
   }
