@@ -13,13 +13,12 @@ const getInitialFormDefaultVale = (block: any) => {
 import { store } from '../../store';
 
 export function useMapStoreToProps() {
-  const { dalAuthStore, dalBlocksStore, dalThemesStore } = useStores();
+  const { dalAuthStore, dalBlocksStore } = useStores();
 
   return {
     formDefaultValues: getInitialFormDefaultVale(store.block),
     getButtonTypesListAction: dalBlocksStore.getButtonTypesListAction,
     deleteBlockAction: dalBlocksStore.deleteBlockAction,
     user: dalAuthStore.user,
-    selectedTheme: dalThemesStore.selectedTheme,
   };
 }

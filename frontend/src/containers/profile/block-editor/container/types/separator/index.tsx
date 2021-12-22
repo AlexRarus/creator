@@ -31,7 +31,7 @@ export const SeparatorForm = observer((props: IProps) => {
     formDefaultValues,
     deleteBlockAction,
     getButtonTypesListAction,
-    selectedTheme,
+    user,
   } = useMapStoreToProps();
   // todo хук useForm создает форму и возвращает методы и состояние формы
   // todo все поля зарегистрированные в форме управляются этой формой
@@ -119,10 +119,7 @@ export const SeparatorForm = observer((props: IProps) => {
         <FormProvider {...methods}>
           <FormWrapper>
             <TabContainer value={TabValue.separator} activeTabValue={activeTab.value}>
-              <SeparatorFields
-                selectedTheme={selectedTheme}
-                formDefaultValues={formDefaultValues}
-              />
+              <SeparatorFields selectedTheme={user?.theme} formDefaultValues={formDefaultValues} />
             </TabContainer>
             <TabContainer value={TabValue.settings} activeTabValue={activeTab.value}>
               Tab settings content

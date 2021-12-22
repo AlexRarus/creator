@@ -4,13 +4,9 @@ import { Grid, GridColumn } from 'src/components/grid';
 import { ControlledField } from 'src/components/controlled-field';
 import { maxLength } from 'src/utils/validators';
 import { ImageUploaderModule } from 'src/modules/image-uploader-module';
-import { TargetBlockTypePreview } from 'src/containers/app/block';
 import InputRange from 'src/components/input-range';
 import Switch from '@mui/material/Switch';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-
-import { ITheme } from '../../../../../../dal/themes/interface';
+import { ITheme } from 'src/dal/themes/interfaces';
 
 import { FormInputs } from './interfaces';
 import { Label, Row, MicroLabel } from './style';
@@ -18,11 +14,11 @@ import { Toggle } from './custom-toggle';
 
 interface IProps {
   formDefaultValues: FormInputs | null;
-  selectedTheme: ITheme | null;
+  selectedTheme?: ITheme | null;
 }
 
 export const SeparatorFields = (props: IProps) => {
-  const { formDefaultValues, selectedTheme } = props;
+  const { formDefaultValues } = props;
   const [iconElement, iconRefCallback] = useState<HTMLElement | null>(null);
   const { control, watch, setValue } = useFormContext(); // так как Fields рендерятся внутри FormProvider, в контексте доступны значения формы
   const icon = watch('icon') || formDefaultValues?.icon;

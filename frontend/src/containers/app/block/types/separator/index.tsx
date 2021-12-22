@@ -1,6 +1,6 @@
 import React from 'react';
 import { IBlock } from 'src/dal/blocks/interfaces';
-import { ITheme } from 'src/dal/themes/interface';
+import { ITheme } from 'src/dal/themes/interfaces';
 import { ImageIcon } from 'src/components/image-icon';
 import StarIcon from '@mui/icons-material/Star';
 
@@ -8,7 +8,7 @@ import { SeparatorBlock, IconBlock } from './style';
 
 interface IProps {
   block: IBlock<any>;
-  selectedTheme: ITheme | null;
+  selectedTheme?: ITheme | null;
 }
 
 export const SeparatorPreview = (props: IProps) => {
@@ -21,7 +21,7 @@ export const SeparatorPreview = (props: IProps) => {
 
   return (
     <SeparatorBlock
-      {...selectedTheme?.button}
+      selectedTheme={selectedTheme}
       isEmpty={kind === 'empty'}
       isWide={isWide}
       isTransparent={isTransparent}

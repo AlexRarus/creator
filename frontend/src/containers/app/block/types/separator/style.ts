@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { ITheme } from 'src/dal/themes/interfaces';
 
 import { IListItemIconProps } from '../list/style';
 
@@ -7,6 +8,7 @@ export const SeparatorBlock = styled.div<{
   isTransparent?: boolean;
   isEmpty?: boolean;
   value?: number;
+  selectedTheme?: ITheme | null;
 }>`
   position: relative;
   display: flex;
