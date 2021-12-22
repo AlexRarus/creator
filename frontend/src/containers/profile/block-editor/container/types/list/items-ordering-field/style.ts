@@ -1,12 +1,8 @@
 import styled from 'styled-components';
-import { ITheme } from 'src/dal/themes/interface';
+import { ITheme } from 'src/dal/themes/interfaces';
 import { rgba } from 'polished';
 import { COLORS } from 'src/components/theme';
-import {
-  IListItemProps,
-  IListItemIconProps,
-  getGridTemplateAreas,
-} from 'src/containers/app/block/types/list/style';
+import { IListItemProps, getGridTemplateAreas } from 'src/containers/app/block/types/list/style';
 
 export const ItemsOrderingFieldWrapper = styled.div`
   display: flex;

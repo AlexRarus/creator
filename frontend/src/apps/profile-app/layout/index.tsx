@@ -4,7 +4,6 @@ import { isMobile } from 'react-device-detect';
 import { useAppTypeContext } from 'src/providers/app-type-provider';
 
 import { menuItems } from './menu-items';
-import { Footer } from './footer';
 import { ProfileLayoutWrapper, PageWrapper } from './style';
 
 interface IProps {

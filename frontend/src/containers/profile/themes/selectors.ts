@@ -1,15 +1,16 @@
 import { useStores } from 'src/dal/use-stores';
 
 export function useMapStoreToProps() {
-  const { dalThemesStore, dalPagesStore } = useStores();
+  const { dalAuthStore, dalThemesStore, dalPagesStore } = useStores();
 
   return {
+    user: dalAuthStore.user,
     selectedPage: dalPagesStore.selectedPage,
     isLoading: dalThemesStore.isLoading,
-    isUpdating: dalThemesStore.isUpdating,
     themes: dalThemesStore.themes,
-    getThemesAction: dalThemesStore.getThemesAction,
-    updateThemeAction: dalThemesStore.updateThemeAction,
-    selectedTheme: dalThemesStore.selectedTheme,
+    getThemesByTypeAction: dalThemesStore.getThemesByTypeAction,
+    selectThemeAction: dalThemesStore.selectThemeAction,
+    getThemesTypesAction: dalThemesStore.getThemesTypesAction,
+    themesTypes: dalThemesStore.themesTypes,
   };
 }

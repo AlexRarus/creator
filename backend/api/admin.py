@@ -8,7 +8,7 @@ from .models.image import Image, ImageTag
 from .models.page import Page
 from .models.pricing_plan import PricingPlan
 from .models.relations import PageBlockRelation, SectionBlockRelation
-from .models.theme import Theme
+from .models.theme import Theme, ThemeType
 from .models.types.avatar import AvatarBlock
 from .models.types.button import Button, ButtonType
 from .models.types.collapsed_list import (
@@ -96,6 +96,20 @@ class ThemeAdmin(admin.ModelAdmin):
         "id",
         "author",
         "label",
+        "slug",
+    )
+    empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
+
+
+@admin.register(ThemeType)
+class ThemeTypeAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "slug",
+        "pricingPlan",
+    )
+    search_fields = (
+        "id",
         "slug",
     )
     empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY

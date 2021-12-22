@@ -1,18 +1,21 @@
 import { AxiosResponse } from 'axios';
-import { IThemeWrite } from 'src/dal/themes/interface';
+import { IThemeWrite } from 'src/dal/themes/interfaces';
 
 export interface IThemeAPI {
-  getThemesList(): AxiosResponse<any>;
+  getThemesByType(type: string): AxiosResponse<any>;
   getThemeById(id: number): AxiosResponse<any>;
   createTheme(data: IThemeWrite): AxiosResponse<any>;
   updateTheme(data: IThemeWrite): AxiosResponse<any>;
   deleteTheme(id: number): AxiosResponse<any>;
+  getThemesTypes(): AxiosResponse<any>;
+  selectTheme(id: number): AxiosResponse<any>;
 }
 
 const getConfig = () => ({
-  getThemesList: () => ({
+  getThemesByType: (type: string) => ({
     url: `/themes/`,
     method: 'GET',
+    params: { type },
   }),
   getThemeById: (id: number) => ({
     url: `/themes/${id}/`,
@@ -31,6 +34,14 @@ const getConfig = () => ({
   deleteTheme: (id: number) => ({
     url: `/themes/${id}/`,
     method: 'DELETE',
+  }),
+  getThemesTypes: () => ({
+    url: `/themes_types/`,
+    method: 'GET',
+  }),
+  selectTheme: (id: number) => ({
+    url: `/themes/${id}/select/`,
+    method: 'POST',
   }),
 });
 

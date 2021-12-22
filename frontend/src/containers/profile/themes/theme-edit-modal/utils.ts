@@ -1,4 +1,4 @@
-import { ITheme } from 'src/dal/themes/interface';
+import { ITheme } from 'src/dal/themes/interfaces';
 import { IAction } from 'src/components/form';
 
 import { FormInputs, RawData, DataForServer } from './interfaces';

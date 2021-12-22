@@ -1,14 +1,14 @@
 import React from 'react';
 import { IBlock } from 'src/dal/blocks/interfaces';
 import { IListData, IListItem } from 'src/dal/blocks/data-interfaces';
-import { ITheme } from 'src/dal/themes/interface';
+import { ITheme } from 'src/dal/themes/interfaces';
 
 import { ListItem } from './list-item';
 import { ListBlockWrapper } from './style';
 
 interface IProps {
   block: IBlock<IListData>;
-  selectedTheme: ITheme | null;
+  selectedTheme?: ITheme | null;
 }
 
 export const ListPreview = (props: IProps) => {

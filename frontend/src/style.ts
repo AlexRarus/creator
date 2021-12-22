@@ -1,5 +1,5 @@
 import styled, { createGlobalStyle, css } from 'styled-components';
-import { MEDIA, FONTS, ITheme } from 'src/components/theme';
+import { MEDIA, FONTS } from 'src/components/theme';
 
 export const GlobalStyleApp = createGlobalStyle<any>`  
   html {

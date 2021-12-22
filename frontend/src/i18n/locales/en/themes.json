@@ -1,0 +1,8 @@
+{
+  "themeType": {
+    "custom": "Custom",
+    "default": "Base",
+    "advanced": "Advanced",
+    "animated": "Animated"
+  }
+}

@@ -29,7 +29,7 @@ const getTypeOptionsSelector = (buttonTypes: any[]) =>
 import { store } from '../../store';
 
 export function useMapStoreToProps() {
-  const { dalAuthStore, dalBlocksStore, dalThemesStore } = useStores();
+  const { dalAuthStore, dalBlocksStore } = useStores();
 
   return {
     formDefaultValues: store.block,
@@ -37,6 +37,5 @@ export function useMapStoreToProps() {
     getButtonTypesListAction: dalBlocksStore.getButtonTypesListAction,
     deleteBlockAction: dalBlocksStore.deleteBlockAction,
     user: dalAuthStore.user,
-    selectedTheme: dalThemesStore.selectedTheme,
   };
 }

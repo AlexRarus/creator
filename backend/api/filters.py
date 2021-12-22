@@ -1,5 +1,6 @@
 import django_filters
 from api.models.image import Image
+from api.models.theme import Theme
 from rest_framework import filters
 
 
@@ -25,3 +26,14 @@ class ImageFilter(django_filters.FilterSet):
 
 class ImageSearchFilter(filters.SearchFilter):
     search_param = "search"
+
+
+class ThemeFilter(django_filters.FilterSet):
+    type = django_filters.CharFilter(field_name="type", method="filter_type")
+
+    class Meta:
+        model = Theme
+        fields = ("type__slug",)
+
+    def filter_type(self, queryset, name, type):
+        return queryset.filter(type__slug=type)

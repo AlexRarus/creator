@@ -1,102 +1,19 @@
 import { flow, makeAutoObservable } from 'mobx';
 import API from 'src/api';
 import { History } from 'history';
-import { COLORS } from 'src/components/theme';
 
 import { IRootStore } from '../interfaces';
 
-import { ITheme } from './interface';
-
-const defaultTheme = {
-  id: 0,
-  background: COLORS.grey[200],
-  color: COLORS.grey[900],
-  headerColor: COLORS.grey[900],
-  button: {
-    background: COLORS.deepPurple[500],
-    color: COLORS.grey[900],
-    kind: 'simple',
-  },
-};
-
-const initialThemes: ITheme[] = [
-  {
-    id: 0,
-    background: COLORS.grey[200],
-    color: COLORS.grey[900],
-    headerColor: COLORS.grey[900],
-    button: {
-      background: COLORS.deepPurple[500],
-      color: COLORS.grey[900],
-      kind: 'simple',
-    },
-  },
-  {
-    id: 1,
-    background: COLORS.deepPurple[800],
-    color: COLORS.white,
-    headerColor: COLORS.white,
-    button: {
-      background: COLORS.deepPurple[500],
-      color: COLORS.grey[900],
-      kind: 'simple',
-    },
-  },
-  {
-    id: 2,
-    background: COLORS.yellow[700],
-    color: COLORS.grey[900],
-    headerColor: COLORS.grey[900],
-    button: {
-      background: COLORS.deepPurple[500],
-      color: COLORS.grey[900],
-      kind: 'simple',
-    },
-  },
-  {
-    id: 3,
-    background: COLORS.brown[500],
-    color: COLORS.grey[900],
-    headerColor: COLORS.grey[900],
-    button: {
-      background: COLORS.deepPurple[500],
-      color: COLORS.grey[900],
-      kind: 'simple',
-    },
-  },
-  {
-    id: 4,
-    background: COLORS.green[600],
-    color: COLORS.grey[900],
-    headerColor: COLORS.grey[900],
-    button: {
-      background: COLORS.deepPurple[500],
-      color: COLORS.grey[900],
-      kind: 'simple',
-    },
-  },
-  {
-    id: 5,
-    background: COLORS.pink[600],
-    color: COLORS.grey[900],
-    headerColor: COLORS.grey[900],
-    button: {
-      background: COLORS.deepPurple[500],
-      color: COLORS.grey[900],
-      kind: 'simple',
-    },
-  },
-];
+import { ITheme, IThemeType } from './interfaces';
 
 export default class DalThemesStore {
   rootStore!: IRootStore;
   routerStore!: History;
 
-  isUpdating = false; // loader для обновления данных, чтобы не мигала вся страница
   isLoading = false;
   total = 0;
-  themes: ITheme[] = initialThemes; // TODO заглушка
-  selectedTheme: ITheme | null = defaultTheme; // TODO заглушка
+  themes: ITheme[] = [];
+  themesTypes: IThemeType[] = [];
 
   public get API() {
     return API.endpoints.themes;
@@ -108,6 +25,18 @@ export default class DalThemesStore {
 
     makeAutoObservable(this, {}, { autoBind: true });
   }
+
+  getThemesTypesAction = flow(function* (this: DalThemesStore) {
+    try {
+      this.isLoading = true;
+      const response = yield this.API.getThemesTypes();
+      this.isLoading = false;
+      this.themesTypes = response.data || [];
+    } catch (e) {
+      console.log('getThemesTypesAction', e);
+      this.isLoading = false;
+    }
+  });
 
   getThemeByIdAction = flow(function* (this: DalThemesStore, id: number) {
     try {
@@ -122,11 +51,10 @@ export default class DalThemesStore {
     }
   });
 
-  getThemesAction = flow(function* (this: DalThemesStore) {
+  getThemesByTypeAction = flow(function* (this: DalThemesStore, type: string) {
     try {
       this.isLoading = true;
-      // TODO нужно подключить к бэку
-      const responseList = yield this.API.getThemesList();
+      const responseList = yield this.API.getThemesByType(type);
       this.total = responseList.data?.total || 0;
       this.themes = responseList.data?.list || null;
       this.isLoading = false;
@@ -138,14 +66,24 @@ export default class DalThemesStore {
 
   updateThemeAction = flow(function* (this: DalThemesStore, data: ITheme) {
     try {
-      this.isUpdating = true;
-      this.selectedTheme = data;
+      this.isLoading = true;
       yield this.API.updateTheme(data);
-      // const response = yield this.API.getMyPageBySlug();
-      this.isUpdating = false;
+      this.isLoading = false;
+    } catch (e) {
+      console.log('updateThemeAction', e);
+      this.isLoading = false;
+    }
+  });
+
+  selectThemeAction = flow(function* (this: DalThemesStore, theme: ITheme) {
+    try {
+      this.isLoading = true;
+      yield this.API.selectTheme(theme.id);
+      this.rootStore.dalAuthStore.updateMeAction();
+      this.isLoading = false;
     } catch (e) {
       console.log('selectThemeAction', e);
-      this.isUpdating = false;
+      this.isLoading = false;
     }
   });
 }

@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { ITheme } from 'src/dal/themes/interface';
+import { ITheme } from 'src/dal/themes/interfaces';
 
 interface IPreviewProps {
-  selectedTheme: ITheme | null;
+  selectedTheme?: ITheme | null;
 }
 
 export const AvatarBlockWrapper = styled.div<IPreviewProps>`

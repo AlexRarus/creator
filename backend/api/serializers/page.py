@@ -3,10 +3,14 @@ from api.models.page import Page
 from api.models.relations import PageBlockRelation, SectionBlockRelation
 from api.models.types.collapsed_list import CollapsedListItemBlock
 from api.models.types.list import ListItemBlock
+from django.contrib.auth import get_user_model
 from django.db.models import Prefetch
 from rest_framework import serializers
 
 from .block import BlockSerializerRead
+from .theme import ThemeSerializer
+
+User = get_user_model()
 
 
 class PageWriteSerializer(serializers.ModelSerializer):
@@ -85,8 +89,16 @@ class PageWriteSerializer(serializers.ModelSerializer):
         )
 
 
+class PageAuthorSerializer(serializers.ModelSerializer):
+    theme = ThemeSerializer(read_only=True)
+
+    class Meta:
+        model = User
+        fields = ("theme",)
+
+
 class PageReadSerializer(serializers.ModelSerializer):
-    author = serializers.PrimaryKeyRelatedField(read_only=True)
+    author = PageAuthorSerializer(read_only=True)
     blocks = BlockSerializerRead(read_only=True, many=True)
 
     class Meta:

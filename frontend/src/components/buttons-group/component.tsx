@@ -4,7 +4,7 @@ import { TDimension } from '../input-components';
 
 import { ButtonsGroupWrapper, ButtonOption } from './style';
 
-interface IButton {
+export interface IButton {
   value: any;
   label: any;
 }
@@ -15,10 +15,11 @@ interface IProps {
   onChange?(value: any): void;
   name?: string;
   dimension?: TDimension;
+  kind?: 'separated' | 'grouped';
 }
 
 export const ButtonsGroup = (props: IProps) => {
-  const { buttons, value, onChange, name, dimension = 'm' } = props;
+  const { buttons, value, onChange, name, dimension = 'm', kind = 'grouped' } = props;
   const [innerValue, setInnerValue] = useState(value);
 
   useEffect(() => {
@@ -33,6 +34,7 @@ export const ButtonsGroup = (props: IProps) => {
       <ButtonsGroupWrapper dimension={dimension} buttons={buttons}>
         {buttons.map((button: IButton) => (
           <ButtonOption
+            kind={kind}
             key={button.value}
             isActive={button.value === value}
             onClick={() => onChange && onChange(button.value)}>

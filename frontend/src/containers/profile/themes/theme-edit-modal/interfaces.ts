@@ -1,4 +1,4 @@
-export type { IThemeWrite as DataForServer } from 'src/dal/themes/interface';
+export type { IThemeWrite as DataForServer } from 'src/dal/themes/interfaces';
 
 // поля формы
 export type FormInputs = {

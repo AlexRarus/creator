@@ -19,3 +19,9 @@ export interface IThemeWrite {
   color?: string;
   // и другие свойства, синхронизировать с ITheme
 }
+
+export interface IThemeType {
+  id: number;
+  slug: string;
+  pricingPlan: number; // todo пока число
+}

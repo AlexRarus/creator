@@ -2,7 +2,7 @@ import { flow, makeAutoObservable } from 'mobx';
 import { History } from 'history';
 import { IRootStore } from 'src/dal/interfaces';
 import RootStore from 'src/dal/root-store';
-import { ITheme } from 'src/dal/themes/interface';
+import { ITheme } from 'src/dal/themes/interfaces';
 
 export class ThemeEditorStore {
   rootStore!: IRootStore;

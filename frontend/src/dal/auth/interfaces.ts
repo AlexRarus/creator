@@ -4,10 +4,13 @@ import {
   IResetPasswordData,
 } from 'src/api/endpoints/auth';
 
+import { ITheme } from '../themes/interfaces';
+
 export interface IUser {
   id: number;
   email: string;
   username: string;
+  theme: ITheme | null;
   first_name?: string;
   last_name?: string;
   avatar?: IAvatar;

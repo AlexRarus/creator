@@ -70,6 +70,14 @@ class CustomUser(AbstractUser):
         choices=UserRoles.choices,
         default=UserRoles.USER,
     )
+    theme = models.ForeignKey(
+        "api.Theme",
+        related_name="users",
+        verbose_name="Тема",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 

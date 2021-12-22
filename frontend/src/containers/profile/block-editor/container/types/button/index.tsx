@@ -33,7 +33,7 @@ export const ButtonForm = observer((props: IProps) => {
     deleteBlockAction,
     getButtonTypesListAction,
     buttonTypes,
-    selectedTheme,
+    user,
   } = useMapStoreToProps();
   // todo хук useForm создает форму и возвращает методы и состояние формы
   // todo все поля зарегистрированные в форме управляются этой формой
@@ -122,13 +122,13 @@ export const ButtonForm = observer((props: IProps) => {
           <FormWrapper>
             <TabContainer value={TabValue.button} activeTabValue={activeTab.value}>
               <ButtonFields
-                selectedTheme={selectedTheme}
+                selectedTheme={user?.theme}
                 buttonTypes={buttonTypes}
                 formDefaultValues={formDefaultValues?.data}
               />
             </TabContainer>
             <TabContainer value={TabValue.kind} activeTabValue={activeTab.value}>
-              <ButtonKinds selectedTheme={selectedTheme} />
+              <ButtonKinds selectedTheme={user?.theme} />
             </TabContainer>
             <TabContainer value={TabValue.settings} activeTabValue={activeTab.value}>
               Tab settings content

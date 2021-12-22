@@ -5,7 +5,7 @@ import { useIsAuthor } from 'src/utils/useIsAuthor';
 import { TargetBlockTypePreview } from 'src/containers/app/block';
 import { IBlock } from 'src/dal/blocks/interfaces';
 import { IPage } from 'src/dal/pages/interfaces';
-import { ITheme } from 'src/dal/themes/interface';
+import { ITheme } from 'src/dal/themes/interfaces';
 import { useAppTypeContext } from 'src/providers/app-type-provider';
 
 import { useMapStoreToProps } from './selectors';
@@ -15,12 +15,13 @@ interface IProps {
   username: string;
   pageSlug: string;
   previewData?: IPage;
-  selectedTheme: ITheme | null;
+  selectedTheme?: ITheme | null;
 }
 
+// TODO тему для отображения пользовательской страницы берем у АВТОРА страницы
 export const PageContainer = observer((props: IProps) => {
   const { isLoading, getPageBySlugAction, data } = useMapStoreToProps();
-  const { username, pageSlug, previewData, selectedTheme } = props;
+  const { username, pageSlug, previewData } = props;
   const isAuthor = useIsAuthor(username);
   const { appType } = useAppTypeContext();
 
@@ -31,20 +32,20 @@ export const PageContainer = observer((props: IProps) => {
     }
   }, [isAuthor, pageSlug, previewData]);
 
-  const resultData = previewData || data;
+  const pageData: IPage | null = previewData || data;
 
   return (
     <PageWrapper
       isApp={appType === 'app'}
       // высота блока для скролла = screenHeight - верхнее меню - нижний блок кнопок
       blockViewHeight={window?.innerHeight - 64 - 64}
-      selectedTheme={selectedTheme}>
+      selectedTheme={pageData?.author?.theme}>
       {isLoading && 'Loading...'}
-      {resultData && (
+      {pageData && (
         <Grid verticalGap={16}>
-          {resultData.blocks.map((block: IBlock<any>) => (
+          {pageData.blocks.map((block: IBlock<any>) => (
             <GridColumn key={block.id} size={12}>
-              <TargetBlockTypePreview block={block} selectedTheme={selectedTheme} />
+              <TargetBlockTypePreview block={block} selectedTheme={pageData?.author?.theme} />
             </GridColumn>
           ))}
         </Grid>

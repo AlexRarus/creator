@@ -1,8 +1,5 @@
 import styled from 'styled-components';
-import { ITheme } from 'src/dal/themes/interface';
-
-import { IListItemIconProps } from '../../../../../app/block/types/list/style';
-import { COLORS } from '../../../../../../components/theme';
+import { ITheme } from 'src/dal/themes/interfaces';
 
 export const SectionFormWrapper = styled.div`
   display: flex;
@@ -34,7 +31,7 @@ export const MicroInputWrapper = styled.div`
   margin-left: auto;
 `;
 
-export const BackgroundPreview = styled.div<{ selectedTheme: ITheme | null }>`
+export const BackgroundPreview = styled.div<{ selectedTheme?: ITheme | null }>`
   padding: 20px;
   min-height: 120px;
   width: 100%;

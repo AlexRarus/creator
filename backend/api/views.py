@@ -7,14 +7,14 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
-from .filters import ImageFilter, ImageSearchFilter
+from .filters import ImageFilter, ImageSearchFilter, ThemeFilter
 from .models.avatar import Avatar
 from .models.block import Block
 from .models.block_type import BlockType
 from .models.image import Image
 from .models.page import Page
 from .models.relations import PageBlockRelation
-from .models.theme import Theme
+from .models.theme import Theme, ThemeType
 from .models.types.button import ButtonType
 from .models.types.collapsed_list import CollapsedListItemBlock
 from .models.types.list import ListItemBlock
@@ -31,6 +31,7 @@ from .serializers.block_type import BlockTypeSerializer
 from .serializers.image import ImageSerializer
 from .serializers.page import PageReadSerializer, PageWriteSerializer
 from .serializers.theme import ThemeSerializer
+from .serializers.theme_type import ThemeTypeSerializer
 from .serializers.types.button import ButtonTypeSerializerRead
 
 
@@ -293,9 +294,32 @@ class ThemeViewSet(viewsets.ModelViewSet):
     queryset = Theme.objects.all()
     permission_classes = (IsAuthorPermission,)
     serializer_class = ThemeSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filter_class = ThemeFilter
 
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+        theme_type, created = ThemeType.objects.get_or_create(slug="custom")
+        serializer.save(author=self.request.user, type=theme_type)
 
     def perform_update(self, serializer):
         serializer.save(author=self.request.user)
+
+    @action(["post"], detail=True)
+    def select(self, request, *args, **kwargs):
+        theme = self.get_object()
+        request.user.theme = theme
+        request.user.save()
+
+        return Response(status=status.HTTP_200_OK)
+
+
+class ThemeTypesViewSet(mixins.ListModelMixin, GenericViewSet):
+    queryset = ThemeType.objects.all()
+    permission_classes = (AllowAny,)
+    serializer_class = ThemeTypeSerializer
+
+    def list(self, request, *args, **kwargs):
+        """Ответ БЕЗ пагинации"""
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)

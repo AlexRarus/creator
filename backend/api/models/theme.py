@@ -1,3 +1,5 @@
+from api.models.image import Image
+from api.models.pricing_plan import PricingPlan
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models.signals import pre_save
@@ -5,9 +7,39 @@ from django.dispatch import receiver
 from django.template.defaultfilters import slugify
 from unidecode import unidecode
 
-from .image import Image
-
 User = get_user_model()
+
+
+class ThemeType(models.Model):
+    slug = models.SlugField(
+        verbose_name="Слаг типа темы",
+        max_length=255,
+        blank=True,
+        unique=True,
+        default="",
+    )
+    pricingPlan = models.ForeignKey(
+        PricingPlan,
+        on_delete=models.SET_NULL,
+        verbose_name="Тарифный план",
+        related_name="theme_types",
+        null=True,
+    )
+    order = models.PositiveIntegerField(
+        verbose_name="Позиция в сортировке списка",
+        null=True,
+    )
+
+    def __str__(self):
+        return f"{self.slug or 'default'}"
+
+    class Meta:
+        verbose_name = "Тип тем"
+        verbose_name_plural = "Типы тем"
+        ordering = (
+            "order",
+            "id",
+        )
 
 
 class Theme(models.Model):
@@ -16,6 +48,13 @@ class Theme(models.Model):
         verbose_name="Автор",
         related_name="themes",
         on_delete=models.CASCADE,
+    )
+    type = models.ForeignKey(
+        ThemeType,
+        verbose_name="Тип",
+        related_name="themes",
+        on_delete=models.CASCADE,
+        null=True,
     )
     label = models.CharField(
         verbose_name="Наименование темы",

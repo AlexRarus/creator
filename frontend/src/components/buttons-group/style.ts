@@ -9,6 +9,7 @@ interface IButtonsWrapperProps {
 
 interface IButtonOptionProps {
   isActive: boolean;
+  kind: 'separated' | 'grouped';
 }
 
 const getHeight = (props: IButtonsWrapperProps) => {
@@ -51,12 +52,15 @@ export const ButtonOption = styled.div<IButtonOptionProps>`
   line-height: 16px;
   border: 1px solid ${({ isActive }) => (isActive ? COLORS.blue[500] : COLORS.grey[400])};
   color: ${({ isActive }) => (isActive ? COLORS.blue[500] : COLORS.grey[400])};
+  margin: ${({ kind }) => (kind === 'separated' ? '0 5px' : '0')};
 
   :first-child {
-    border-radius: 4px 0 0 4px;
+    border-radius: ${({ kind }) => (kind === 'separated' ? '4px' : '4px 0 0 4px')};
+    margin-left: 0;
   }
 
   :last-child {
-    border-radius: 0 4px 4px 0;
+    border-radius: ${({ kind }) => (kind === 'separated' ? '4px' : '0 4px 4px 0')};
+    margin-right: 0;
   }
 `;

@@ -1,13 +1,13 @@
 import React from 'react';
 import { IBlock } from 'src/dal/blocks/interfaces';
 import { ITextData } from 'src/dal/blocks/data-interfaces';
-import { ITheme } from 'src/dal/themes/interface';
+import { ITheme } from 'src/dal/themes/interfaces';
 
 import { TextBlockStyled } from './style';
 
 interface IProps {
   block: IBlock<ITextData>;
-  selectedTheme: ITheme | null;
+  selectedTheme?: ITheme | null;
 }
 
 export const TextPreview = (props: IProps) => {

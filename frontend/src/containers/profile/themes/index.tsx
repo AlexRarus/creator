@@ -5,6 +5,7 @@ import { ThemesContainer } from './container';
 
 interface IParams {
   username: string;
+  themeType: string;
 }
 
 // страница списка тем

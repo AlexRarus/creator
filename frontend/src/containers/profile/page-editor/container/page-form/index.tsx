@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { IBlock } from 'src/dal/blocks/interfaces';
-import Button from 'src/components/button';
 import { IPage } from 'src/dal/pages/interfaces';
 import { useHistory } from 'react-router-dom';
 import PaletteIcon from '@mui/icons-material/Palette';
@@ -9,7 +8,6 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import EditIcon from '@mui/icons-material/Edit';
 import { BlockEditorModal } from 'src/containers/profile/block-editor';
 import { isMobile } from 'react-device-detect';
-import { ITheme } from 'src/dal/themes/interface';
 import Popup from 'src/components/popup';
 import { USER_MENU_BACKGROUND } from 'src/components/menu/user-menu/style';
 import { AwesomeButton } from 'src/components/awesome-button';
@@ -32,7 +30,6 @@ interface IProps {
   username: string;
   pageSlug: string;
   isUpdating: boolean;
-  selectedTheme: ITheme | null;
   onUpdatePageForm: (slug?: string) => void;
   onDragEndAction: (list: number[]) => void;
   createBlockAction: (data: any) => void;
@@ -59,8 +56,6 @@ export const PageForm = (props: IProps) => {
     onDragEndAction,
     updateBlockAction,
     deleteBlockAction,
-    selectedTheme,
-
     openPageSettingsModal,
   } = props;
   const [blocks, setBlocks] = useState<IBlock<any>[]>([]);
@@ -125,13 +120,7 @@ export const PageForm = (props: IProps) => {
   return (
     <>
       {isShowPreview && (
-        <PagePreview
-          selectedTheme={selectedTheme}
-          isUpdating={isUpdating}
-          username={username}
-          pageSlug={pageSlug}
-          data={data}
-        />
+        <PagePreview isUpdating={isUpdating} username={username} pageSlug={pageSlug} data={data} />
       )}
       {!isShowPreview && (
         <>

@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import { COLORS } from 'src/components/theme';
 
 export interface IListItemProps {
   iconSize?: number;

@@ -44,6 +44,7 @@ interface IProps {
   pageSlug: string;
 }
 
+// TODO тему для отображения пользовательской страницы берем у текущего пользователя
 export const PageEditorContainer = observer((props: IProps) => {
   const {
     isLoading,
@@ -54,7 +55,6 @@ export const PageEditorContainer = observer((props: IProps) => {
     selectPageAction,
     updatePageBlocksAction,
     deleteBlockAction,
-    selectedTheme,
     createBlockAction,
     updateBlockAction,
     user,
@@ -178,7 +178,6 @@ export const PageEditorContainer = observer((props: IProps) => {
                   <EditorWrapper isForm={true}>
                     <PageForm
                       data={data}
-                      selectedTheme={selectedTheme}
                       username={username}
                       pageSlug={pageSlug}
                       isUpdating={isUpdating}
@@ -197,7 +196,6 @@ export const PageEditorContainer = observer((props: IProps) => {
                       <DeviceContainer>
                         <PagePreview
                           data={data}
-                          selectedTheme={selectedTheme}
                           isUpdating={isUpdating}
                           username={username}
                           pageSlug={pageSlug}
@@ -236,7 +234,6 @@ export const PageEditorContainer = observer((props: IProps) => {
               </EditorHeader>
               <PageForm
                 data={data}
-                selectedTheme={selectedTheme}
                 username={username}
                 isUpdating={isUpdating}
                 pageSlug={pageSlug}

@@ -72,36 +72,6 @@ const getSelectColor = (props: IPropsStyles) => {
   return theme.component.select.color[propKey];
 };
 
-const dimensionPadding = {
-  l: css`
-    height: 56px;
-    padding: 12px 15px;
-  `,
-  m: css`
-    height: 40px;
-    padding: 8px 15px;
-  `,
-  s: css`
-    height: 32px;
-    padding: 6px 11px;
-  `,
-};
-
-const dimensionFont = {
-  l: css`
-    font-size: 15px;
-    font-weight: 400;
-  `,
-  m: css`
-    font-size: 15px;
-    font-weight: 400;
-  `,
-  s: css`
-    font-size: 13px;
-    font-weight: 400;
-  `,
-};
-
 export const ButtonSelectWrapper = styled.div<{
   width?: string;
 }>`
@@ -114,8 +84,6 @@ export const ButtonStyled = styled.div<IPropsStyles>`
   align-items: center;
   justify-content: center;
   position: relative;
-  display: flex;
-  align-items: center;
   border-radius: 4px;
   box-sizing: border-box;
   cursor: pointer;

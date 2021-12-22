@@ -4,6 +4,7 @@ from rest_framework import serializers
 
 class ThemeSerializer(serializers.ModelSerializer):
     author = serializers.PrimaryKeyRelatedField(read_only=True)
+    type = serializers.CharField(read_only=True, source="type.slug")
 
     def to_representation(self, obj):
         # вызывается при чтении модели
@@ -25,6 +26,8 @@ class ThemeSerializer(serializers.ModelSerializer):
         return internal
 
     def update(self, instance, validated_data):
+        # исключаем поле type для того чтобы его нельзя было изменить
+        validated_data.pop("type")
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()
@@ -36,6 +39,7 @@ class ThemeSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "author",
+            "type",
             "label",
             "slug",
             "background",

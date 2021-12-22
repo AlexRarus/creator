@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useThemeContext } from 'src/providers/dark-theme-provider';
 import { observer } from 'mobx-react';
 import { useHistory } from 'react-router-dom';
-import { ITheme } from 'src/dal/themes/interface';
+import { ITheme, IThemeType } from 'src/dal/themes/interfaces';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 // Direct React component imports
 import { Swiper, SwiperSlide } from 'swiper/react/swiper-react.js'; // import Swiper core and required modules
 import SwiperCore, { Pagination, Navigation, EffectCoverflow } from 'swiper';
 import Button from 'src/components/button';
+import ButtonGroup, { IButton } from 'src/components/buttons-group';
+import { useTranslation } from 'react-i18next';
 // Import Swiper styles
 import 'swiper/swiper-bundle.css';
 
@@ -35,25 +37,45 @@ import {
 SwiperCore.use([Pagination, Navigation, EffectCoverflow]);
 
 export const ThemesContainer = observer((props: any) => {
-  const { username } = props;
+  const { username, themeType = '' } = props;
   const [activeTheme, setActiveTheme] = useState<ITheme | undefined>();
   const [editingThemeId, setEditingThemeId] = useState<number | 'new' | null>(null);
   const { DEVICE_THEME } = useThemeContext();
   const {
+    user,
     themes,
-    selectedTheme,
-    getThemesAction,
-    updateThemeAction,
+    getThemesByTypeAction,
+    selectThemeAction,
     selectedPage,
+    themesTypes,
+    getThemesTypesAction,
   } = useMapStoreToProps();
   const history = useHistory();
+  const { i18n, t } = useTranslation('themes');
+
+  const themesButtons: IButton[] = useMemo(
+    () =>
+      themesTypes.map((themeType: IThemeType) => ({
+        label: t(`themeType.${themeType.slug || 'default'}`),
+        value: themeType.slug,
+      })),
+    [themesTypes, i18n.language]
+  );
 
   useEffect(() => {
-    getThemesAction();
+    // получаем типы тем, если их еще нет
+    if (!themesTypes.length) {
+      getThemesTypesAction();
+    }
   }, []);
 
+  useEffect(() => {
+    // получаем темы если изменился фильтр типов
+    getThemesByTypeAction(themeType);
+  }, [themeType]);
+
   const onClickTheme = (isSelected?: boolean) => () => {
-    isSelected ? toEditPage() : updateThemeAction(activeTheme as ITheme);
+    isSelected ? toEditPage() : selectThemeAction(activeTheme as ITheme);
   };
 
   const onSlideChange = ({ realIndex }: any) => {
@@ -68,15 +90,20 @@ export const ThemesContainer = observer((props: any) => {
   const openEditingThemeModal = (id: number | 'new') => setEditingThemeId(id);
   const successEditingThemeModal = (data: any) => {
     // todo обновляем список доступных тем
-    getThemesAction();
+    getThemesByTypeAction(themeType);
     console.log('successEditingThemeModal', data);
+  };
+
+  const changeThemeType = (value: string) => {
+    history.push(`/profile/${username}/themes/${value}`);
   };
 
   return (
     <ThemesWrapper>
       <ThemesHeader>
-        <ThemesHeaderTitle>Доступные темы</ThemesHeaderTitle>
-        <CreateButton onClick={() => openEditingThemeModal('new')}>Создать</CreateButton>
+        {/*<ThemesHeaderTitle>Доступные темы</ThemesHeaderTitle>*/}
+        {/*<CreateButton onClick={() => openEditingThemeModal('new')}>Создать</CreateButton>*/}
+        <ButtonGroup buttons={themesButtons} value={themeType} onChange={changeThemeType} />
       </ThemesHeader>
       {themes?.length > 0 ? (
         <>
@@ -100,7 +127,7 @@ export const ThemesContainer = observer((props: any) => {
               }}>
               {themes?.map((theme, index) => (
                 <SwiperSlide style={{ width: DEVICE_THEME.isMobile ? 'auto' : '40%' }} key={index}>
-                  <PhoneWrapper color={theme.color} isSelected={selectedTheme?.id === theme.id}>
+                  <PhoneWrapper color={theme.color} isSelected={user?.theme?.id === theme.id}>
                     <ThemeItemBackground color={theme.background}>
                       <UserBlock color={theme.color} />
                       <ThemeItemHeader color={theme.headerColor}>Заголовок</ThemeItemHeader>
@@ -116,10 +143,10 @@ export const ThemesContainer = observer((props: any) => {
             </Swiper>
             <ActionRow>
               <Button
-                onClick={onClickTheme(activeTheme?.id === selectedTheme?.id)}
-                kind={activeTheme?.id === selectedTheme?.id ? 'success' : 'formed'}
+                onClick={onClickTheme(activeTheme?.id === user?.theme?.id)}
+                kind={activeTheme?.id === user?.theme?.id ? 'success' : 'formed'}
                 block={true}>
-                {activeTheme?.id === selectedTheme?.id ? (
+                {activeTheme?.id === user?.theme?.id ? (
                   <SuccessLabel>
                     Выбрана <ArrowForwardIosIcon />
                   </SuccessLabel>

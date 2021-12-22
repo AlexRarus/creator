@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ITheme } from 'src/dal/themes/interface';
+import { ITheme } from 'src/dal/themes/interfaces';
 import { rgba } from 'polished';
 import { COLORS } from 'src/components/theme';
 

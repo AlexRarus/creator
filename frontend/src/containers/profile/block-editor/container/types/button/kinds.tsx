@@ -1,6 +1,6 @@
 import React from 'react';
 import { TargetBlockTypePreview } from 'src/containers/app/block';
-import { ITheme } from 'src/dal/themes/interface';
+import { ITheme } from 'src/dal/themes/interfaces';
 import { Grid, GridColumn } from 'src/components/grid';
 import { buttonKinds } from 'src/containers/app/block/types/button/style';
 import { useFormContext } from 'react-hook-form';
@@ -9,7 +9,7 @@ import { prepareDataForKinds } from './utils';
 import { KindsList, KindWrapper } from './style';
 
 interface IProps {
-  selectedTheme: ITheme | null;
+  selectedTheme?: ITheme | null;
 }
 
 export const ButtonKinds = (props: IProps) => {

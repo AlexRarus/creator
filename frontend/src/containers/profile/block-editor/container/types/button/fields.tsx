@@ -7,8 +7,7 @@ import InputText from 'src/components/input-text';
 import InputMask from 'src/components/input-mask';
 import { ImageUploaderModule } from 'src/modules/image-uploader-module';
 import { TargetBlockTypePreview } from 'src/containers/app/block';
-
-import { ITheme } from '../../../../../../dal/themes/interface';
+import { ITheme } from 'src/dal/themes/interfaces';
 
 import { FormInputs } from './interfaces';
 import { Label, FakeLabel, ButtonSelectStyled, RefTemplateButton } from './style';
@@ -31,7 +30,7 @@ const placeholderMap = {
 interface IProps {
   buttonTypes: any[];
   formDefaultValues: FormInputs | null;
-  selectedTheme: ITheme | null;
+  selectedTheme?: ITheme | null;
 }
 
 export const ButtonFields = (props: IProps) => {

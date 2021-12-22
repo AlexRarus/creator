@@ -3,13 +3,13 @@ import { useFormContext } from 'react-hook-form';
 import { TargetBlockTypePreview } from 'src/containers/app/block';
 import { IBlock } from 'src/dal/blocks/interfaces';
 import { ISectionData } from 'src/dal/blocks/data-interfaces';
-import { ITheme } from 'src/dal/themes/interface';
+import { ITheme } from 'src/dal/themes/interfaces';
 import { IUser } from 'src/dal/auth/interfaces';
 
 import { BackgroundPreview } from './style';
 
 interface IProps {
-  selectedTheme: ITheme | null;
+  selectedTheme?: ITheme | null;
   blocks: IBlock<any>[];
   user: IUser;
 }

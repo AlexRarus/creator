@@ -5,7 +5,7 @@ import { MobileView, BrowserView } from 'react-device-detect';
 
 import { COLORS, MEDIA } from '../../../../components/theme';
 
-import { FORM_HEADER_HEIGHT, FORM_FOOTER_HEIGHT } from './page-form/style';
+import { FORM_FOOTER_HEIGHT } from './page-form/style';
 
 export const StyledGrid = styled(Grid)`
   flex-grow: 1;

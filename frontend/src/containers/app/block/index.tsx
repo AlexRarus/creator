@@ -1,6 +1,6 @@
 import React from 'react';
 import { IBlock } from 'src/dal/blocks/interfaces';
-import { ITheme } from 'src/dal/themes/interface';
+import { ITheme } from 'src/dal/themes/interfaces';
 
 import { TextPreview } from './types/text';
 import { SectionPreview } from './types/section';
@@ -11,7 +11,7 @@ import { ButtonPreview } from './types/button';
 
 interface IProps {
   block: IBlock<any>;
-  selectedTheme: ITheme | null;
+  selectedTheme?: ITheme | null;
   onClick?: any;
 }
 

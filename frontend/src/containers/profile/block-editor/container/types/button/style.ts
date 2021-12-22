@@ -1,12 +1,5 @@
 import styled from 'styled-components';
 import ButtonSelect from 'src/components/button-select';
-import { COLORS } from 'src/components/theme';
-import {
-  IListItemProps,
-  IListItemIconProps,
-  getGridTemplateAreas,
-} from 'src/containers/app/block/types/list/style';
-// import { COLORS } from 'src/dal/themes/interface';
 
 export const ButtonFormWrapper = styled.div`
   display: flex;

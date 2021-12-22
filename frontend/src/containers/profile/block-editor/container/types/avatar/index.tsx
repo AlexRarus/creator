@@ -41,7 +41,7 @@ export const AvatarForm = observer((props: IProps) => {
     setIsCloning,
     blockIndex,
   } = props;
-  const { formDefaultValues, deleteBlockAction, selectedTheme, user } = useMapStoreToProps();
+  const { formDefaultValues, deleteBlockAction, user } = useMapStoreToProps();
   const [tabs, activeTab, onChangeTab] = useTabs(blockTabs);
   const methods = useForm<FormInputs>({
     mode: 'onChange',
@@ -120,7 +120,7 @@ export const AvatarForm = observer((props: IProps) => {
         <FormProvider {...methods}>
           <FormWrapper>
             <TabContainer value={TabValue.editor} activeTabValue={activeTab.value}>
-              <AvatarPreview selectedTheme={selectedTheme} user={user as IUser} />
+              <AvatarPreview user={user as IUser} selectedTheme={user?.theme} />
               <AvatarBlockFields formDefaultValues={formDefaultValues} />
             </TabContainer>
             <TabContainer value={TabValue.settings} activeTabValue={activeTab.value}>

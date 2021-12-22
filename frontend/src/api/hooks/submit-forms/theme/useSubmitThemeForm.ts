@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { AxiosResponse } from 'axios';
 import API from 'src/api/index';
-import { IThemeWrite as DataForServer } from 'src/dal/themes/interface';
+import { IThemeWrite as DataForServer } from 'src/dal/themes/interfaces';
 
 export const useSubmitThemeForm = () => {
   const [isLoading, setIsLoading] = useState(false);

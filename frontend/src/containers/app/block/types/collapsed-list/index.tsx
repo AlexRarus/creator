@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { IBlock } from 'src/dal/blocks/interfaces';
 import { ICollapsedListData, ICollapsedListItem } from 'src/dal/blocks/data-interfaces';
-import { ITheme } from 'src/dal/themes/interface';
+import { ITheme } from 'src/dal/themes/interfaces';
 
 import { CollapsedListItem } from './collapsed-list-item';
 import { CollapsedListBlockWrapper } from './style';
 
 interface IProps {
   block: IBlock<ICollapsedListData>;
-  selectedTheme: ITheme | null;
+  selectedTheme?: ITheme | null;
 }
 
 export const CollapsedListPreview = (props: IProps) => {

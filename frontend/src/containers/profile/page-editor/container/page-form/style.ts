@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { rgba } from 'polished';
 import { Grid } from 'src/components/grid';
 import { COLORS, MEDIA } from 'src/components/theme';
-import { ITheme } from 'src/dal/themes/interface';
+import { ITheme } from 'src/dal/themes/interfaces';
 import {
   USER_MENU_BACKGROUND,
   USER_MENU_BACKGROUND_HOVER,
