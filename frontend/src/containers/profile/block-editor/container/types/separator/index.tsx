@@ -9,7 +9,7 @@ import { FormWrapper } from '../../style';
 
 import { FormInputs, RawData, DataToServer } from './interfaces';
 import { useMapStoreToProps } from './selectors';
-import { ButtonFormWrapper } from './style';
+import { SeparateFormWrapper } from './style';
 import { SeparatorFields } from './fields';
 import { TabValue, blockTabs, prepareDataForServer, blockActions } from './utils';
 
@@ -109,7 +109,7 @@ export const SeparatorForm = observer((props: IProps) => {
   };
 
   return (
-    <ButtonFormWrapper>
+    <SeparateFormWrapper>
       <Tabs tabs={tabs} activeTab={activeTab} onChangeTab={onChangeTab} />
       <Form
         onAction={onAction}
@@ -130,6 +130,6 @@ export const SeparatorForm = observer((props: IProps) => {
           </FormWrapper>
         </FormProvider>
       </Form>
-    </ButtonFormWrapper>
+    </SeparateFormWrapper>
   );
 });

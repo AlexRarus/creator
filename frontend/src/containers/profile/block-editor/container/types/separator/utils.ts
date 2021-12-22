@@ -1,6 +1,5 @@
 // import { IBlock } from 'src/dal/blocks/interfaces';
 import { ITab } from 'src/components/tabs';
-// import { COLORS } from 'src/components/theme';
 import { IAction } from 'src/components/form';
 
 import { DataForServer } from '../../interfaces';
@@ -53,17 +52,17 @@ export const blockActions: IAction[] = [
   },
 ];
 
-export const prepareDataForKinds = (kindsList: any[], selectedKind?: string, icon?: any) =>
-  kindsList.map((kind) => ({
-    id: 0,
-    type: 'button',
-    author: {},
-    data: {
-      label: selectedKind === kind ? 'Выбрана' : 'Заголовок',
-      description: kind,
-      value: '',
-      type: 'test_type',
-      kind,
-      icon,
-    },
-  }));
+export const getDefaultBlock = (
+  kind: string,
+  isWide?: boolean,
+  isTransparent?: boolean,
+  icon?: any
+) => ({
+  type: 'separator',
+  data: {
+    isWide,
+    isTransparent,
+    icon,
+    kind,
+  },
+});

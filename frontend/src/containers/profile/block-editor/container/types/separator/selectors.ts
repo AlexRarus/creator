@@ -1,4 +1,3 @@
-import React from 'react';
 import { useStores } from 'src/dal/use-stores';
 
 const getInitialFormDefaultVale = (block: any) => {

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { rgba } from 'polished';
 import { COLORS } from 'src/components/theme';
 
-export const ButtonFormWrapper = styled.div`
+export const SeparateFormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -26,15 +26,6 @@ export const KindsList = styled.div`
 
 export const KindWrapper = styled.div`
   width: 100%;
-`;
-
-export const TypeItem = styled.div<{ isSelected?: boolean }>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  background: ${({ isSelected }) => (isSelected ? rgba(COLORS.green[500], 0.3) : 'transparent')};
 `;
 
 export const Row = styled.div`

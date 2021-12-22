@@ -2,6 +2,7 @@ import React, { useRef, RefObject } from 'react';
 import { TargetBlockTypePreview } from 'src/containers/app/block';
 
 import { ToggleButton, ToggleWrapper } from './style';
+import { getDefaultBlock } from './utils';
 
 interface IProps {
   list: string[];
@@ -28,16 +29,6 @@ export const Toggle = ({
     onChange && onChange(selected);
   };
 
-  const defaultBlock = (kind: string) => ({
-    type: 'separator',
-    data: {
-      isWide,
-      isTransparent,
-      icon,
-      kind,
-    },
-  });
-
   return (
     <ToggleWrapper>
       {list.map((item) => (
@@ -46,7 +37,10 @@ export const Toggle = ({
           onClick={handleChange(item)}
           isSelected={value === item}
           key={item}>
-          <TargetBlockTypePreview selectedTheme={null} block={defaultBlock(item) as any} />
+          <TargetBlockTypePreview
+            selectedTheme={null}
+            block={getDefaultBlock(item, isWide, isTransparent, icon) as any}
+          />
         </ToggleButton>
       ))}
     </ToggleWrapper>
