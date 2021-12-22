@@ -246,7 +246,7 @@ class ImageViewSet(
             # при удалении ждем массив ids в теле запроса
             return None
         if self.action in ["update"]:
-            # при удалении ждем массив ids в теле запроса
+            # при обновлении ждем id в теле запроса
             return get_object_or_404(Image, pk=self.request.data.get("id"))
         return get_object_or_404(Image, pk=self.kwargs.get("pk"))
 
@@ -300,6 +300,12 @@ class ThemeViewSet(viewsets.ModelViewSet):
         if self.action == "retrieve" or self.action == "list":
             return ThemeSerializerRead
         return ThemeSerializerWrite
+
+    def get_object(self):
+        if self.action in ["update"]:
+            # при обновлении ждем id в теле запроса
+            return get_object_or_404(Theme, pk=self.request.data.get("id"))
+        return get_object_or_404(Theme, pk=self.kwargs.get("pk"))
 
     def perform_create(self, serializer):
         theme_type, created = ThemeType.objects.get_or_create(slug="custom")

@@ -123,6 +123,7 @@ class Theme(models.Model):
     class Meta:
         verbose_name = "Тема"
         verbose_name_plural = "Темы"
+        ordering = ("id",)
 
 
 @receiver(pre_save, sender=Theme)

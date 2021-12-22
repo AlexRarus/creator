@@ -4,6 +4,7 @@ import { observer } from 'mobx-react';
 import { useHistory } from 'react-router-dom';
 import { ITheme, IThemeType } from 'src/dal/themes/interfaces';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import AddIcon from '@mui/icons-material/Add';
 // Direct React component imports
 import { Swiper, SwiperSlide } from 'swiper/react/swiper-react.js'; // import Swiper core and required modules
 import SwiperCore, { Pagination, Navigation, EffectCoverflow } from 'swiper';
@@ -20,6 +21,8 @@ import {
   ThemesHeader,
   ThemesHeaderTitle,
   CreateButton,
+  CreateButtonIconWrapper,
+  CreateButtonLabel,
   SwiperWrapper,
   ThemeItemBackground,
   ThemeItemText,
@@ -30,8 +33,6 @@ import {
   EmptyBlock,
   SuccessLabel,
 } from './styles';
-
-// interface IProps {}
 
 // install Swiper modules
 SwiperCore.use([Pagination, Navigation, EffectCoverflow]);
@@ -78,21 +79,20 @@ export const ThemesContainer = observer((props: any) => {
     isSelected ? toEditPage() : selectThemeAction(activeTheme as ITheme);
   };
 
-  const onSlideChange = ({ realIndex }: any) => {
-    const active = themes[realIndex];
-    setActiveTheme(active);
+  const onSlideChange = (swiper: any) => {
+    const { realIndex } = swiper;
+    const maxIndex = themes.length - 1;
+    setActiveTheme(realIndex > maxIndex ? undefined : themes[realIndex]);
   };
 
   const toEditPage = () =>
     history.push(`/profile/${username}/pages/${selectedPage?.slug || 'main'}`);
 
-  const closeEditingThemeModal = () => setEditingThemeId(null);
-  const openEditingThemeModal = (id: number | 'new') => setEditingThemeId(id);
-  const successEditingThemeModal = (data: any) => {
-    // todo обновляем список доступных тем
-    getThemesByTypeAction(themeType);
-    console.log('successEditingThemeModal', data);
+  const closeEditingThemeModal = () => {
+    setEditingThemeId(null);
   };
+  const openEditingThemeModal = (id: number | 'new') => setEditingThemeId(id);
+  const updateThemesList = () => getThemesByTypeAction(themeType);
 
   const changeThemeType = (value: string) => {
     history.push(`/profile/${username}/themes/${value}`);
@@ -101,47 +101,66 @@ export const ThemesContainer = observer((props: any) => {
   return (
     <ThemesWrapper>
       <ThemesHeader>
-        {/*<ThemesHeaderTitle>Доступные темы</ThemesHeaderTitle>*/}
-        {/*<CreateButton onClick={() => openEditingThemeModal('new')}>Создать</CreateButton>*/}
+        <ThemesHeaderTitle>Доступные темы</ThemesHeaderTitle>
         <ButtonGroup buttons={themesButtons} value={themeType} onChange={changeThemeType} />
       </ThemesHeader>
-      {themes?.length > 0 ? (
-        <>
-          <SwiperWrapper width={window.innerWidth}>
-            <Swiper
-              effect={'coverflow'}
-              grabCursor={true}
-              centeredSlides={true}
-              slidesPerView={'auto'}
-              onSlideChange={onSlideChange}
-              coverflowEffect={{
-                rotate: 35,
-                stretch: 150,
-                depth: 150,
-                modifier: 1,
-                slideShadows: false,
-              }}
-              loop={true}
-              pagination={{
-                clickable: true,
-              }}>
-              {themes?.map((theme, index) => (
-                <SwiperSlide style={{ width: DEVICE_THEME.isMobile ? 'auto' : '40%' }} key={index}>
-                  <PhoneWrapper color={theme.color} isSelected={user?.theme?.id === theme.id}>
-                    <ThemeItemBackground color={theme.background}>
-                      <UserBlock color={theme.color} />
-                      <ThemeItemHeader color={theme.headerColor}>Заголовок</ThemeItemHeader>
-                      <ThemeItemText color={theme.color}>
-                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo
-                        ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis
-                        parturient montes, nascetur ridiculus mus.
-                      </ThemeItemText>
-                    </ThemeItemBackground>
-                  </PhoneWrapper>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-            <ActionRow>
+      {themes?.length > 0 || themeType === 'custom' ? (
+        <SwiperWrapper width={window.innerWidth}>
+          <Swiper
+            effect='coverflow'
+            grabCursor={true}
+            centeredSlides={true}
+            slidesPerView='auto'
+            onSlideChange={onSlideChange}
+            coverflowEffect={{
+              rotate: 35,
+              stretch: 150,
+              depth: 150,
+              modifier: 1,
+              slideShadows: false,
+            }}
+            // loop={true} todo сбивается позиция элементов при удалении или добавлении новых элементов
+            initialSlide={themes.length - 1}
+            pagination={{
+              clickable: true,
+            }}>
+            {themes?.map((theme, index) => (
+              <SwiperSlide style={{ width: DEVICE_THEME.isMobile ? 'auto' : '40%' }} key={index}>
+                <PhoneWrapper
+                  color={theme.color}
+                  isSelected={user?.theme?.id === theme.id}
+                  onClick={
+                    themeType === 'custom' ? () => openEditingThemeModal(theme.id) : undefined
+                  }>
+                  <ThemeItemBackground background={theme.background}>
+                    <UserBlock color={theme.color} />
+                    <ThemeItemHeader color={theme.headerColor}>Заголовок</ThemeItemHeader>
+                    <ThemeItemText color={theme.color}>
+                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo
+                      ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis
+                      parturient montes, nascetur ridiculus mus.
+                    </ThemeItemText>
+                  </ThemeItemBackground>
+                </PhoneWrapper>
+              </SwiperSlide>
+            ))}
+            {themeType === 'custom' && (
+              <SwiperSlide style={{ width: DEVICE_THEME.isMobile ? 'auto' : '40%' }}>
+                <PhoneWrapper>
+                  <ThemeItemBackground>
+                    <CreateButton onClick={() => openEditingThemeModal('new')}>
+                      <CreateButtonIconWrapper>
+                        <AddIcon />
+                      </CreateButtonIconWrapper>
+                      <CreateButtonLabel>Добавить новую тему</CreateButtonLabel>
+                    </CreateButton>
+                  </ThemeItemBackground>
+                </PhoneWrapper>
+              </SwiperSlide>
+            )}
+          </Swiper>
+          <ActionRow>
+            {activeTheme && (
               <Button
                 onClick={onClickTheme(activeTheme?.id === user?.theme?.id)}
                 kind={activeTheme?.id === user?.theme?.id ? 'success' : 'formed'}
@@ -154,9 +173,9 @@ export const ThemesContainer = observer((props: any) => {
                   'Выбрать'
                 )}
               </Button>
-            </ActionRow>
-          </SwiperWrapper>
-        </>
+            )}
+          </ActionRow>
+        </SwiperWrapper>
       ) : (
         <EmptyBlock>Нет доступных тем</EmptyBlock>
       )}
@@ -164,7 +183,8 @@ export const ThemesContainer = observer((props: any) => {
         <ThemeEditModal
           themeId={editingThemeId}
           onClose={closeEditingThemeModal}
-          onSuccess={successEditingThemeModal}
+          onSuccess={updateThemesList}
+          onRemove={updateThemesList}
         />
       )}
     </ThemesWrapper>

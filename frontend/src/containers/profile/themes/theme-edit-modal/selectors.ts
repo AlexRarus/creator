@@ -4,7 +4,7 @@ import { store } from './store';
 import { prepareDataToForm } from './utils';
 
 export function useMapStoreToProps() {
-  const { dalAuthStore } = useStores();
+  const { dalAuthStore, dalThemesStore } = useStores();
   const user = dalAuthStore.user;
 
   return {
@@ -14,5 +14,6 @@ export function useMapStoreToProps() {
     resetAction: store.resetAction,
     formDefaultValues: prepareDataToForm(store.formData),
     isAuthor: Boolean(user && store.formData?.author === user?.id),
+    deleteThemeAction: dalThemesStore.deleteThemeAction,
   };
 }

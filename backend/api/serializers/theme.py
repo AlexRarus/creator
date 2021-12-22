@@ -15,13 +15,14 @@ class ThemeSerializerRead(serializers.ModelSerializer):
 
 
 class ThemeSerializerWrite(serializers.ModelSerializer):
+    author = serializers.PrimaryKeyRelatedField(read_only=True)
     backgroundImage = serializers.PrimaryKeyRelatedField(
         allow_null=True, required=False, queryset=Image.objects.all()
     )
 
     def update(self, instance, validated_data):
         # исключаем поле type для того чтобы его нельзя было изменить
-        validated_data.pop("type")
+        validated_data.pop("type", None)
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()

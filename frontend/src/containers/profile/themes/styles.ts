@@ -23,17 +23,39 @@ export const ThemesHeaderTitle = styled.div`
 `;
 
 export const CreateButton = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
   background: ${COLORS.white};
   color: ${COLORS.black};
   padding: 10px;
   border-radius: 4px;
-  box-shadow: 0 1px 8px ${COLORS.blue[500]};
   cursor: pointer;
   user-select: none;
 
   * {
     cursor: pointer;
   }
+`;
+
+export const CreateButtonIconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: ${COLORS.grey[500]};
+
+  svg {
+    font-size: 50px;
+  }
+`;
+
+export const CreateButtonLabel = styled.div`
+  margin-top: 10px;
 `;
 
 export const SwiperWrapper = styled.div<{ width?: number }>`
@@ -73,11 +95,11 @@ export const SwiperWrapper = styled.div<{ width?: number }>`
   }
 `;
 
-export const PhoneWrapper = styled.div<{ isSelected?: boolean; color: string }>`
+export const PhoneWrapper = styled.div<{ isSelected?: boolean; color?: string }>`
   position: relative;
   width: 320px;
   height: 560px;
-  border: 2px solid ${({ color }) => color};
+  border: 2px solid ${({ color = COLORS.black }) => color};
   border-radius: 30px;
   overflow: hidden;
   ${({ theme }) =>
@@ -100,13 +122,13 @@ export const PhoneWrapper = styled.div<{ isSelected?: boolean; color: string }>`
   }
 `;
 
-export const ThemeItemBackground = styled.div<{ color: string }>`
+export const ThemeItemBackground = styled.div<{ background?: string }>`
   display: flex;
   align-items: center;
   flex-direction: column;
   width: 100%;
   height: 100%;
-  background: ${({ color }) => color};
+  background: ${({ background = COLORS.white }) => background};
   padding: 10px 10px 20px 10px;
 `;
 

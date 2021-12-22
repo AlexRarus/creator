@@ -64,14 +64,11 @@ export default class DalThemesStore {
     }
   });
 
-  updateThemeAction = flow(function* (this: DalThemesStore, data: IThemeWrite) {
+  deleteThemeAction = flow(function* (this: DalThemesStore, id: number) {
     try {
-      this.isLoading = true;
-      yield this.API.updateTheme(data);
-      this.isLoading = false;
+      yield this.API.deleteTheme(id);
     } catch (e) {
-      console.log('updateThemeAction', e);
-      this.isLoading = false;
+      console.log('deleteThemeAction', e);
     }
   });
 

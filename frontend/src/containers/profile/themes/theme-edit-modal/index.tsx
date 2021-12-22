@@ -17,10 +17,11 @@ interface IProps {
   themeId: number | 'new';
   onClose(): void;
   onSuccess?(data: any): void;
+  onRemove?(): void;
 }
 
 export const ThemeEditModal = observer((props: IProps) => {
-  const { themeId: initThemeId, onClose, onSuccess } = props;
+  const { themeId: initThemeId, onClose, onSuccess, onRemove } = props;
   const [themeId, setThemeId] = useState(initThemeId);
   const {
     initialized,
@@ -28,6 +29,7 @@ export const ThemeEditModal = observer((props: IProps) => {
     resetAction,
     formDefaultValues,
     isAuthor,
+    deleteThemeAction,
   } = useMapStoreToProps();
   const { handleSubmit, formState, control } = useForm<FormInputs>({
     defaultValues: formDefaultValues,
@@ -61,7 +63,7 @@ export const ThemeEditModal = observer((props: IProps) => {
     }
   }, [formState, errors, data, isLoading]);
 
-  const onAction = (actionId: string) => {
+  const onAction = async (actionId: string) => {
     switch (actionId) {
       case 'submit':
         handleSubmit(submit)();
@@ -69,6 +71,11 @@ export const ThemeEditModal = observer((props: IProps) => {
         break;
       case 'clone':
         setThemeId('new');
+        break;
+      case 'delete':
+        await deleteThemeAction(themeId as number);
+        onRemove && onRemove();
+        onClose();
         break;
       case 'cancel':
         onClose();
