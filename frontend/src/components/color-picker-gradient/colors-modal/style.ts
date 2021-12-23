@@ -3,6 +3,7 @@ import { COLORS } from 'src/components/theme';
 
 export const ColorsFormWrapper = styled.div<{ inputWidth?: number }>`
   background: ${COLORS.white};
+  height: 100%;
 `;
 
 export const ColorFieldWrapper = styled.div`
