@@ -24,7 +24,7 @@ export const ColorPicker = React.forwardRef((props: IProps, ref: any) => {
     props.onChange && props.onChange(value);
   };
   const handleChangeColor = (color: any, event: any) => {
-    handleChange(color?.hex);
+    handleChange(color?.hex?.toUpperCase());
   };
 
   const handleOpenPicker = () => setOpenPicker(true);

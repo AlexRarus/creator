@@ -4,7 +4,7 @@ import { History } from 'history';
 
 import { IRootStore } from '../interfaces';
 
-import { ITheme, IThemeType, IThemeWrite } from './interfaces';
+import { ITheme, IThemeType } from './interfaces';
 
 export default class DalThemesStore {
   rootStore!: IRootStore;

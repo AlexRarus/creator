@@ -1,5 +1,3 @@
-import { IOption } from 'src/components/select';
-
 import { AdditionalData } from '../../interfaces';
 
 export interface ICollapsedListItem {

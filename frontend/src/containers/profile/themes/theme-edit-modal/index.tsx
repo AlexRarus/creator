@@ -6,8 +6,8 @@ import { useForm } from 'react-hook-form';
 import { ControlledField } from 'src/components/controlled-field';
 import { Grid, GridColumn } from 'src/components/grid';
 import { useSubmitThemeForm } from 'src/api/hooks/submit-forms/theme/useSubmitThemeForm';
-import { InputText } from 'src/components/input-text';
 import { ColorPicker } from 'src/components/color-picker';
+import { ColorPickerGradient } from 'src/components/color-picker-gradient';
 import { Select } from 'src/components/select';
 
 import { useMapStoreToProps } from './selectors';
@@ -100,13 +100,23 @@ export const ThemeEditModal = observer((props: IProps) => {
           <Form onAction={onAction} actions={getActions(isAuthor, isEditing)} isLoading={isLoading}>
             <Block>
               <BlockTitle>Фон</BlockTitle>
-              <Grid verticalGap={10} staticSize={4}>
-                <GridColumn size={2}>
+              <Grid
+                verticalGap={10}
+                breakPoints={{
+                  // все переданные здесь значения выставлены по-умолчанию
+                  // можно передать через контекст ThemeProvider theme: { gridBreakPoints: {...} }
+                  '320px': 4, // 4 колонки при ширине экрана 320 и меньше
+                  '530px': 4, // 4 колонок при ширине экрана 530 и меньше
+                  '950px': 8, // 8 колонок при ширине экрана 950 и меньше
+                  '1024px': 8, // 8 колонок при ширине экрана 1024 и меньше
+                  '1280px': 8, // 8 колонок при ширине экрана 1280 и меньше
+                }}>
+                <GridColumn size={4}>
                   <ControlledField name='backgroundType' control={control}>
                     <Select options={backgroundTypes} label='Тип фона' />
                   </ControlledField>
                 </GridColumn>
-                <GridColumn size={2}>
+                <GridColumn size={4}>
                   {backgroundType.value === 'color' && (
                     <ControlledField name='backgroundColor' control={control}>
                       <ColorPicker label='Цвет фона' />
@@ -114,13 +124,18 @@ export const ThemeEditModal = observer((props: IProps) => {
                   )}
                   {backgroundType.value === 'gradient' && (
                     <ControlledField name='backgroundGradient' control={control}>
-                      <InputText label='Градиент фона' />
+                      <ColorPickerGradient label='Градиент фона' />
                     </ControlledField>
                   )}
                 </GridColumn>
                 <GridColumn size={4}>
                   <ControlledField name='color' control={control}>
-                    <InputText label='Цвет текста' />
+                    <ColorPicker label='Цвет текста' />
+                  </ControlledField>
+                </GridColumn>
+                <GridColumn size={4}>
+                  <ControlledField name='headerColor' control={control}>
+                    <ColorPicker label='Цвет заголовков' />
                   </ControlledField>
                 </GridColumn>
               </Grid>

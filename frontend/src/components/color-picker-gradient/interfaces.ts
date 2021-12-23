@@ -5,7 +5,7 @@ export type TKind = 'air' | 'formed' | string;
 
 export interface IInputProps {
   name: string;
-  value: any;
+  value: string; // ожидается строка следующего вида "linear-gradient(to left, #000, #ffffff, #eee, #red)" (колличество цветов произвольное)
   onChange(value: string): void;
   onBlur(e: FocusEvent<HTMLInputElement>): void;
 }
@@ -22,9 +22,6 @@ export interface IProps extends Partial<IInputProps> {
   fontSizeInherit?: boolean;
   fontWeight?: string;
   autoFocus?: boolean;
-  children?: any; // предполагается что будет передан реакт компонент иконки
-  maxLength?: number;
-  color?: string;
-  onlyProgrammingChange?: boolean; // возможность менять инпут только програмно
+  defaultColors?: string[];
   [key: string]: any;
 }

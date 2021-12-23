@@ -1,34 +1,73 @@
 import { IBlock } from 'src/dal/blocks/interfaces';
 import { ITab } from 'src/components/tabs';
-import { COLORS } from 'src/components/theme';
 import { IAction } from 'src/components/form';
+import { IOption } from 'src/components/select';
+import { ISectionData, ISectionDataWrite } from 'src/dal/blocks/section-interfaces';
 
 import { DataForServer } from '../../interfaces';
 
-import { FormInputs, RawData, DataToServer } from './interfaces';
+import { FormInputs, RawData } from './interfaces';
+
+const backgroundTypeColor: IOption = {
+  value: 'color',
+  label: 'Сплошной цвет',
+};
+const backgroundTypeGradient: IOption = {
+  value: 'gradient',
+  label: 'Градиент',
+};
+export const backgroundTypes: IOption[] = [backgroundTypeColor, backgroundTypeGradient];
 
 // преобразовываем типы и меняем поля если надо
-export const prepareDataForServer = (rawData: RawData): DataForServer<DataToServer> => ({
-  data: {
-    ...rawData.formInputs,
-    blocks: rawData.blocks,
-  },
-  page_slug: rawData.pageSlug, // меняем поле для отправки на бэк
-  type: rawData.blockType, // меняем поле для отправки на бэк
-  id: rawData.blockId as any, // id может не быть поэтому any
-  index: rawData.index as any, // index может не быть поэтому any
-});
+export const prepareDataForServer = (rawData: RawData): DataForServer<ISectionDataWrite> => {
+  const backgroundType = rawData.formInputs.backgroundType?.value;
+  const background =
+    backgroundType === 'color'
+      ? rawData.formInputs.backgroundColor
+      : rawData.formInputs.backgroundGradient;
+
+  return {
+    data: {
+      label: rawData?.formInputs?.label,
+      blocks: rawData.blocks,
+      background: background as string,
+      backgroundImage: rawData.formInputs.backgroundImage?.id,
+      borderRadius: rawData.formInputs.borderRadius,
+      paddingTop: rawData.formInputs.paddingTop,
+      paddingBottom: rawData.formInputs.paddingBottom,
+      paddingRight: rawData.formInputs.paddingRight,
+      paddingLeft: rawData.formInputs.paddingLeft,
+    },
+    page_slug: rawData.pageSlug, // меняем поле для отправки на бэк
+    type: rawData.blockType, // меняем поле для отправки на бэк
+    id: rawData.blockId as any, // id может не быть поэтому any
+    index: rawData.index as any, // index может не быть поэтому any
+  };
+};
 
 // предзаполняем форму этими данными
-export const prepareDataToFormValues = (block: IBlock<FormInputs> | null): FormInputs => ({
-  label: block?.data?.label || 'новая секция',
-  paddingTop: block?.data?.paddingTop || '20',
-  paddingBottom: block?.data?.paddingBottom || '20',
-  paddingRight: block?.data?.paddingRight || '10',
-  paddingLeft: block?.data?.paddingLeft || '10',
-  background: block?.data?.background || COLORS.deepPurple.A400,
-  borderRadius: block?.data?.borderRadius || '0',
-});
+export const prepareDataToFormValues = (block: IBlock<ISectionData> | null): FormInputs => {
+  const background = block?.data?.background || '#FFFFFF';
+  const backgroundType = background.includes('linear-gradient')
+    ? backgroundTypeGradient
+    : backgroundTypeColor;
+
+  return {
+    label: block?.data?.label || 'новая секция',
+    backgroundType,
+    backgroundColor: backgroundType.value === 'color' ? background : '#FFFFFF',
+    backgroundGradient:
+      backgroundType.value === 'gradient'
+        ? background
+        : 'linear-gradient(to bottom, #0000FF, #FF0000)',
+    backgroundImage: block?.data?.backgroundImage,
+    paddingTop: block?.data?.paddingTop || '20',
+    paddingBottom: block?.data?.paddingBottom || '20',
+    paddingRight: block?.data?.paddingRight || '10',
+    paddingLeft: block?.data?.paddingLeft || '10',
+    borderRadius: block?.data?.borderRadius || '0',
+  };
+};
 
 export enum TabValue {
   section = 'section',
@@ -59,22 +98,3 @@ export const blockActions: IAction[] = [
     needConfirm: true,
   },
 ];
-
-export const getColorsFromString = (str?: string) =>
-  str ? str.match(/#(?:[0-9a-f]{3}){1,2}/gi) : [];
-export const getPictureUrlFromString = (str?: string) =>
-  str
-    ? str.match(
-        /\/images(|<(?:link|script|img)[^>]+(?:src|href)\s*=\s*)(?!['"]?(?:data|http))['"]?([^'")\s>]+)/g
-      )
-    : [];
-
-export const getInitialBackgroundType = (firstColor: any, secondColor: any, pictureUrl: any) => {
-  if (pictureUrl) {
-    return 'picture';
-  }
-  if (secondColor) {
-    return 'gradient';
-  }
-  return 'background';
-};

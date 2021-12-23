@@ -13,7 +13,7 @@ export const ColorPreviewWrapper = styled.div`
 
 export const ColorPreview = styled.div<{ background?: string; hasBorder?: boolean }>`
   position: relative;
-  z-index: 100;
+  z-index: 50;
   width: 100%;
   height: 28px;
   cursor: pointer;

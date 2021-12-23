@@ -1,6 +1,6 @@
 import React from 'react';
 import { IBlock } from 'src/dal/blocks/interfaces';
-import { ISectionData } from 'src/dal/blocks/data-interfaces';
+import { ISectionData } from 'src/dal/blocks/section-interfaces';
 import { ITheme } from 'src/dal/themes/interfaces';
 import { TargetBlockTypePreview } from 'src/containers/app/block';
 

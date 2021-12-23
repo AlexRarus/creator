@@ -15,21 +15,38 @@ const backgroundTypeGradient: IOption = {
 export const backgroundTypes: IOption[] = [backgroundTypeColor, backgroundTypeGradient];
 
 // подгтавливаем данные пришедшие с формы для бэка
-export const prepareDataForServer = (rawData: RawData): DataForServer => ({
-  id: rawData.id,
-  background: rawData.formInputs.backgroundColor,
-  color: rawData.formInputs.color,
-});
+export const prepareDataForServer = (rawData: RawData): DataForServer => {
+  const backgroundType = rawData.formInputs.backgroundType.value;
+
+  return {
+    id: rawData.id,
+    background:
+      backgroundType === 'color'
+        ? rawData.formInputs.backgroundColor
+        : rawData.formInputs.backgroundGradient,
+    color: rawData.formInputs.color,
+    headerColor: rawData.formInputs.headerColor,
+  };
+};
 
 // подгтавливаем данные пришедшие с бэка для формы
-export const prepareDataToForm = (theme: ITheme | null): FormInputs => ({
-  backgroundType: theme?.background.includes('gradient')
+export const prepareDataToForm = (theme: ITheme | null): FormInputs => {
+  const background = theme?.background || '#FFFFFF';
+  const backgroundType = background.includes('linear-gradient')
     ? backgroundTypeGradient
-    : backgroundTypeColor,
-  backgroundColor: theme?.background || 'red',
-  backgroundGradient: theme?.background || 'white',
-  color: theme?.color || 'black',
-});
+    : backgroundTypeColor;
+
+  return {
+    backgroundType,
+    backgroundColor: backgroundType.value === 'color' ? background : '#FFFFFF',
+    backgroundGradient:
+      backgroundType.value === 'gradient'
+        ? background
+        : 'linear-gradient(to bottom, #0000FF, #FF0000)',
+    color: theme?.color || '#263238',
+    headerColor: theme?.headerColor || '#000000',
+  };
+};
 
 export const getActions = (isAuthor: boolean, isEditing: boolean): IAction[] => {
   const actions: IAction[] = [];

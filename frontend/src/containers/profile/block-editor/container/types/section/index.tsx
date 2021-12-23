@@ -6,6 +6,7 @@ import { Tabs, TabContainer, useTabs } from 'src/components/tabs';
 import { useSubmitBlockForm } from 'src/api/hooks/submit-forms/block/useSubmitBlockForm';
 import { IBlock } from 'src/dal/blocks/interfaces';
 import { IUser } from 'src/dal/auth/interfaces';
+import { ISectionDataWrite } from 'src/dal/blocks/section-interfaces';
 
 import { FormWrapper } from '../../style';
 
@@ -45,12 +46,13 @@ export const SectionForm = observer((props: IProps) => {
   // todo все поля зарегистрированные в форме управляются этой формой
   // todo поле можно зарегистрировать (например) при помощи обертки <ControlledField> и "methods.control"
   const methods = useForm<FormInputs>({
+    defaultValues: formDefaultValues,
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
   const { formState, handleSubmit, setError } = methods;
   const { isValid } = formState;
-  const [submitBlockEditor, isLoading, data, errors] = useSubmitBlockForm<FormInputs>();
+  const [submitBlockEditor, isLoading, data, errors] = useSubmitBlockForm<ISectionDataWrite>();
   const isEditing = blockId !== 'new';
   const blocks = blockData?.blocks as IBlock<any>[]; // TODO Ожидаем { blocks: IBlock<any>[] }
 
@@ -115,13 +117,13 @@ export const SectionForm = observer((props: IProps) => {
   return (
     <SectionFormWrapper>
       <Tabs tabs={tabs} activeTab={activeTab} onChangeTab={onChangeTab} />
-      <Form
-        onAction={onAction}
-        actions={isEditing ? blockActions : []}
-        isValid={isValid}
-        submitActionLabel='Сохранить'>
-        <FormProvider {...methods}>
-          <FormWrapper>
+      <FormWrapper>
+        <Form
+          onAction={onAction}
+          actions={isEditing ? blockActions : []}
+          isValid={isValid}
+          submitActionLabel='Сохранить'>
+          <FormProvider {...methods}>
             <TabContainer value={TabValue.section} activeTabValue={activeTab.value}>
               <SectionFields formDefaultValues={formDefaultValues} />
             </TabContainer>
@@ -131,9 +133,9 @@ export const SectionForm = observer((props: IProps) => {
             <TabContainer value={TabValue.settings} activeTabValue={activeTab.value}>
               Tab settings content
             </TabContainer>
-          </FormWrapper>
-        </FormProvider>
-      </Form>
+          </FormProvider>
+        </Form>
+      </FormWrapper>
     </SectionFormWrapper>
   );
 });

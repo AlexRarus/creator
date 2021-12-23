@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { COLORS } from 'src/components/theme';
 
 export const BlockEditorContainerWrapper = styled.div`
   display: flex;
@@ -8,5 +9,5 @@ export const BlockEditorContainerWrapper = styled.div`
 
 export const FormWrapper = styled.form`
   max-width: 100%;
-  background: ${({ theme }) => theme?.background?.primary};
+  background: ${COLORS.white};
 `;

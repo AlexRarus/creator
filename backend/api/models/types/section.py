@@ -34,13 +34,6 @@ class Section(models.Model):
         related_name="sections",
         through="api.SectionBlockRelation",
     )
-    backgroundFile = models.ImageField(
-        verbose_name="Исходный Файл",
-        help_text="Выберите файл",
-        upload_to=get_upload_path,
-        blank=True,
-        null=True,
-    )
     background = models.CharField(
         verbose_name="Цвет фона",
         max_length=255,

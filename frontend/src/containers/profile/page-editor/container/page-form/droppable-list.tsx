@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { GridColumn } from 'src/components/grid';
 import { IBlock } from 'src/dal/blocks/interfaces';
-import { ISectionData } from 'src/dal/blocks/data-interfaces';
+import { ISectionData } from 'src/dal/blocks/section-interfaces';
 import { TargetBlockTypePreview } from 'src/containers/app/block';
 import { IPage } from 'src/dal/pages/interfaces';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';

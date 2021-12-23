@@ -7,6 +7,7 @@ export type FormInputs = {
   backgroundColor: string;
   backgroundGradient: string;
   color: string;
+  headerColor: string;
 };
 
 // входные значение с формы создание

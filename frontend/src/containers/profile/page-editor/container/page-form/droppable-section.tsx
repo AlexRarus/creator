@@ -2,7 +2,7 @@ import React from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import { IBlock } from 'src/dal/blocks/interfaces';
-import { ISectionData } from 'src/dal/blocks/data-interfaces';
+import { ISectionData } from 'src/dal/blocks/section-interfaces';
 import { TargetBlockTypePreview } from 'src/containers/app/block';
 
 import { typeIconsMap } from '../../../block-editor/types-list/utils';

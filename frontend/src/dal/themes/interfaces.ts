@@ -19,6 +19,7 @@ export interface IThemeWrite {
   background?: string;
   backgroundImage?: number; // id изображения
   color?: string;
+  headerColor?: string;
   // и другие свойства, синхронизировать с ITheme
 }
 

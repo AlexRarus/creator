@@ -1,4 +1,4 @@
-import { FocusEvent, FunctionComponent } from 'react';
+import { FocusEvent } from 'react';
 
 export type TDimension = 's' | 'm' | 'l' | 'xxl';
 export type TKind = 'air' | 'formed' | string;

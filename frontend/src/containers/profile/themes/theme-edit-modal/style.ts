@@ -20,4 +20,5 @@ export const Block = styled.div`
 export const BlockTitle = styled.div`
   font-size: 24px;
   font-weight: bold;
+  margin-bottom: 10px;
 `;

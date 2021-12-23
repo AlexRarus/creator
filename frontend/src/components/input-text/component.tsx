@@ -23,6 +23,7 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
     children,
     maxLength,
     color,
+    onlyProgrammingChange,
     ...inputProps
   } = props;
   const [componentElement, componentRefCallback] = useState<HTMLElement | null>(null);
@@ -47,6 +48,11 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
 
   const changeHandler = (e: any) => {
     const value = e.target.value;
+
+    if (onlyProgrammingChange) {
+      return;
+    }
+
     if (maxLength !== undefined && value.length <= maxLength) {
       inputProps.onChange && inputProps.onChange(value);
     } else if (maxLength === undefined) {
