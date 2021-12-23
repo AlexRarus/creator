@@ -16,12 +16,6 @@ export const ThemesHeader = styled.div`
   padding: ${({ theme }) => (theme?.isMobile ? '12px' : '20px')};
 `;
 
-export const ThemesHeaderTitle = styled.div`
-  display: flex;
-  font-weight: 500;
-  font-size: ${({ theme }) => (theme?.isMobile ? '18px' : '20px')};
-`;
-
 export const CreateButton = styled.div`
   display: flex;
   flex-direction: column;

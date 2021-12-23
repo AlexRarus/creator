@@ -1,18 +1,33 @@
 import { ITheme } from 'src/dal/themes/interfaces';
 import { IAction } from 'src/components/form';
+import { IOption } from 'src/components/select';
 
 import { FormInputs, RawData, DataForServer } from './interfaces';
+
+const backgroundTypeColor: IOption = {
+  value: 'color',
+  label: 'Сплошной цвет',
+};
+const backgroundTypeGradient: IOption = {
+  value: 'gradient',
+  label: 'Градиент',
+};
+export const backgroundTypes: IOption[] = [backgroundTypeColor, backgroundTypeGradient];
 
 // подгтавливаем данные пришедшие с формы для бэка
 export const prepareDataForServer = (rawData: RawData): DataForServer => ({
   id: rawData.id,
-  background: rawData.formInputs.background,
+  background: rawData.formInputs.backgroundColor,
   color: rawData.formInputs.color,
 });
 
 // подгтавливаем данные пришедшие с бэка для формы
 export const prepareDataToForm = (theme: ITheme | null): FormInputs => ({
-  background: theme?.background || 'white',
+  backgroundType: theme?.background.includes('gradient')
+    ? backgroundTypeGradient
+    : backgroundTypeColor,
+  backgroundColor: theme?.background || 'red',
+  backgroundGradient: theme?.background || 'white',
   color: theme?.color || 'black',
 });
 

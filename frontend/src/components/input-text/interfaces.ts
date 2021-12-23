@@ -18,10 +18,12 @@ export interface IProps extends Partial<IInputProps> {
   disabled?: boolean;
   type?: string;
   kind?: TKind;
-  icon?: FunctionComponent;
   placeholder?: string;
   fontSizeInherit?: boolean;
   fontWeight?: string;
   autoFocus?: boolean;
+  children?: any; // предполагается что будет передан реакт компонент иконки
+  maxLength?: number;
+  color?: string;
   [key: string]: any;
 }

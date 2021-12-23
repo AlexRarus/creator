@@ -19,7 +19,6 @@ import { useMapStoreToProps } from './selectors';
 import {
   ThemesWrapper,
   ThemesHeader,
-  ThemesHeaderTitle,
   CreateButton,
   CreateButtonIconWrapper,
   CreateButtonLabel,
@@ -101,7 +100,6 @@ export const ThemesContainer = observer((props: any) => {
   return (
     <ThemesWrapper>
       <ThemesHeader>
-        <ThemesHeaderTitle>Доступные темы</ThemesHeaderTitle>
         <ButtonGroup buttons={themesButtons} value={themeType} onChange={changeThemeType} />
       </ThemesHeader>
       {themes?.length > 0 || themeType === 'custom' ? (

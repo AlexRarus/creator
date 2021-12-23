@@ -14,13 +14,15 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
     disabled = false,
     type = 'text',
     kind = 'primary',
-    icon: Icon = '',
     value = '',
     placeholder = '',
     textAlign,
     fontSizeInherit = false,
     fontWeight = 'normal',
     autoFocus,
+    children,
+    maxLength,
+    color,
     ...inputProps
   } = props;
   const [componentElement, componentRefCallback] = useState<HTMLElement | null>(null);
@@ -34,7 +36,7 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
   const currentRef = ref || innerRef;
 
   useEffect(() => {
-    if (Icon && iconWrapperElement) {
+    if (children && iconWrapperElement) {
       setIconWrapperWidth(iconWrapperElement.getBoundingClientRect().width);
     }
   }, []);
@@ -44,7 +46,12 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
   }, [isFocused, error]);
 
   const changeHandler = (e: any) => {
-    inputProps.onChange && inputProps.onChange(e.target.value);
+    const value = e.target.value;
+    if (maxLength !== undefined && value.length <= maxLength) {
+      inputProps.onChange && inputProps.onChange(value);
+    } else if (maxLength === undefined) {
+      inputProps.onChange && inputProps.onChange(value);
+    }
   };
   const blurHandler = (e: FocusEvent<HTMLInputElement>) => {
     setIsFocused(false);
@@ -55,7 +62,7 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
     inputProps.onFocus && inputProps.onFocus(e);
   };
   const clickHandler = () => {
-    if (Icon && iconWrapperElement) {
+    if (children && iconWrapperElement) {
       setIconWrapperWidth(iconWrapperElement.getBoundingClientRect().width);
     }
   };
@@ -101,9 +108,10 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
         fontWeight={fontWeight}
         markError={markError}
         autoFocus={autoFocus}
+        color={color}
       />
       <IconWrapper kind={kind} ref={iconWrapperRefCallback} dimension={dimension}>
-        {Icon && <Icon />}
+        {children}
       </IconWrapper>
       <StatusBar kind={kind} markError={markError} isFocused={isFocused} />
       <Error isOpen={isOpenError} openerElement={componentElement}>

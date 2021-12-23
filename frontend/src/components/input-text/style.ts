@@ -24,6 +24,7 @@ interface IInputStyledProps extends IComponentWrapperProps {
   kind?: TKind;
   textAlign?: string;
   markError?: boolean;
+  color?: string;
 }
 
 const getInputBackground = (props: IInputStyledProps) => {
@@ -41,7 +42,7 @@ const getInputBackground = (props: IInputStyledProps) => {
   return background && background[propKey];
 };
 const getInputColor = (props: IInputStyledProps) => {
-  const { theme, kind, disabled } = props;
+  const { theme, kind, disabled, color } = props;
   let propKey = 'primary';
 
   if (kind) {
@@ -51,7 +52,14 @@ const getInputColor = (props: IInputStyledProps) => {
   if (disabled) {
     propKey = 'disabled';
   }
-  return theme.component.input.color[propKey];
+
+  let resultColor = theme.component.input.color[propKey];
+
+  if (!disabled && color) {
+    resultColor = color;
+  }
+
+  return resultColor;
 };
 
 export const InputStyled = styled.input<IInputStyledProps>`

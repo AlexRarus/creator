@@ -15,15 +15,15 @@ import { FormInputs, RawData } from './interfaces';
 export const fontSizeOptions: IOption[] = [
   {
     value: 's',
-    label: 'Small',
+    label: 'Маленький текст',
   },
   {
     value: 'm',
-    label: 'Medium',
+    label: 'Средний текст',
   },
   {
     value: 'l',
-    label: 'Large',
+    label: 'Большой текст',
   },
 ];
 

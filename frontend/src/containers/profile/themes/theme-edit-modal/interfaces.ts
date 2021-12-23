@@ -1,8 +1,11 @@
 export type { IThemeWrite as DataForServer } from 'src/dal/themes/interfaces';
+import { IOption } from 'src/components/select';
 
 // поля формы
 export type FormInputs = {
-  background: string;
+  backgroundType: IOption;
+  backgroundColor: string;
+  backgroundGradient: string;
   color: string;
 };
 

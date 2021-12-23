@@ -104,7 +104,7 @@ export const getPlaceholderHeight = (props: IComponentWrapperProps) => {
     default:
       return css`
         left: 12px;
-        font-size: 14px;
+        font-size: 16px;
       `;
   }
 };
@@ -112,17 +112,17 @@ export const getPlaceholderHeight = (props: IComponentWrapperProps) => {
 export const getInputHeight = (props: IComponentWrapperProps) => {
   switch (props.dimension) {
     case 's':
-      return '24px';
-    case 'm':
       return '28px';
-    case 'l':
+    case 'm':
       return '32px';
+    case 'l':
+      return '36px';
     case 'xl':
       return '40px';
     case 'xxl':
       return '60px';
     default:
-      return '32px';
+      return '36px';
   }
 };
 
@@ -161,7 +161,7 @@ export const getInputFontSize = (props: IComponentWrapperProps) => {
     case 'xxl':
       return '22px';
     default:
-      return '14px';
+      return '16px';
   }
 };
 

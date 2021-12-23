@@ -1,66 +1,55 @@
-import React, { FocusEvent, useState, useRef } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import React, { useEffect, useState } from 'react';
+import { InputText } from 'src/components/input-text';
 import Popup from 'src/components/popup';
 import { SwatchesPicker } from 'react-color';
+import Color from 'color';
 
 import { IProps } from './interfaces';
-import { ComponentWrapper, InputStyled, Label, ColoredPalette } from './style';
+import { ColorPreviewWrapper, ColorPreview } from './style';
 
 export const ColorPicker = React.forwardRef((props: IProps, ref: any) => {
-  const { value, onChange, dimension = 'm', label, ...inputProps } = props;
+  const [color, setColor] = useState<any>();
   const [isOpenPicker, setOpenPicker] = useState(false);
-  const [componentElement, componentRefCallback] = useState<HTMLElement | null>(null);
-  const [uniqId] = useState(uuidv4());
-  const innerRef = useRef();
-  const currentRef = ref || innerRef;
-  const [selectedColor, setColor] = useState<string>(value || '');
+  const [colorPreviewElement, colorPreviewRefCallback] = useState<HTMLDivElement | null>(null);
 
+  useEffect(() => {
+    try {
+      setColor(props?.value?.length ? Color(props?.value) : null);
+    } catch {
+      setColor(null);
+    }
+  }, [props.value]);
+
+  const handleChange = (value: string) => {
+    props.onChange && props.onChange(value);
+  };
   const handleChangeColor = (color: any, event: any) => {
-    onChange && onChange(color?.hex);
-    setColor(color?.hex);
-    // color = {
-    //   hex: '#333',
-    //   rgb: {
-    //     r: 51,
-    //     g: 51,
-    //     b: 51,
-    //     a: 1,
-    //   },
-    //   hsl: {
-    //     h: 0,
-    //     s: 0,
-    //     l: .20,
-    //     a: 1,
-    //   },
-    // }
-  };
-
-  const blurHandler = (e: FocusEvent<HTMLInputElement>) => {
-    inputProps.onBlur && inputProps.onBlur(e);
-  };
-  const focusHandler = (e: FocusEvent<HTMLInputElement>) => {
-    inputProps.onFocus && inputProps.onFocus(e);
+    handleChange(color?.hex);
   };
 
   const handleOpenPicker = () => setOpenPicker(true);
   const handleClosePicker = () => setOpenPicker(false);
 
   return (
-    <ComponentWrapper dimension={dimension} ref={componentRefCallback} onClick={handleOpenPicker}>
-      {label && <Label>{label}</Label>}
-      <ColoredPalette background={selectedColor} />
-      <InputStyled
-        id={`input-text-${inputProps.name}-${uniqId}`}
-        ref={currentRef}
-        type={'hidden'}
-        value={selectedColor}
-        {...inputProps}
-        onBlur={blurHandler}
-        onFocus={focusHandler}
-      />
+    <>
+      <InputText
+        ref={ref}
+        {...props}
+        onChange={handleChange}
+        maxLength={7}
+        color={!color?.isDark() ? '#000000' : props.value}>
+        <ColorPreviewWrapper>
+          <ColorPreview
+            onClick={handleOpenPicker}
+            ref={colorPreviewRefCallback}
+            background={props.value}
+            hasBorder={!color?.isDark()}
+          />
+        </ColorPreviewWrapper>
+      </InputText>
       <Popup
         isOpen={isOpenPicker}
-        openerElement={componentElement}
+        openerElement={colorPreviewElement}
         onClose={handleClosePicker}
         position='bottom'
         horizontalAlign='start'
@@ -74,6 +63,6 @@ export const ColorPicker = React.forwardRef((props: IProps, ref: any) => {
         isFixed={true}>
         <SwatchesPicker onChange={handleChangeColor} />
       </Popup>
-    </ComponentWrapper>
+    </>
   );
 });

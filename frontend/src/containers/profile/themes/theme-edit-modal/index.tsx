@@ -7,11 +7,13 @@ import { ControlledField } from 'src/components/controlled-field';
 import { Grid, GridColumn } from 'src/components/grid';
 import { useSubmitThemeForm } from 'src/api/hooks/submit-forms/theme/useSubmitThemeForm';
 import { InputText } from 'src/components/input-text';
+import { ColorPicker } from 'src/components/color-picker';
+import { Select } from 'src/components/select';
 
 import { useMapStoreToProps } from './selectors';
 import { FormInputs, RawData } from './interfaces';
-import { prepareDataForServer, getActions } from './utils';
-import { ThemeEditorWrapper } from './style';
+import { prepareDataForServer, getActions, backgroundTypes } from './utils';
+import { ThemeEditorWrapper, Block, BlockTitle } from './style';
 
 interface IProps {
   themeId: number | 'new';
@@ -31,9 +33,10 @@ export const ThemeEditModal = observer((props: IProps) => {
     isAuthor,
     deleteThemeAction,
   } = useMapStoreToProps();
-  const { handleSubmit, formState, control } = useForm<FormInputs>({
+  const { handleSubmit, formState, control, watch } = useForm<FormInputs>({
     defaultValues: formDefaultValues,
   });
+  const backgroundType = watch('backgroundType');
   const [submitThemeForm, isLoading, data, errors] = useSubmitThemeForm();
   const isEditing = themeId !== 'new';
 
@@ -95,18 +98,33 @@ export const ThemeEditModal = observer((props: IProps) => {
         {!initialized && 'Loading...'}
         {initialized && (
           <Form onAction={onAction} actions={getActions(isAuthor, isEditing)} isLoading={isLoading}>
-            <Grid>
-              <GridColumn>
-                <ControlledField name='background' control={control}>
-                  <InputText label='Цвет фона' />
-                </ControlledField>
-              </GridColumn>
-              <GridColumn>
-                <ControlledField name='color' control={control}>
-                  <InputText label='Цвет текста' />
-                </ControlledField>
-              </GridColumn>
-            </Grid>
+            <Block>
+              <BlockTitle>Фон</BlockTitle>
+              <Grid verticalGap={10} staticSize={4}>
+                <GridColumn size={2}>
+                  <ControlledField name='backgroundType' control={control}>
+                    <Select options={backgroundTypes} label='Тип фона' />
+                  </ControlledField>
+                </GridColumn>
+                <GridColumn size={2}>
+                  {backgroundType.value === 'color' && (
+                    <ControlledField name='backgroundColor' control={control}>
+                      <ColorPicker label='Цвет фона' />
+                    </ControlledField>
+                  )}
+                  {backgroundType.value === 'gradient' && (
+                    <ControlledField name='backgroundGradient' control={control}>
+                      <InputText label='Градиент фона' />
+                    </ControlledField>
+                  )}
+                </GridColumn>
+                <GridColumn size={4}>
+                  <ControlledField name='color' control={control}>
+                    <InputText label='Цвет текста' />
+                  </ControlledField>
+                </GridColumn>
+              </Grid>
+            </Block>
           </Form>
         )}
       </ThemeEditorWrapper>
