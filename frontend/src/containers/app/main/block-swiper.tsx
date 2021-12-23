@@ -7,10 +7,10 @@ import Button from 'src/components/button';
 import { COLORS } from 'src/components/theme';
 import { ControlledField } from 'src/components/controlled-field';
 // Direct React component imports
-import { Swiper, SwiperSlide } from 'swiper/react/swiper-react.js'; // import Swiper core and required modules
+import { Swiper, SwiperSlide } from 'swiper/react'; // import Swiper core and required modules
 import SwiperCore, { Autoplay, Pagination, Navigation } from 'swiper';
 // Import Swiper styles
-import 'swiper/swiper-bundle.css';
+import 'swiper/css/bundle';
 
 import { LandingPart, WelcomeTitle, WelcomeSpan, StartRow, SwiperWrapper } from './style';
 

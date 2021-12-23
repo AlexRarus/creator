@@ -6,13 +6,13 @@ import { ITheme, IThemeType } from 'src/dal/themes/interfaces';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import AddIcon from '@mui/icons-material/Add';
 // Direct React component imports
-import { Swiper, SwiperSlide } from 'swiper/react/swiper-react.js'; // import Swiper core and required modules
+import { Swiper, SwiperSlide } from 'swiper/react'; // import Swiper core and required modules
 import SwiperCore, { Pagination, Navigation, EffectCoverflow } from 'swiper';
 import Button from 'src/components/button';
 import ButtonGroup, { IButton } from 'src/components/buttons-group';
 import { useTranslation } from 'react-i18next';
 // Import Swiper styles
-import 'swiper/swiper-bundle.css';
+import 'swiper/css/bundle';
 
 import { ThemeEditModal } from './theme-edit-modal';
 import { useMapStoreToProps } from './selectors';

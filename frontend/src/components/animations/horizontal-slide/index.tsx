@@ -8,8 +8,6 @@ import { HorizontalSlideElement } from './style';
 export const HorizontalSlide = React.forwardRef((props: IProps, ref: any) => {
   const { children, ...animationProps } = useCommonAnimationProps<IProps>(props);
 
-  console.log('HorizontalSlide --- animationProps.state: ', animationProps.state);
-
   return (
     <HorizontalSlideElement {...animationProps} ref={ref}>
       {children}

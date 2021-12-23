@@ -1,10 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 // Direct React component imports
-import { Swiper, SwiperSlide } from 'swiper/react/swiper-react.js'; // import Swiper core and required modules
+import { Swiper, SwiperSlide } from 'swiper/react'; // import Swiper core and required modules
 import SwiperCore, { Autoplay, Pagination, Navigation, EffectCards } from 'swiper';
 // Import Swiper styles
-import 'swiper/swiper-bundle.css';
+import 'swiper/css/bundle';
 
 import { ScreenImage, SwiperWrapper } from './style';
 import MobilePhone from './assets/test-image.jpg';

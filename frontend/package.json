@@ -16,7 +16,7 @@
     "@testing-library/react": "11.2.6",
     "@testing-library/user-event": "12.8.3",
     "@tinymce/tinymce-react": "3.12.3",
-    "axios": "0.21.1",
+    "axios": "0.21.4",
     "color": "3.0.0",
     "customize-cra": "1.0.0",
     "date-fns": "^2.21.3",
@@ -31,7 +31,7 @@
     "proxy-polyfill": "^0.3.2",
     "qs": "^6.10.1",
     "react": "17.0.2",
-    "react-app-rewired": "2.1.8",
+    "react-app-rewired": "2.1.9",
     "react-avatar-editor": "^12.0.0",
     "react-beautiful-dnd": "^13.1.0",
     "react-color": "^2.19.3",
@@ -41,7 +41,7 @@
     "react-hook-form": "^7.22.3",
     "react-i18next": "^11.11.0",
     "react-router-dom": "5.2.0",
-    "react-scripts": "4.0.3",
+    "react-scripts": "5.0.0",
     "react-select": "^4.3.1",
     "react-textarea-autosize": "^8.3.3",
     "react-window": "^1.8.6",
@@ -72,6 +72,7 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "7.13.10",
+    "@babel/helper-compilation-targets": "^7.16.3",
     "@types/axios": "0.14.0",
     "@types/color": "3.0.0",
     "@types/date-fns": "^2.6.0",
@@ -99,7 +100,7 @@
     "@typescript-eslint/eslint-plugin": "4.18.0",
     "@typescript-eslint/parser": "4.18.0",
     "babel-plugin-styled-components": "1.12.0",
-    "eslint": "7.15.0",
+    "eslint": "7.32.0",
     "eslint-cli": "1.1.1",
     "eslint-config-prettier": "7.0.0",
     "eslint-plugin-import": "2.22.1",
@@ -108,11 +109,15 @@
     "eslint-plugin-react-hooks": "4.2.0",
     "git-revision-webpack-plugin": "2.5.1",
     "prettier": "2.0.5",
+    "react-error-overlay": "6.0.9",
     "stylelint": "14.1.0",
     "stylelint-config-recommended": "6.0.0",
     "stylelint-config-styled-components": "0.1.1",
     "stylelint-processor-styled-components": "1.10.0",
     "tslib": "2.2.0",
-    "webpack-dev-server": "3.11.1"
+    "webpack-dev-server": "3.11.3"
+  },
+  "resolutions": {
+    "react-error-overlay": "6.0.9"
   }
 }

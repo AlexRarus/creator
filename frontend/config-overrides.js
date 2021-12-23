@@ -6,6 +6,7 @@ const {
   addWebpackAlias,
   addWebpackPlugin,
   overrideDevServer,
+  removeModuleScopePlugin,
 } = require('customize-cra');
 const path = require('path');
 const GitRevisionPlugin = require('git-revision-webpack-plugin')
@@ -79,9 +80,9 @@ module.exports = {
         'API_URL': JSON.stringify(process.env.API_URL),
         'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       })
-    )
+    ),
+    removeModuleScopePlugin(),
   ),
-
   // proxy для интеграции с сервисами
   devServer: overrideDevServer(
     devServerConfig()
