@@ -52,7 +52,7 @@ export const ColorPicker = React.forwardRef((props: IProps, ref: any) => {
         openerElement={colorPreviewElement}
         onClose={handleClosePicker}
         position='bottom'
-        horizontalAlign='start'
+        horizontalAlign='end'
         autoAlign={false}
         floatPosition={true}
         hasPointer={false}
