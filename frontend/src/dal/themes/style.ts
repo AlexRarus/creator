@@ -7,7 +7,7 @@ export const getThemeBackground = (theme?: Partial<ITheme> | null) => {
   const {
     backgroundType,
     backgroundColor = COLORS.white,
-    backgroundGradient,
+    backgroundGradient = COLORS.white,
     backgroundImage,
     // backgroundRepeat,
     // backgroundSmooth,
