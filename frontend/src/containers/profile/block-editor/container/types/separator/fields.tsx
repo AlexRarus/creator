@@ -5,7 +5,7 @@ import { ControlledField } from 'src/components/controlled-field';
 import { maxLength } from 'src/utils/validators';
 import { ImageUploaderModule } from 'src/modules/image-uploader-module';
 import InputRange from 'src/components/input-range';
-import Switch from '@mui/material/Switch';
+import { Switch } from 'src/components/switch';
 import { ITheme } from 'src/dal/themes/interfaces';
 
 import { FormInputs } from './interfaces';
@@ -20,17 +20,10 @@ interface IProps {
 export const SeparatorFields = (props: IProps) => {
   const { formDefaultValues } = props;
   const [iconElement, iconRefCallback] = useState<HTMLElement | null>(null);
-  const { control, watch, setValue } = useFormContext(); // так как Fields рендерятся внутри FormProvider, в контексте доступны значения формы
-  const icon = watch('icon') || formDefaultValues?.icon;
-  const isWide = watch('isWide') || formDefaultValues?.isWide;
-  const isTransparent = watch('isTransparent') || formDefaultValues?.isTransparent;
-
-  const onClickWide = () => {
-    setValue('isWide', !isWide);
-  };
-  const onClickTransparent = () => {
-    setValue('isTransparent', !isTransparent);
-  };
+  const { control, watch } = useFormContext(); // так как Fields рендерятся внутри FormProvider, в контексте доступны значения формы
+  const icon = watch('icon');
+  const isWide = watch('isWide');
+  const isTransparent = watch('isTransparent');
 
   return (
     <Grid
@@ -58,12 +51,14 @@ export const SeparatorFields = (props: IProps) => {
       <GridColumn>
         <Label>Настройки линии:</Label>
         <Row>
-          <Switch checked={isTransparent} onClick={onClickTransparent} />
-          <MicroLabel>Прозрачные края</MicroLabel>
+          <ControlledField control={control} name='isTransparent'>
+            <Switch>Прозрачные края</Switch>
+          </ControlledField>
         </Row>
         <Row>
-          <Switch checked={isWide} onClick={onClickWide} />
-          <MicroLabel>На всю ширину</MicroLabel>
+          <ControlledField control={control} name='isWide'>
+            <Switch>На всю ширину</Switch>
+          </ControlledField>
         </Row>
       </GridColumn>
       <GridColumn size={12}>
