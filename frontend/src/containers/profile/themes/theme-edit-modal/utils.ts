@@ -17,13 +17,16 @@ export const backgroundTypes: IOption[] = [backgroundTypeColor, backgroundTypeGr
 // подгтавливаем данные пришедшие с формы для бэка
 export const prepareDataForServer = (rawData: RawData): DataForServer => {
   const backgroundType = rawData.formInputs.backgroundType.value;
+  const backgroundImage = rawData.formInputs.backgroundImage?.id;
 
   return {
     id: rawData.id,
-    background:
-      backgroundType === 'color'
-        ? rawData.formInputs.backgroundColor
-        : rawData.formInputs.backgroundGradient,
+    backgroundType,
+    backgroundColor: rawData.formInputs.backgroundColor,
+    backgroundGradient: rawData.formInputs.backgroundGradient,
+    backgroundImage,
+    backgroundRepeat: rawData.formInputs.backgroundRepeat,
+    backgroundSmooth: rawData.formInputs.backgroundSmooth,
     color: rawData.formInputs.color,
     headerColor: rawData.formInputs.headerColor,
   };
@@ -31,18 +34,16 @@ export const prepareDataForServer = (rawData: RawData): DataForServer => {
 
 // подгтавливаем данные пришедшие с бэка для формы
 export const prepareDataToForm = (theme: ITheme | null): FormInputs => {
-  const background = theme?.background || '#FFFFFF';
-  const backgroundType = background.includes('linear-gradient')
-    ? backgroundTypeGradient
-    : backgroundTypeColor;
+  const backgroundType =
+    theme?.backgroundType === 'gradient' ? backgroundTypeGradient : backgroundTypeColor;
 
   return {
     backgroundType,
-    backgroundColor: backgroundType.value === 'color' ? background : '#FFFFFF',
-    backgroundGradient:
-      backgroundType.value === 'gradient'
-        ? background
-        : 'linear-gradient(to bottom, #0000FF, #FF0000)',
+    backgroundColor: theme?.backgroundColor || '#FFFFFF',
+    backgroundGradient: theme?.backgroundGradient || 'linear-gradient(to bottom, #0000FF, #FF0000)',
+    backgroundImage: theme?.backgroundImage,
+    backgroundRepeat: theme?.backgroundRepeat,
+    backgroundSmooth: theme?.backgroundSmooth,
     color: theme?.color || '#263238',
     headerColor: theme?.headerColor || '#000000',
   };

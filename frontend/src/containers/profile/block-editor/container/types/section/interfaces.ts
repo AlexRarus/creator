@@ -1,15 +1,17 @@
 import { AdditionalData } from '../../interfaces';
 import { IImage } from 'src/dal/images/interfaces';
-export type { ISectionDataWrite as DataToServer } from 'src/dal/blocks/section-interfaces';
 import { IOption } from 'src/components/select';
 
 // поля формы
 export interface FormInputs {
   label?: string;
   backgroundType?: IOption; // есть только на форме
-  backgroundColor?: string; // есть только на форме
-  backgroundGradient?: string; // есть только на форме
-  backgroundImage?: IImage;
+  backgroundColor: string;
+  backgroundGradient: string;
+  backgroundImage?: IImage | null;
+  backgroundRepeat?: boolean;
+  backgroundSmooth?: boolean;
+  backgroundParallax?: boolean;
   borderRadius?: string;
   paddingTop?: string;
   paddingBottom?: string;

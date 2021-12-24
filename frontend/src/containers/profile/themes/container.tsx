@@ -130,7 +130,13 @@ export const ThemesContainer = observer((props: any) => {
                   onClick={
                     themeType === 'custom' ? () => openEditingThemeModal(theme.id) : undefined
                   }>
-                  <ThemeItemBackground background={theme.background}>
+                  <ThemeItemBackground
+                    backgroundType={theme.backgroundType}
+                    backgroundColor={theme.backgroundColor}
+                    backgroundGradient={theme.backgroundGradient}
+                    backgroundImage={theme.backgroundImage}
+                    backgroundRepeat={theme.backgroundRepeat}
+                    backgroundSmooth={theme.backgroundSmooth}>
                     <UserBlock color={theme.color} />
                     <ThemeItemHeader color={theme.headerColor}>Заголовок</ThemeItemHeader>
                     <ThemeItemText color={theme.color}>

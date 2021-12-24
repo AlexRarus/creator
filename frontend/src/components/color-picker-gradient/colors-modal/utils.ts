@@ -23,7 +23,7 @@ export const prepareValueToOutput = (formInputs: FormInputs): string => {
 
 // подгтавливаем данные для формы
 export const prepareDataToForm = (value: string, defaultColors: string[]): FormInputs => {
-  const preparedValue = `${value}`.replace(/linear-gradient\((.+)\)/, '$0');
+  const preparedValue = `${value}`.replace(/linear-gradient\((.+)\)/, '$1');
   const [direction, ...colors] = preparedValue.split(',');
 
   return {

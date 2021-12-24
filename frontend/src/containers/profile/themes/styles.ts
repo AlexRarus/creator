@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import { COLORS } from 'src/components/theme';
+import { ITheme } from 'src/dal/themes/interfaces';
+import { getThemeBackground } from 'src/dal/themes/style';
 
 export const ThemesWrapper = styled.div`
   position: relative;
@@ -116,13 +118,13 @@ export const PhoneWrapper = styled.div<{ isSelected?: boolean; color?: string }>
   }
 `;
 
-export const ThemeItemBackground = styled.div<{ background?: string }>`
+export const ThemeItemBackground = styled.div<Partial<ITheme>>`
   display: flex;
   align-items: center;
   flex-direction: column;
   width: 100%;
   height: 100%;
-  background: ${({ background = COLORS.white }) => background};
+  background: ${getThemeBackground};
   padding: 10px 10px 20px 10px;
 `;
 

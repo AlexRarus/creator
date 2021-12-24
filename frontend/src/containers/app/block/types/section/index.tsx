@@ -14,10 +14,11 @@ interface IProps {
 export const SectionPreview = (props: IProps) => {
   const { block: section, selectedTheme } = props;
   const subBlocks = section?.data?.blocks;
+  const sectionData = section.data as any;
 
   return (
-    <SectionBlock {...section.data}>
-      {subBlocks.map((block: IBlock<ISectionData>, index: number) => (
+    <SectionBlock {...sectionData}>
+      {subBlocks.map((block: IBlock<any>, index: number) => (
         <TargetBlockTypePreview key={index} block={block} selectedTheme={selectedTheme} />
       ))}
     </SectionBlock>

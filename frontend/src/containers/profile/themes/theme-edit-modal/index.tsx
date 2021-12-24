@@ -1,19 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 import Modal, { MobileSize } from 'src/components/modal';
-import { Form } from 'src/components/form';
-import { useForm } from 'react-hook-form';
-import { ControlledField } from 'src/components/controlled-field';
-import { Grid, GridColumn } from 'src/components/grid';
-import { useSubmitThemeForm } from 'src/api/hooks/submit-forms/theme/useSubmitThemeForm';
-import { ColorPicker } from 'src/components/color-picker';
-import { ColorPickerGradient } from 'src/components/color-picker-gradient';
-import { Select } from 'src/components/select';
 
 import { useMapStoreToProps } from './selectors';
-import { FormInputs, RawData } from './interfaces';
-import { prepareDataForServer, getActions, backgroundTypes } from './utils';
-import { ThemeEditorWrapper, Block, BlockTitle } from './style';
+import { ThemeEditorWrapper } from './style';
+import { ThemeForm } from './theme-form';
 
 interface IProps {
   themeId: number | 'new';
@@ -23,21 +14,9 @@ interface IProps {
 }
 
 export const ThemeEditModal = observer((props: IProps) => {
-  const { themeId: initThemeId, onClose, onSuccess, onRemove } = props;
+  const { themeId: initThemeId, onClose } = props;
   const [themeId, setThemeId] = useState(initThemeId);
-  const {
-    initialized,
-    initAction,
-    resetAction,
-    formDefaultValues,
-    isAuthor,
-    deleteThemeAction,
-  } = useMapStoreToProps();
-  const { handleSubmit, formState, control, watch } = useForm<FormInputs>({
-    defaultValues: formDefaultValues,
-  });
-  const backgroundType = watch('backgroundType');
-  const [submitThemeForm, isLoading, data, errors] = useSubmitThemeForm();
+  const { initialized, initAction, resetAction } = useMapStoreToProps();
   const isEditing = themeId !== 'new';
 
   useEffect(() => {
@@ -45,48 +24,6 @@ export const ThemeEditModal = observer((props: IProps) => {
 
     return () => resetAction();
   }, [initThemeId]);
-
-  const submit = async (formInputs: FormInputs) => {
-    const rawData: RawData = {
-      formInputs,
-    };
-
-    if (themeId !== 'new') {
-      rawData.id = themeId;
-    }
-
-    await submitThemeForm(prepareDataForServer(rawData));
-  };
-
-  // форма успешно (без ошибок) отправлена
-  useEffect(() => {
-    if (!isLoading && formState.isSubmitSuccessful && !errors && data) {
-      onSuccess && onSuccess(data as any);
-      onClose(); // При УСПЕШНОЙ отправке формы закрываем ее
-    }
-  }, [formState, errors, data, isLoading]);
-
-  const onAction = async (actionId: string) => {
-    switch (actionId) {
-      case 'submit':
-        handleSubmit(submit)();
-        // тут фому НЕ закрываем так как с бэка могли вернуться ошибки
-        break;
-      case 'clone':
-        setThemeId('new');
-        break;
-      case 'delete':
-        await deleteThemeAction(themeId as number);
-        onRemove && onRemove();
-        onClose();
-        break;
-      case 'cancel':
-        onClose();
-        break;
-      default:
-        console.warn('Unknown action type', actionId);
-    }
-  };
 
   return (
     <Modal
@@ -96,52 +33,7 @@ export const ThemeEditModal = observer((props: IProps) => {
       isCloseOutside={false}>
       <ThemeEditorWrapper>
         {!initialized && 'Loading...'}
-        {initialized && (
-          <Form onAction={onAction} actions={getActions(isAuthor, isEditing)} isLoading={isLoading}>
-            <Block>
-              <BlockTitle>Фон</BlockTitle>
-              <Grid
-                verticalGap={10}
-                breakPoints={{
-                  // все переданные здесь значения выставлены по-умолчанию
-                  // можно передать через контекст ThemeProvider theme: { gridBreakPoints: {...} }
-                  '320px': 4, // 4 колонки при ширине экрана 320 и меньше
-                  '530px': 4, // 4 колонок при ширине экрана 530 и меньше
-                  '950px': 8, // 8 колонок при ширине экрана 950 и меньше
-                  '1024px': 8, // 8 колонок при ширине экрана 1024 и меньше
-                  '1280px': 8, // 8 колонок при ширине экрана 1280 и меньше
-                }}>
-                <GridColumn size={4}>
-                  <ControlledField name='backgroundType' control={control}>
-                    <Select options={backgroundTypes} label='Тип фона' />
-                  </ControlledField>
-                </GridColumn>
-                <GridColumn size={4}>
-                  {backgroundType.value === 'color' && (
-                    <ControlledField name='backgroundColor' control={control}>
-                      <ColorPicker label='Цвет фона' />
-                    </ControlledField>
-                  )}
-                  {backgroundType.value === 'gradient' && (
-                    <ControlledField name='backgroundGradient' control={control}>
-                      <ColorPickerGradient label='Градиент фона' />
-                    </ControlledField>
-                  )}
-                </GridColumn>
-                <GridColumn size={4}>
-                  <ControlledField name='color' control={control}>
-                    <ColorPicker label='Цвет текста' />
-                  </ControlledField>
-                </GridColumn>
-                <GridColumn size={4}>
-                  <ControlledField name='headerColor' control={control}>
-                    <ColorPicker label='Цвет заголовков' />
-                  </ControlledField>
-                </GridColumn>
-              </Grid>
-            </Block>
-          </Form>
-        )}
+        {initialized && <ThemeForm {...props} themeId={themeId} setThemeId={setThemeId} />}
       </ThemeEditorWrapper>
     </Modal>
   );

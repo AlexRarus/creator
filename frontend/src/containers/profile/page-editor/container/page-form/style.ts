@@ -7,6 +7,7 @@ import {
   USER_MENU_BACKGROUND,
   USER_MENU_BACKGROUND_HOVER,
 } from 'src/components/menu/user-menu/style';
+import { getThemeBackground } from 'src/dal/themes/style';
 
 export const FORM_HEADER_HEIGHT = 64;
 export const FORM_FOOTER_HEIGHT = 64;
@@ -69,8 +70,8 @@ export const FormWrapperDroppable = styled(Grid)<{
   color: inherit;
   background: ${({ selectedTheme, isDraggingOver, theme }) =>
     isDraggingOver
-      ? rgba(selectedTheme ? selectedTheme.background : theme.background.primary, 0.9)
-      : selectedTheme?.background || theme.background.primary};
+      ? rgba(selectedTheme ? getThemeBackground(selectedTheme) : theme.background.primary, 0.9)
+      : getThemeBackground(selectedTheme) || theme.background.primary};
   width: 100%;
   ${({ theme }) => !theme?.isMobile && 'overflow: auto;'}
 `;

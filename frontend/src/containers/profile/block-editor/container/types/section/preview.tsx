@@ -21,7 +21,13 @@ export const SectionPreview = (props: IProps) => {
   const paddingBottom = watch('paddingBottom');
   const paddingLeft = watch('paddingLeft');
   const paddingRight = watch('paddingRight');
-  const background = watch('background');
+  const backgroundType = watch('backgroundType');
+  const backgroundColor = watch('backgroundColor');
+  const backgroundGradient = watch('backgroundGradient');
+  const backgroundImage = watch('backgroundImage');
+  const backgroundRepeat = watch('backgroundRepeat');
+  const backgroundSmooth = watch('backgroundSmooth');
+  const backgroundParallax = watch('backgroundParallax');
   const borderRadius = watch('borderRadius');
 
   const previewData: IBlock<ISectionData> = {
@@ -34,7 +40,13 @@ export const SectionPreview = (props: IProps) => {
       paddingBottom,
       paddingLeft,
       paddingRight,
-      background,
+      backgroundType,
+      backgroundColor,
+      backgroundGradient,
+      backgroundImage,
+      backgroundRepeat,
+      backgroundSmooth,
+      backgroundParallax,
       borderRadius,
     },
   };

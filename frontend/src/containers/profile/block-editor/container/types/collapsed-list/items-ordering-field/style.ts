@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { ITheme } from 'src/dal/themes/interfaces';
+import { getThemeBackground } from 'src/dal/themes/style';
 import { rgba } from 'polished';
 import { COLORS } from 'src/components/theme';
 
@@ -24,8 +25,8 @@ export const DroppableWrapper = styled.div<{
   color: inherit;
   background: ${({ selectedTheme, isDraggingOver, theme }) =>
     isDraggingOver
-      ? rgba(selectedTheme ? selectedTheme.background : theme.background.primary, 0.9)
-      : selectedTheme?.background || theme.background.primary};
+      ? rgba(selectedTheme ? getThemeBackground(selectedTheme) : theme.background.primary, 0.9)
+      : getThemeBackground(selectedTheme) || theme.background.primary};
 `;
 
 export const DraggableItem = styled.div<{ isDragging: boolean; isSubItem?: boolean }>`

@@ -21,17 +21,19 @@ export const backgroundTypes: IOption[] = [backgroundTypeColor, backgroundTypeGr
 // преобразовываем типы и меняем поля если надо
 export const prepareDataForServer = (rawData: RawData): DataForServer<ISectionDataWrite> => {
   const backgroundType = rawData.formInputs.backgroundType?.value;
-  const background =
-    backgroundType === 'color'
-      ? rawData.formInputs.backgroundColor
-      : rawData.formInputs.backgroundGradient;
+  const backgroundImage = rawData.formInputs.backgroundImage?.id;
 
   return {
     data: {
       label: rawData?.formInputs?.label,
       blocks: rawData.blocks,
-      background: background as string,
-      backgroundImage: rawData.formInputs.backgroundImage?.id,
+      backgroundType,
+      backgroundColor: rawData.formInputs.backgroundColor,
+      backgroundGradient: rawData.formInputs.backgroundGradient,
+      backgroundImage,
+      backgroundRepeat: rawData.formInputs.backgroundRepeat,
+      backgroundSmooth: rawData.formInputs.backgroundSmooth,
+      backgroundParallax: rawData.formInputs.backgroundParallax,
       borderRadius: rawData.formInputs.borderRadius,
       paddingTop: rawData.formInputs.paddingTop,
       paddingBottom: rawData.formInputs.paddingBottom,
@@ -47,20 +49,19 @@ export const prepareDataForServer = (rawData: RawData): DataForServer<ISectionDa
 
 // предзаполняем форму этими данными
 export const prepareDataToFormValues = (block: IBlock<ISectionData> | null): FormInputs => {
-  const background = block?.data?.background || '#FFFFFF';
-  const backgroundType = background.includes('linear-gradient')
-    ? backgroundTypeGradient
-    : backgroundTypeColor;
+  const backgroundType =
+    block?.data?.backgroundType === 'gradient' ? backgroundTypeGradient : backgroundTypeColor;
 
   return {
     label: block?.data?.label || 'новая секция',
     backgroundType,
-    backgroundColor: backgroundType.value === 'color' ? background : '#FFFFFF',
+    backgroundColor: block?.data?.backgroundColor || '#FFFFFF',
     backgroundGradient:
-      backgroundType.value === 'gradient'
-        ? background
-        : 'linear-gradient(to bottom, #0000FF, #FF0000)',
+      block?.data?.backgroundGradient || 'linear-gradient(to bottom, #0000FF, #FF0000)',
     backgroundImage: block?.data?.backgroundImage,
+    backgroundRepeat: block?.data?.backgroundRepeat,
+    backgroundSmooth: block?.data?.backgroundSmooth,
+    backgroundParallax: block?.data?.backgroundParallax,
     paddingTop: block?.data?.paddingTop || '20',
     paddingBottom: block?.data?.paddingBottom || '20',
     paddingRight: block?.data?.paddingRight || '10',

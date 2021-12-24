@@ -34,19 +34,46 @@ class Section(models.Model):
         related_name="sections",
         through="api.SectionBlockRelation",
     )
-    background = models.CharField(
-        verbose_name="Цвет фона",
-        max_length=255,
+    backgroundType = models.CharField(
+        verbose_name="Тип фона",
         null=True,
         blank=True,
+        max_length=255,
+        default="color",
+    )
+    backgroundColor = models.CharField(
+        verbose_name="Цвет фона",
+        null=True,
+        blank=True,
+        max_length=255,
+        default="white",
+    )
+    backgroundGradient = models.CharField(
+        verbose_name="Градиент фона",
+        null=True,
+        blank=True,
+        max_length=255,
+        default="linear-gradient(to bottom, #FFFFFF, #FFFFFF)",
     )
     backgroundImage = models.ForeignKey(
         Image,
-        related_name="sections",
         verbose_name="Фоновое изображение",
+        related_name="sections",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
+    )
+    backgroundRepeat = models.BooleanField(
+        verbose_name="Зацикливать изображение",
+        default=False,
+    )
+    backgroundSmooth = models.BooleanField(
+        verbose_name="Плавный переход",
+        default=False,
+    )
+    backgroundParallax = models.BooleanField(
+        verbose_name="Параллакс",
+        default=False,
     )
     borderRadius = models.CharField(
         verbose_name="Скругление углов",

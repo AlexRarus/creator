@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { ITheme } from 'src/dal/themes/interfaces';
+import { getThemeBackground } from 'src/dal/themes/style';
 
 export const SectionFormWrapper = styled.div`
   display: flex;
@@ -36,7 +37,7 @@ export const BackgroundPreview = styled.div<{ selectedTheme?: ITheme | null }>`
   min-height: 120px;
   width: 100%;
   border: 1px solid;
-  background: ${({ selectedTheme }) => selectedTheme?.background || 'inherit'};
+  background: ${({ selectedTheme }) => getThemeBackground(selectedTheme)};
   color: ${({ selectedTheme }) => selectedTheme?.color || 'inherit'};
 `;
 

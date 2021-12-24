@@ -4,8 +4,12 @@ import { IImage } from 'src/dal/images/interfaces';
 export interface ITheme {
   id: number;
   author?: number; // id автора темы
-  background: string;
+  backgroundType: string;
+  backgroundColor: string;
+  backgroundGradient: string;
   backgroundImage?: IImage | null;
+  backgroundRepeat?: boolean;
+  backgroundSmooth?: boolean;
   color: string;
   headerColor: string;
   buttonBackground: string;
@@ -16,8 +20,12 @@ export interface ITheme {
 // при создании-редактировании темы нужно отправить другие типы полей
 export interface IThemeWrite {
   id?: number;
-  background?: string;
+  backgroundType?: string;
+  backgroundColor?: string;
+  backgroundGradient?: string;
   backgroundImage?: number; // id изображения
+  backgroundRepeat?: boolean;
+  backgroundSmooth?: boolean;
   color?: string;
   headerColor?: string;
   // и другие свойства, синхронизировать с ITheme

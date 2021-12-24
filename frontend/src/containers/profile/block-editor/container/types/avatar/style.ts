@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { ITheme } from 'src/dal/themes/interfaces';
+import { getThemeBackground } from 'src/dal/themes/style';
 
 interface PreviewProps {
   selectedTheme?: ITheme | null;
@@ -16,7 +17,7 @@ export const PreviewWrapper = styled.div<PreviewProps>`
   padding: 20px;
   min-height: 120px;
   width: 100%;
-  background: ${({ selectedTheme }) => selectedTheme?.background || 'inherit'};
+  background: ${({ selectedTheme }) => getThemeBackground(selectedTheme) || 'inherit'};
   color: ${({ selectedTheme }) => selectedTheme?.color || 'inherit'};
 `;
 

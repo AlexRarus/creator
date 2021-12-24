@@ -227,11 +227,15 @@ class SectionAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "label",
-        "background",
+        "backgroundType",
+        "backgroundColor",
+        "backgroundGradient",
     )
     search_fields = (
         "label",
-        "background",
+        "backgroundType",
+        "backgroundColor",
+        "backgroundGradient",
     )
     empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
 
@@ -239,10 +243,6 @@ class SectionAdmin(admin.ModelAdmin):
 @admin.register(ListBlock)
 class ListBlockAdmin(admin.ModelAdmin):
     list_display = ("id",)
-    # search_fields = (
-    #     "label",
-    #     "background",
-    # )
     empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
 
 
