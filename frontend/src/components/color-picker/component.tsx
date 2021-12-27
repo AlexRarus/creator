@@ -7,7 +7,7 @@ import Color from 'color';
 import { isMobile } from 'react-device-detect';
 
 import { IProps } from './interfaces';
-import { ColorPreviewWrapper, ColorPreview } from './style';
+import { ColorPreviewWrapper, ColorPreview, PalleteWrapper } from './style';
 
 export const ColorPicker = React.forwardRef((props: IProps, ref: any) => {
   const [color, setColor] = useState<any>();
@@ -73,7 +73,9 @@ export const ColorPicker = React.forwardRef((props: IProps, ref: any) => {
       )}
       {isMobile && isOpenPicker && (
         <Modal title='Выбор цвета' onClose={handleClosePicker}>
-          <SwatchesPicker onChange={handleChangeColor} />
+          <PalleteWrapper>
+            <SwatchesPicker onChange={handleChangeColor} />
+          </PalleteWrapper>
         </Modal>
       )}
     </>
