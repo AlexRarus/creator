@@ -54,6 +54,8 @@ export const FormWrapperDroppable = styled(Grid)<{
   isDraggingOver: boolean;
   selectedTheme: ITheme | null;
   width?: number;
+  appType?: string;
+  viewBlockHeight?: number;
 }>`
   display: flex;
   flex-direction: column;
@@ -62,6 +64,8 @@ export const FormWrapperDroppable = styled(Grid)<{
 
   width: ${({ width }) => width}px;
   padding: 24px 28px 64px 24px;
+  height: ${({ appType, viewBlockHeight }) =>
+    appType === 'web' ? '100%' : `${viewBlockHeight}px`};
 
   color: inherit;
   background: ${({ selectedTheme, isDraggingOver, theme }) =>
