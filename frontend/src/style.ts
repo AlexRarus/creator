@@ -12,6 +12,7 @@ export const GlobalStyleApp = createGlobalStyle<any>`
     
     &.disable-scroll {
       height: 100vh;
+      min-height:100vh;
       position: fixed;
     }
     

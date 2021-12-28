@@ -4,6 +4,7 @@ const Context = createContext<any>({});
 const Provider = Context.Provider;
 
 export const VirtualKeyboardProvider = ({ children }: any) => {
+  const [lockHtmlScroll, setLockHtmlScroll] = useState<boolean>(false);
   const [isOpenKeyboard, setOpenKeyboard] = useState<boolean>(false);
 
   useEffect(() => {
@@ -11,6 +12,7 @@ export const VirtualKeyboardProvider = ({ children }: any) => {
 
     function detectBlur() {
       setOpenKeyboard(false);
+      setLockHtmlScroll(false);
     }
 
     function detectFocus() {
@@ -19,7 +21,9 @@ export const VirtualKeyboardProvider = ({ children }: any) => {
         document?.activeElement?.tagName === 'TEXTAREA'
       ) {
         setOpenKeyboard(true);
+        setLockHtmlScroll(true);
       } else {
+        setLockHtmlScroll(false);
         setOpenKeyboard(false);
       }
     }
@@ -33,7 +37,21 @@ export const VirtualKeyboardProvider = ({ children }: any) => {
     };
   }, []);
 
-  return <Provider value={{ isOpenKeyboard }}>{children}</Provider>;
+  useEffect(() => {
+    const preventDefaultScroll = (e: any) => {
+      window.scrollTo(0, 0);
+      e.preventDefault();
+    };
+    if (lockHtmlScroll) {
+      // блокируем скролл до черного блока под клавиатурой
+      window.addEventListener('touchmove', preventDefaultScroll); // mobile
+    }
+    return () => window.removeEventListener('touchmove', preventDefaultScroll); // mobile
+  }, [lockHtmlScroll]);
+
+  return (
+    <Provider value={{ isOpenKeyboard, setLockHtmlScroll, lockHtmlScroll }}>{children}</Provider>
+  );
 };
 
 export const useVirtualKeyboardContext = () => useContext(Context);
