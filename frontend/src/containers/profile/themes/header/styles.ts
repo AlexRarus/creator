@@ -28,7 +28,7 @@ export const ThemesHeaderStatic = styled.div<{
   position: absolute;
   display: flex;
   width: 100%;
-  padding: ${({ theme }) => (theme?.isMobile ? '12px' : '20px')};
+  padding: 0;
 
   :before {
     position: absolute;

@@ -7,6 +7,7 @@ import { ColorPickerGradient } from 'src/components/color-picker-gradient';
 import { Select } from 'src/components/select';
 import { ImageUploaderModule } from 'src/modules/image-uploader-module';
 import { Switch } from 'src/components/switch';
+import { IUser } from 'src/dal/auth/interfaces';
 
 import { backgroundTypes } from '../utils';
 
@@ -21,22 +22,38 @@ import {
 } from './style';
 
 interface IProps {
+  themeType: string;
+  user: IUser | null;
   formDefaultValues: any;
 }
 
 export const FieldBlockBackground = (props: IProps) => {
-  const { formDefaultValues } = props;
+  const { formDefaultValues, themeType, user } = props;
   const [pictureElement, pictureRefCallback] = useState<HTMLDivElement | null>(null);
   const { control, watch, setValue } = useFormContext();
   const backgroundType = watch('backgroundType');
   const backgroundImage = watch('backgroundImage');
   const backgroundSmooth = watch('backgroundSmooth');
+  const backgroundContain = watch('backgroundContain');
+  const backgroundCover = watch('backgroundCover');
 
   useEffect(() => {
     if (backgroundSmooth) {
       setValue('backgroundRepeat', false);
     }
   }, [backgroundSmooth]);
+
+  useEffect(() => {
+    if (backgroundContain) {
+      setValue('backgroundCover', false);
+    }
+  }, [backgroundContain]);
+
+  useEffect(() => {
+    if (backgroundCover) {
+      setValue('backgroundContain', false);
+    }
+  }, [backgroundCover]);
 
   return (
     <Block>
@@ -94,13 +111,27 @@ export const FieldBlockBackground = (props: IProps) => {
               formDefaultValues={formDefaultValues}>
               <ImageUploaderModule
                 openerElement={pictureElement}
-                blockType='section'
+                getTags={['theme_background']}
+                createTags={['theme_background']}
+                isCommon={themeType !== 'custom' && user?.role === 'admin'}
                 isEditable={true}
               />
             </ControlledField>
           </PictureCell>
         </GridColumn>
         <GridColumn size={4}>
+          <ControlledField
+            control={control}
+            name='backgroundContain'
+            formDefaultValues={formDefaultValues}>
+            <Switch>Выровнять по ширине</Switch>
+          </ControlledField>
+          <ControlledField
+            control={control}
+            name='backgroundCover'
+            formDefaultValues={formDefaultValues}>
+            <Switch>Выровнять по высоте</Switch>
+          </ControlledField>
           <ControlledField
             control={control}
             name='backgroundRepeat'

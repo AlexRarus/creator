@@ -11,6 +11,8 @@ export const getUserThemeStyles = (theme?: Partial<ITheme> | null) => {
     backgroundGradient = COLORS.white,
     backgroundImage,
     backgroundRepeat,
+    backgroundSize,
+    backgroundPosition,
     // backgroundSmooth,
     color = COLORS.black,
     headerColor = COLORS.black,
@@ -21,7 +23,8 @@ export const getUserThemeStyles = (theme?: Partial<ITheme> | null) => {
   return css`
     background: ${backgroundPrefix} ${backgroundPostfix};
     background-repeat: ${backgroundRepeat ? 'repeat' : 'no-repeat'};
-    background-size: cover;
+    background-size: ${backgroundSize || 'auto'};
+    background-position: ${backgroundPosition || 'initial'};
 
     color: ${color};
 

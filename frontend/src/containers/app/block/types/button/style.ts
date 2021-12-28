@@ -79,7 +79,7 @@ const glitch = keyframes`
 `;
 
 const getStyledButtonImpact = (buttonData: IButtonData, selectedTheme?: ITheme | null) => {
-  const { kind: buttonKind, backgroundColor: buttonBackground, color } = buttonData;
+  const { kind: buttonKind, backgroundColor: buttonBackground } = buttonData;
   const kind = buttonKind || selectedTheme?.buttonKind || 'simple';
   const background = buttonBackground || selectedTheme?.buttonBackground || '#00FF00';
 

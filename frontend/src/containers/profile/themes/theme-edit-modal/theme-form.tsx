@@ -21,7 +21,7 @@ interface IProps {
 
 export const ThemeForm = observer((props: IProps) => {
   const { themeType, themeId, setThemeId, onClose, onSuccess, onRemove } = props;
-  const { formDefaultValues, isAuthor, deleteThemeAction } = useMapStoreToProps();
+  const { formDefaultValues, isAuthor, deleteThemeAction, user } = useMapStoreToProps();
   const methods = useForm<FormInputs>({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -77,7 +77,11 @@ export const ThemeForm = observer((props: IProps) => {
   return (
     <Form onAction={onAction} actions={getActions(isAuthor, isEditing)} isLoading={isLoading}>
       <FormProvider {...methods}>
-        <FieldBlockBackground formDefaultValues={formDefaultValues} />
+        <FieldBlockBackground
+          formDefaultValues={formDefaultValues}
+          themeType={themeType}
+          user={user}
+        />
         <FieldBlockFont formDefaultValues={formDefaultValues} />
       </FormProvider>
     </Form>

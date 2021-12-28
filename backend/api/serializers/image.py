@@ -43,6 +43,7 @@ class ImageSerializer(serializers.ModelSerializer):
         use_url=False,
         read_only=True,
     )
+    is_common = serializers.BooleanField(write_only=True)
 
     def update(self, image, validated_data):
         # вытаскиваем block_types и tags из данных
@@ -75,4 +76,5 @@ class ImageSerializer(serializers.ModelSerializer):
             "borderRadius",
             "rotate",
             "scale",
+            "is_common",  # Запись
         )

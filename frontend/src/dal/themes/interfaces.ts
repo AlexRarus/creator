@@ -10,6 +10,8 @@ export interface ITheme {
   backgroundImage?: IImage | null;
   backgroundRepeat?: boolean;
   backgroundSmooth?: boolean;
+  backgroundSize?: string;
+  backgroundPosition?: string;
   color: string;
   headerColor: string;
   buttonBackground: string;
@@ -27,6 +29,8 @@ export interface IThemeWrite {
   backgroundImage?: number; // id изображения
   backgroundRepeat?: boolean;
   backgroundSmooth?: boolean;
+  backgroundSize?: string;
+  backgroundPosition?: string;
   color?: string;
   headerColor?: string;
   // и другие свойства, синхронизировать с ITheme

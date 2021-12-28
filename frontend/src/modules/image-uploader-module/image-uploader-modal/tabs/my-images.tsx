@@ -37,10 +37,12 @@ interface IProps {
   selectedImages: IImage[];
   emptyListMessage?: string;
   dropZoneRefCallback?: any;
+  isCommon?: boolean;
   isEditable?: boolean;
   isMulti?: boolean;
   blockType?: string; // для какого типа блока запросить (создать) изображения
-  tags?: string[]; // с какими тегами запросить (создать) изображения
+  getTags?: string[]; // с какими тегами запросить изображения
+  createTags?: string[]; // с какими тегами создать изображения
 }
 
 export const MyImagesList = observer((props: IProps) => {
@@ -48,18 +50,20 @@ export const MyImagesList = observer((props: IProps) => {
     setSelectedImages,
     selectedImages,
     dropZoneRefCallback,
+    isCommon = false,
     isEditable = false,
     isMulti = false,
     blockType,
-    tags,
+    getTags,
+    createTags,
   } = props;
   const { myImages, getMyImagesAction } = useMapStoreToProps();
 
   useEffect(() => {
-    getMyImagesAction(blockType, tags);
-  }, [blockType, tags]);
+    getMyImagesAction(blockType, getTags);
+  }, [blockType, getTags]);
 
-  const refreshImages = () => getMyImagesAction(blockType, tags);
+  const refreshImages = () => getMyImagesAction(blockType, getTags);
 
   const onClickImage = (image: IImage) => {
     const imageHasSelected = selectedImages.some(
@@ -101,6 +105,8 @@ export const MyImagesList = observer((props: IProps) => {
         addButton={true}
         dropZoneRefCallback={dropZoneRefCallback}
         imageActions={getImageActions(isEditable)}
+        createTags={createTags}
+        isCommon={isCommon}
       />
     </MyImagesListWrapper>
   );

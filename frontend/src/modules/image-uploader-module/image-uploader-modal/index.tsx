@@ -15,10 +15,12 @@ interface IProps {
   onClose(): void;
   onChange(value?: IImage | IImage[]): void;
   blockType?: string; // для какого типа блока запросить (создать) изображения
-  tags?: string[]; // с какими тегами запросить (создать) изображения
+  getTags?: string[]; // с какими тегами запросить изображения
+  createTags?: string[]; // с какими тегами создать изображения
   value?: IImage | IImage[];
   isMulti?: boolean;
   tabs?: ITab<TabValue>[];
+  isCommon?: boolean; // создать общую картинку
   isEditable?: boolean; // возможность редактировать свои изображения
 }
 
@@ -36,10 +38,12 @@ export const ImageUploaderModal = (props: IProps) => {
     onChange,
     onClose,
     blockType,
-    tags,
+    getTags,
+    createTags,
     value: initValue,
     isMulti = false,
     tabs: initTabs = imagesTabs,
+    isCommon,
     isEditable,
   } = props;
   const [tabs, activeTab, onChangeTab] = useTabs(initTabs);
@@ -79,7 +83,7 @@ export const ImageUploaderModal = (props: IProps) => {
           {activeTab.value === TabValue.common && (
             <CommonImagesList
               blockType={blockType}
-              tags={tags}
+              getTags={getTags}
               selectedImages={commonSelectedImages}
               setSelectedImages={setCommonSelectedImages}
               emptyListMessage='Нет доступных изображений'
@@ -91,10 +95,12 @@ export const ImageUploaderModal = (props: IProps) => {
           {activeTab.value === TabValue.my && (
             <MyImagesList
               blockType={blockType}
-              tags={tags}
+              getTags={getTags}
+              createTags={createTags}
               selectedImages={mySelectedImages}
               setSelectedImages={setMySelectedImages}
               dropZoneRefCallback={dropZoneRefCallback}
+              isCommon={isCommon}
               isEditable={isEditable}
               isMulti={isMulti}
             />

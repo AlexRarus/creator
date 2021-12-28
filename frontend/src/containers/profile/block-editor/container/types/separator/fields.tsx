@@ -9,7 +9,7 @@ import { Switch } from 'src/components/switch';
 import { ITheme } from 'src/dal/themes/interfaces';
 
 import { FormInputs } from './interfaces';
-import { Label, Row, MicroLabel } from './style';
+import { Label, Row } from './style';
 import { Toggle } from './custom-toggle';
 
 interface IProps {
@@ -77,7 +77,11 @@ export const SeparatorFields = (props: IProps) => {
           />
         </ControlledField>
         <ControlledField name={`icon`} control={control}>
-          <ImageUploaderModule openerElement={iconElement} blockType='list' isEditable={true} />
+          <ImageUploaderModule
+            openerElement={iconElement}
+            blockType='separator'
+            isEditable={true}
+          />
         </ControlledField>
       </GridColumn>
     </Grid>

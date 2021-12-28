@@ -123,7 +123,7 @@ export const FieldsBlockMain = (props: IProps) => {
             <TargetBlockTypePreview block={defaultButton} />
           </RefTemplateButton>
           <ControlledField name={`icon`} control={control}>
-            <ImageUploaderModule openerElement={iconElement} blockType='list' isEditable={true} />
+            <ImageUploaderModule openerElement={iconElement} blockType='button' isEditable={true} />
           </ControlledField>
         </GridColumn>
         <GridColumn>
