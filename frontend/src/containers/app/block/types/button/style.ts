@@ -2,17 +2,15 @@ import styled, { css, keyframes } from 'styled-components';
 import { rgba, darken, lighten } from 'polished';
 import { Link } from 'react-router-dom';
 import { ITheme } from 'src/dal/themes/interfaces';
+import { IButtonData } from 'src/dal/blocks/button-interfaces';
 
 import { IListItemIconProps } from '../list/style';
 
 interface IButton {
+  data: IButtonData;
+  isIcon: boolean;
   selectedTheme?: ITheme | null;
-  background?: string;
-  borderRadius?: string;
-  color?: string;
   height?: string;
-  kind?: string;
-  [key: string]: any;
 }
 
 export const buttonKinds = [
@@ -80,13 +78,10 @@ const glitch = keyframes`
 }
 `;
 
-const getStyledButtonImpact = (
-  selectedTheme?: ITheme | null,
-  buttonKind?: string,
-  buttonBackground?: string
-) => {
+const getStyledButtonImpact = (buttonData: IButtonData, selectedTheme?: ITheme | null) => {
+  const { kind: buttonKind, backgroundColor: buttonBackground, color } = buttonData;
   const kind = buttonKind || selectedTheme?.buttonKind || 'simple';
-  const background = buttonBackground || selectedTheme?.buttonBackground || '#000';
+  const background = buttonBackground || selectedTheme?.buttonBackground || '#00FF00';
 
   switch (kind) {
     case 'simple':
@@ -255,7 +250,7 @@ const getStyledButtonImpact = (
           background: linear-gradient(45deg, transparent 5%, ${background} 5%);
           border: 0;
           letter-spacing: 3px;
-          box-shadow: 6px 0px 0px #00e6f6;
+          box-shadow: 6px 0 0 #00e6f6;
           outline: transparent;
           position: relative;
           user-select: none;
@@ -373,7 +368,7 @@ const getStyledButtonImpact = (
       `;
     case 'toast':
       return css`
-        appearance: button;
+        appearance: initial;
         background-color: transparent;
         background-image: linear-gradient(to bottom, ${background}, ${darken(0.05, background)});
         border: 0 solid #e5e7eb;
@@ -419,16 +414,15 @@ const getStyledButtonImpact = (
         color: ${background};
         border: 3px solid ${background};
         padding: 0.25em 0.5em;
-        box-shadow: 1px 1px 0px 0px ${background}, 2px 2px 0px 0px ${background},
-          3px 3px 0px 0px ${background}, 4px 4px 0px 0px ${background},
-          5px 5px 0px 0px ${background};
+        box-shadow: 1px 1px 0 0 ${background}, 2px 2px 0 0 ${background}, 3px 3px 0 0 ${background},
+          4px 4px 0 0 ${background}, 5px 5px 0 0 ${background};
         position: relative;
         user-select: none;
         -webkit-user-select: none;
         touch-action: manipulation;
 
         :active {
-          box-shadow: 0px 0px 0px 0px;
+          box-shadow: 0 0 0 0;
           top: 5px;
           left: 5px;
         }
@@ -488,11 +482,13 @@ export const ButtonBlock = styled.button<IButton>`
   padding: 8px 14px;
   align-items: center;
   width: 100%;
-  color: ${({ color }) => color};
-  background: ${({ selectedTheme }) => selectedTheme?.buttonBackground || 'inherit'};
   cursor: pointer;
   ${({ isIcon }) => isIcon && 'padding-left: 44px;'}
-  ${({ selectedTheme, kind, background }) => getStyledButtonImpact(selectedTheme, kind, background)}
+  color: ${({ data }) => data.color};
+  a {
+    color: ${({ data }) => data.color};
+  }
+  ${({ selectedTheme, data }) => getStyledButtonImpact(data, selectedTheme)}
 `;
 
 export const Title = styled.div`

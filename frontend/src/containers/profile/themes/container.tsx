@@ -62,6 +62,13 @@ export const ThemesContainer = observer((props: any) => {
     getThemesByTypeAction(themeType);
   }, [themeType]);
 
+  useEffect(() => {
+    // выбираем первую тему актиной
+    if (themes?.length) {
+      setActiveTheme(themes[0]);
+    }
+  }, [themes]);
+
   const onClickTheme = (isSelected?: boolean) => () => {
     isSelected ? toEditPage() : selectThemeAction(activeTheme as ITheme);
   };
@@ -106,19 +113,13 @@ export const ThemesContainer = observer((props: any) => {
             pagination={{
               clickable: true,
             }}>
-            {themes?.map((theme, index) => (
+            {themes?.map((theme: ITheme, index) => (
               <SwiperSlide style={{ width: DEVICE_THEME.isMobile ? '90%' : '40%' }} key={index}>
                 <PhoneWrapper
                   color={theme.color}
                   isSelected={user?.theme?.id === theme.id}
                   onClick={canEditThemes ? () => openEditingThemeModal(theme.id) : undefined}>
-                  <ThemeItemBackground
-                    backgroundType={theme.backgroundType}
-                    backgroundColor={theme.backgroundColor}
-                    backgroundGradient={theme.backgroundGradient}
-                    backgroundImage={theme.backgroundImage}
-                    backgroundRepeat={theme.backgroundRepeat}
-                    backgroundSmooth={theme.backgroundSmooth}>
+                  <ThemeItemBackground theme={theme}>
                     <UserBlock color={theme.color} />
                     <ThemeItemHeader color={theme.headerColor}>Заголовок</ThemeItemHeader>
                     <ThemeItemText color={theme.color}>
@@ -177,7 +178,6 @@ export const ThemesContainer = observer((props: any) => {
           onRemove={updateThemesList}
         />
       )}
-      <div style={{ height: '300px', width: '100%' }} />
     </ThemesWrapper>
   );
 });

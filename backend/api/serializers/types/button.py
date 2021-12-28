@@ -24,14 +24,7 @@ class BlockButtonSerializerRead(serializers.ModelSerializer):
 
     class Meta:
         model = Button
-        fields = (
-            "label",
-            "description",
-            "kind",
-            "type",
-            "value",
-            "icon",
-        )
+        fields = "__all__"
 
 
 class BlockButtonSerializerWrite(serializers.ModelSerializer):

@@ -1,6 +1,5 @@
 import React from 'react';
 import { TargetBlockTypePreview } from 'src/containers/app/block';
-import { ITheme } from 'src/dal/themes/interfaces';
 import { Grid, GridColumn } from 'src/components/grid';
 import { buttonKinds } from 'src/containers/app/block/types/button/style';
 import { useFormContext } from 'react-hook-form';
@@ -8,12 +7,7 @@ import { useFormContext } from 'react-hook-form';
 import { prepareDataForKinds } from './utils';
 import { KindsList, KindWrapper } from './style';
 
-interface IProps {
-  selectedTheme?: ITheme | null;
-}
-
-export const ButtonKinds = (props: IProps) => {
-  const { selectedTheme } = props;
+export const ButtonKinds = () => {
   const { watch, setValue } = useFormContext(); // так как Fields рендерятся внутри FormProvider, в контексте доступны значения формы
   const selectedKind = watch('kind');
   const icon = watch('icon');
@@ -40,7 +34,7 @@ export const ButtonKinds = (props: IProps) => {
         {buttons.map((button, index) => (
           <GridColumn key={index} size={6}>
             <KindWrapper onClick={onChangeKind(button?.data?.kind)}>
-              <TargetBlockTypePreview selectedTheme={selectedTheme} block={button} />
+              <TargetBlockTypePreview block={button} />
             </KindWrapper>
           </GridColumn>
         ))}

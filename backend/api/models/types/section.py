@@ -75,6 +75,12 @@ class Section(models.Model):
         verbose_name="Параллакс",
         default=False,
     )
+    color = models.CharField(
+        verbose_name="Цвет текста",
+        null=True,
+        blank=True,
+        max_length=255,
+    )
     borderRadius = models.CharField(
         verbose_name="Скругление углов",
         max_length=255,

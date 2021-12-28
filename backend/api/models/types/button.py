@@ -53,6 +53,20 @@ class Button(models.Model):
         null=True,
         blank=True,
     )
+    backgroundColor = models.CharField(
+        verbose_name="Цвет фона",
+        null=True,
+        blank=True,
+        max_length=255,
+        default="#0000FF",
+    )
+    color = models.CharField(
+        verbose_name="Цвет текста",
+        null=True,
+        blank=True,
+        max_length=255,
+        default="#000000",
+    )
 
     def __str__(self):
         return self.label[:20]

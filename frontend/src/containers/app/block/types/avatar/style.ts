@@ -1,16 +1,10 @@
 import styled from 'styled-components';
-import { ITheme } from 'src/dal/themes/interfaces';
 
-interface IPreviewProps {
-  selectedTheme?: ITheme | null;
-}
-
-export const AvatarBlockWrapper = styled.div<IPreviewProps>`
+export const AvatarBlockWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
-  color: ${({ selectedTheme }) => selectedTheme?.color || 'inherit'};
   width: 100%;
 `;

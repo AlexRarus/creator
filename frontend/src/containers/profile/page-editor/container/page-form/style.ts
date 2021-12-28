@@ -2,12 +2,10 @@ import styled from 'styled-components';
 import { rgba } from 'polished';
 import { Grid } from 'src/components/grid';
 import { COLORS, MEDIA } from 'src/components/theme';
-import { ITheme } from 'src/dal/themes/interfaces';
 import {
   USER_MENU_BACKGROUND,
   USER_MENU_BACKGROUND_HOVER,
 } from 'src/components/menu/user-menu/style';
-import { getThemeBackground } from 'src/dal/themes/style';
 
 export const FORM_HEADER_HEIGHT = 64;
 export const FORM_FOOTER_HEIGHT = 64;
@@ -52,7 +50,6 @@ export const BlockActionWrapper = styled.div`
 
 export const FormWrapperDroppable = styled(Grid)<{
   isDraggingOver: boolean;
-  selectedTheme: ITheme | null;
   width?: number;
   appType?: string;
   viewBlockHeight?: number;
@@ -68,10 +65,8 @@ export const FormWrapperDroppable = styled(Grid)<{
     appType === 'web' ? '100%' : `${viewBlockHeight}px`};
 
   color: inherit;
-  background: ${({ selectedTheme, isDraggingOver, theme }) =>
-    isDraggingOver
-      ? rgba(selectedTheme ? getThemeBackground(selectedTheme) : theme.background.primary, 0.9)
-      : getThemeBackground(selectedTheme) || theme.background.primary};
+  background: ${({ isDraggingOver, theme }) =>
+    isDraggingOver ? rgba(theme.background.primary, 0.9) : theme.background.primary};
   width: 100%;
   ${({ theme }) => !theme?.isMobile && 'overflow: auto;'}
 `;

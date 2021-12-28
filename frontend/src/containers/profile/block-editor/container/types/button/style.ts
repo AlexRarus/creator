@@ -1,11 +1,14 @@
 import styled from 'styled-components';
 import ButtonSelect from 'src/components/button-select';
+import { COLORS } from 'src/components/theme';
 
 export const ButtonFormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: 100%;
   flex-grow: 1;
+  background: ${COLORS.white};
 `;
 
 export const Label = styled.div`

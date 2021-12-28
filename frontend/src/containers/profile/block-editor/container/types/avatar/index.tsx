@@ -120,7 +120,7 @@ export const AvatarForm = observer((props: IProps) => {
         <FormProvider {...methods}>
           <FormWrapper>
             <TabContainer value={TabValue.editor} activeTabValue={activeTab.value}>
-              <AvatarPreview user={user as IUser} selectedTheme={user?.theme} />
+              <AvatarPreview user={user as IUser} />
               <AvatarBlockFields formDefaultValues={formDefaultValues} />
             </TabContainer>
             <TabContainer value={TabValue.settings} activeTabValue={activeTab.value}>

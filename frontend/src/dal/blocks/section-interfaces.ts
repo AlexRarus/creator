@@ -13,6 +13,7 @@ export interface ISectionData {
   backgroundRepeat?: boolean;
   backgroundSmooth?: boolean;
   backgroundParallax?: boolean;
+  color?: string;
   borderRadius: string;
   paddingTop: string;
   paddingBottom: string;
@@ -31,6 +32,7 @@ export interface ISectionDataWrite {
   backgroundRepeat?: boolean;
   backgroundSmooth?: boolean;
   backgroundParallax?: boolean;
+  color?: string;
   borderRadius?: string;
   paddingTop?: string;
   paddingBottom?: string;

@@ -1,30 +1,19 @@
 import { AdditionalData } from '../../interfaces';
+import { IImage } from 'src/dal/images/interfaces';
 
 // поля формы
 export interface FormInputs {
   label: string;
   description: string;
-  typeOption: string;
+  type: string;
   value: string;
   kind?: string;
-  icon?: IButtonIcon;
-}
-
-export interface IButtonIcon {
-  id: number;
-  src: string;
+  icon?: IImage | null;
+  backgroundColor: string;
+  color: string;
 }
 
 // входные значение с формы создание
 export interface RawData extends AdditionalData {
   formInputs: FormInputs;
-}
-
-export interface DataToServer {
-  label: string;
-  description: string;
-  type: string;
-  value: string;
-  kind?: string;
-  icon?: number; // при прикреплении изображения нужно отправить его id
 }

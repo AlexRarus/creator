@@ -1,11 +1,22 @@
-// import { IBlock } from 'src/dal/blocks/interfaces';
 import { ITab } from 'src/components/tabs';
-// import { COLORS } from 'src/components/theme';
 import { IAction } from 'src/components/form';
+import { IOption } from 'src/components/select';
+import { IBlock } from 'src/dal/blocks/interfaces';
+import { IButtonData, IButtonDataWrite } from 'src/dal/blocks/button-interfaces';
 
 import { DataForServer } from '../../interfaces';
 
-import { RawData, DataToServer } from './interfaces';
+import { RawData, FormInputs } from './interfaces';
+
+const backgroundTypeColor: IOption = {
+  value: 'color',
+  label: 'Сплошной цвет',
+};
+const backgroundTypeGradient: IOption = {
+  value: 'gradient',
+  label: 'Градиент',
+};
+export const backgroundTypes: IOption[] = [backgroundTypeColor, backgroundTypeGradient];
 
 // преобразовываем типы и меняем поля если надо
 export const prepareDataForServer = ({
@@ -14,20 +25,38 @@ export const prepareDataForServer = ({
   blockId,
   blockType,
   index,
-}: RawData): DataForServer<DataToServer> => ({
-  data: {
-    label: formInputs.label,
-    description: formInputs.description,
-    type: formInputs?.typeOption,
-    value: formInputs?.value,
-    kind: formInputs?.kind,
-    icon: formInputs?.icon?.id, // при прикреплении изображения нужно отправить его id
-  },
-  page_slug: pageSlug, // меняем поле для отправки на бэк
-  type: blockType, // меняем поле для отправки на бэк
-  id: blockId as any, // id может не быть поэтому any
-  index: index as any, // index может не быть поэтому any
-});
+}: RawData): DataForServer<IButtonDataWrite> => {
+  return {
+    data: {
+      label: formInputs.label,
+      description: formInputs.description,
+      type: formInputs?.type,
+      value: formInputs?.value,
+      kind: formInputs?.kind,
+      icon: formInputs?.icon?.id, // при прикреплении изображения нужно отправить его id
+      backgroundColor: formInputs?.backgroundColor,
+      color: formInputs?.color,
+    },
+    page_slug: pageSlug, // меняем поле для отправки на бэк
+    type: blockType, // меняем поле для отправки на бэк
+    id: blockId as any, // id может не быть поэтому any
+    index: index as any, // index может не быть поэтому any
+  };
+};
+
+// предзаполняем форму этими данными
+export const prepareDataToFormValues = (block: IBlock<IButtonData> | null): FormInputs => {
+  return {
+    label: block?.data.label || 'Кнопка',
+    description: block?.data.description || '',
+    type: block?.data?.type || 'web',
+    value: block?.data.value || '',
+    kind: block?.data.value || 'simple',
+    icon: block?.data?.icon || null,
+    backgroundColor: block?.data.backgroundColor || '',
+    color: block?.data?.color || '',
+  };
+};
 
 export enum TabValue {
   button = 'button',
