@@ -1,18 +1,21 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
+import { useThemeContext } from 'src/providers/dark-theme-provider';
 
 const Context = createContext<any>({});
 const Provider = Context.Provider;
 
 export const VirtualKeyboardProvider = ({ children }: any) => {
-  const [lockHtmlScroll, setLockHtmlScroll] = useState<boolean>(false);
   const [isOpenKeyboard, setOpenKeyboard] = useState<boolean>(false);
+  const { DEVICE_THEME } = useThemeContext();
 
   useEffect(() => {
-    setOpenKeyboard(document?.activeElement?.tagName === 'INPUT');
+    setOpenKeyboard(
+      document?.activeElement?.tagName === 'INPUT' ||
+        document?.activeElement?.tagName === 'TEXTAREA'
+    );
 
     function detectBlur() {
       setOpenKeyboard(false);
-      setLockHtmlScroll(false);
     }
 
     function detectFocus() {
@@ -21,9 +24,7 @@ export const VirtualKeyboardProvider = ({ children }: any) => {
         document?.activeElement?.tagName === 'TEXTAREA'
       ) {
         setOpenKeyboard(true);
-        setLockHtmlScroll(true);
       } else {
-        setLockHtmlScroll(false);
         setOpenKeyboard(false);
       }
     }
@@ -38,20 +39,24 @@ export const VirtualKeyboardProvider = ({ children }: any) => {
   }, []);
 
   useEffect(() => {
-    const preventDefaultScroll = (e: any) => {
-      window.scrollTo(0, 0);
-      e.preventDefault();
+    const hideKeyboardOnScroll = (e: any) => {
+      if (isOpenKeyboard && DEVICE_THEME?.isMobile) {
+        const field = document.createElement('input');
+        field.setAttribute('type', 'text');
+        document.body.appendChild(field);
+        field.focus();
+        field.setAttribute('style', 'display:none;');
+        document.body.removeChild(field);
+        setOpenKeyboard(false);
+      }
     };
-    if (lockHtmlScroll) {
-      // блокируем скролл до черного блока под клавиатурой
-      window.addEventListener('touchmove', preventDefaultScroll); // mobile
-    }
-    return () => window.removeEventListener('touchmove', preventDefaultScroll); // mobile
-  }, [lockHtmlScroll]);
 
-  return (
-    <Provider value={{ isOpenKeyboard, setLockHtmlScroll, lockHtmlScroll }}>{children}</Provider>
-  );
+    // убираем клавиатуру при скролле, при скролле с клавиатурой есть баги в сафари (блок снизу html)
+    document.body.addEventListener('touchmove', hideKeyboardOnScroll); // mobile
+    return () => document.body.removeEventListener('touchmove', hideKeyboardOnScroll); // mobile
+  }, [isOpenKeyboard]);
+
+  return <Provider value={{ isOpenKeyboard }}>{children}</Provider>;
 };
 
 export const useVirtualKeyboardContext = () => useContext(Context);
