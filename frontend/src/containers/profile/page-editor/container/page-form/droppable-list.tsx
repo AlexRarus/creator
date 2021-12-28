@@ -10,6 +10,7 @@ import { isMobile } from 'react-device-detect';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { typeIconsMap } from 'src/containers/profile/block-editor/types-list/utils';
 import { useAppTypeContext } from 'src/providers/app-type-provider';
+import { useVirtualKeyboardContext } from 'src/providers/virtual-keyboard-provider';
 
 import { reorder } from '../utils';
 
@@ -56,6 +57,7 @@ export const DroppableList = (props: IProps) => {
   } = props;
   // определяем тип приложения (для телефонов чтобы корректно работал днд и скролл приложения)
   const { appType } = useAppTypeContext();
+  const { isOpenKeyboard } = useVirtualKeyboardContext();
 
   const onClickCheckbox = (clickedBlock: IBlock<any>) => (event: any) => {
     event.stopPropagation();
@@ -143,7 +145,11 @@ export const DroppableList = (props: IProps) => {
               <GridColumn alignItems='center'>
                 {blocks.map((block: IBlock<any>, index: number) => {
                   return (
-                    <Draggable key={block.id} draggableId={`${block.id}`} index={index}>
+                    <Draggable
+                      isDragDisabled={isOpenKeyboard}
+                      key={block.id}
+                      draggableId={`${block.id}`}
+                      index={index}>
                       {(provided: any, snapshot: any) =>
                         block.type === 'section' ? (
                           <SectionDraggable

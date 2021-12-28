@@ -6,6 +6,7 @@ import { RootStoreProvider } from 'src/dal/store-provider';
 
 import { CustomThemeProvider } from './dark-theme-provider';
 import { AppTypeProvider } from './app-type-provider';
+import { VirtualKeyboardProvider } from './virtual-keyboard-provider';
 
 /*
     const isMobile = useMediaQuery('(max-width:768px)');
@@ -23,9 +24,11 @@ export const AppCommonProvider = (props: any) => {
 
   return (
     <CustomThemeProvider>
-      <AppTypeProvider>
-        <RootStoreProvider>{children}</RootStoreProvider>
-      </AppTypeProvider>
+      <VirtualKeyboardProvider>
+        <AppTypeProvider>
+          <RootStoreProvider>{children}</RootStoreProvider>
+        </AppTypeProvider>
+      </VirtualKeyboardProvider>
     </CustomThemeProvider>
   );
 };
