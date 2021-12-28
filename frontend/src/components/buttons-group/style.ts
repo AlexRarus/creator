@@ -53,6 +53,7 @@ export const ButtonOption = styled.div<IButtonOptionProps>`
   border: 1px solid ${({ isActive }) => (isActive ? COLORS.blue[500] : COLORS.grey[400])};
   color: ${({ isActive }) => (isActive ? COLORS.blue[500] : COLORS.grey[400])};
   margin: ${({ kind }) => (kind === 'separated' ? '0 5px' : '0')};
+  white-space: nowrap;
 
   :first-child {
     border-radius: ${({ kind }) => (kind === 'separated' ? '4px' : '4px 0 0 4px')};

@@ -29,6 +29,7 @@ export const prepareDataForServer = (rawData: RawData): DataForServer => {
     backgroundSmooth: rawData.formInputs.backgroundSmooth,
     color: rawData.formInputs.color,
     headerColor: rawData.formInputs.headerColor,
+    themeType: rawData.themeType,
   };
 };
 

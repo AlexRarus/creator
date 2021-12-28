@@ -7,6 +7,7 @@ import { ThemeEditorWrapper } from './style';
 import { ThemeForm } from './theme-form';
 
 interface IProps {
+  themeType: string;
   themeId: number | 'new';
   onClose(): void;
   onSuccess?(data: any): void;

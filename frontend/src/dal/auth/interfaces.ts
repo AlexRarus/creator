@@ -14,6 +14,7 @@ export interface IUser {
   first_name?: string;
   last_name?: string;
   avatar?: IAvatar;
+  role: 'user' | 'admin' | 'moderator';
 }
 
 export interface IAvatar {

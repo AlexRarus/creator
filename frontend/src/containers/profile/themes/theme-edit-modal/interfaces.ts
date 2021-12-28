@@ -18,4 +18,5 @@ export type FormInputs = {
 export interface RawData {
   id?: number;
   formInputs: FormInputs;
+  themeType?: string;
 }

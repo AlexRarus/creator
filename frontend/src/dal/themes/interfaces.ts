@@ -20,6 +20,7 @@ export interface ITheme {
 // при создании-редактировании темы нужно отправить другие типы полей
 export interface IThemeWrite {
   id?: number;
+  themeType?: string; // 'custom' | 'advanced' | 'animated' ...
   backgroundType?: string;
   backgroundColor?: string;
   backgroundGradient?: string;

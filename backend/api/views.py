@@ -308,7 +308,14 @@ class ThemeViewSet(viewsets.ModelViewSet):
         return get_object_or_404(Theme, pk=self.kwargs.get("pk"))
 
     def perform_create(self, serializer):
-        theme_type, created = ThemeType.objects.get_or_create(slug="custom")
+        """
+        Если запрос пришел от админа, то учитываем тип темы при создании
+        иначе просто создаем кастомную тему
+        """
+        is_admin = self.request.user.is_admin
+        theme_type_slug = self.request.data.pop("themeType", "custom")
+        slug = theme_type_slug if is_admin else "custom"
+        theme_type, created = ThemeType.objects.get_or_create(slug=slug)
         serializer.save(author=self.request.user, type=theme_type)
 
     def perform_update(self, serializer):
