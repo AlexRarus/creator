@@ -20,6 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
             "username",
             "avatar",
             "theme",
+            "role",
         )
         model = User
 

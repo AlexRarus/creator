@@ -3,11 +3,12 @@ import { observer } from 'mobx-react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { Form } from 'src/components/form';
 import { Tabs, TabContainer, useTabs } from 'src/components/tabs';
+import { IButtonDataWrite } from 'src/dal/blocks/button-interfaces';
 import { useSubmitBlockForm } from 'src/api/hooks/submit-forms/block/useSubmitBlockForm';
 
 import { FormWrapper } from '../../style';
 
-import { FormInputs, RawData, DataToServer } from './interfaces';
+import { FormInputs, RawData } from './interfaces';
 import { useMapStoreToProps } from './selectors';
 import { ButtonFormWrapper } from './style';
 import { ButtonFields } from './fields';
@@ -33,7 +34,6 @@ export const ButtonForm = observer((props: IProps) => {
     deleteBlockAction,
     getButtonTypesListAction,
     buttonTypes,
-    user,
   } = useMapStoreToProps();
   // todo хук useForm создает форму и возвращает методы и состояние формы
   // todo все поля зарегистрированные в форме управляются этой формой
@@ -44,7 +44,7 @@ export const ButtonForm = observer((props: IProps) => {
   });
   const { formState, handleSubmit, setError } = methods;
   const { isValid } = formState;
-  const [submitBlockEditor, isLoading, data, errors] = useSubmitBlockForm<DataToServer>();
+  const [submitBlockEditor, isLoading, data, errors] = useSubmitBlockForm<IButtonDataWrite>();
   const isEditing = blockId !== 'new';
 
   useEffect(() => {
@@ -121,14 +121,10 @@ export const ButtonForm = observer((props: IProps) => {
         <FormProvider {...methods}>
           <FormWrapper>
             <TabContainer value={TabValue.button} activeTabValue={activeTab.value}>
-              <ButtonFields
-                selectedTheme={user?.theme}
-                buttonTypes={buttonTypes}
-                formDefaultValues={formDefaultValues?.data}
-              />
+              <ButtonFields buttonTypes={buttonTypes} formDefaultValues={formDefaultValues} />
             </TabContainer>
             <TabContainer value={TabValue.kind} activeTabValue={activeTab.value}>
-              <ButtonKinds selectedTheme={user?.theme} />
+              <ButtonKinds />
             </TabContainer>
             <TabContainer value={TabValue.settings} activeTabValue={activeTab.value}>
               Tab settings content

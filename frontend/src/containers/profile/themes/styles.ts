@@ -1,21 +1,14 @@
 import styled from 'styled-components';
 import { COLORS } from 'src/components/theme';
 import { ITheme } from 'src/dal/themes/interfaces';
-import { getThemeBackground } from 'src/dal/themes/style';
+import { getUserThemeStyles } from 'src/dal/themes/style';
 
-export const ThemesWrapper = styled.div`
+export const ThemesWrapper = styled.div<{ width?: number }>`
   position: relative;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-`;
-
-export const ThemesHeader = styled.div`
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-  padding: ${({ theme }) => (theme?.isMobile ? '12px' : '20px')};
+  width: ${({ width }) => width}px;
 `;
 
 export const CreateButton = styled.div`
@@ -57,7 +50,7 @@ export const CreateButtonLabel = styled.div`
 export const SwiperWrapper = styled.div<{ width?: number }>`
   position: relative;
   height: 100%;
-  width: ${({ width }) => width}px;
+  width: 100%;
 
   .swiper {
     width: 100%;
@@ -118,14 +111,14 @@ export const PhoneWrapper = styled.div<{ isSelected?: boolean; color?: string }>
   }
 `;
 
-export const ThemeItemBackground = styled.div<Partial<ITheme>>`
+export const ThemeItemBackground = styled.div<{ theme: ITheme }>`
   display: flex;
   align-items: center;
   flex-direction: column;
   width: 100%;
   height: 100%;
-  background: ${getThemeBackground};
   padding: 10px 10px 20px 10px;
+  ${({ theme }) => getUserThemeStyles(theme)}
 `;
 
 export const ThemeItemHeader = styled.div<{ color: string }>`

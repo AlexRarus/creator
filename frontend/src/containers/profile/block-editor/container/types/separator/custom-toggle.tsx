@@ -38,7 +38,6 @@ export const Toggle = ({
           isSelected={value === item}
           key={item}>
           <TargetBlockTypePreview
-            selectedTheme={null}
             block={getDefaultBlock(item, isWide, isTransparent, icon) as any}
           />
         </ToggleButton>

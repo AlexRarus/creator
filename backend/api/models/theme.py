@@ -106,6 +106,18 @@ class Theme(models.Model):
         verbose_name="Плавный переход",
         default=False,
     )
+    backgroundSize = models.CharField(
+        verbose_name="Размер фонового изображения",
+        null=True,
+        blank=True,
+        max_length=255,
+    )
+    backgroundPosition = models.CharField(
+        verbose_name="Позиция фонового изображения",
+        null=True,
+        blank=True,
+        max_length=255,
+    )
     color = models.CharField(
         verbose_name="Цвет текста",
         null=True,

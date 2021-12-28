@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { InputText } from 'src/components/input-text';
 import Popup from 'src/components/popup';
+import Modal from 'src/components/modal';
 import { SwatchesPicker } from 'react-color';
 import Color from 'color';
+import { isMobile } from 'react-device-detect';
 
 import { IProps } from './interfaces';
-import { ColorPreviewWrapper, ColorPreview } from './style';
+import { ColorPreviewWrapper, ColorPreview, PalleteWrapper } from './style';
 
 export const ColorPicker = React.forwardRef((props: IProps, ref: any) => {
   const [color, setColor] = useState<any>();
@@ -23,12 +25,16 @@ export const ColorPicker = React.forwardRef((props: IProps, ref: any) => {
   const handleChange = (value: string) => {
     props.onChange && props.onChange(value);
   };
-  const handleChangeColor = (color: any, event: any) => {
-    handleChange(color?.hex?.toUpperCase());
-  };
-
   const handleOpenPicker = () => setOpenPicker(true);
   const handleClosePicker = () => setOpenPicker(false);
+
+  const handleChangeColor = (color: any) => {
+    handleChange(color?.hex?.toUpperCase());
+
+    if (isMobile) {
+      handleClosePicker();
+    }
+  };
 
   return (
     <>
@@ -47,22 +53,31 @@ export const ColorPicker = React.forwardRef((props: IProps, ref: any) => {
           />
         </ColorPreviewWrapper>
       </InputText>
-      <Popup
-        isOpen={isOpenPicker}
-        openerElement={colorPreviewElement}
-        onClose={handleClosePicker}
-        position='bottom'
-        horizontalAlign='end'
-        autoAlign={false}
-        floatPosition={true}
-        hasPointer={false}
-        isCloseOnClick={false}
-        plateMargin={4}
-        maxHeight={300}
-        zIndex={999}
-        isFixed={true}>
-        <SwatchesPicker onChange={handleChangeColor} />
-      </Popup>
+      {!isMobile && (
+        <Popup
+          isOpen={isOpenPicker}
+          openerElement={colorPreviewElement}
+          onClose={handleClosePicker}
+          position='bottom'
+          horizontalAlign='end'
+          autoAlign={false}
+          floatPosition={true}
+          hasPointer={false}
+          isCloseOnClick={false}
+          plateMargin={4}
+          maxHeight={300}
+          zIndex={999}
+          isFixed={true}>
+          <SwatchesPicker onChange={handleChangeColor} />
+        </Popup>
+      )}
+      {isMobile && isOpenPicker && (
+        <Modal title='Выбор цвета' onClose={handleClosePicker}>
+          <PalleteWrapper>
+            <SwatchesPicker onChange={handleChangeColor} />
+          </PalleteWrapper>
+        </Modal>
+      )}
     </>
   );
 });

@@ -28,6 +28,7 @@ export const SectionPreview = (props: IProps) => {
   const backgroundRepeat = watch('backgroundRepeat');
   const backgroundSmooth = watch('backgroundSmooth');
   const backgroundParallax = watch('backgroundParallax');
+  const color = watch('color');
   const borderRadius = watch('borderRadius');
 
   const previewData: IBlock<ISectionData> = {
@@ -47,13 +48,14 @@ export const SectionPreview = (props: IProps) => {
       backgroundRepeat,
       backgroundSmooth,
       backgroundParallax,
+      color,
       borderRadius,
     },
   };
 
   return (
     <BackgroundPreview selectedTheme={selectedTheme}>
-      <TargetBlockTypePreview selectedTheme={selectedTheme} block={previewData} />
+      <TargetBlockTypePreview block={previewData} />
     </BackgroundPreview>
   );
 };

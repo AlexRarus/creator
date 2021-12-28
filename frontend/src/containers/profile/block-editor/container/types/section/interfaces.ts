@@ -5,13 +5,14 @@ import { IOption } from 'src/components/select';
 // поля формы
 export interface FormInputs {
   label?: string;
-  backgroundType?: IOption; // есть только на форме
+  backgroundType?: IOption;
   backgroundColor: string;
   backgroundGradient: string;
   backgroundImage?: IImage | null;
   backgroundRepeat?: boolean;
   backgroundSmooth?: boolean;
   backgroundParallax?: boolean;
+  color?: string;
   borderRadius?: string;
   paddingTop?: string;
   paddingBottom?: string;

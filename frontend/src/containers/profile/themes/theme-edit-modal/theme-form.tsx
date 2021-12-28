@@ -11,6 +11,7 @@ import { FieldBlockBackground } from './fields-blocks/background';
 import { FieldBlockFont } from './fields-blocks/font';
 
 interface IProps {
+  themeType: string;
   themeId: number | 'new';
   setThemeId(themeId: number | 'new'): void;
   onClose(): void;
@@ -19,8 +20,8 @@ interface IProps {
 }
 
 export const ThemeForm = observer((props: IProps) => {
-  const { themeId, setThemeId, onClose, onSuccess, onRemove } = props;
-  const { formDefaultValues, isAuthor, deleteThemeAction } = useMapStoreToProps();
+  const { themeType, themeId, setThemeId, onClose, onSuccess, onRemove } = props;
+  const { formDefaultValues, isAuthor, deleteThemeAction, user } = useMapStoreToProps();
   const methods = useForm<FormInputs>({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -33,6 +34,7 @@ export const ThemeForm = observer((props: IProps) => {
   const submit = async (formInputs: FormInputs) => {
     const rawData: RawData = {
       formInputs,
+      themeType,
     };
 
     if (themeId !== 'new') {
@@ -75,7 +77,11 @@ export const ThemeForm = observer((props: IProps) => {
   return (
     <Form onAction={onAction} actions={getActions(isAuthor, isEditing)} isLoading={isLoading}>
       <FormProvider {...methods}>
-        <FieldBlockBackground formDefaultValues={formDefaultValues} />
+        <FieldBlockBackground
+          formDefaultValues={formDefaultValues}
+          themeType={themeType}
+          user={user}
+        />
         <FieldBlockFont formDefaultValues={formDefaultValues} />
       </FormProvider>
     </Form>

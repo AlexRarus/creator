@@ -208,7 +208,7 @@ export const DroppableList = (props: IProps) => {
                                 />
                               )}
                               <BlockActionWrapper>
-                                <TargetBlockTypePreview selectedTheme={null} block={block} />
+                                <TargetBlockTypePreview block={block} />
                               </BlockActionWrapper>
                             </>
                           </DraggableItem>

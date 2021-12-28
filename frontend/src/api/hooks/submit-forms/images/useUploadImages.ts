@@ -12,7 +12,7 @@ export interface IUploadingFile {
   data: null | IImage; // доступна только при успешной выгрузке
 }
 
-export const useUploadImages = (blockType?: string, tags?: string[]) => {
+export const useUploadImages = (blockType?: string, tags?: string[], isCommon?: boolean) => {
   const [isLoading, setIsLoading] = useState(false);
   const [uploadingFiles, setUploadingFiles] = useState<IUploadingFile[]>([]);
 
@@ -45,6 +45,11 @@ export const useUploadImages = (blockType?: string, tags?: string[]) => {
         tags?.forEach((tag: string) => {
           formData.append('tags', tag);
         });
+
+        // прикрепляем флаг isCommon к изображению
+        if (isCommon) {
+          formData.append('isCommon', isCommon.toString());
+        }
 
         try {
           const response: AxiosResponse<any> = await API.endpoints.images.createImage(formData);

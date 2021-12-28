@@ -10,6 +10,7 @@ export const SectionBlock = styled.div<ISectionData>`
   padding-left: ${({ paddingLeft }) => paddingLeft}px;
   border-radius: ${({ borderRadius }) => borderRadius}px;
   background: ${getSectionBackground};
+  color: ${({ color }) => color || 'inherit'};
   background-repeat: no-repeat;
   background-size: cover;
 `;

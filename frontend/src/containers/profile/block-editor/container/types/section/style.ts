@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 import { ITheme } from 'src/dal/themes/interfaces';
-import { getThemeBackground } from 'src/dal/themes/style';
+import { getUserThemeStyles } from 'src/dal/themes/style';
 
 export const SectionFormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: 100%;
   flex-grow: 1;
 `;
 
@@ -37,18 +38,12 @@ export const BackgroundPreview = styled.div<{ selectedTheme?: ITheme | null }>`
   min-height: 120px;
   width: 100%;
   border: 1px solid;
-  background: ${({ selectedTheme }) => getThemeBackground(selectedTheme)};
-  color: ${({ selectedTheme }) => selectedTheme?.color || 'inherit'};
+  ${({ selectedTheme }) => getUserThemeStyles(selectedTheme)};
 `;
 
 export const RangeLabel = styled.div`
   margin-right: 4px;
   align-self: baseline;
-`;
-
-export const PictureCell = styled.div`
-  display: flex;
-  flex-direction: column;
 `;
 
 export const ItemFieldPictureShape = styled.div`

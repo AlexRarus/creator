@@ -1,6 +1,4 @@
 import styled from 'styled-components';
-import { ITheme } from 'src/dal/themes/interfaces';
-import { getThemeBackground } from 'src/dal/themes/style';
 import { rgba } from 'polished';
 import { COLORS } from 'src/components/theme';
 import { IListItemProps, getGridTemplateAreas } from 'src/containers/app/block/types/list/style';
@@ -13,7 +11,6 @@ export const ItemsOrderingFieldWrapper = styled.div`
 
 export const DroppableWrapper = styled.div<{
   isDraggingOver: boolean;
-  selectedTheme: ITheme | null;
   width?: number | null;
 }>`
   display: flex;
@@ -24,10 +21,8 @@ export const DroppableWrapper = styled.div<{
   padding: 10px;
 
   color: inherit;
-  background: ${({ selectedTheme, isDraggingOver, theme }) =>
-    isDraggingOver
-      ? rgba(selectedTheme ? getThemeBackground(selectedTheme) : theme.background.primary, 0.9)
-      : getThemeBackground(selectedTheme) || theme.background.primary};
+  background: ${({ isDraggingOver, theme }) =>
+    isDraggingOver ? rgba(theme.background.primary, 0.9) : theme.background.primary};
 `;
 
 export const DraggableItem = styled.div<{ isDragging: boolean; isSubItem?: boolean }>`

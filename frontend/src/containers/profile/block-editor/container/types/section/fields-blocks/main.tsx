@@ -5,6 +5,7 @@ import { Grid, GridColumn } from 'src/components/grid';
 import { maxLength } from 'src/utils/validators';
 import InputText from 'src/components/input-text';
 import { InputRange } from 'src/components/input-range';
+import { ColorPicker } from 'src/components/color-picker';
 
 import { MicroInputWrapper, MicroLabel, MicroPostfix, MicroRow, RangeLabel } from '../style';
 
@@ -127,6 +128,11 @@ export const FieldBlockMain = (props: IProps) => {
               <InputRange isFakeLabel={true} min={0} max={50} />
             </ControlledField>
           </MicroRow>
+        </GridColumn>
+        <GridColumn>
+          <ControlledField name='color' control={control} formDefaultValues={formDefaultValues}>
+            <ColorPicker label='Цвет текста' />
+          </ControlledField>
         </GridColumn>
       </Grid>
     </Block>

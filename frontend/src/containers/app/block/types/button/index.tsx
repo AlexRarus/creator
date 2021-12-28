@@ -1,6 +1,7 @@
 import React from 'react';
 import { IBlock } from 'src/dal/blocks/interfaces';
-import { ITheme } from 'src/dal/themes/interfaces';
+import { IButtonData } from 'src/dal/blocks/button-interfaces';
+import { useSelectedThemeContext } from 'src/providers/selected-theme-provider';
 
 import {
   ButtonBlock,
@@ -14,22 +15,18 @@ import {
 } from './style';
 
 interface IProps {
-  block: IBlock<any>;
-  selectedTheme?: ITheme | null;
+  block: IBlock<IButtonData>;
 }
 
 export const ButtonPreview = (props: IProps) => {
-  const { block, selectedTheme } = props;
+  const { block } = props;
+  const { selectedTheme } = useSelectedThemeContext();
   const buttonType = block?.data?.type;
   const buttonValue = block?.data?.value;
   const buttonIcon = block?.data?.icon;
 
   return (
-    <ButtonBlock
-      selectedTheme={selectedTheme}
-      kind={block?.data?.kind}
-      background={block?.data?.background}
-      isIcon={!!buttonIcon}>
+    <ButtonBlock selectedTheme={selectedTheme} data={block.data} isIcon={!!buttonIcon}>
       <TypeWrapper buttonType={buttonType} value={buttonValue}>
         <Title>{block?.data?.label}</Title>
         <SubTitle>{block?.data?.description}</SubTitle>

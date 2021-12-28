@@ -1,24 +1,22 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useThemeContext } from 'src/providers/dark-theme-provider';
 import { observer } from 'mobx-react';
 import { useHistory } from 'react-router-dom';
-import { ITheme, IThemeType } from 'src/dal/themes/interfaces';
+import { ITheme } from 'src/dal/themes/interfaces';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import AddIcon from '@mui/icons-material/Add';
 // Direct React component imports
 import { Swiper, SwiperSlide } from 'swiper/react'; // import Swiper core and required modules
 import SwiperCore, { Pagination, Navigation, EffectCoverflow } from 'swiper';
 import Button from 'src/components/button';
-import ButtonGroup, { IButton } from 'src/components/buttons-group';
-import { useTranslation } from 'react-i18next';
 // Import Swiper styles
 import 'swiper/css/bundle';
 
+import { ThemesHeader } from './header';
 import { ThemeEditModal } from './theme-edit-modal';
 import { useMapStoreToProps } from './selectors';
 import {
   ThemesWrapper,
-  ThemesHeader,
   CreateButton,
   CreateButtonIconWrapper,
   CreateButtonLabel,
@@ -51,16 +49,6 @@ export const ThemesContainer = observer((props: any) => {
     getThemesTypesAction,
   } = useMapStoreToProps();
   const history = useHistory();
-  const { i18n, t } = useTranslation('themes');
-
-  const themesButtons: IButton[] = useMemo(
-    () =>
-      themesTypes.map((themeType: IThemeType) => ({
-        label: t(`themeType.${themeType.slug || 'default'}`),
-        value: themeType.slug,
-      })),
-    [themesTypes, i18n.language]
-  );
 
   useEffect(() => {
     // получаем типы тем, если их еще нет
@@ -73,6 +61,13 @@ export const ThemesContainer = observer((props: any) => {
     // получаем темы если изменился фильтр типов
     getThemesByTypeAction(themeType);
   }, [themeType]);
+
+  useEffect(() => {
+    // выбираем первую тему актиной
+    if (themes?.length) {
+      setActiveTheme(themes[0]);
+    }
+  }, [themes]);
 
   const onClickTheme = (isSelected?: boolean) => () => {
     isSelected ? toEditPage() : selectThemeAction(activeTheme as ITheme);
@@ -93,17 +88,13 @@ export const ThemesContainer = observer((props: any) => {
   const openEditingThemeModal = (id: number | 'new') => setEditingThemeId(id);
   const updateThemesList = () => getThemesByTypeAction(themeType);
 
-  const changeThemeType = (value: string) => {
-    history.push(`/profile/${username}/themes/${value}`);
-  };
+  const canEditThemes = themeType === 'custom' || user?.role === 'admin';
 
   return (
-    <ThemesWrapper>
-      <ThemesHeader>
-        <ButtonGroup buttons={themesButtons} value={themeType} onChange={changeThemeType} />
-      </ThemesHeader>
-      {themes?.length > 0 || themeType === 'custom' ? (
-        <SwiperWrapper width={window.innerWidth}>
+    <ThemesWrapper width={window.innerWidth}>
+      <ThemesHeader username={username} themeType={themeType} themesTypes={themesTypes} />
+      {themes?.length > 0 || canEditThemes ? (
+        <SwiperWrapper>
           <Swiper
             effect='coverflow'
             grabCursor={true}
@@ -122,21 +113,13 @@ export const ThemesContainer = observer((props: any) => {
             pagination={{
               clickable: true,
             }}>
-            {themes?.map((theme, index) => (
-              <SwiperSlide style={{ width: DEVICE_THEME.isMobile ? 'auto' : '40%' }} key={index}>
+            {themes?.map((theme: ITheme, index) => (
+              <SwiperSlide style={{ width: DEVICE_THEME.isMobile ? '90%' : '40%' }} key={index}>
                 <PhoneWrapper
                   color={theme.color}
                   isSelected={user?.theme?.id === theme.id}
-                  onClick={
-                    themeType === 'custom' ? () => openEditingThemeModal(theme.id) : undefined
-                  }>
-                  <ThemeItemBackground
-                    backgroundType={theme.backgroundType}
-                    backgroundColor={theme.backgroundColor}
-                    backgroundGradient={theme.backgroundGradient}
-                    backgroundImage={theme.backgroundImage}
-                    backgroundRepeat={theme.backgroundRepeat}
-                    backgroundSmooth={theme.backgroundSmooth}>
+                  onClick={canEditThemes ? () => openEditingThemeModal(theme.id) : undefined}>
+                  <ThemeItemBackground theme={theme}>
                     <UserBlock color={theme.color} />
                     <ThemeItemHeader color={theme.headerColor}>Заголовок</ThemeItemHeader>
                     <ThemeItemText color={theme.color}>
@@ -148,15 +131,18 @@ export const ThemesContainer = observer((props: any) => {
                 </PhoneWrapper>
               </SwiperSlide>
             ))}
-            {themeType === 'custom' && (
-              <SwiperSlide style={{ width: DEVICE_THEME.isMobile ? 'auto' : '40%' }}>
+            {canEditThemes && (
+              <SwiperSlide style={{ width: DEVICE_THEME.isMobile ? '90%' : '40%' }}>
                 <PhoneWrapper>
                   <ThemeItemBackground>
                     <CreateButton onClick={() => openEditingThemeModal('new')}>
                       <CreateButtonIconWrapper>
                         <AddIcon />
                       </CreateButtonIconWrapper>
-                      <CreateButtonLabel>Добавить новую тему</CreateButtonLabel>
+                      <CreateButtonLabel>
+                        Добавить новую тему
+                        {themeType !== 'custom' && <div>(Для всех пользователей)</div>}
+                      </CreateButtonLabel>
                     </CreateButton>
                   </ThemeItemBackground>
                 </PhoneWrapper>
@@ -185,6 +171,7 @@ export const ThemesContainer = observer((props: any) => {
       )}
       {editingThemeId !== null && (
         <ThemeEditModal
+          themeType={themeType}
           themeId={editingThemeId}
           onClose={closeEditingThemeModal}
           onSuccess={updateThemesList}

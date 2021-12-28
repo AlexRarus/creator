@@ -10,6 +10,8 @@ export type FormInputs = {
   backgroundImage?: IImage | null;
   backgroundRepeat?: boolean;
   backgroundSmooth?: boolean;
+  backgroundContain?: boolean; // есть только на форме
+  backgroundCover?: boolean; // есть только на форме
   color?: string;
   headerColor?: string;
 };
@@ -18,4 +20,5 @@ export type FormInputs = {
 export interface RawData {
   id?: number;
   formInputs: FormInputs;
+  themeType?: string;
 }

@@ -12,6 +12,7 @@ import { copyTextToClipboard } from 'src/utils/copyToClipboard';
 import { v4 as uuidv4 } from 'uuid';
 import InputText from 'src/components/input-text';
 import { AwesomeButton } from 'src/components/awesome-button';
+import { SelectedThemeProvider } from 'src/providers/selected-theme-provider';
 
 import { BlinkMessage } from './page-form/blink-message';
 import { PageSettingsModal, TabValue } from './page-form/page-settings-modal';
@@ -134,7 +135,7 @@ export const PageEditorContainer = observer((props: IProps) => {
   };
 
   return (
-    <>
+    <SelectedThemeProvider selectedTheme={user?.theme}>
       {!isAuthor && 'PageEditorContainer Error...'}
       {isLoading && isAuthor && 'Loading...'}
       {!isLoading && data !== null && (
@@ -256,6 +257,6 @@ export const PageEditorContainer = observer((props: IProps) => {
           )}
         </>
       )}
-    </>
+    </SelectedThemeProvider>
   );
 });

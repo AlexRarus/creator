@@ -5,6 +5,10 @@ import LinkIcon from '@mui/icons-material/Link';
 import CallIcon from '@mui/icons-material/Call';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 
+import { store } from '../../store';
+
+import { prepareDataToFormValues } from './utils';
+
 const typeLabelMap = {
   web: 'Веб сайт',
   link: 'Внутренняя страница',
@@ -26,13 +30,11 @@ const getTypeOptionsSelector = (buttonTypes: any[]) =>
     icon: typeIconMap[btnType?.slug],
   }));
 
-import { store } from '../../store';
-
 export function useMapStoreToProps() {
   const { dalAuthStore, dalBlocksStore } = useStores();
 
   return {
-    formDefaultValues: store.block,
+    formDefaultValues: prepareDataToFormValues(store.block),
     buttonTypes: getTypeOptionsSelector(dalBlocksStore.buttonTypes),
     getButtonTypesListAction: dalBlocksStore.getButtonTypesListAction,
     deleteBlockAction: dalBlocksStore.deleteBlockAction,

@@ -19,6 +19,12 @@ export const prepareDataForServer = (rawData: RawData): DataForServer => {
   const backgroundType = rawData.formInputs.backgroundType.value;
   const backgroundImage = rawData.formInputs.backgroundImage?.id;
 
+  const backgroundContain = rawData.formInputs.backgroundContain; // есть только на форме
+  const backgroundCover = rawData.formInputs.backgroundCover; // есть только на форме
+  let backgroundSize = 'auto';
+  backgroundSize = backgroundContain ? 'contain' : backgroundSize;
+  backgroundSize = backgroundCover ? 'cover' : backgroundSize;
+
   return {
     id: rawData.id,
     backgroundType,
@@ -27,8 +33,11 @@ export const prepareDataForServer = (rawData: RawData): DataForServer => {
     backgroundImage,
     backgroundRepeat: rawData.formInputs.backgroundRepeat,
     backgroundSmooth: rawData.formInputs.backgroundSmooth,
+    backgroundSize,
+
     color: rawData.formInputs.color,
     headerColor: rawData.formInputs.headerColor,
+    themeType: rawData.themeType,
   };
 };
 
@@ -36,6 +45,8 @@ export const prepareDataForServer = (rawData: RawData): DataForServer => {
 export const prepareDataToForm = (theme: ITheme | null): FormInputs => {
   const backgroundType =
     theme?.backgroundType === 'gradient' ? backgroundTypeGradient : backgroundTypeColor;
+  const backgroundContain = theme?.backgroundSize === 'contain'; // есть только на форме
+  const backgroundCover = theme?.backgroundSize === 'cover'; // есть только на форме
 
   return {
     backgroundType,
@@ -44,6 +55,8 @@ export const prepareDataToForm = (theme: ITheme | null): FormInputs => {
     backgroundImage: theme?.backgroundImage,
     backgroundRepeat: theme?.backgroundRepeat,
     backgroundSmooth: theme?.backgroundSmooth,
+    backgroundContain,
+    backgroundCover,
     color: theme?.color || '#263238',
     headerColor: theme?.headerColor || '#000000',
   };

@@ -19,13 +19,15 @@ interface IProps {
   dropZoneRefCallback?: any;
   imageActions?: IAction[];
   blockType?: string; // для какого типа блока запросить (создать) изображения
-  tags?: string[]; // с какими тегами запросить (создать) изображения
+  createTags?: string[]; // с какими тегами создать изображения
+  isCommon?: boolean;
 }
 
 export const ImagesList = (props: IProps) => {
   const {
     blockType,
-    tags,
+    createTags,
+    isCommon,
     images,
     onClickImage,
     deleteImage,
@@ -38,7 +40,11 @@ export const ImagesList = (props: IProps) => {
     dropZoneRefCallback,
     imageActions,
   } = props;
-  const [uploadImages, isLoading, uploadingImages, clear] = useUploadImages(blockType, tags);
+  const [uploadImages, isLoading, uploadingImages, clear] = useUploadImages(
+    blockType,
+    createTags,
+    isCommon
+  );
 
   useEffect(() => {
     if (!isLoading && uploadingImages.length) {

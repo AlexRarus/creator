@@ -1,3 +1,5 @@
+import json
+
 from django.db.models import Prefetch
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
@@ -251,7 +253,14 @@ class ImageViewSet(
         return get_object_or_404(Image, pk=self.kwargs.get("pk"))
 
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+        """Если админ присылает isCommon то картинка становится общей"""
+        is_common_str = self.request.data.get("isCommon", "false")
+        is_common = json.loads(is_common_str)
+        is_admin = self.request.user.is_admin
+
+        serializer.save(
+            author=self.request.user, is_common=is_common and is_admin
+        )
 
     def perform_destroy(self, instance):
         # удаляем несколько элементов сразу
@@ -308,7 +317,14 @@ class ThemeViewSet(viewsets.ModelViewSet):
         return get_object_or_404(Theme, pk=self.kwargs.get("pk"))
 
     def perform_create(self, serializer):
-        theme_type, created = ThemeType.objects.get_or_create(slug="custom")
+        """
+        Если запрос пришел от админа, то учитываем тип темы при создании
+        иначе просто создаем кастомную тему
+        """
+        is_admin = self.request.user.is_admin
+        theme_type_slug = self.request.data.pop("themeType", "custom")
+        slug = theme_type_slug if is_admin else "custom"
+        theme_type, created = ThemeType.objects.get_or_create(slug=slug)
         serializer.save(author=self.request.user, type=theme_type)
 
     def perform_update(self, serializer):
