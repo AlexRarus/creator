@@ -35,11 +35,7 @@ export const PageContainer = observer((props: IProps) => {
   const pageData: IPage | null = previewData || data;
 
   return (
-    <PageWrapper
-      isApp={appType === 'app'}
-      // высота блока для скролла = screenHeight - верхнее меню - нижний блок кнопок
-      blockViewHeight={window?.innerHeight - 64 - 64}
-      selectedTheme={pageData?.author?.theme}>
+    <PageWrapper selectedTheme={pageData?.author?.theme}>
       {isLoading && 'Loading...'}
       {pageData && (
         <Grid verticalGap={16}>

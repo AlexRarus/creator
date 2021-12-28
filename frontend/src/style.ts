@@ -10,13 +10,16 @@ export const GlobalStyleApp = createGlobalStyle<any>`
     display: table;
     overflow-x: hidden;
     
-    ${({ theme, appType }: any) =>
+    &.disable-scroll {
+      height: 100vh;
+    }
+    
+    ${({ theme }: any) =>
       theme?.isMobile
         ? css`
             position: relative;
             max-width: 100%;
             overflow-x: hidden;
-            overflow-y: ${appType === 'web' ? 'scroll' : 'hidden'};
             text-rendering: optimizeLegibility;
           `
         : css``}
@@ -31,21 +34,20 @@ export const GlobalStyleApp = createGlobalStyle<any>`
     color: ${({ theme }) => theme.textColor?.primary};
     width: 100%;
     overflow-x: hidden;
-    display: ${({ appType }) => (appType === 'web' ? 'table-cell' : 'block')};
     
-    ${({ theme, appType }) =>
+    ${({ theme }) =>
       theme?.isMobile
         ? css`
             position: relative;
             max-width: 100%;
             overflow-x: hidden;
-            overflow-y: ${appType === 'web' ? 'scroll' : 'hidden'};
             text-rendering: optimizeLegibility;
           `
         : css``}
     
     &.disable-scroll {
       overflow: hidden;
+      position: fixed;
     }
 
     & .modal-component-wrapper {

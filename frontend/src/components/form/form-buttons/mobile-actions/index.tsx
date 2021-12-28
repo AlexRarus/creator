@@ -29,12 +29,14 @@ export class MobileActions extends Component<IProps> {
     this.element.classList.add(COMPONENT_CLASSNAME);
 
     document.body.classList.add('disable-scroll');
+    document.documentElement.classList.add('disable-scroll');
   }
 
   componentWillUnmount(): void {
     this.element.remove();
     if (!this.mobileActionsWrapper.querySelector(`.${COMPONENT_CLASSNAME}`)) {
       document.body.classList.remove('disable-scroll');
+      document.documentElement.classList.remove('disable-scroll');
     }
   }
 
