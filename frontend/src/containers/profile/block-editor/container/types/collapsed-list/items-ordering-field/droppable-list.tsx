@@ -4,6 +4,7 @@ import { isMobile } from 'react-device-detect';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import DragIndicator from '@mui/icons-material/DragIndicator';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import { useVirtualKeyboardContext } from 'src/providers/virtual-keyboard-provider';
 
 import { getStyleLockHorizontalDrag } from './utils';
 import {
@@ -23,6 +24,7 @@ interface IProps {
 export const DroppableList = (props: IProps) => {
   const { fields, onChangeOrder, onRemove } = props;
   const [expandItemId, setExpandItemId] = useState<any>(fields[0] && fields[0].id);
+  const { isOpenKeyboard } = useVirtualKeyboardContext();
 
   const onExpand = (itemId: any) => {
     setExpandItemId(itemId);
@@ -66,7 +68,11 @@ export const DroppableList = (props: IProps) => {
             ref={provided.innerRef}>
             <GridColumn alignItems='center'>
               {fields.map((item: any, index: number) => (
-                <Draggable key={item.id} draggableId={`${item.id}`} index={index}>
+                <Draggable
+                  key={item.id}
+                  isDragDisabled={isOpenKeyboard}
+                  draggableId={`${item.id}`}
+                  index={index}>
                   {(provided: any, snapshot: any) => (
                     <DraggableItem
                       isDragging={snapshot.isDragging}

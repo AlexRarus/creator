@@ -4,6 +4,7 @@ import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import { IBlock } from 'src/dal/blocks/interfaces';
 import { ISectionData } from 'src/dal/blocks/section-interfaces';
 import { TargetBlockTypePreview } from 'src/containers/app/block';
+import { useVirtualKeyboardContext } from 'src/providers/virtual-keyboard-provider';
 
 import { typeIconsMap } from '../../../block-editor/types-list/utils';
 
@@ -26,6 +27,7 @@ interface IProps {
 export const DroppableSection = (props: IProps) => {
   const { section, isDragging, setSelectedBlock } = props;
   const blocks = section?.data?.blocks;
+  const { isOpenKeyboard } = useVirtualKeyboardContext();
 
   const onClickEditBlock = (block: IBlock<any>) => (event: any) => {
     event.stopPropagation(); // останавливаем всплытие чтобы не нарваться на редактирование секции
@@ -39,6 +41,7 @@ export const DroppableSection = (props: IProps) => {
           {blocks?.map((block: IBlock<any>, index: number) => {
             return (
               <Draggable
+                isDragDisabled={isOpenKeyboard}
                 key={`${section.id}-${index}`}
                 draggableId={`${section.id}-${index}`}
                 index={index}>
