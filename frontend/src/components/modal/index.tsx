@@ -28,12 +28,14 @@ export default class ModalComponent extends Component<IProps> {
     this.element.classList.add('modal-component-wrapper');
 
     document.body.classList.add('disable-scroll');
+    document.documentElement.classList.add('disable-scroll');
   }
 
   componentWillUnmount(): void {
     this.element.remove();
     if (!this.modalsWrapper.querySelector('.modal-component-wrapper')) {
       document.body.classList.remove('disable-scroll');
+      document.documentElement.classList.remove('disable-scroll');
     }
   }
 

@@ -136,9 +136,6 @@ export const DroppableList = (props: IProps) => {
               isDraggingOver={snapshot.isDraggingOver}
               verticalGap={32}
               {...provided.droppableProps}
-              appType={appType}
-              // высота блока для скролла = screenHeight - верхнее меню - нижний блок кнопок - ссылка на страницу
-              viewBlockHeight={window?.innerHeight - 64 - 64 - 60}
               ref={provided.innerRef}>
               <GridColumn alignItems='center'>
                 {blocks.map((block: IBlock<any>, index: number) => {
