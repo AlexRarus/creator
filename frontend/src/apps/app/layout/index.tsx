@@ -14,7 +14,7 @@ export function ProfileLayout(props: IProps) {
   const { appType } = useAppTypeContext();
 
   return (
-    <ProfileLayoutWrapper>
+    <ProfileLayoutWrapper isApp={appType === 'app'} height={window.innerHeight}>
       <PageWrapper>{children}</PageWrapper>
       <Footer />
     </ProfileLayoutWrapper>

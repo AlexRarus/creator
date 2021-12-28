@@ -1,12 +1,18 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { MEDIA, FONTS } from 'src/components/theme';
 
-export const ProfileLayoutWrapper = styled.div`
+export const ProfileLayoutWrapper = styled.div<{ isApp?: boolean; height?: number }>`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   ${FONTS.InterStyle};
   background: inherit;
+  ${({ isApp, height }) =>
+    isApp &&
+    css`
+      overflow: auto;
+      height: ${height}px;
+    `}
 `;
 
 export const PageWrapper = styled.div`

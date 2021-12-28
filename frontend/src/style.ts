@@ -14,13 +14,14 @@ export const GlobalStyleApp = createGlobalStyle<any>`
       height: 100vh;
     }
     
-    ${({ theme }: any) =>
+    ${({ theme, appType }: any) =>
       theme?.isMobile
         ? css`
             position: relative;
             max-width: 100%;
             overflow-x: hidden;
             text-rendering: optimizeLegibility;
+            overflow-y: ${appType === 'web' ? 'scroll' : 'hidden'};
           `
         : css``}
   }    
@@ -30,14 +31,16 @@ export const GlobalStyleApp = createGlobalStyle<any>`
     margin: 0;
     padding: 0;   
     font-size: 14px;
+    display: ${({ appType }) => (appType === 'web' ? 'table-cell' : 'block')};
     background: ${({ theme }) => theme.background?.primary};
     color: ${({ theme }) => theme.textColor?.primary};
     width: 100%;
     overflow-x: hidden;
     
-    ${({ theme }) =>
+    ${({ theme, appType }) =>
       theme?.isMobile
         ? css`
+            overflow-y: ${appType === 'web' ? 'scroll' : 'hidden'};
             position: relative;
             max-width: 100%;
             overflow-x: hidden;
