@@ -5,6 +5,14 @@ export const GlobalStyleApp = createGlobalStyle<any>`
   html {
     background: ${({ theme }) => theme.background?.primary};
     color: ${({ theme }) => theme.textColor?.primary};
+    
+    ${({ theme, appType }: any) =>
+      theme?.isMobile && appType === 'app'
+        ? css`
+            position: absolute;
+            top: 0;
+          `
+        : css``}
   }    
   
   body {
