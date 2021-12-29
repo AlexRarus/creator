@@ -9,6 +9,8 @@ import {
   ThemesHeaderScrollable,
   ThemesHeaderScrollableValue,
   ThemesHeaderStatic,
+  ThemesHeaderStaticLeft,
+  ThemesHeaderStaticRight,
 } from './styles';
 
 interface IProps {
@@ -67,11 +69,10 @@ export const ThemesHeader = (props: IProps) => {
           <ButtonGroup buttons={themesButtons} value={themeType} onChange={changeThemeType} />
         </ThemesHeaderScrollableValue>
       </ThemesHeaderScrollable>
-      <ThemesHeaderStatic
-        hasLeftScroll={hasLeftScroll}
-        hasRightScroll={hasRightScroll}
-        headerHeight={headerHeight}
-      />
+      <ThemesHeaderStatic>
+        <ThemesHeaderStaticLeft hasLeftScroll={hasLeftScroll} headerHeight={headerHeight} />
+        <ThemesHeaderStaticRight hasRightScroll={hasRightScroll} headerHeight={headerHeight} />
+      </ThemesHeaderStatic>
     </ThemesHeaderWrapper>
   );
 };

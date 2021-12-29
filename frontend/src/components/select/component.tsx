@@ -2,10 +2,17 @@ import React, { useCallback, useEffect, useState } from 'react';
 import debounce from 'lodash/debounce';
 import ReactSelect, { components } from 'react-select';
 import { isMobile } from 'react-device-detect';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 import { Error, StatusBar, Label } from '../input-components';
 
-import { WrapperCRS, MobileSelect, MobileSelectOption } from './style';
+import {
+  WrapperCRS,
+  MobileSelectWrapper,
+  MobileSelect,
+  MobileSelectOption,
+  MobileSelectIconWrapper,
+} from './style';
 import { IProps } from './interfaces';
 
 export type { OptionsType } from 'react-select';
@@ -95,13 +102,18 @@ export const Select = React.forwardRef((props: IProps, ref: any) => {
         </Label>
       )}
       {isMobile && !isMulti && (
-        <MobileSelect onChange={mobileHandleChange}>
-          {options?.map((option: any) => (
-            <MobileSelectOption key={option.value} value={option.value}>
-              {option.label}
-            </MobileSelectOption>
-          ))}
-        </MobileSelect>
+        <MobileSelectWrapper>
+          <MobileSelect value={value?.value} onChange={mobileHandleChange}>
+            {options?.map((option: any) => (
+              <MobileSelectOption key={option.value} value={option.value}>
+                {option.label}
+              </MobileSelectOption>
+            ))}
+          </MobileSelect>
+          <MobileSelectIconWrapper>
+            <KeyboardArrowDownIcon />
+          </MobileSelectIconWrapper>
+        </MobileSelectWrapper>
       )}
       {(!isMobile || isMulti) && (
         <ReactSelect

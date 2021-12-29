@@ -73,14 +73,47 @@ export const WrapperCRS = styled.div<{
   }
 `;
 
-export const MobileSelectWrapper = styled.div``;
+export const MobileSelectWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+`;
 
 export const MobileSelect = styled.select`
+  position: absolute;
   font-size: 16px;
   border: none;
   outline: none;
-  height: 36px;
+  height: 34px;
   width: 100%;
+  padding-right: 24px;
+  background: linear-gradient(
+    to right,
+    ${COLORS.white},
+    ${COLORS.white} calc(100% - 24px),
+    transparent calc(100% - 24px)
+  );
+  color: black;
+  appearance: none;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const MobileSelectOption = styled.option``;
+
+export const MobileSelectIconWrapper = styled.label`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 36px;
+  background: ${COLORS.white};
+
+  svg {
+    color: ${COLORS.black};
+    font-size: 24px;
+  }
+`;
