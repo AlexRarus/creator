@@ -17,11 +17,12 @@ export const getSectionStyle = (section?: Partial<ISectionData> | null) => {
     // backgroundParallax,
     color,
   } = targetSection;
-  const backgroundPrefix = backgroundType === 'color' ? backgroundColor : backgroundGradient;
-  const backgroundPostfix = backgroundImage ? ` url('/media/${backgroundImage.src}')` : '';
+  const backgroundImageUrl = backgroundImage ? ` url('/media/${backgroundImage.src}'), ` : '';
 
   return css`
-    background: ${backgroundPrefix} ${backgroundPostfix};
+    ${backgroundType === 'color' && `background: ${backgroundImageUrl}${backgroundColor}`};
+    ${backgroundType === 'gradient' &&
+    `background-image: ${backgroundImageUrl}${backgroundGradient}`};
     background-repeat: ${backgroundRepeat};
     background-size: ${backgroundSize || 'auto'};
     background-position: ${backgroundPosition || 'initial'};

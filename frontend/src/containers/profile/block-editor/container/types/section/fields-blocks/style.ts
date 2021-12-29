@@ -59,15 +59,15 @@ const getBackground = (props: IBackgroundProps) => {
     backgroundPosition,
     // backgroundSmooth,
   } = props;
-
-  const backgroundPrefix = backgroundType.value === 'color' ? backgroundColor : backgroundGradient;
-  const backgroundPostfix = backgroundImage ? ` url('/media/${backgroundImage.src}')` : '';
+  const backgroundImageUrl = backgroundImage ? ` url('/media/${backgroundImage.src}'), ` : '';
 
   return css`
-    background: ${backgroundPrefix} ${backgroundPostfix};
+    ${backgroundType.value === 'color' && `background: ${backgroundImageUrl}${backgroundColor}`};
+    ${backgroundType.value === 'gradient' &&
+    `background-image: ${backgroundImageUrl}${backgroundGradient}`};
     background-repeat: ${backgroundRepeat.value};
     background-size: ${backgroundSize.value === 'custom'
-      ? `${backgroundSizeCustomValue}%`
+      ? `${backgroundSizeCustomValue}`
       : backgroundSize.value};
     background-position: ${backgroundPosition.value || 'initial'};
   `;
