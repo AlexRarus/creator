@@ -67,7 +67,7 @@ const getBackground = (props: IBackgroundProps) => {
     `background-image: ${backgroundImageUrl}${backgroundGradient}`};
     background-repeat: ${backgroundRepeat.value};
     background-size: ${backgroundSize.value === 'custom'
-      ? `${backgroundSizeCustomValue}`
+      ? `${backgroundSizeCustomValue}%`
       : backgroundSize.value};
     background-position: ${backgroundPosition.value || 'initial'};
   `;

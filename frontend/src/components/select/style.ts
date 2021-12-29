@@ -72,3 +72,15 @@ export const WrapperCRS = styled.div<{
     }
   }
 `;
+
+export const MobileSelectWrapper = styled.div``;
+
+export const MobileSelect = styled.select`
+  font-size: 16px;
+  border: none;
+  outline: none;
+  height: 36px;
+  width: 100%;
+`;
+
+export const MobileSelectOption = styled.option``;
