@@ -17,17 +17,17 @@ const Root = observer((props: any) => {
   const { appType } = useAppTypeContext();
 
   useEffect(() => {
-    window.addEventListener(
-      'touchend',
-      (event) => {
-        if (document?.documentElement?.getBoundingClientRect()?.top < 0) {
-          window.scrollTo(0, 0);
-        }
-        // event.preventDefault();
-      },
-      { passive: false }
-    );
-  }, []);
+    const lockWindowScroll = (event: any) => {
+      if (document?.documentElement?.getBoundingClientRect()?.top < 0) {
+        window.scrollTo(0, 0);
+      }
+    };
+
+    if (appType === 'app') {
+      window.addEventListener('touchend', lockWindowScroll, { passive: false });
+    }
+    return () => window.removeEventListener('touchend', lockWindowScroll);
+  }, [appType]);
 
   useEffect(() => {
     const responseSuccess = (response: any) => {
