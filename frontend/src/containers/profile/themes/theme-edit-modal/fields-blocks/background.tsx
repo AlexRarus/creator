@@ -122,46 +122,58 @@ export const FieldBlockBackground = (props: IProps) => {
           </PictureCell>
         </GridColumn>
         <GridColumn size={4}>
-          <ControlledField
-            name='backgroundSize'
-            control={control}
-            formDefaultValues={formDefaultValues}>
-            <Select options={backgroundSizes} label='Размер картинки' />
-          </ControlledField>
-          {backgroundSize.value === 'custom' && (
-            <ControlledField
-              control={control}
-              name='backgroundSizeCustomValue'
-              formDefaultValues={formDefaultValues}>
-              <InputRange
-                label='Размер'
-                min={10}
-                max={100}
-                step={1}
-                minValueLabel='10%'
-                maxValueLabel='100%'
-                valueLabel={`${backgroundSizeCustomValue}%`}
-              />
-            </ControlledField>
-          )}
-          <ControlledField
-            name='backgroundRepeat'
-            control={control}
-            formDefaultValues={formDefaultValues}>
-            <Select options={backgroundRepeats} label='Зациклить' />
-          </ControlledField>
-          {/*<ControlledField*/}
-          {/*  control={control}*/}
-          {/*  name='backgroundSmooth'*/}
-          {/*  formDefaultValues={formDefaultValues}>*/}
-          {/*  <Switch>Плавный переход</Switch>*/}
-          {/*</ControlledField>*/}
-          <ControlledField
-            name='backgroundPosition'
-            control={control}
-            formDefaultValues={formDefaultValues}>
-            <Select options={backgroundPositions} label='Расположение' />
-          </ControlledField>
+          <Grid staticSize={4} verticalGap={10}>
+            <GridColumn>
+              <ControlledField
+                name='backgroundSize'
+                control={control}
+                formDefaultValues={formDefaultValues}>
+                <Select options={backgroundSizes} label='Размер картинки' />
+              </ControlledField>
+            </GridColumn>
+            {backgroundSize.value === 'custom' && (
+              <GridColumn>
+                <ControlledField
+                  control={control}
+                  name='backgroundSizeCustomValue'
+                  formDefaultValues={formDefaultValues}>
+                  <InputRange
+                    label='Размер'
+                    min={10}
+                    max={100}
+                    step={1}
+                    minValueLabel='10%'
+                    maxValueLabel='100%'
+                    valueLabel={`${backgroundSizeCustomValue}%`}
+                  />
+                </ControlledField>
+              </GridColumn>
+            )}
+            <GridColumn>
+              <ControlledField
+                name='backgroundRepeat'
+                control={control}
+                formDefaultValues={formDefaultValues}>
+                <Select options={backgroundRepeats} label='Зациклить' />
+              </ControlledField>
+            </GridColumn>
+            <GridColumn>
+              <ControlledField
+                name='backgroundPosition'
+                control={control}
+                formDefaultValues={formDefaultValues}>
+                <Select options={backgroundPositions} label='Расположение' />
+              </ControlledField>
+            </GridColumn>
+            {/*<GridColumn>*/}
+            {/*  <ControlledField*/}
+            {/*    control={control}*/}
+            {/*    name='backgroundSmooth'*/}
+            {/*    formDefaultValues={formDefaultValues}>*/}
+            {/*    <Switch>Плавный переход</Switch>*/}
+            {/*  </ControlledField>*/}
+            {/*</GridColumn>*/}
+          </Grid>
         </GridColumn>
       </Grid>
     </Block>
