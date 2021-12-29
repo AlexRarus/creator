@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { ControlledField } from 'src/components/controlled-field';
 import { Grid, GridColumn } from 'src/components/grid';
@@ -6,7 +6,6 @@ import { ColorPicker } from 'src/components/color-picker';
 import { ColorPickerGradient } from 'src/components/color-picker-gradient';
 import { Select } from 'src/components/select';
 import { ImageUploaderModule } from 'src/modules/image-uploader-module';
-import { Switch } from 'src/components/switch';
 import { InputRange } from 'src/components/input-range';
 
 import { backgroundTypes, backgroundSizes, backgroundPositions, backgroundRepeats } from '../utils';
@@ -28,7 +27,7 @@ interface IProps {
 export const FieldBlockBackground = (props: IProps) => {
   const { formDefaultValues } = props;
   const [pictureElement, pictureRefCallback] = useState<HTMLDivElement | null>(null);
-  const { control, watch, setValue } = useFormContext();
+  const { control, watch } = useFormContext();
   const backgroundType = watch('backgroundType');
   const backgroundColor = watch('backgroundColor');
   const backgroundGradient = watch('backgroundGradient');

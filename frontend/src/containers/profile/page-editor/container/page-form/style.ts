@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import { rgba } from 'polished';
 import { Grid } from 'src/components/grid';
-import { COLORS, MEDIA } from 'src/components/theme';
+import { COLORS } from 'src/components/theme';
 import {
   USER_MENU_BACKGROUND,
   USER_MENU_BACKGROUND_HOVER,
