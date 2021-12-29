@@ -10,6 +10,7 @@ import { isMobile } from 'react-device-detect';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { typeIconsMap } from 'src/containers/profile/block-editor/types-list/utils';
 import { useVirtualKeyboardContext } from 'src/providers/virtual-keyboard-provider';
+import { useHackDndContext } from 'src/providers/hack-dnd-provider';
 
 import { reorder } from '../utils';
 
@@ -55,6 +56,7 @@ export const DroppableList = (props: IProps) => {
     onDragEndAction,
   } = props;
   const { isOpenKeyboard } = useVirtualKeyboardContext();
+  const { setDragging } = useHackDndContext();
 
   const onClickCheckbox = (clickedBlock: IBlock<any>) => (event: any) => {
     event.stopPropagation();
@@ -74,6 +76,7 @@ export const DroppableList = (props: IProps) => {
 
   const onDragEnd = (result: any) => {
     // dropped outside the list
+    setDragging(false);
     if (!result.destination) {
       //console.log("no-change");
       return;
@@ -111,6 +114,7 @@ export const DroppableList = (props: IProps) => {
   };
 
   const onDragStart = () => {
+    setDragging(true);
     if (window.navigator.vibrate) {
       window.navigator.vibrate(100);
     }

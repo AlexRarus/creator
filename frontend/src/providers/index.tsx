@@ -7,6 +7,7 @@ import { RootStoreProvider } from 'src/dal/store-provider';
 import { CustomThemeProvider } from './dark-theme-provider';
 import { AppTypeProvider } from './app-type-provider';
 import { VirtualKeyboardProvider } from './virtual-keyboard-provider';
+import { HackDndProvider } from './hack-dnd-provider';
 
 /*
     const isMobile = useMediaQuery('(max-width:768px)');
@@ -26,7 +27,9 @@ export const AppCommonProvider = (props: any) => {
     <CustomThemeProvider>
       <VirtualKeyboardProvider>
         <AppTypeProvider>
-          <RootStoreProvider>{children}</RootStoreProvider>
+          <HackDndProvider>
+            <RootStoreProvider>{children}</RootStoreProvider>
+          </HackDndProvider>
         </AppTypeProvider>
       </VirtualKeyboardProvider>
     </CustomThemeProvider>
