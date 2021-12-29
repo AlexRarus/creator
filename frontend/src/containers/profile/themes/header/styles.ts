@@ -40,8 +40,7 @@ export const ThemesHeaderStaticLeft = styled.div<{
   height: ${({ headerHeight }) => headerHeight}px;
   background: linear-gradient(
     to left,
-    transparent 0%,
-    transparent 10%,
+    rgba(255, 255, 255, 0),
     ${({ theme }) => theme.background.primary}
   );
 `;
@@ -59,8 +58,7 @@ export const ThemesHeaderStaticRight = styled.div<{
   height: ${({ headerHeight }) => headerHeight}px;
   background: linear-gradient(
     to right,
-    transparent 0%,
-    transparent 10%,
+    rgba(255, 255, 255, 0),
     ${({ theme }) => theme.background.primary}
   );
 `;

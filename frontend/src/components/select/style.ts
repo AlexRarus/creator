@@ -78,6 +78,7 @@ export const MobileSelectWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row-reverse;
+  background: ${COLORS.white};
 `;
 
 export const MobileSelect = styled.select`
@@ -92,7 +93,7 @@ export const MobileSelect = styled.select`
     to right,
     ${COLORS.white},
     ${COLORS.white} calc(100% - 24px),
-    transparent calc(100% - 24px)
+    rgba(255, 255, 255, 0) calc(100% - 24px)
   );
   color: black;
   appearance: none;
