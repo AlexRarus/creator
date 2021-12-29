@@ -63,9 +63,12 @@ class Section(models.Model):
         null=True,
         blank=True,
     )
-    backgroundRepeat = models.BooleanField(
+    backgroundRepeat = models.CharField(
         verbose_name="Зацикливать изображение",
-        default=False,
+        null=True,
+        blank=True,
+        max_length=255,
+        default="no-repeat",
     )
     backgroundSmooth = models.BooleanField(
         verbose_name="Плавный переход",
@@ -74,6 +77,18 @@ class Section(models.Model):
     backgroundParallax = models.BooleanField(
         verbose_name="Параллакс",
         default=False,
+    )
+    backgroundSize = models.CharField(
+        verbose_name="Размер фонового изображения",
+        null=True,
+        blank=True,
+        max_length=255,
+    )
+    backgroundPosition = models.CharField(
+        verbose_name="Позиция фонового изображения",
+        null=True,
+        blank=True,
+        max_length=255,
     )
     color = models.CharField(
         verbose_name="Цвет текста",

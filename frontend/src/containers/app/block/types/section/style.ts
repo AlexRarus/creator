@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { ISectionData } from 'src/dal/blocks/section-interfaces';
-import { getSectionBackground } from 'src/dal/blocks/style';
+import { getSectionStyle } from 'src/dal/blocks/style';
 
 export const SectionBlock = styled.div<ISectionData>`
   width: 100%;
@@ -9,8 +9,5 @@ export const SectionBlock = styled.div<ISectionData>`
   padding-right: ${({ paddingRight }) => paddingRight}px;
   padding-left: ${({ paddingLeft }) => paddingLeft}px;
   border-radius: ${({ borderRadius }) => borderRadius}px;
-  background: ${getSectionBackground};
-  color: ${({ color }) => color || 'inherit'};
-  background-repeat: no-repeat;
-  background-size: cover;
+  ${getSectionStyle};
 `;

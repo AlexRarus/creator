@@ -98,9 +98,12 @@ class Theme(models.Model):
         null=True,
         blank=True,
     )
-    backgroundRepeat = models.BooleanField(
+    backgroundRepeat = models.CharField(
         verbose_name="Зацикливать изображение",
-        default=False,
+        null=True,
+        blank=True,
+        max_length=255,
+        default="no-repeat",
     )
     backgroundSmooth = models.BooleanField(
         verbose_name="Плавный переход",

@@ -8,7 +8,7 @@ export interface ITheme {
   backgroundColor: string;
   backgroundGradient: string;
   backgroundImage?: IImage | null;
-  backgroundRepeat?: boolean;
+  backgroundRepeat?: string;
   backgroundSmooth?: boolean;
   backgroundSize?: string;
   backgroundPosition?: string;
@@ -27,7 +27,7 @@ export interface IThemeWrite {
   backgroundColor?: string;
   backgroundGradient?: string;
   backgroundImage?: number; // id изображения
-  backgroundRepeat?: boolean;
+  backgroundRepeat?: string;
   backgroundSmooth?: boolean;
   backgroundSize?: string;
   backgroundPosition?: string;

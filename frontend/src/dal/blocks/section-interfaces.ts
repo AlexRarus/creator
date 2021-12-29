@@ -1,6 +1,7 @@
 import { IImage } from '../images/interfaces';
 
 import { IBlock } from './interfaces';
+import { IOption } from '../../components/select';
 
 export interface ISectionData {
   id?: number;
@@ -10,9 +11,11 @@ export interface ISectionData {
   backgroundColor?: string;
   backgroundGradient?: string;
   backgroundImage?: IImage | null;
-  backgroundRepeat?: boolean;
+  backgroundRepeat?: string;
   backgroundSmooth?: boolean;
   backgroundParallax?: boolean;
+  backgroundSize?: string;
+  backgroundPosition?: string;
   color?: string;
   borderRadius: string;
   paddingTop: string;
@@ -29,9 +32,11 @@ export interface ISectionDataWrite {
   backgroundColor?: string;
   backgroundGradient?: string;
   backgroundImage?: number;
-  backgroundRepeat?: boolean;
+  backgroundRepeat?: string;
   backgroundSmooth?: boolean;
   backgroundParallax?: boolean;
+  backgroundSize?: string;
+  backgroundPosition?: string;
   color?: string;
   borderRadius?: string;
   paddingTop?: string;

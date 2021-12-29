@@ -6,10 +6,10 @@ import { ColorPicker } from 'src/components/color-picker';
 import { ColorPickerGradient } from 'src/components/color-picker-gradient';
 import { Select } from 'src/components/select';
 import { ImageUploaderModule } from 'src/modules/image-uploader-module';
-import { Switch } from 'src/components/switch';
+import { InputRange } from 'src/components/input-range';
 import { IUser } from 'src/dal/auth/interfaces';
 
-import { backgroundTypes } from '../utils';
+import { backgroundTypes, backgroundSizes, backgroundPositions, backgroundRepeats } from '../utils';
 
 import {
   Block,
@@ -32,28 +32,20 @@ export const FieldBlockBackground = (props: IProps) => {
   const [pictureElement, pictureRefCallback] = useState<HTMLDivElement | null>(null);
   const { control, watch, setValue } = useFormContext();
   const backgroundType = watch('backgroundType');
+  const backgroundColor = watch('backgroundColor');
+  const backgroundGradient = watch('backgroundGradient');
   const backgroundImage = watch('backgroundImage');
+  const backgroundRepeat = watch('backgroundRepeat');
   const backgroundSmooth = watch('backgroundSmooth');
-  const backgroundContain = watch('backgroundContain');
-  const backgroundCover = watch('backgroundCover');
+  const backgroundSize = watch('backgroundSize');
+  const backgroundSizeCustomValue = watch('backgroundSizeCustomValue');
+  const backgroundPosition = watch('backgroundPosition');
 
   useEffect(() => {
     if (backgroundSmooth) {
       setValue('backgroundRepeat', false);
     }
   }, [backgroundSmooth]);
-
-  useEffect(() => {
-    if (backgroundContain) {
-      setValue('backgroundCover', false);
-    }
-  }, [backgroundContain]);
-
-  useEffect(() => {
-    if (backgroundCover) {
-      setValue('backgroundContain', false);
-    }
-  }, [backgroundCover]);
 
   return (
     <Block>
@@ -100,7 +92,17 @@ export const FieldBlockBackground = (props: IProps) => {
           <PictureCell>
             <ItemFieldPictureShape ref={pictureRefCallback}>
               {backgroundImage ? (
-                <PictureElement src={`/media/${backgroundImage.preview || backgroundImage.src}`} />
+                <PictureElement
+                  backgroundType={backgroundType}
+                  backgroundColor={backgroundColor}
+                  backgroundGradient={backgroundGradient}
+                  backgroundImage={backgroundImage}
+                  backgroundRepeat={backgroundRepeat}
+                  backgroundSmooth={backgroundSmooth}
+                  backgroundSize={backgroundSize}
+                  backgroundSizeCustomValue={backgroundSizeCustomValue}
+                  backgroundPosition={backgroundPosition}
+                />
               ) : (
                 <PictureLabel>Загрузить</PictureLabel>
               )}
@@ -121,28 +123,44 @@ export const FieldBlockBackground = (props: IProps) => {
         </GridColumn>
         <GridColumn size={4}>
           <ControlledField
+            name='backgroundSize'
             control={control}
-            name='backgroundContain'
             formDefaultValues={formDefaultValues}>
-            <Switch>Выровнять по ширине</Switch>
+            <Select options={backgroundSizes} label='Размер картинки' />
           </ControlledField>
+          {backgroundSize.value === 'custom' && (
+            <ControlledField
+              control={control}
+              name='backgroundSizeCustomValue'
+              formDefaultValues={formDefaultValues}>
+              <InputRange
+                label='Размер'
+                min={10}
+                max={100}
+                step={1}
+                minValueLabel='10%'
+                maxValueLabel='100%'
+                valueLabel={`${backgroundSizeCustomValue}%`}
+              />
+            </ControlledField>
+          )}
           <ControlledField
-            control={control}
-            name='backgroundCover'
-            formDefaultValues={formDefaultValues}>
-            <Switch>Выровнять по высоте</Switch>
-          </ControlledField>
-          <ControlledField
-            control={control}
             name='backgroundRepeat'
-            formDefaultValues={formDefaultValues}>
-            <Switch disabled={backgroundSmooth}>Циклическая картинка</Switch>
-          </ControlledField>
-          <ControlledField
             control={control}
-            name='backgroundSmooth'
             formDefaultValues={formDefaultValues}>
-            <Switch>Плавный переход</Switch>
+            <Select options={backgroundRepeats} label='Зациклить' />
+          </ControlledField>
+          {/*<ControlledField*/}
+          {/*  control={control}*/}
+          {/*  name='backgroundSmooth'*/}
+          {/*  formDefaultValues={formDefaultValues}>*/}
+          {/*  <Switch>Плавный переход</Switch>*/}
+          {/*</ControlledField>*/}
+          <ControlledField
+            name='backgroundPosition'
+            control={control}
+            formDefaultValues={formDefaultValues}>
+            <Select options={backgroundPositions} label='Расположение' />
           </ControlledField>
         </GridColumn>
       </Grid>

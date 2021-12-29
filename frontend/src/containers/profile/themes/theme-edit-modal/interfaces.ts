@@ -8,10 +8,11 @@ export type FormInputs = {
   backgroundColor?: string;
   backgroundGradient?: string;
   backgroundImage?: IImage | null;
-  backgroundRepeat?: boolean;
+  backgroundRepeat?: IOption;
   backgroundSmooth?: boolean;
-  backgroundContain?: boolean; // есть только на форме
-  backgroundCover?: boolean; // есть только на форме
+  backgroundSize?: IOption;
+  backgroundSizeCustomValue?: string; // есть только на форме
+  backgroundPosition?: IOption;
   color?: string;
   headerColor?: string;
 };
