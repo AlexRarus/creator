@@ -6,7 +6,7 @@ import { ITheme } from './interfaces';
 export const getUserThemeStyles = (theme?: Partial<ITheme> | null) => {
   const targetTheme = theme || ({} as Partial<ITheme>);
   const {
-    backgroundType,
+    backgroundType = 'color',
     backgroundColor = COLORS.white,
     backgroundGradient = COLORS.white,
     backgroundImage,

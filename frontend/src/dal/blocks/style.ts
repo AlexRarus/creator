@@ -6,7 +6,7 @@ import { ISectionData } from './section-interfaces';
 export const getSectionStyle = (section?: Partial<ISectionData> | null) => {
   const targetSection = section || ({} as Partial<ISectionData>);
   const {
-    backgroundType,
+    backgroundType = 'color',
     backgroundColor = 'transparent',
     backgroundGradient = COLORS.white,
     backgroundImage,

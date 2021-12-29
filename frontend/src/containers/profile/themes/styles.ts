@@ -111,14 +111,14 @@ export const PhoneWrapper = styled.div<{ isSelected?: boolean; color?: string }>
   }
 `;
 
-export const ThemeItemBackground = styled.div<{ theme: ITheme }>`
+export const ThemeItemBackground = styled.div<{ selectedTheme: ITheme | null }>`
   display: flex;
   align-items: center;
   flex-direction: column;
   width: 100%;
   height: 100%;
   padding: 10px 10px 20px 10px;
-  ${({ theme }) => getUserThemeStyles(theme)}
+  ${({ selectedTheme }) => getUserThemeStyles(selectedTheme)}
 `;
 
 export const ThemeItemHeader = styled.div<{ color: string }>`

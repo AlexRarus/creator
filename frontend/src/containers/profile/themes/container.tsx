@@ -119,7 +119,7 @@ export const ThemesContainer = observer((props: any) => {
                   color={theme.color}
                   isSelected={user?.theme?.id === theme.id}
                   onClick={canEditThemes ? () => openEditingThemeModal(theme.id) : undefined}>
-                  <ThemeItemBackground theme={theme}>
+                  <ThemeItemBackground selectedTheme={theme}>
                     <UserBlock color={theme.color} />
                     <ThemeItemHeader color={theme.headerColor}>Заголовок</ThemeItemHeader>
                     <ThemeItemText color={theme.color}>
@@ -134,7 +134,7 @@ export const ThemesContainer = observer((props: any) => {
             {canEditThemes && (
               <SwiperSlide style={{ width: DEVICE_THEME.isMobile ? '90%' : '40%' }}>
                 <PhoneWrapper>
-                  <ThemeItemBackground>
+                  <ThemeItemBackground selectedTheme={null}>
                     <CreateButton onClick={() => openEditingThemeModal('new')}>
                       <CreateButtonIconWrapper>
                         <AddIcon />
