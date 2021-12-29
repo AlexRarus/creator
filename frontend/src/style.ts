@@ -75,7 +75,6 @@ export const GlobalStyleApp = createGlobalStyle<any>`
       theme?.isMobile && appType === 'app'
         ? css`
             height: 100vh;
-            padding-bottom: 80px;
             overflow: auto;
           `
         : css``}
