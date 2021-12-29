@@ -18,7 +18,8 @@ const Root = observer((props: any) => {
 
   useEffect(() => {
     const lockWindowScroll = (event: any) => {
-      if (document?.documentElement?.getBoundingClientRect()?.top < 0) {
+      const htmlRect = document?.documentElement?.getBoundingClientRect();
+      if (htmlRect?.top != 0 || htmlRect?.height !== window.innerHeight) {
         window.scrollTo(0, 0);
       }
     };

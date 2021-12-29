@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { MEDIA, FONTS } from 'src/components/theme';
 
 export const AuthLayoutWrapper = styled.div`
@@ -7,6 +7,13 @@ export const AuthLayoutWrapper = styled.div`
   flex-grow: 1;
   ${FONTS.InterStyle};
   background: inherit;
+
+  ${({ theme }) =>
+    theme.isMobile &&
+    css`
+      height: calc(100vh + 80px);
+      padding-bottom: 80px;
+    `}
 `;
 
 export const PageWrapper = styled.div`
