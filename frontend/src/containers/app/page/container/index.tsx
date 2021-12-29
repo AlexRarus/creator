@@ -4,7 +4,6 @@ import { useIsAuthor } from 'src/utils/useIsAuthor';
 import { TargetBlockTypePreview } from 'src/containers/app/block';
 import { IBlock } from 'src/dal/blocks/interfaces';
 import { IPage } from 'src/dal/pages/interfaces';
-import { useAppTypeContext } from 'src/providers/app-type-provider';
 import { SelectedThemeProvider } from 'src/providers/selected-theme-provider';
 
 import { useMapStoreToProps } from './selectors';
@@ -21,7 +20,6 @@ export const PageContainer = observer((props: IProps) => {
   const { isLoading, getPageBySlugAction, data } = useMapStoreToProps();
   const { username, pageSlug, previewData } = props;
   const isAuthor = useIsAuthor(username);
-  const { appType } = useAppTypeContext();
 
   useEffect(() => {
     // если передали данные для предпросмотра то НЕ запрашиваем страницу с бэка
@@ -34,10 +32,7 @@ export const PageContainer = observer((props: IProps) => {
 
   return (
     <SelectedThemeProvider selectedTheme={pageData?.author?.theme}>
-      <PageWrapper
-        isApp={appType === 'app'}
-        // высота блока для скролла = screenHeight - верхнее меню - нижний блок кнопок
-        blockViewHeight={window?.innerHeight - 64 - 64}>
+      <PageWrapper>
         <UserThemeStyle selectedTheme={pageData?.author?.theme}>
           {isLoading && 'Loading...'}
           {pageData &&

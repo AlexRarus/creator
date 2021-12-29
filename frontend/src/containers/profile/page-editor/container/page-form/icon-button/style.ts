@@ -43,8 +43,8 @@ export const IconButtonWrapper = styled.div<IPropsStyled>`
   align-items: center;
   justify-content: center;
   min-width: ${FORM_FOOTER_HEIGHT}px;
-  height: ${FORM_FOOTER_HEIGHT}px;
-  min-height: ${FORM_FOOTER_HEIGHT}px;
+  height: 100%;
+  min-height: 100%;
   border-left: 1px solid ${COLORS.grey[500]};
   border-right: 1px solid ${COLORS.grey[500]};
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { rgba } from 'polished';
 import { Grid } from 'src/components/grid';
 import { COLORS, MEDIA } from 'src/components/theme';
@@ -23,9 +23,17 @@ export const FormFooter = styled.div`
   backdrop-filter: blur(4px);
   z-index: 1;
 
-  ${MEDIA.max530({
-    position: 'fixed',
-  })}
+  ${({ theme }) =>
+    theme?.isMobile &&
+    css`
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 8px;
+      bottom: 4px;
+      height: 60px;
+      width: calc(100% - 20px);
+    `}
 `;
 
 export const AddBlockButtonWrapper = styled.div`
@@ -51,24 +59,19 @@ export const BlockActionWrapper = styled.div`
 export const FormWrapperDroppable = styled(Grid)<{
   isDraggingOver: boolean;
   width?: number;
-  appType?: string;
-  viewBlockHeight?: number;
 }>`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  overflow-x: ${({ theme }) => (theme?.isMobile ? 'scroll' : 'auto')};
+  height: auto;
 
   width: ${({ width }) => width}px;
   padding: 24px 28px 64px 24px;
-  height: ${({ appType, viewBlockHeight }) =>
-    appType === 'web' ? '100%' : `${viewBlockHeight}px`};
 
   color: inherit;
   background: ${({ isDraggingOver, theme }) =>
     isDraggingOver ? rgba(theme.background.primary, 0.9) : theme.background.primary};
   width: 100%;
-  ${({ theme }) => !theme?.isMobile && 'overflow: auto;'}
 `;
 
 export const DraggableItem = styled.div<{ isDragging: boolean; isSubItem?: boolean }>`
