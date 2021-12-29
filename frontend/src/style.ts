@@ -5,19 +5,6 @@ export const GlobalStyleApp = createGlobalStyle<any>`
   html {
     background: ${({ theme }) => theme.background?.primary};
     color: ${({ theme }) => theme.textColor?.primary};
-    
-    &.disable-scroll {
-    }
-    
-    ${({ theme, appType }: any) =>
-      theme?.isMobile && appType === 'app'
-        ? css`
-            width: 100%;
-            height: 100vh;
-            overflow: hidden;
-            position: fixed;
-          `
-        : css``}
   }    
   
   body {
@@ -28,14 +15,6 @@ export const GlobalStyleApp = createGlobalStyle<any>`
     background: ${({ theme }) => theme.background?.primary};
     color: ${({ theme }) => theme.textColor?.primary};
     width: 100%;
-    
-        ${({ theme, appType }: any) =>
-          theme?.isMobile && appType === 'app'
-            ? css`
-                height: 100vh;
-                overflow: hidden;
-              `
-            : css``}
     
     &.disable-scroll {
       overflow: hidden;
@@ -70,14 +49,6 @@ export const GlobalStyleApp = createGlobalStyle<any>`
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    
-    ${({ theme, appType }: any) =>
-      theme?.isMobile && appType === 'app'
-        ? css`
-            height: 100vh;
-            overflow: auto;
-          `
-        : css``}
   }     
   
   #ModalContainer {

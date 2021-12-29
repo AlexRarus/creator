@@ -6,6 +6,7 @@ const Provider = Context.Provider;
 
 export const VirtualKeyboardProvider = ({ children }: any) => {
   const [isOpenKeyboard, setOpenKeyboard] = useState<boolean>(false);
+  const [prevWindowHeight, setWindowHeight] = useState(window?.innerHeight);
   const { DEVICE_THEME } = useThemeContext();
 
   useEffect(() => {
@@ -55,6 +56,19 @@ export const VirtualKeyboardProvider = ({ children }: any) => {
     document.body.addEventListener('touchmove', hideKeyboardOnScroll); // mobile
     return () => document.body.removeEventListener('touchmove', hideKeyboardOnScroll); // mobile
   }, [isOpenKeyboard]);
+
+  useEffect(() => {
+    // когда происходит ресайз при скрытии раскрытии виртуальной клавиатуры скроллим вверх, чтобы не было черного блока снизу
+    if (prevWindowHeight !== window?.innerHeight) {
+      console.log('resize');
+      setWindowHeight(window?.innerHeight);
+      // window.scrollTo(0, 0);
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    console.log('resize1');
+  });
 
   return <Provider value={{ isOpenKeyboard }}>{children}</Provider>;
 };
