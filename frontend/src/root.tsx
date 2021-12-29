@@ -17,9 +17,10 @@ const Root = observer((props: any) => {
   const { appType } = useAppTypeContext();
 
   useEffect(() => {
+    // блокируем скролл window чтобы пользователь не смог проскроллить до черной полосы в сафари
     const lockWindowScroll = (event: any) => {
       const htmlRect = document?.documentElement?.getBoundingClientRect();
-      if (htmlRect?.top != 0 || htmlRect?.height !== window.innerHeight) {
+      if (htmlRect?.top != 0) {
         window.scrollTo(0, 0);
       }
     };
