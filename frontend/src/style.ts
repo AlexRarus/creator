@@ -5,25 +5,17 @@ export const GlobalStyleApp = createGlobalStyle<any>`
   html {
     background: ${({ theme }) => theme.background?.primary};
     color: ${({ theme }) => theme.textColor?.primary};
-    width: 100%;
-    height: 100%;
-    display: table;
-    overflow-x: hidden;
     
     &.disable-scroll {
-      height: 100vh;
-      min-height:100vh;
-      position: fixed;
     }
     
     ${({ theme, appType }: any) =>
-      theme?.isMobile
+      theme?.isMobile && appType === 'app'
         ? css`
-            position: relative;
-            max-width: 100%;
-            overflow-x: hidden;
-            text-rendering: optimizeLegibility;
-            overflow-y: ${appType === 'web' ? 'scroll' : 'hidden'};
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            position: fixed;
           `
         : css``}
   }    
@@ -33,26 +25,20 @@ export const GlobalStyleApp = createGlobalStyle<any>`
     margin: 0;
     padding: 0;   
     font-size: 14px;
-    display: ${({ appType }) => (appType === 'web' ? 'table-cell' : 'block')};
     background: ${({ theme }) => theme.background?.primary};
     color: ${({ theme }) => theme.textColor?.primary};
     width: 100%;
-    overflow-x: hidden;
     
-    ${({ theme, appType }) =>
-      theme?.isMobile
-        ? css`
-            overflow-y: ${appType === 'web' ? 'scroll' : 'hidden'};
-            position: relative;
-            max-width: 100%;
-            overflow-x: hidden;
-            text-rendering: optimizeLegibility;
-          `
-        : css``}
+        ${({ theme, appType }: any) =>
+          theme?.isMobile && appType === 'app'
+            ? css`
+                height: 100vh;
+                overflow: hidden;
+              `
+            : css``}
     
     &.disable-scroll {
       overflow: hidden;
-      position: fixed;
     }
 
     & .modal-component-wrapper {
@@ -84,6 +70,15 @@ export const GlobalStyleApp = createGlobalStyle<any>`
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    
+    ${({ theme, appType }: any) =>
+      theme?.isMobile && appType === 'app'
+        ? css`
+            height: 100vh;
+            padding-bottom: 80px;
+            overflow: auto;
+          `
+        : css``}
   }     
   
   #ModalContainer {

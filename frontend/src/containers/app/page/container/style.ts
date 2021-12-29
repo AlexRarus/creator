@@ -2,14 +2,10 @@ import styled from 'styled-components';
 import { ITheme } from 'src/dal/themes/interfaces';
 import { getUserThemeStyles } from 'src/dal/themes/style';
 
-export const PageWrapper = styled.div<{
-  isApp: boolean;
-  blockViewHeight: number;
-}>`
+export const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  height: ${({ isApp, blockViewHeight }) => (isApp ? `${blockViewHeight}px` : '100%')};
   overflow: auto;
 `;
 

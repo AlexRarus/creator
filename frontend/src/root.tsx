@@ -17,6 +17,19 @@ const Root = observer((props: any) => {
   const { appType } = useAppTypeContext();
 
   useEffect(() => {
+    window.addEventListener(
+      'touchend',
+      (event) => {
+        if (document?.documentElement?.getBoundingClientRect()?.top < 0) {
+          window.scrollTo(0, 0);
+        }
+        // event.preventDefault();
+      },
+      { passive: false }
+    );
+  }, []);
+
+  useEffect(() => {
     const responseSuccess = (response: any) => {
       const status: any = response?.status;
       if (status === 401) {
