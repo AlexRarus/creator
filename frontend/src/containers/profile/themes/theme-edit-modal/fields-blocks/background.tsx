@@ -6,11 +6,10 @@ import { ColorPicker } from 'src/components/color-picker';
 import { ColorPickerGradient } from 'src/components/color-picker-gradient';
 import { Select } from 'src/components/select';
 import { ImageUploaderModule } from 'src/modules/image-uploader-module';
-import { Switch } from 'src/components/switch';
 import { InputRange } from 'src/components/input-range';
 import { IUser } from 'src/dal/auth/interfaces';
 
-import { backgroundTypes, backgroundSizes, backgroundPositions } from '../utils';
+import { backgroundTypes, backgroundSizes, backgroundPositions, backgroundRepeats } from '../utils';
 
 import {
   Block,
@@ -146,10 +145,10 @@ export const FieldBlockBackground = (props: IProps) => {
             </ControlledField>
           )}
           <ControlledField
-            control={control}
             name='backgroundRepeat'
+            control={control}
             formDefaultValues={formDefaultValues}>
-            <Switch disabled={backgroundSmooth}>Циклическая картинка</Switch>
+            <Select options={backgroundRepeats} label='Зациклить' />
           </ControlledField>
           {/*<ControlledField*/}
           {/*  control={control}*/}

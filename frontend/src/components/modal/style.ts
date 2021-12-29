@@ -94,8 +94,6 @@ export const ModalContent = styled.div<{
 }>`
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  overflow-x: hidden;
   padding: ${({ padding = null }) => padding || 'none'};
 
   ${({ isMobile, headerHeight }) =>
@@ -103,6 +101,8 @@ export const ModalContent = styled.div<{
     css`
       height: calc(100% - ${headerHeight}px);
       max-height: calc(100% - ${headerHeight}px);
+      overflow-y: auto;
+      overflow-x: hidden;
     `}
 `;
 

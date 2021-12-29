@@ -41,7 +41,7 @@ interface IBackgroundProps {
   backgroundColor: string;
   backgroundGradient: string;
   backgroundImage: IImage | null;
-  backgroundRepeat: boolean;
+  backgroundRepeat: IOption;
   backgroundSmooth: boolean;
   backgroundSize: IOption;
   backgroundSizeCustomValue: string;
@@ -65,7 +65,7 @@ const getBackground = (props: IBackgroundProps) => {
 
   return css`
     background: ${backgroundPrefix} ${backgroundPostfix};
-    background-repeat: ${backgroundRepeat ? 'repeat' : 'no-repeat'};
+    background-repeat: ${backgroundRepeat.value};
     background-size: ${backgroundSize.value === 'custom'
       ? `${backgroundSizeCustomValue}%`
       : backgroundSize.value};

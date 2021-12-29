@@ -18,12 +18,12 @@ const backgroundSizeAuto: IOption = {
   value: 'auto',
   label: 'Автоматически',
 };
-const backgroundSizeCover: IOption = {
-  value: 'cover',
+const backgroundSizeWidth: IOption = {
+  value: '100% auto',
   label: 'Выравнивание по ширине',
 };
-const backgroundSizeContain: IOption = {
-  value: 'contain',
+const backgroundSizeHeight: IOption = {
+  value: 'auto 100%',
   label: 'Выравнивание по высоте',
 };
 const backgroundSizeCustom: IOption = {
@@ -32,8 +32,8 @@ const backgroundSizeCustom: IOption = {
 };
 export const backgroundSizes: IOption[] = [
   backgroundSizeAuto,
-  backgroundSizeCover,
-  backgroundSizeContain,
+  backgroundSizeWidth,
+  backgroundSizeHeight,
   backgroundSizeCustom,
 ];
 
@@ -55,6 +55,29 @@ export const backgroundPositions: IOption[] = [
   backgroundPositionBottom,
 ];
 
+const backgroundRepeatNo: IOption = {
+  value: 'no-repeat',
+  label: 'Не зацикливать',
+};
+const backgroundRepeatX: IOption = {
+  value: 'repeat-x',
+  label: 'По горизонтали',
+};
+const backgroundRepeatY: IOption = {
+  value: 'repeat-y',
+  label: 'По вертикали',
+};
+const backgroundRepeatBoth: IOption = {
+  value: 'repeat',
+  label: 'Во всех направлениях',
+};
+export const backgroundRepeats: IOption[] = [
+  backgroundRepeatNo,
+  backgroundRepeatX,
+  backgroundRepeatY,
+  backgroundRepeatBoth,
+];
+
 // подготавливаем данные пришедшие с формы для бэка
 export const prepareDataForServer = (rawData: RawData): DataForServer => {
   const backgroundType = rawData.formInputs.backgroundType.value;
@@ -65,13 +88,15 @@ export const prepareDataForServer = (rawData: RawData): DataForServer => {
 
   const backgroundPosition = rawData.formInputs.backgroundPosition?.value;
 
+  const backgroundRepeat = rawData.formInputs.backgroundRepeat?.value;
+
   return {
     id: rawData.id,
     backgroundType,
     backgroundColor: rawData.formInputs.backgroundColor,
     backgroundGradient: rawData.formInputs.backgroundGradient,
     backgroundImage,
-    backgroundRepeat: rawData.formInputs.backgroundRepeat,
+    backgroundRepeat,
     backgroundSmooth: rawData.formInputs.backgroundSmooth,
     backgroundSize: backgroundSize === 'custom' ? backgroundSizeCustomValue : backgroundSize,
     backgroundPosition,
@@ -99,12 +124,16 @@ export const prepareDataToForm = (theme: ITheme | null): FormInputs => {
     backgroundPositions.find((position: IOption) => position.value === theme?.backgroundPosition) ||
     backgroundPositionTop;
 
+  const backgroundRepeat =
+    backgroundRepeats.find((repeat: IOption) => repeat.value === theme?.backgroundRepeat) ||
+    backgroundRepeatNo;
+
   return {
     backgroundType,
     backgroundColor: theme?.backgroundColor || '#FFFFFF',
     backgroundGradient: theme?.backgroundGradient || 'linear-gradient(to bottom, #0000FF, #FF0000)',
     backgroundImage: theme?.backgroundImage,
-    backgroundRepeat: theme?.backgroundRepeat,
+    backgroundRepeat,
     backgroundSmooth: theme?.backgroundSmooth,
     backgroundSize,
     backgroundSizeCustomValue,

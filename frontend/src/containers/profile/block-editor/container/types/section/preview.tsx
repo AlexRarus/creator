@@ -28,6 +28,9 @@ export const SectionPreview = (props: IProps) => {
   const backgroundRepeat = watch('backgroundRepeat');
   const backgroundSmooth = watch('backgroundSmooth');
   const backgroundParallax = watch('backgroundParallax');
+  const backgroundSize = watch('backgroundSize');
+  const backgroundSizeCustomValue = watch('backgroundSizeCustomValue');
+  const backgroundPosition = watch('backgroundPosition');
   const color = watch('color');
   const borderRadius = watch('borderRadius');
 
@@ -41,13 +44,16 @@ export const SectionPreview = (props: IProps) => {
       paddingBottom,
       paddingLeft,
       paddingRight,
-      backgroundType,
+      backgroundType: backgroundType.value,
       backgroundColor,
       backgroundGradient,
       backgroundImage,
-      backgroundRepeat,
+      backgroundRepeat: backgroundRepeat.value,
       backgroundSmooth,
       backgroundParallax,
+      backgroundSize:
+        backgroundSize.value === 'custom' ? `${backgroundSizeCustomValue}%` : backgroundSize.value,
+      backgroundPosition: backgroundPosition.value,
       color,
       borderRadius,
     },

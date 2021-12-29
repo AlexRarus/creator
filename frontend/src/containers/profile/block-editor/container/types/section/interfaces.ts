@@ -9,9 +9,12 @@ export interface FormInputs {
   backgroundColor: string;
   backgroundGradient: string;
   backgroundImage?: IImage | null;
-  backgroundRepeat?: boolean;
+  backgroundRepeat?: IOption;
   backgroundSmooth?: boolean;
   backgroundParallax?: boolean;
+  backgroundSize?: IOption;
+  backgroundSizeCustomValue?: string;
+  backgroundPosition?: IOption;
   color?: string;
   borderRadius?: string;
   paddingTop?: string;

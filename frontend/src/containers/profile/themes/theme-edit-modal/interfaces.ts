@@ -8,7 +8,7 @@ export type FormInputs = {
   backgroundColor?: string;
   backgroundGradient?: string;
   backgroundImage?: IImage | null;
-  backgroundRepeat?: boolean;
+  backgroundRepeat?: IOption;
   backgroundSmooth?: boolean;
   backgroundSize?: IOption;
   backgroundSizeCustomValue?: string; // есть только на форме

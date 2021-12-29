@@ -1,4 +1,7 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { IOption } from 'src/components/select';
+import { IImage } from 'src/dal/images/interfaces';
+import { COLORS } from 'src/components/theme';
 
 export const FieldLabel = styled.div`
   font-size: 13px;
@@ -15,6 +18,9 @@ export const PictureLabel = styled.div`
 export const PictureCell = styled.div`
   display: flex;
   flex-direction: row;
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
 `;
 
 export const ItemFieldPictureShape = styled.div`
@@ -23,19 +29,53 @@ export const ItemFieldPictureShape = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 120px;
-  min-width: 120px;
-  height: 120px;
-  min-height: 120px;
+  width: 100%;
   border-radius: 6px;
   border: 1px dashed;
   overflow: hidden;
   cursor: pointer;
 `;
 
-export const PictureElement = styled.img`
-  max-width: 100%;
-  max-height: 100%;
+interface IBackgroundProps {
+  backgroundType: IOption;
+  backgroundColor: string;
+  backgroundGradient: string;
+  backgroundImage: IImage | null;
+  backgroundRepeat: IOption;
+  backgroundSmooth: boolean;
+  backgroundSize: IOption;
+  backgroundSizeCustomValue: string;
+  backgroundPosition: IOption;
+}
+const getBackground = (props: IBackgroundProps) => {
+  const {
+    backgroundType,
+    backgroundColor = COLORS.white,
+    backgroundGradient = COLORS.white,
+    backgroundImage,
+    backgroundRepeat,
+    backgroundSize,
+    backgroundSizeCustomValue,
+    backgroundPosition,
+    // backgroundSmooth,
+  } = props;
+
+  const backgroundPrefix = backgroundType.value === 'color' ? backgroundColor : backgroundGradient;
+  const backgroundPostfix = backgroundImage ? ` url('/media/${backgroundImage.src}')` : '';
+
+  return css`
+    background: ${backgroundPrefix} ${backgroundPostfix};
+    background-repeat: ${backgroundRepeat.value};
+    background-size: ${backgroundSize.value === 'custom'
+      ? `${backgroundSizeCustomValue}%`
+      : backgroundSize.value};
+    background-position: ${backgroundPosition.value || 'initial'};
+  `;
+};
+export const PictureElement = styled.div<IBackgroundProps>`
+  width: 100%;
+  height: 100%;
+  ${getBackground}
 `;
 
 export const Block = styled.div`

@@ -22,7 +22,7 @@ export const getUserThemeStyles = (theme?: Partial<ITheme> | null) => {
 
   return css`
     background: ${backgroundPrefix} ${backgroundPostfix};
-    background-repeat: ${backgroundRepeat ? 'repeat' : 'no-repeat'};
+    background-repeat: ${backgroundRepeat};
     background-size: ${backgroundSize || 'auto'};
     background-position: ${backgroundPosition || 'initial'};
 

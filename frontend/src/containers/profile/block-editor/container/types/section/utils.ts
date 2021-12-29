@@ -18,10 +18,81 @@ const backgroundTypeGradient: IOption = {
 };
 export const backgroundTypes: IOption[] = [backgroundTypeColor, backgroundTypeGradient];
 
+const backgroundSizeAuto: IOption = {
+  value: 'auto',
+  label: 'Автоматически',
+};
+const backgroundSizeWidth: IOption = {
+  value: '100% auto',
+  label: 'Выравнивание по ширине',
+};
+const backgroundSizeHeight: IOption = {
+  value: 'auto 100%',
+  label: 'Выравнивание по высоте',
+};
+const backgroundSizeCustom: IOption = {
+  value: 'custom',
+  label: 'Свой размер',
+};
+export const backgroundSizes: IOption[] = [
+  backgroundSizeAuto,
+  backgroundSizeWidth,
+  backgroundSizeHeight,
+  backgroundSizeCustom,
+];
+
+const backgroundPositionTop: IOption = {
+  value: 'top',
+  label: 'Сверху',
+};
+const backgroundPositionCenter: IOption = {
+  value: 'center',
+  label: 'По центру',
+};
+const backgroundPositionBottom: IOption = {
+  value: 'bottom',
+  label: 'Снизу',
+};
+export const backgroundPositions: IOption[] = [
+  backgroundPositionTop,
+  backgroundPositionCenter,
+  backgroundPositionBottom,
+];
+
+const backgroundRepeatNo: IOption = {
+  value: 'no-repeat',
+  label: 'Не зацикливать',
+};
+const backgroundRepeatX: IOption = {
+  value: 'repeat-x',
+  label: 'По горизонтали',
+};
+const backgroundRepeatY: IOption = {
+  value: 'repeat-y',
+  label: 'По вертикали',
+};
+const backgroundRepeatBoth: IOption = {
+  value: 'repeat',
+  label: 'Во всех направлениях',
+};
+export const backgroundRepeats: IOption[] = [
+  backgroundRepeatNo,
+  backgroundRepeatX,
+  backgroundRepeatY,
+  backgroundRepeatBoth,
+];
+
 // преобразовываем типы и меняем поля если надо
 export const prepareDataForServer = (rawData: RawData): DataForServer<ISectionDataWrite> => {
   const backgroundType = rawData.formInputs.backgroundType?.value;
   const backgroundImage = rawData.formInputs.backgroundImage?.id;
+
+  const backgroundSize = rawData.formInputs.backgroundSize?.value;
+  const backgroundSizeCustomValue = `${rawData.formInputs.backgroundSizeCustomValue}%`;
+
+  const backgroundPosition = rawData.formInputs.backgroundPosition?.value;
+
+  const backgroundRepeat = rawData.formInputs.backgroundRepeat?.value;
 
   return {
     data: {
@@ -31,9 +102,11 @@ export const prepareDataForServer = (rawData: RawData): DataForServer<ISectionDa
       backgroundColor: rawData.formInputs.backgroundColor,
       backgroundGradient: rawData.formInputs.backgroundGradient,
       backgroundImage,
-      backgroundRepeat: rawData.formInputs.backgroundRepeat,
+      backgroundRepeat,
       backgroundSmooth: rawData.formInputs.backgroundSmooth,
       backgroundParallax: rawData.formInputs.backgroundParallax,
+      backgroundSize: backgroundSize === 'custom' ? backgroundSizeCustomValue : backgroundSize,
+      backgroundPosition,
       color: rawData.formInputs.color,
       borderRadius: rawData.formInputs.borderRadius,
       paddingTop: rawData.formInputs.paddingTop,
@@ -53,6 +126,23 @@ export const prepareDataToFormValues = (block: IBlock<ISectionData> | null): For
   const backgroundType =
     block?.data?.backgroundType === 'gradient' ? backgroundTypeGradient : backgroundTypeColor;
 
+  const backgroundSize =
+    backgroundSizes.find((size: IOption) => size.value === block?.data?.backgroundSize) ||
+    backgroundSizeCustom;
+  const parsedBackgroundSizeCustomValue = parseFloat(block?.data?.backgroundSize as any);
+  const backgroundSizeCustomValue = parsedBackgroundSizeCustomValue
+    ? `${parsedBackgroundSizeCustomValue}`
+    : '50%';
+
+  const backgroundPosition =
+    backgroundPositions.find(
+      (position: IOption) => position.value === block?.data?.backgroundPosition
+    ) || backgroundPositionTop;
+
+  const backgroundRepeat =
+    backgroundRepeats.find((repeat: IOption) => repeat.value === block?.data?.backgroundRepeat) ||
+    backgroundRepeatNo;
+
   return {
     label: block?.data?.label || 'новая секция',
     backgroundType,
@@ -60,9 +150,12 @@ export const prepareDataToFormValues = (block: IBlock<ISectionData> | null): For
     backgroundGradient:
       block?.data?.backgroundGradient || 'linear-gradient(to bottom, #0000FF, #FF0000)',
     backgroundImage: block?.data?.backgroundImage,
-    backgroundRepeat: block?.data?.backgroundRepeat,
+    backgroundRepeat,
     backgroundSmooth: block?.data?.backgroundSmooth,
     backgroundParallax: block?.data?.backgroundParallax,
+    backgroundSize,
+    backgroundSizeCustomValue,
+    backgroundPosition,
     color: block?.data?.color,
     paddingTop: block?.data?.paddingTop || '20',
     paddingBottom: block?.data?.paddingBottom || '20',
