@@ -22,6 +22,8 @@ interface IProps {
   tabs?: ITab<TabValue>[];
   isCommon?: boolean; // создать общую картинку
   isEditable?: boolean; // возможность редактировать свои изображения
+  isEditBorderRadius?: boolean;
+  isEditRatio?: boolean;
 }
 
 const setInitValue = (value?: IImage | IImage[]) => {
@@ -45,6 +47,8 @@ export const ImageUploaderModal = (props: IProps) => {
     tabs: initTabs = imagesTabs,
     isCommon,
     isEditable,
+    isEditBorderRadius,
+    isEditRatio,
   } = props;
   const [tabs, activeTab, onChangeTab] = useTabs(initTabs);
   const [commonSelectedImages, setCommonSelectedImages] = useState(setInitValue(initValue));
@@ -103,6 +107,8 @@ export const ImageUploaderModal = (props: IProps) => {
               isCommon={isCommon}
               isEditable={isEditable}
               isMulti={isMulti}
+              isEditBorderRadius={isEditBorderRadius}
+              isEditRatio={isEditRatio}
             />
           )}
         </TabContainer>

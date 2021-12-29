@@ -17,13 +17,22 @@ interface IProps {
   onSuccess(image: IImage): void;
   image: IImage;
   title?: string;
+  isEditBorderRadius?: boolean;
+  isEditRatio?: boolean;
 }
 
 const DEFAULT_IMAGE_SIZE = 200;
-const EDITOR_BORDER = 20;
+const EDITOR_BORDER = 50;
 
 export const ImageEditorModal = (props: IProps) => {
-  const { onClose, onSuccess, image, title = 'Редактирование изображения' } = props;
+  const {
+    onClose,
+    onSuccess,
+    image,
+    title = 'Редактирование изображения',
+    isEditBorderRadius = false,
+    isEditRatio = false,
+  } = props;
   const [imageEditorWrapper, imageEditorWrapperRefCallback] = useState<HTMLDivElement | null>(null);
   const [position, setPosition] = useState({ x: 0.5, y: 0.5 });
   const [imageSize, setImageSize] = useState<number>(DEFAULT_IMAGE_SIZE);
@@ -38,12 +47,14 @@ export const ImageEditorModal = (props: IProps) => {
           : maxBorderRadius, // в форму должны подставить не процент а значение и пикселях
       scale: image?.scale || 1.2,
       rotate: image?.rotate || 0,
+      ratio: image?.ratio || 1,
     },
   });
   const [updateImage, isLoading, data, errors] = useUpdateImage();
   const borderRadius = watch('borderRadius');
   const scale = watch('scale');
   const rotate = watch('rotate');
+  const ratio = watch('ratio');
 
   useEffect(() => {
     if (imageInfo) {
@@ -68,10 +79,13 @@ export const ImageEditorModal = (props: IProps) => {
     }
   }, [imageInfo]);
 
+  const BORDER_X = EDITOR_BORDER * ratio;
+  const BORDER_Y = EDITOR_BORDER / ratio;
+
   useEffect(() => {
     if (imageEditorWrapper) {
       const fullWidth = imageEditorWrapper.getBoundingClientRect().width;
-      setImageSize(Math.max(fullWidth - 2 * EDITOR_BORDER, DEFAULT_IMAGE_SIZE));
+      setImageSize(Math.max(fullWidth, DEFAULT_IMAGE_SIZE));
     }
   }, [imageEditorWrapper]);
 
@@ -134,10 +148,10 @@ export const ImageEditorModal = (props: IProps) => {
           <AvatarEditor
             ref={editorRefCallback}
             image={imageSource}
-            width={imageSize}
-            height={imageSize}
+            width={imageSize - 2 * BORDER_X}
+            height={imageSize - 2 * BORDER_Y}
             color={[255, 255, 255, 0.6]} // RGBA
-            border={EDITOR_BORDER}
+            border={[BORDER_X, BORDER_Y]}
             borderRadius={parseFloat(borderRadius as any)}
             scale={parseFloat(`${scale || 1}` as any)}
             rotate={rotate}
@@ -146,19 +160,29 @@ export const ImageEditorModal = (props: IProps) => {
             onLoadSuccess={onLoadSuccess}
           />
           <ControlsWrapper>
-            <FormRow>
-              <ControlledField name='borderRadius' control={control}>
-                <InputRange
-                  label='Скругление'
-                  min={0}
-                  max={maxBorderRadius}
-                  step={1}
-                  minValueLabel='0%'
-                  maxValueLabel='100%'
-                  valueLabel={`${Math.round((borderRadius / maxBorderRadius) * 100)}%`}
-                />
-              </ControlledField>
-            </FormRow>
+            {isEditRatio && (
+              <FormRow>
+                <ControlledField name='ratio' control={control}>
+                  <InputRange label='Соотношение сторон' min={0.5} max={2} step={0.01} />
+                </ControlledField>
+              </FormRow>
+            )}
+            {isEditBorderRadius && (
+              <FormRow>
+                <ControlledField name='borderRadius' control={control}>
+                  <InputRange
+                    label='Скругление'
+                    min={0}
+                    max={maxBorderRadius}
+                    step={1}
+                    minValueLabel='0%'
+                    maxValueLabel='100%'
+                    valueLabel={`${Math.round((borderRadius / maxBorderRadius) * 100)}%`}
+                  />
+                </ControlledField>
+              </FormRow>
+            )}
+
             <FormRow>
               <ControlledField name='scale' control={control}>
                 <InputRange

@@ -106,6 +106,7 @@ export const FieldBlockBackground = (props: IProps) => {
                 openerElement={pictureElement}
                 blockType='section'
                 isEditable={true}
+                isEditRatio={true}
               />
             </ControlledField>
           </PictureCell>

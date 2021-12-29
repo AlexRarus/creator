@@ -117,6 +117,7 @@ export const FieldBlockBackground = (props: IProps) => {
                 createTags={['theme_background']}
                 isCommon={themeType !== 'custom' && user?.role === 'admin'}
                 isEditable={true}
+                isEditRatio={true}
               />
             </ControlledField>
           </PictureCell>

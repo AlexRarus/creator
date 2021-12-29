@@ -81,6 +81,7 @@ export const SeparatorFields = (props: IProps) => {
             openerElement={iconElement}
             blockType='separator'
             isEditable={true}
+            isEditBorderRadius={true}
           />
         </ControlledField>
       </GridColumn>

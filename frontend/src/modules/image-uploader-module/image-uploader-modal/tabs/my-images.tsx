@@ -43,6 +43,8 @@ interface IProps {
   blockType?: string; // для какого типа блока запросить (создать) изображения
   getTags?: string[]; // с какими тегами запросить изображения
   createTags?: string[]; // с какими тегами создать изображения
+  isEditBorderRadius?: boolean;
+  isEditRatio?: boolean;
 }
 
 export const MyImagesList = observer((props: IProps) => {
@@ -56,6 +58,8 @@ export const MyImagesList = observer((props: IProps) => {
     blockType,
     getTags,
     createTags,
+    isEditBorderRadius,
+    isEditRatio,
   } = props;
   const { myImages, getMyImagesAction } = useMapStoreToProps();
 
@@ -107,6 +111,8 @@ export const MyImagesList = observer((props: IProps) => {
         imageActions={getImageActions(isEditable)}
         createTags={createTags}
         isCommon={isCommon}
+        isEditBorderRadius={isEditBorderRadius}
+        isEditRatio={isEditRatio}
       />
     </MyImagesListWrapper>
   );

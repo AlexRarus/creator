@@ -21,6 +21,8 @@ interface IProps {
   blockType?: string; // для какого типа блока запросить (создать) изображения
   createTags?: string[]; // с какими тегами создать изображения
   isCommon?: boolean;
+  isEditBorderRadius?: boolean;
+  isEditRatio?: boolean;
 }
 
 export const ImagesList = (props: IProps) => {
@@ -39,6 +41,8 @@ export const ImagesList = (props: IProps) => {
     isMulti = false,
     dropZoneRefCallback,
     imageActions,
+    isEditBorderRadius,
+    isEditRatio,
   } = props;
   const [uploadImages, isLoading, uploadingImages, clear] = useUploadImages(
     blockType,
@@ -90,6 +94,8 @@ export const ImagesList = (props: IProps) => {
             blockType={blockType}
             deleteImage={deleteImage}
             updateImage={updateImage}
+            isEditBorderRadius={isEditBorderRadius}
+            isEditRatio={isEditRatio}
           />
         ))}
         {uploadingImages.map((uploadingImage: IUploadingFile) => (

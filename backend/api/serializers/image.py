@@ -76,5 +76,6 @@ class ImageSerializer(serializers.ModelSerializer):
             "borderRadius",
             "rotate",
             "scale",
+            "ratio",
             "is_common",  # Запись
         )

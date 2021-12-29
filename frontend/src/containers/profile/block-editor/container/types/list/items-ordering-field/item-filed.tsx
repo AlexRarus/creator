@@ -40,7 +40,12 @@ export const ItemField = (props: IProps) => {
         </ControlledField>
       </ItemFieldContent>
       <ControlledField name={`items.${index}.icon`} control={control}>
-        <ImageUploaderModule openerElement={iconElement} blockType='list' isEditable={true} />
+        <ImageUploaderModule
+          openerElement={iconElement}
+          blockType='list'
+          isEditable={true}
+          isEditBorderRadius={true}
+        />
       </ControlledField>
     </ItemFieldWrapper>
   );

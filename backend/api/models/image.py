@@ -91,6 +91,11 @@ class Image(models.Model):
         blank=True,
         null=True,
     )
+    ratio = models.FloatField(
+        verbose_name="Соотношение сторон у preview (width/height)",
+        blank=True,
+        null=True,
+    )
     scale = models.FloatField(
         verbose_name="Увеличение",
         blank=True,
