@@ -9,7 +9,7 @@ export const GlobalStyleApp = createGlobalStyle<any>`
     ${({ theme, appType }: any) =>
       theme?.isMobile && appType === 'app'
         ? css`
-            position: absolute;
+            position: fixed;
             top: 0;
           `
         : css``}
