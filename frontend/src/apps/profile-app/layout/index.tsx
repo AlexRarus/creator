@@ -18,6 +18,7 @@ export function ProfileLayout(props: IProps) {
     if (isMobile) {
       // блокировка скролла для нормальной работы dnd
       setAppType('app');
+      window.scrollTo(0, 0);
     }
 
     return () => setAppType('web');
