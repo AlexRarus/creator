@@ -8,6 +8,7 @@ import Notification from 'src/components/notification';
 import { ScrollGlobalStyle } from 'src/utils/scroll';
 import { useAppTypeContext } from 'src/providers/app-type-provider';
 import API from 'src/api';
+import { useHackDndContext } from 'src/providers/hack-dnd-provider';
 
 import { useMapStoreToProps } from './selectors';
 import { GlobalStyleApp } from './style';
@@ -15,12 +16,13 @@ import { GlobalStyleApp } from './style';
 const Root = observer((props: any) => {
   const { initAuthAction, logoutAction, access } = useMapStoreToProps();
   const { appType } = useAppTypeContext();
+  const { isDragging } = useHackDndContext();
 
   useEffect(() => {
     // блокируем скролл window чтобы пользователь не смог проскроллить до черной полосы в сафари
     const lockWindowScroll = (event: any) => {
       const htmlRect = document?.documentElement?.getBoundingClientRect();
-      if (htmlRect?.top != 0) {
+      if (htmlRect?.top != 0 && !isDragging) {
         window.scrollTo(0, 0);
       }
     };
@@ -29,7 +31,7 @@ const Root = observer((props: any) => {
       window.addEventListener('touchend', lockWindowScroll, { passive: false });
     }
     return () => window.removeEventListener('touchend', lockWindowScroll);
-  }, [appType]);
+  }, [appType, isDragging]);
 
   useEffect(() => {
     const responseSuccess = (response: any) => {
@@ -63,7 +65,7 @@ const Root = observer((props: any) => {
 
   return (
     <>
-      <GlobalStyleApp appType={appType} />
+      <GlobalStyleApp appType={appType} isDragging={isDragging} />
       <ScrollGlobalStyle />
       <Notification maxShowItems={5} />
       <Switch>

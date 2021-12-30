@@ -13,6 +13,7 @@ import { v4 as uuidv4 } from 'uuid';
 import InputText from 'src/components/input-text';
 import { AwesomeButton } from 'src/components/awesome-button';
 import { SelectedThemeProvider } from 'src/providers/selected-theme-provider';
+import { useAppTypeContext } from 'src/providers/app-type-provider';
 
 import { BlinkMessage } from './page-form/blink-message';
 import { PageSettingsModal, TabValue } from './page-form/page-settings-modal';
@@ -60,6 +61,7 @@ export const PageEditorContainer = observer((props: IProps) => {
     updateBlockAction,
     user,
   } = useMapStoreToProps();
+  const { appType } = useAppTypeContext();
   const { username, pageSlug } = props;
   const [pageSettingsModalTab, setPageSettingsModalTab] = useState<TabValue | null>(null);
   const [copyBlinkId, setCopyBlinkId] = useState<string>();
@@ -212,7 +214,7 @@ export const PageEditorContainer = observer((props: IProps) => {
             </DesktopPageWrapper>
           </StyledBrowserView>
           <StyledMobileView>
-            <FlexBlock>
+            <FlexBlock appType={appType}>
               <EditorHeader>
                 <LinkToPageField onClick={onCopyToClipboard}>
                   <LinkToPageLabel>Ссылка на страницу</LinkToPageLabel>

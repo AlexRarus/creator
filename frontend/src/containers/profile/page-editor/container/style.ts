@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { rgba } from 'polished';
 import { Grid } from 'src/components/grid';
 import { MobileView, BrowserView } from 'react-device-detect';
@@ -207,8 +207,16 @@ export const PreviewFooter = styled.div`
 
 export const FooterMainButton = styled.div``;
 
-export const FlexBlock = styled.div`
+export const FlexBlock = styled.div<{ appType: string }>`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+
+  ${({ theme, appType }: any) =>
+    theme?.isMobile && appType === 'app'
+      ? css`
+          height: calc(100vh - 140px);
+          overflow: auto;
+        `
+      : css``}
 `;
