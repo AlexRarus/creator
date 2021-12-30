@@ -215,7 +215,8 @@ export const FlexBlock = styled.div<{ appType: string }>`
   ${({ theme, appType }: any) =>
     theme?.isMobile && appType === 'app'
       ? css`
-          height: calc(100vh - 140px);
+          height: 100vh;
+          padding-bottom: 80px;
           overflow: auto;
         `
       : css``}

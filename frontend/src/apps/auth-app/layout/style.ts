@@ -11,8 +11,7 @@ export const AuthLayoutWrapper = styled.div`
   ${({ theme }) =>
     theme.isMobile &&
     css`
-      height: calc(100vh + 280px);
-      padding-bottom: 80px;
+      height: 100vh;
     `}
 `;
 
