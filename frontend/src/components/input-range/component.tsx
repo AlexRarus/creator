@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { COLORS } from 'src/components/theme';
+import { isMobile } from 'react-device-detect';
 
 import {
   InputRangeWrapper,
@@ -69,7 +70,7 @@ export const InputRange = (props: IProps) => {
   }, [currentStep]);
 
   const onMouseMove = useCallback(
-    (e: MouseEvent) => {
+    (e: any) => {
       // dnd
       if (inputRangeMetrics && valueElement && lineElement) {
         // выставляем в нужную позицию курсор
@@ -93,7 +94,7 @@ export const InputRange = (props: IProps) => {
     [inputRangeMetrics, stepPxValue]
   );
 
-  const onMouseDown = (e: React.MouseEvent) => {
+  const onMouseDown = (e: any) => {
     // start dnd
     if (inputRangeMetrics && valueElement && lineElement) {
       const offsetXMax = Math.min(e.clientX - inputRangeMetrics.x, inputRangeMetrics.width); // расстояние от левого края инпута
@@ -114,11 +115,15 @@ export const InputRange = (props: IProps) => {
     }
 
     if (inputRangeElement) {
-      inputRangeElement.addEventListener('mousemove', onMouseMove);
+      if (isMobile) {
+        inputRangeElement.addEventListener('touchmove', onMouseMove);
+      } else {
+        inputRangeElement.addEventListener('mousemove', onMouseMove);
+      }
     }
   };
 
-  const onMouseUp = (e: React.MouseEvent) => {
+  const onMouseUp = (e: any) => {
     // end dnd
     if (inputRangeMetrics && valueElement && lineElement) {
       const offsetXMax = Math.min(e.clientX - inputRangeMetrics.x, inputRangeMetrics.width); // расстояние от левого края инпута
@@ -131,23 +136,33 @@ export const InputRange = (props: IProps) => {
     }
 
     if (inputRangeElement) {
-      inputRangeElement.removeEventListener('mousemove', onMouseMove);
+      if (isMobile) {
+        inputRangeElement.removeEventListener('touchmove', onMouseMove);
+      } else {
+        inputRangeElement.removeEventListener('mousemove', onMouseMove);
+      }
     }
   };
 
-  const onMouseLeave = (e: React.MouseEvent) => {
+  const onMouseLeave = (e: any) => {
     // end dnd
     if (inputRangeElement) {
-      inputRangeElement.removeEventListener('mousemove', onMouseMove);
+      if (isMobile) {
+        inputRangeElement.removeEventListener('touchmove', onMouseMove);
+      } else {
+        inputRangeElement.removeEventListener('mousemove', onMouseMove);
+      }
     }
   };
 
   return (
     <InputRangeWrapper
       ref={inputRangeRefCallback}
-      onMouseDown={onMouseDown}
-      onMouseUp={onMouseUp}
-      onMouseLeave={onMouseLeave}>
+      onMouseDown={isMobile ? undefined : onMouseDown}
+      onTouchStart={isMobile ? onMouseDown : undefined}
+      onMouseUp={isMobile ? undefined : onMouseUp}
+      onTouchEnd={isMobile ? onMouseUp : undefined}
+      onMouseLeave={isMobile ? undefined : onMouseLeave}>
       {(isFakeLabel || label) && <InnerLabel>{isFakeLabel ? ' ' : label}</InnerLabel>}
       <input type='hidden' value={value} {...inputProps} />
       <LineWrapper>
