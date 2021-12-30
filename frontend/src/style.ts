@@ -9,8 +9,8 @@ export const GlobalStyleApp = createGlobalStyle<any>`
     ${({ theme, appType }: any) =>
       theme?.isMobile && appType === 'app'
         ? css`
-            position: fixed;
-            top: 0;
+            position: initial;
+            height: 100vh;
           `
         : css``}
   }    
@@ -23,6 +23,13 @@ export const GlobalStyleApp = createGlobalStyle<any>`
     background: ${({ theme }) => theme.background?.primary};
     color: ${({ theme }) => theme.textColor?.primary};
     width: 100%;
+    
+        ${({ theme, appType }: any) =>
+          theme?.isMobile && appType === 'app'
+            ? css`
+                position: fixed;
+              `
+            : css``}
     
     &.disable-scroll {
       overflow: hidden;
