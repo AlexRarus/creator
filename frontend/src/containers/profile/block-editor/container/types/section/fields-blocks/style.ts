@@ -59,7 +59,8 @@ const getBackground = (props: IBackgroundProps) => {
     backgroundPosition,
     // backgroundSmooth,
   } = props;
-  const backgroundImageUrl = backgroundImage ? ` url('/media/${backgroundImage.src}'), ` : '';
+  const imageUrl = backgroundImage?.preview || backgroundImage?.src || '';
+  const backgroundImageUrl = imageUrl ? ` url('/media/${imageUrl}'), ` : '';
 
   return css`
     ${backgroundType.value === 'color' && `background: ${backgroundImageUrl}${backgroundColor}`};

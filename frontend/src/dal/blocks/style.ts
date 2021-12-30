@@ -17,7 +17,8 @@ export const getSectionStyle = (section?: Partial<ISectionData> | null) => {
     // backgroundParallax,
     color,
   } = targetSection;
-  const backgroundImageUrl = backgroundImage ? ` url('/media/${backgroundImage.src}'), ` : '';
+  const imageUrl = backgroundImage?.preview || backgroundImage?.src || '';
+  const backgroundImageUrl = imageUrl ? ` url('/media/${imageUrl}'), ` : '';
 
   return css`
     ${backgroundType === 'color' && `background: ${backgroundImageUrl}${backgroundColor}`};

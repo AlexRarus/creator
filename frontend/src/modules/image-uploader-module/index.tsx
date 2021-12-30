@@ -15,7 +15,7 @@ interface IProps {
   isCommon?: boolean; // загружаемые изображения удут общими для всех пользователей
   isEditable?: boolean; // возможность редактировать свои изображения
   isEditBorderRadius?: boolean;
-  isEditRatio?: boolean;
+  isEditBorder?: boolean;
 }
 
 export const ImageUploaderModule = observer((props: IProps) => {
@@ -30,7 +30,7 @@ export const ImageUploaderModule = observer((props: IProps) => {
     isCommon,
     isEditable,
     isEditBorderRadius,
-    isEditRatio,
+    isEditBorder,
   } = props;
   const [isOpenImageUploaderModal, setIsOpenImageUploaderModal] = useState(false);
 
@@ -67,7 +67,7 @@ export const ImageUploaderModule = observer((props: IProps) => {
           isCommon={isCommon}
           isEditable={isEditable}
           isEditBorderRadius={isEditBorderRadius}
-          isEditRatio={isEditRatio}
+          isEditBorder={isEditBorder}
         />
       )}
     </>

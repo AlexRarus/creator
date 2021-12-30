@@ -10,5 +10,6 @@ export interface IImage {
   borderRadius?: number; // в процентах от размера изображения
   width?: number;
   height?: number;
-  ratio?: number; // соотношение сторон у preview (width/height)
+  borderX?: number; // горизонтальный бордер для редактора картинок
+  borderY?: number; // вертикальный бордер для редактора картинок
 }

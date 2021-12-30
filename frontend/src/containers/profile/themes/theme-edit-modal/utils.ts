@@ -28,7 +28,7 @@ const backgroundSizeHeight: IOption = {
 };
 const backgroundSizeCustom: IOption = {
   value: 'custom',
-  label: 'Свой размер',
+  label: 'Свой масштаб',
 };
 export const backgroundSizes: IOption[] = [
   backgroundSizeAuto,

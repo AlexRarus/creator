@@ -1,6 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { COLORS } from 'src/components/theme';
 
-import { InputRangeWrapper, InnerLabel, Mark } from './style';
+import {
+  InputRangeWrapper,
+  InnerLabel,
+  LineWrapper,
+  MarkMin,
+  MarkMax,
+  Line,
+  Value,
+  ValueLabel,
+  VALUE_SIZE,
+} from './style';
 
 interface IProps {
   value?: any;
@@ -26,40 +37,128 @@ export const InputRange = (props: IProps) => {
     minValueLabel,
     maxValueLabel,
     valueLabel,
+    value = 0,
     ...inputProps
   } = props;
-  const [isHideValueMark, setIsHideValueMark] = useState(true);
+  const [inputRangeElement, inputRangeRefCallback] = useState<HTMLLabelElement | null>(null);
+  const [valueElement, valueRefCallback] = useState<HTMLDivElement | null>(null);
+  const [lineElement, lineRefCallback] = useState<HTMLDivElement | null>(null);
+  const [inputRangeMetrics, setInputRangeMetrics] = useState<any>(null);
+  const [diffValues] = useState(Math.abs(max - min));
+  const [stepsLength] = useState(Math.round(Math.abs(diffValues / step)));
+  const [currentStep, setCurrentStep] = useState(Math.abs(min - value) / Math.abs(step));
+  const [stepPxValue, setStepPxValue] = useState(0); // колличество пикселей в одном шаге
 
   useEffect(() => {
-    setIsHideValueMark(false);
-    const timerId = setTimeout(() => setIsHideValueMark(true), 1000);
-    return () => window.clearTimeout(timerId);
-  }, [inputProps.value]);
+    // запоминаем размеры компонента
+    if (inputRangeElement) {
+      setInputRangeMetrics(inputRangeElement.getBoundingClientRect());
+    }
+  }, [inputRangeElement]);
 
-  const currentPosition = (inputProps.value - min) / (max - min);
+  useEffect(() => {
+    if (inputRangeMetrics) {
+      // вычисляем размер одного шага в пикселях
+      setStepPxValue(inputRangeMetrics.width / stepsLength);
+    }
+  }, [inputRangeMetrics]);
+
+  useEffect(() => {
+    // при изменении текущего шага, вызываем onChange
+    inputProps.onChange && inputProps.onChange(min + currentStep * step);
+  }, [currentStep]);
+
+  const onMouseMove = useCallback(
+    (e: MouseEvent) => {
+      // dnd
+      if (inputRangeMetrics && valueElement && lineElement) {
+        // выставляем в нужную позицию курсор
+        const offsetXMax = Math.min(e.clientX - inputRangeMetrics.x, inputRangeMetrics.width); // расстояние от левого края инпута
+        const offsetX = Math.max(0, offsetXMax); // расстояние от левого края инпута
+        const left = Math.max(
+          0,
+          Math.min(offsetX - VALUE_SIZE / 2, inputRangeMetrics.width - VALUE_SIZE)
+        );
+        valueElement.setAttribute('style', `left: ${left}px`);
+
+        // красим линию до нужного момента
+        lineElement.setAttribute(
+          'style',
+          `background: linear-gradient(to right, ${COLORS.blue[400]} ${offsetX}px, ${COLORS.grey[400]} ${offsetX}px)`
+        );
+        // вычисляем текущий степ
+        setCurrentStep(Math.round(offsetX / stepPxValue));
+      }
+    },
+    [inputRangeMetrics, stepPxValue]
+  );
+
+  const onMouseDown = (e: React.MouseEvent) => {
+    // start dnd
+    if (inputRangeMetrics && valueElement && lineElement) {
+      const offsetXMax = Math.min(e.clientX - inputRangeMetrics.x, inputRangeMetrics.width); // расстояние от левого края инпута
+      const offsetX = Math.max(0, offsetXMax); // расстояние от левого края инпута
+      const left = Math.max(
+        0,
+        Math.min(offsetX - VALUE_SIZE / 2, inputRangeMetrics.width - VALUE_SIZE)
+      );
+      // выставляем в нужную позицию курсор
+      valueElement.setAttribute('style', `left: ${left}px`);
+      // красим линию до нужного момента
+      lineElement.setAttribute(
+        'style',
+        `background: linear-gradient(to right, ${COLORS.blue[400]} ${offsetX}px, ${COLORS.grey[400]} ${offsetX}px)`
+      );
+      // вычисляем текущий степ
+      setCurrentStep(Math.round(offsetX / stepPxValue));
+    }
+
+    if (inputRangeElement) {
+      inputRangeElement.addEventListener('mousemove', onMouseMove);
+    }
+  };
+
+  const onMouseUp = (e: React.MouseEvent) => {
+    // end dnd
+    if (inputRangeMetrics && valueElement && lineElement) {
+      const offsetXMax = Math.min(e.clientX - inputRangeMetrics.x, inputRangeMetrics.width); // расстояние от левого края инпута
+      const offsetX = Math.max(0, offsetXMax); // расстояние от левого края инпута
+      // убираем управление позицией
+      valueElement.removeAttribute('style');
+      lineElement.removeAttribute('style');
+      // вычисляем текущий степ
+      setCurrentStep(Math.round(offsetX / stepPxValue));
+    }
+
+    if (inputRangeElement) {
+      inputRangeElement.removeEventListener('mousemove', onMouseMove);
+    }
+  };
+
+  const onMouseLeave = (e: React.MouseEvent) => {
+    // end dnd
+    if (inputRangeElement) {
+      inputRangeElement.removeEventListener('mousemove', onMouseMove);
+    }
+  };
+
   return (
-    <InputRangeWrapper>
+    <InputRangeWrapper
+      ref={inputRangeRefCallback}
+      onMouseDown={onMouseDown}
+      onMouseUp={onMouseUp}
+      onMouseLeave={onMouseLeave}>
       {(isFakeLabel || label) && <InnerLabel>{isFakeLabel ? ' ' : label}</InnerLabel>}
-      <input type='range' min={min} max={max} step={step} {...inputProps} />
-      <Mark position={0} style={{ transform: 'translateX(calc(5px))' }} isHide={!isHideValueMark}>
-        {minValueLabel || min}
-      </Mark>
-      <Mark
-        position={currentPosition}
-        style={{
-          transform: `translateX(${
-            currentPosition ? `calc(${100 * -currentPosition}% - 5px)` : '5px'
-          })`,
-        }}
-        isHide={isHideValueMark}>
-        {valueLabel || inputProps.value}
-      </Mark>
-      <Mark
-        position={1}
-        style={{ transform: 'translateX(calc(-100% - 5px))' }}
-        isHide={!isHideValueMark}>
-        {maxValueLabel || max}
-      </Mark>
+      <input type='hidden' value={value} {...inputProps} />
+      <LineWrapper>
+        <Line stepsLength={stepsLength} currentStep={currentStep} ref={lineRefCallback}>
+          <Value stepsLength={stepsLength} currentStep={currentStep} ref={valueRefCallback}>
+            <ValueLabel>{valueLabel || value}</ValueLabel>
+          </Value>
+        </Line>
+        <MarkMin>{minValueLabel || min}</MarkMin>
+        <MarkMax>{maxValueLabel || max}</MarkMax>
+      </LineWrapper>
     </InputRangeWrapper>
   );
 };

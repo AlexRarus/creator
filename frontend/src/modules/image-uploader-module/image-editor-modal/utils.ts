@@ -10,6 +10,7 @@ export const prepareDataForServer = (rawData: RawData): DataForServer => ({
   borderRadius: rawData.borderRadius,
   rotate: rawData.rotate,
   scale: rawData.scale,
-  ratio: rawData.ratio,
+  borderX: rawData.borderX,
+  borderY: rawData.borderY,
   previewFile: rawData.previewFile as any,
 });

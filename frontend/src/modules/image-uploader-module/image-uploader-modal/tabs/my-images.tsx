@@ -44,7 +44,7 @@ interface IProps {
   getTags?: string[]; // с какими тегами запросить изображения
   createTags?: string[]; // с какими тегами создать изображения
   isEditBorderRadius?: boolean;
-  isEditRatio?: boolean;
+  isEditBorder?: boolean;
 }
 
 export const MyImagesList = observer((props: IProps) => {
@@ -59,7 +59,7 @@ export const MyImagesList = observer((props: IProps) => {
     getTags,
     createTags,
     isEditBorderRadius,
-    isEditRatio,
+    isEditBorder,
   } = props;
   const { myImages, getMyImagesAction } = useMapStoreToProps();
 
@@ -112,7 +112,7 @@ export const MyImagesList = observer((props: IProps) => {
         createTags={createTags}
         isCommon={isCommon}
         isEditBorderRadius={isEditBorderRadius}
-        isEditRatio={isEditRatio}
+        isEditBorder={isEditBorder}
       />
     </MyImagesListWrapper>
   );

@@ -22,7 +22,7 @@ interface IProps {
   createTags?: string[]; // с какими тегами создать изображения
   isCommon?: boolean;
   isEditBorderRadius?: boolean;
-  isEditRatio?: boolean;
+  isEditBorder?: boolean;
 }
 
 export const ImagesList = (props: IProps) => {
@@ -42,7 +42,7 @@ export const ImagesList = (props: IProps) => {
     dropZoneRefCallback,
     imageActions,
     isEditBorderRadius,
-    isEditRatio,
+    isEditBorder,
   } = props;
   const [uploadImages, isLoading, uploadingImages, clear] = useUploadImages(
     blockType,
@@ -95,7 +95,7 @@ export const ImagesList = (props: IProps) => {
             deleteImage={deleteImage}
             updateImage={updateImage}
             isEditBorderRadius={isEditBorderRadius}
-            isEditRatio={isEditRatio}
+            isEditBorder={isEditBorder}
           />
         ))}
         {uploadingImages.map((uploadingImage: IUploadingFile) => (

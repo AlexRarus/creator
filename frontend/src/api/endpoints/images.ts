@@ -14,7 +14,8 @@ export interface IWriteImage {
   y?: number;
   scale?: number;
   rotate?: number;
-  ratio?: number;
+  borderX?: number;
+  borderY?: number;
   borderRadius?: number;
   width?: number;
   height?: number;

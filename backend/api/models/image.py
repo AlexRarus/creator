@@ -91,8 +91,13 @@ class Image(models.Model):
         blank=True,
         null=True,
     )
-    ratio = models.FloatField(
-        verbose_name="Соотношение сторон у preview (width/height)",
+    borderX = models.FloatField(
+        verbose_name="Горизонтальный бордер для редактора",
+        blank=True,
+        null=True,
+    )
+    borderY = models.FloatField(
+        verbose_name="Вертикальный бордер для редактора",
         blank=True,
         null=True,
     )

@@ -117,7 +117,7 @@ export const FieldBlockBackground = (props: IProps) => {
                 createTags={['theme_background']}
                 isCommon={themeType !== 'custom' && user?.role === 'admin'}
                 isEditable={true}
-                isEditRatio={true}
+                isEditBorder={true}
               />
             </ControlledField>
           </PictureCell>
@@ -129,7 +129,7 @@ export const FieldBlockBackground = (props: IProps) => {
                 name='backgroundSize'
                 control={control}
                 formDefaultValues={formDefaultValues}>
-                <Select options={backgroundSizes} label='Размер картинки' />
+                <Select options={backgroundSizes} label='Масштабирование' />
               </ControlledField>
             </GridColumn>
             {backgroundSize.value === 'custom' && (
@@ -139,7 +139,7 @@ export const FieldBlockBackground = (props: IProps) => {
                   name='backgroundSizeCustomValue'
                   formDefaultValues={formDefaultValues}>
                   <InputRange
-                    label='Размер'
+                    label='Масштаб'
                     min={10}
                     max={100}
                     step={1}

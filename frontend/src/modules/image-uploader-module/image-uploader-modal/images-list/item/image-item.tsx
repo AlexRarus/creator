@@ -39,7 +39,7 @@ interface IProps {
   blockType?: string; // для какого типа блока запросить (создать) изображения
   tags?: string[]; // с какими тегами запросить (создать) изображения
   isEditBorderRadius?: boolean;
-  isEditRatio?: boolean;
+  isEditBorder?: boolean;
 }
 
 export const ImageItem = observer((props: IProps) => {
@@ -53,7 +53,7 @@ export const ImageItem = observer((props: IProps) => {
     deleteImage,
     updateImage,
     isEditBorderRadius,
-    isEditRatio,
+    isEditBorder,
   } = props;
   const [isOpenDesktopActions, setIsOpenDesktopActions] = useState(false);
   const [isOpenMobileActions, setIsOpenMobileActions] = useState(false);
@@ -203,7 +203,7 @@ export const ImageItem = observer((props: IProps) => {
           onSuccess={onSuccessEditing}
           image={image}
           isEditBorderRadius={isEditBorderRadius}
-          isEditRatio={isEditRatio}
+          isEditBorder={isEditBorder}
         />
       )}
     </>

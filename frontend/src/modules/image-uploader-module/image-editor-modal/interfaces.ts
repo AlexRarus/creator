@@ -5,7 +5,8 @@ export type FormInputs = {
   borderRadius: number;
   scale: number;
   rotate: number;
-  ratio: number; // соотношение сторон width/height
+  borderX: number;
+  borderY: number;
 };
 
 // входные значение с формы создание

@@ -18,11 +18,11 @@ interface IProps {
   image: IImage;
   title?: string;
   isEditBorderRadius?: boolean;
-  isEditRatio?: boolean;
+  isEditBorder?: boolean;
 }
 
 const DEFAULT_IMAGE_SIZE = 200;
-const EDITOR_BORDER = 50;
+const DEFAULT_EDITOR_BORDER = 50;
 
 export const ImageEditorModal = (props: IProps) => {
   const {
@@ -31,7 +31,7 @@ export const ImageEditorModal = (props: IProps) => {
     image,
     title = 'Редактирование изображения',
     isEditBorderRadius = false,
-    isEditRatio = false,
+    isEditBorder = false,
   } = props;
   const [imageEditorWrapper, imageEditorWrapperRefCallback] = useState<HTMLDivElement | null>(null);
   const [position, setPosition] = useState({ x: 0.5, y: 0.5 });
@@ -39,6 +39,8 @@ export const ImageEditorModal = (props: IProps) => {
   const [editor, editorRefCallback] = useState<any>();
   const [imageInfo, setImageInfo] = useState<any>();
   const maxBorderRadius = imageSize / 2;
+  const parsedBorderX = parseFloat(image?.borderX as any);
+  const parsedBorderY = parseFloat(image?.borderY as any);
   const { handleSubmit, formState, control, watch, setValue } = useForm<FormInputs>({
     defaultValues: {
       borderRadius:
@@ -47,22 +49,26 @@ export const ImageEditorModal = (props: IProps) => {
           : maxBorderRadius, // в форму должны подставить не процент а значение и пикселях
       scale: image?.scale || 1.2,
       rotate: image?.rotate || 0,
-      ratio: image?.ratio || 1,
+      borderX: isNaN(parsedBorderX) ? DEFAULT_EDITOR_BORDER : parsedBorderX,
+      borderY: isNaN(parsedBorderY) ? DEFAULT_EDITOR_BORDER : parsedBorderY,
     },
   });
   const [updateImage, isLoading, data, errors] = useUpdateImage();
   const borderRadius = watch('borderRadius');
   const scale = watch('scale');
   const rotate = watch('rotate');
-  const ratio = watch('ratio');
+  const borderX = parseFloat(watch('borderX') as any);
+  const borderY = parseFloat(watch('borderY') as any);
 
   useEffect(() => {
     if (imageInfo) {
       // инициализация канваса сразу после того как загрузилось изображение
       const { width: imageWidth, height: imageHeight } = imageInfo;
-      const halfCanvasImageWindow = imageSize / 2;
-      const shiftXToCenterCanvasWindow = halfCanvasImageWindow / (imageWidth * scale);
-      const shiftYToCenterCanvasWindow = halfCanvasImageWindow / (imageHeight * scale);
+      const correctImageSizeWidth = (imageSize - 2 * borderX) / 2;
+      const correctImageSIzeHeight = (imageSize - 2 * borderY) / 2;
+
+      const shiftXToCenterCanvasWindow = correctImageSizeWidth / (imageWidth * scale);
+      const shiftYToCenterCanvasWindow = correctImageSIzeHeight / (imageHeight * scale);
       const positionCenterX = image?.x !== undefined ? image.x + shiftXToCenterCanvasWindow : 0.5;
       const positionCenterY = image?.y !== undefined ? image.y + shiftYToCenterCanvasWindow : 0.5;
 
@@ -78,9 +84,6 @@ export const ImageEditorModal = (props: IProps) => {
       );
     }
   }, [imageInfo]);
-
-  const BORDER_X = EDITOR_BORDER * ratio;
-  const BORDER_Y = EDITOR_BORDER / ratio;
 
   useEffect(() => {
     if (imageEditorWrapper) {
@@ -148,10 +151,10 @@ export const ImageEditorModal = (props: IProps) => {
           <AvatarEditor
             ref={editorRefCallback}
             image={imageSource}
-            width={imageSize - 2 * BORDER_X}
-            height={imageSize - 2 * BORDER_Y}
+            width={Math.abs(imageSize - 2 * borderX)}
+            height={Math.abs(imageSize - 2 * borderY)}
             color={[255, 255, 255, 0.6]} // RGBA
-            border={[BORDER_X, BORDER_Y]}
+            border={[borderX, borderY]}
             borderRadius={parseFloat(borderRadius as any)}
             scale={parseFloat(`${scale || 1}` as any)}
             rotate={rotate}
@@ -160,12 +163,35 @@ export const ImageEditorModal = (props: IProps) => {
             onLoadSuccess={onLoadSuccess}
           />
           <ControlsWrapper>
-            {isEditRatio && (
-              <FormRow>
-                <ControlledField name='ratio' control={control}>
-                  <InputRange label='Соотношение сторон' min={0.5} max={2} step={0.01} />
-                </ControlledField>
-              </FormRow>
+            {isEditBorder && (
+              <>
+                <FormRow>
+                  <ControlledField name='borderX' control={control}>
+                    <InputRange
+                      label='Ширина'
+                      min={100}
+                      max={0}
+                      step={-1}
+                      valueLabel={`${100 - borderX}%`}
+                      minValueLabel='Мин'
+                      maxValueLabel='Макс'
+                    />
+                  </ControlledField>
+                </FormRow>
+                <FormRow>
+                  <ControlledField name='borderY' control={control}>
+                    <InputRange
+                      label='Высота'
+                      min={100}
+                      max={0}
+                      step={-1}
+                      valueLabel={`${100 - borderY}%`}
+                      minValueLabel='Мин'
+                      maxValueLabel='Макс'
+                    />
+                  </ControlledField>
+                </FormRow>
+              </>
             )}
             {isEditBorderRadius && (
               <FormRow>
