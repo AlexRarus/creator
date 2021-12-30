@@ -74,7 +74,8 @@ export const InputRange = (props: IProps) => {
       // dnd
       if (inputRangeMetrics && valueElement && lineElement) {
         // выставляем в нужную позицию курсор
-        const offsetXMax = Math.min(e.clientX - inputRangeMetrics.x, inputRangeMetrics.width); // расстояние от левого края инпута
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const offsetXMax = Math.min(clientX - inputRangeMetrics.x, inputRangeMetrics.width); // расстояние от левого края инпута
         const offsetX = Math.max(0, offsetXMax); // расстояние от левого края инпута
         const left = Math.max(
           0,
@@ -97,7 +98,8 @@ export const InputRange = (props: IProps) => {
   const onMouseDown = (e: any) => {
     // start dnd
     if (inputRangeMetrics && valueElement && lineElement) {
-      const offsetXMax = Math.min(e.clientX - inputRangeMetrics.x, inputRangeMetrics.width); // расстояние от левого края инпута
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const offsetXMax = Math.min(clientX - inputRangeMetrics.x, inputRangeMetrics.width); // расстояние от левого края инпута
       const offsetX = Math.max(0, offsetXMax); // расстояние от левого края инпута
       const left = Math.max(
         0,
@@ -126,7 +128,8 @@ export const InputRange = (props: IProps) => {
   const onMouseUp = (e: any) => {
     // end dnd
     if (inputRangeMetrics && valueElement && lineElement) {
-      const offsetXMax = Math.min(e.clientX - inputRangeMetrics.x, inputRangeMetrics.width); // расстояние от левого края инпута
+      const clientX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
+      const offsetXMax = Math.min(clientX - inputRangeMetrics.x, inputRangeMetrics.width); // расстояние от левого края инпута
       const offsetX = Math.max(0, offsetXMax); // расстояние от левого края инпута
       // убираем управление позицией
       valueElement.removeAttribute('style');
