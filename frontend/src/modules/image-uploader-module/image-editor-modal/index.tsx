@@ -83,8 +83,6 @@ export const ImageEditorModal = (props: IProps) => {
         'borderRadius',
         image?.borderRadius !== undefined ? (image.borderRadius / 100) * imageSize : maxBorderRadius
       );
-
-      setPositionInitialized(true);
     }
   }, [imageInfo]);
 
@@ -142,7 +140,10 @@ export const ImageEditorModal = (props: IProps) => {
     }
   };
 
-  const onPositionChange = (position: { x: number; y: number }) => setPosition(position);
+  const onPositionChange = (position: { x: number; y: number }) => {
+    setPosition(position);
+    setPositionInitialized(true);
+  };
   const onLoadSuccess = (imageInfo: any) => setImageInfo(imageInfo);
 
   const imageSource: any = image?.src ? `${window.location.origin}/media/${image?.src}` : '';
