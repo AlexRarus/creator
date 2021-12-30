@@ -35,6 +35,7 @@ export const ImageEditorModal = (props: IProps) => {
   } = props;
   const [imageEditorWrapper, imageEditorWrapperRefCallback] = useState<HTMLDivElement | null>(null);
   const [position, setPosition] = useState({ x: 0.5, y: 0.5 });
+  const [positionInitialized, setPositionInitialized] = useState(false);
   const [imageSize, setImageSize] = useState<number>(DEFAULT_IMAGE_SIZE);
   const [editor, editorRefCallback] = useState<any>();
   const [imageInfo, setImageInfo] = useState<any>();
@@ -61,7 +62,7 @@ export const ImageEditorModal = (props: IProps) => {
   const borderY = parseFloat(watch('borderY') as any);
 
   useEffect(() => {
-    if (imageInfo) {
+    if (imageInfo && !positionInitialized) {
       // инициализация канваса сразу после того как загрузилось изображение
       const { width: imageWidth, height: imageHeight } = imageInfo;
       const correctImageSizeWidth = (imageSize - 2 * borderX) / 2;
@@ -82,6 +83,8 @@ export const ImageEditorModal = (props: IProps) => {
         'borderRadius',
         image?.borderRadius !== undefined ? (image.borderRadius / 100) * imageSize : maxBorderRadius
       );
+
+      setPositionInitialized(true);
     }
   }, [imageInfo]);
 
