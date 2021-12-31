@@ -46,7 +46,13 @@ const TinyEditor = React.forwardRef((props: IProps, ref: any) => {
         initialValue={innerValue}
         init={{
           elementpath: true,
-          content_style: `body { color: ${DEVICE_THEME?.textColor?.primary}; }`,
+          // skin: 'oxide-dark',
+          // content_css: 'dark',
+          content_style: `
+          body { 
+            color: ${DEVICE_THEME?.textColor?.primary};
+            background: ${DEVICE_THEME?.background?.primary};
+            }`,
           height,
           width: '100%',
           menubar: false,

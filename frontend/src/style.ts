@@ -1,4 +1,5 @@
 import styled, { createGlobalStyle, css } from 'styled-components';
+import { rgba } from 'polished';
 import { MEDIA, FONTS } from 'src/components/theme';
 
 export const GlobalStyleApp = createGlobalStyle<any>`  
@@ -73,6 +74,73 @@ export const GlobalStyleApp = createGlobalStyle<any>`
 
   * {
     box-sizing: border-box;
+  }
+  
+  
+  .tox {
+    .tox-collection--list {
+      [aria-checked='true'] {
+        background: ${({ theme }) => rgba(theme?.textColor?.primary, 0.1)} !important;
+        * {
+          background: transparent !important;
+        }
+        
+        svg {
+          fill: ${({ theme }) => theme?.textColor.primary} !important;
+        }
+      }
+      .tox-collection__item--active {
+        background: ${({ theme }) => rgba(theme?.textColor?.primary, 0.05)} !important;
+        * {
+          background: transparent !important;
+        }
+      }
+    }
+    .tox-split-button {
+      &:hover {
+       background: ${({ theme }) => rgba(theme?.textColor?.primary, 0.1)} !important;
+      }
+    }
+    .tox-collection--toolbar {
+      .tox-collection__item--enabled {
+        background: ${({ theme }) => rgba(theme?.textColor?.primary, 0.1)} !important;
+      }
+      .tox-collection__item--active {
+        background: ${({ theme }) => rgba(theme?.textColor?.primary, 0.1)} !important;
+      }
+    }
+    .tox-menu {
+      color: ${({ theme }) => theme?.textColor?.primary} !important;
+      background: ${({ theme }) => theme?.background?.primary} !important;
+      
+      svg {
+        color: ${({ theme }) => theme?.textColor?.primary} !important;
+      }
+    }
+    .tox-toolbar__overflow {
+      background: ${({ theme }) => theme?.background?.primary} !important;
+      
+      .tox-tbtn--enabled {
+         background: ${({ theme }) => rgba(theme?.textColor?.primary, 0.1)} !important;
+      }
+      
+      span,
+      button {
+        &:active,
+        &:focus,
+        &:hover {
+           background: ${({ theme }) => rgba(theme?.textColor?.primary, 0.05)} !important;
+        }
+      }
+      
+      [aria-pressed='true'] {
+          background: ${({ theme }) => rgba(theme?.textColor?.primary, 0.1)} !important;
+        }
+      
+      svg {
+        fill: ${({ theme }) => theme?.textColor?.primary} !important;
+      }
+    }
   }
 `;
 
