@@ -12,7 +12,7 @@ import {
   Value,
   ValueLabel,
   VALUE_SIZE,
-  MOBILE_VALUE_PADDING,
+  MOBILE_VALUE_PADDING_X,
 } from './style';
 
 interface IProps {
@@ -78,7 +78,7 @@ export const InputRange = (props: IProps) => {
         const clientX = e.touches ? e.touches[0].clientX : e.clientX;
         const offsetXMax = Math.min(clientX - inputRangeMetrics.x, inputRangeMetrics.width); // расстояние от левого края инпута
         const offsetX = Math.max(0, offsetXMax); // расстояние от левого края инпута
-        const shift = isMobile ? MOBILE_VALUE_PADDING : 0;
+        const shift = isMobile ? MOBILE_VALUE_PADDING_X : 0;
         const left = Math.max(
           -shift,
           Math.min(offsetX - VALUE_SIZE / 2 - shift, inputRangeMetrics.width - VALUE_SIZE - shift)
@@ -103,7 +103,7 @@ export const InputRange = (props: IProps) => {
       const clientX = e.touches ? e.touches[0].clientX : e.clientX;
       const offsetXMax = Math.min(clientX - inputRangeMetrics.x, inputRangeMetrics.width); // расстояние от левого края инпута
       const offsetX = Math.max(0, offsetXMax); // расстояние от левого края инпута
-      const shift = isMobile ? MOBILE_VALUE_PADDING : 0;
+      const shift = isMobile ? MOBILE_VALUE_PADDING_X : 0;
       const left = Math.max(
         -shift,
         Math.min(offsetX - VALUE_SIZE / 2 - shift, inputRangeMetrics.width - VALUE_SIZE - shift)
