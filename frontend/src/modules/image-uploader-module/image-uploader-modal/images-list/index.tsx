@@ -19,7 +19,9 @@ interface IProps {
   dropZoneRefCallback?: any;
   imageActions?: IAction[];
   blockType?: string; // для какого типа блока запросить (создать) изображения
+  getBlockTypes: string[]; // для какого типа блока запросить изображения
   createTags?: string[]; // с какими тегами создать изображения
+  getTags?: string[]; // с какими тегами запросить изображения
   isCommon?: boolean;
   isEditBorderRadius?: boolean;
   isEditBorder?: boolean;
@@ -27,8 +29,10 @@ interface IProps {
 
 export const ImagesList = (props: IProps) => {
   const {
+    getBlockTypes,
     blockType,
     createTags,
+    getTags,
     isCommon,
     images,
     onClickImage,
@@ -92,6 +96,8 @@ export const ImagesList = (props: IProps) => {
             )}
             actions={imageActions}
             blockType={blockType}
+            getBlockTypes={getBlockTypes}
+            getTags={getTags}
             deleteImage={deleteImage}
             updateImage={updateImage}
             isEditBorderRadius={isEditBorderRadius}

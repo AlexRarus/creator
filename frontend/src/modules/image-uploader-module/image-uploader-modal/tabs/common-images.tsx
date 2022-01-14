@@ -54,6 +54,8 @@ export const CommonImagesList = observer((props: IProps) => {
     <CommonImagesListWrapper>
       <ImagesList
         blockType={blockType}
+        getBlockTypes={getBlockTypes}
+        getTags={getTags}
         images={commonImages}
         onClickImage={onClickCommonImage}
         selectedImages={selectedImages}
