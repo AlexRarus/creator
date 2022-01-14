@@ -57,9 +57,7 @@ def block_section_create(data):
 def block_section_update(section_instance, data):
     blocks_ids = data.pop("blocks", None)
 
-    serializer = BlockSectionSerializerWrite(
-        section_instance, data=data, partial=True
-    )
+    serializer = BlockSectionSerializerWrite(section_instance, data=data)
     serializer.is_valid(raise_exception=True)
 
     if blocks_ids is not None:

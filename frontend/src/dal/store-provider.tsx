@@ -1,6 +1,6 @@
 import React, { createContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useThemeContext } from 'src/providers/dark-theme-provider';
+import { useThemeContext } from 'src/providers/main-theme-provider';
 import { ThemeProvider } from 'styled-components';
 
 import RootStore from './root-store';

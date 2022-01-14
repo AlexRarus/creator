@@ -26,7 +26,7 @@ export interface IThemeWrite {
   backgroundType?: string;
   backgroundColor?: string;
   backgroundGradient?: string;
-  backgroundImage?: number; // id изображения
+  backgroundImage?: number | null; // id изображения
   backgroundRepeat?: string;
   backgroundSmooth?: boolean;
   backgroundSize?: string;

@@ -30,7 +30,7 @@ export const FieldBlockFont = (props: IProps) => {
         }}>
         <GridColumn size={4}>
           <ControlledField name='color' control={control} formDefaultValues={formDefaultValues}>
-            <ColorPicker label='Цвет текста' />
+            <ColorPicker label='Цвет текста' disableAlpha={true} />
           </ControlledField>
         </GridColumn>
         <GridColumn size={4}>
@@ -38,7 +38,7 @@ export const FieldBlockFont = (props: IProps) => {
             name='headerColor'
             control={control}
             formDefaultValues={formDefaultValues}>
-            <ColorPicker label='Цвет заголовков' />
+            <ColorPicker label='Цвет заголовков' disableAlpha={true} />
           </ControlledField>
         </GridColumn>
       </Grid>

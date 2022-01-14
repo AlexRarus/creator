@@ -4,7 +4,7 @@ import React from 'react';
 import * as mobx from 'mobx';
 import { RootStoreProvider } from 'src/dal/store-provider';
 
-import { CustomThemeProvider } from './dark-theme-provider';
+import { MainThemeProvider } from './main-theme-provider';
 import { AppTypeProvider } from './app-type-provider';
 import { VirtualKeyboardProvider } from './virtual-keyboard-provider';
 import { HackDndProvider } from './hack-dnd-provider';
@@ -24,7 +24,7 @@ export const AppCommonProvider = (props: any) => {
   const { children } = props;
 
   return (
-    <CustomThemeProvider>
+    <MainThemeProvider>
       <VirtualKeyboardProvider>
         <AppTypeProvider>
           <HackDndProvider>
@@ -32,6 +32,6 @@ export const AppCommonProvider = (props: any) => {
           </HackDndProvider>
         </AppTypeProvider>
       </VirtualKeyboardProvider>
-    </CustomThemeProvider>
+    </MainThemeProvider>
   );
 };

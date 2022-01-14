@@ -49,10 +49,20 @@ const backgroundPositionBottom: IOption = {
   value: 'bottom',
   label: 'Снизу',
 };
+const backgroundPositionLeft: IOption = {
+  value: 'left',
+  label: 'Слева',
+};
+const backgroundPositionRight: IOption = {
+  value: 'right',
+  label: 'Справа',
+};
 export const backgroundPositions: IOption[] = [
   backgroundPositionTop,
   backgroundPositionCenter,
   backgroundPositionBottom,
+  backgroundPositionLeft,
+  backgroundPositionRight,
 ];
 
 const backgroundRepeatNo: IOption = {
@@ -81,7 +91,7 @@ export const backgroundRepeats: IOption[] = [
 // подготавливаем данные пришедшие с формы для бэка
 export const prepareDataForServer = (rawData: RawData): DataForServer => {
   const backgroundType = rawData.formInputs.backgroundType.value;
-  const backgroundImage = rawData.formInputs.backgroundImage?.id;
+  const backgroundImage = rawData.formInputs.backgroundImage?.id || null;
 
   const backgroundSize = rawData.formInputs.backgroundSize?.value;
   const backgroundSizeCustomValue = `${rawData.formInputs.backgroundSizeCustomValue}%`;

@@ -54,19 +54,19 @@ const getButtonPadding = (props: IButtonStyledProps) => {
 };
 
 const getButtonHeight = (props: IButtonStyledProps) => {
-  const { dimension, block } = props;
+  const { dimension } = props;
 
   switch (dimension) {
     case 's':
-      return block ? '100%' : '24px';
+      return '30px';
     case 'm':
-      return block ? '100%' : '32px';
+      return '40px';
     case 'l':
-      return block ? '100%' : '40px';
+      return '50px';
     case 'xxl':
-      return block ? '100%' : '60px';
+      return '60px';
     default:
-      return block ? '100%' : '40px';
+      return '50px';
   }
 };
 const getButtonStyles = (props: IButtonStyledProps) => {

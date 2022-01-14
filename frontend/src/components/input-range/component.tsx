@@ -12,6 +12,7 @@ import {
   Value,
   ValueLabel,
   VALUE_SIZE,
+  MOBILE_VALUE_PADDING,
 } from './style';
 
 interface IProps {
@@ -77,9 +78,10 @@ export const InputRange = (props: IProps) => {
         const clientX = e.touches ? e.touches[0].clientX : e.clientX;
         const offsetXMax = Math.min(clientX - inputRangeMetrics.x, inputRangeMetrics.width); // расстояние от левого края инпута
         const offsetX = Math.max(0, offsetXMax); // расстояние от левого края инпута
+        const shift = isMobile ? MOBILE_VALUE_PADDING : 0;
         const left = Math.max(
-          0,
-          Math.min(offsetX - VALUE_SIZE / 2, inputRangeMetrics.width - VALUE_SIZE)
+          -shift,
+          Math.min(offsetX - VALUE_SIZE / 2 - shift, inputRangeMetrics.width - VALUE_SIZE - shift)
         );
         valueElement.setAttribute('style', `left: ${left}px`);
 
@@ -101,9 +103,10 @@ export const InputRange = (props: IProps) => {
       const clientX = e.touches ? e.touches[0].clientX : e.clientX;
       const offsetXMax = Math.min(clientX - inputRangeMetrics.x, inputRangeMetrics.width); // расстояние от левого края инпута
       const offsetX = Math.max(0, offsetXMax); // расстояние от левого края инпута
+      const shift = isMobile ? MOBILE_VALUE_PADDING : 0;
       const left = Math.max(
-        0,
-        Math.min(offsetX - VALUE_SIZE / 2, inputRangeMetrics.width - VALUE_SIZE)
+        -shift,
+        Math.min(offsetX - VALUE_SIZE / 2 - shift, inputRangeMetrics.width - VALUE_SIZE - shift)
       );
       // выставляем в нужную позицию курсор
       valueElement.setAttribute('style', `left: ${left}px`);
@@ -162,15 +165,18 @@ export const InputRange = (props: IProps) => {
     <InputRangeWrapper
       ref={inputRangeRefCallback}
       onMouseDown={isMobile ? undefined : onMouseDown}
-      onTouchStart={isMobile ? onMouseDown : undefined}
       onMouseUp={isMobile ? undefined : onMouseUp}
-      onTouchEnd={isMobile ? onMouseUp : undefined}
       onMouseLeave={isMobile ? undefined : onMouseLeave}>
       {(isFakeLabel || label) && <InnerLabel>{isFakeLabel ? ' ' : label}</InnerLabel>}
       <input type='hidden' value={value} {...inputProps} />
       <LineWrapper>
         <Line stepsLength={stepsLength} currentStep={currentStep} ref={lineRefCallback}>
-          <Value stepsLength={stepsLength} currentStep={currentStep} ref={valueRefCallback}>
+          <Value
+            stepsLength={stepsLength}
+            currentStep={currentStep}
+            ref={valueRefCallback}
+            onTouchStart={isMobile ? onMouseDown : undefined}
+            onTouchEnd={isMobile ? onMouseUp : undefined}>
             <ValueLabel>{valueLabel || value}</ValueLabel>
           </Value>
         </Line>

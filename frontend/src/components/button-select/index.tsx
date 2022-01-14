@@ -2,7 +2,7 @@ import React, { useRef, RefObject, useState, useEffect, useCallback } from 'reac
 import Popup from 'src/components/popup';
 import { disableScroll, enableScroll } from 'src/utils/scroll';
 import CheckIcon from '@mui/icons-material/Check';
-import { useThemeContext } from 'src/providers/dark-theme-provider';
+import { useThemeContext } from 'src/providers/main-theme-provider';
 
 import { IProps, IOption } from './interfaces';
 import {

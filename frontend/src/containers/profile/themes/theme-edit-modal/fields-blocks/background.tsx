@@ -8,6 +8,7 @@ import { Select } from 'src/components/select';
 import { ImageUploaderModule } from 'src/modules/image-uploader-module';
 import { InputRange } from 'src/components/input-range';
 import { IUser } from 'src/dal/auth/interfaces';
+import Button from 'src/components/button';
 
 import { backgroundTypes, backgroundSizes, backgroundPositions, backgroundRepeats } from '../utils';
 
@@ -46,6 +47,10 @@ export const FieldBlockBackground = (props: IProps) => {
       setValue('backgroundRepeat', false);
     }
   }, [backgroundSmooth]);
+
+  const clearBackgroundImage = () => {
+    setValue('backgroundImage', null);
+  };
 
   return (
     <Block>
@@ -165,6 +170,15 @@ export const FieldBlockBackground = (props: IProps) => {
                 formDefaultValues={formDefaultValues}>
                 <Select options={backgroundPositions} label='Расположение' />
               </ControlledField>
+            </GridColumn>
+            <GridColumn>
+              <Button
+                block={true}
+                disabled={!backgroundImage}
+                kind='danger'
+                onClick={clearBackgroundImage}>
+                Удалить фоновую картинку
+              </Button>
             </GridColumn>
             {/*<GridColumn>*/}
             {/*  <ControlledField*/}

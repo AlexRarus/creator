@@ -31,7 +31,7 @@ export interface ISectionDataWrite {
   backgroundType?: string;
   backgroundColor?: string;
   backgroundGradient?: string;
-  backgroundImage?: number;
+  backgroundImage?: number | null;
   backgroundRepeat?: string;
   backgroundSmooth?: boolean;
   backgroundParallax?: boolean;

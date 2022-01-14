@@ -13,10 +13,12 @@ export const LIGHT_THEME: ITheme = {
     success: COLORS.green[500],
     warning: COLORS.deepOrange[500],
     error: COLORS.red[500],
+    danger: COLORS.red[600],
   },
   background: {
     primary: COLORS.grey[200],
     secondary: COLORS.blueGrey[200],
+    danger: COLORS.white,
   },
   textColor: {
     primary: COLORS.grey[900],
@@ -36,6 +38,7 @@ export const LIGHT_THEME: ITheme = {
         air: COLORS.white,
         formed: COLORS.grey[200],
         success: COLORS.grey[200],
+        danger: COLORS.red[600],
       },
       background: {
         primary: COLORS.blue[500],
@@ -44,6 +47,7 @@ export const LIGHT_THEME: ITheme = {
         air: COLORS.indigo[900],
         formed: COLORS.blue[400],
         success: COLORS.green[500],
+        danger: COLORS.white,
       },
       hover: {
         primary: COLORS.blue[600],
@@ -52,6 +56,7 @@ export const LIGHT_THEME: ITheme = {
         air: COLORS.indigo[800],
         formed: COLORS.blue[600],
         success: COLORS.green[400],
+        danger: COLORS.white,
       },
       active: {
         primary: COLORS.blue[500],
@@ -60,6 +65,7 @@ export const LIGHT_THEME: ITheme = {
         air: COLORS.indigo[900],
         formed: COLORS.blue[500],
         success: COLORS.green[500],
+        danger: COLORS.white,
       },
       borderColor: {
         primary: COLORS.blue[500],
@@ -68,6 +74,7 @@ export const LIGHT_THEME: ITheme = {
         air: COLORS.indigo[900],
         formed: COLORS.blue[400],
         success: COLORS.green[500],
+        danger: COLORS.red[600],
       },
     },
     select: {
@@ -170,10 +177,12 @@ export const DARK_THEME: ITheme = {
     success: COLORS.green[300],
     warning: COLORS.deepOrange[400],
     error: COLORS.red[400],
+    danger: COLORS.red[600],
   },
   background: {
     primary: COLORS.grey.A700,
     secondary: COLORS.grey.A400,
+    danger: COLORS.white,
   },
   textColor: {
     primary: COLORS.grey[300],
@@ -193,6 +202,7 @@ export const DARK_THEME: ITheme = {
         air: COLORS.grey[300],
         formed: COLORS.grey[200],
         success: COLORS.grey[200],
+        danger: COLORS.red[600],
       },
       background: {
         primary: COLORS.blue[400],
@@ -201,6 +211,7 @@ export const DARK_THEME: ITheme = {
         air: COLORS.indigo.A200,
         formed: COLORS.blue[400],
         success: COLORS.green[500],
+        danger: COLORS.white,
       },
       hover: {
         primary: COLORS.blue[300],
@@ -209,6 +220,7 @@ export const DARK_THEME: ITheme = {
         air: COLORS.indigo.A100,
         formed: COLORS.blue[600],
         success: COLORS.green[400],
+        danger: COLORS.white,
       },
       active: {
         primary: COLORS.blue[300],
@@ -217,6 +229,7 @@ export const DARK_THEME: ITheme = {
         air: COLORS.indigo.A100,
         formed: COLORS.blue[500],
         success: COLORS.green[500],
+        danger: COLORS.white,
       },
       borderColor: {
         primary: COLORS.blue[400],
@@ -225,6 +238,7 @@ export const DARK_THEME: ITheme = {
         air: COLORS.indigo.A200,
         formed: COLORS.blue[400],
         success: COLORS.green[500],
+        danger: COLORS.red[600],
       },
     },
     select: {

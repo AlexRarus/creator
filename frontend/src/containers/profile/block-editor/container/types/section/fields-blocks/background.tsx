@@ -7,6 +7,7 @@ import { ColorPickerGradient } from 'src/components/color-picker-gradient';
 import { Select } from 'src/components/select';
 import { ImageUploaderModule } from 'src/modules/image-uploader-module';
 import { InputRange } from 'src/components/input-range';
+import Button from 'src/components/button';
 
 import { backgroundTypes, backgroundSizes, backgroundPositions, backgroundRepeats } from '../utils';
 
@@ -27,7 +28,7 @@ interface IProps {
 export const FieldBlockBackground = (props: IProps) => {
   const { formDefaultValues } = props;
   const [pictureElement, pictureRefCallback] = useState<HTMLDivElement | null>(null);
-  const { control, watch } = useFormContext();
+  const { control, watch, setValue } = useFormContext();
   const backgroundType = watch('backgroundType');
   const backgroundColor = watch('backgroundColor');
   const backgroundGradient = watch('backgroundGradient');
@@ -37,6 +38,10 @@ export const FieldBlockBackground = (props: IProps) => {
   const backgroundSize = watch('backgroundSize');
   const backgroundSizeCustomValue = watch('backgroundSizeCustomValue');
   const backgroundPosition = watch('backgroundPosition');
+
+  const clearBackgroundImage = () => {
+    setValue('backgroundImage', null);
+  };
 
   return (
     <Block>
@@ -155,14 +160,15 @@ export const FieldBlockBackground = (props: IProps) => {
                 <Select options={backgroundPositions} label='Расположение' />
               </ControlledField>
             </GridColumn>
-            {/*<GridColumn>*/}
-            {/*  <ControlledField*/}
-            {/*    control={control}*/}
-            {/*    name='backgroundSmooth'*/}
-            {/*    formDefaultValues={formDefaultValues}>*/}
-            {/*    <Switch>Плавный переход</Switch>*/}
-            {/*  </ControlledField>*/}
-            {/*</GridColumn>*/}
+            <GridColumn>
+              <Button
+                block={true}
+                disabled={!backgroundImage}
+                kind='danger'
+                onClick={clearBackgroundImage}>
+                Удалить фоновую картинку
+              </Button>
+            </GridColumn>
             {/*<GridColumn>*/}
             {/*  <ControlledField*/}
             {/*    control={control}*/}
