@@ -1,5 +1,6 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
-import { useThemeContext } from 'src/providers/dark-theme-provider';
+
+import { useThemeContext } from './main-theme-provider';
 
 const Context = createContext<any>({});
 const Provider = Context.Provider;

@@ -10,7 +10,10 @@ const DEFAULT_COLOR_2 = '#FF0000';
 
 const parseValueToBackground = (value: string, defaultColors: string[]) => {
   const preparedValue = `${value}`.replace(/linear-gradient\((.+)\)/, '$1');
-  let background = preparedValue.split(',');
+  let background = preparedValue
+    .replace(/,\s#/g, 'SPLIT#')
+    .replace(/,\srgb/g, 'SPLITrgb')
+    .split('SPLIT');
 
   background.shift();
 
@@ -56,7 +59,12 @@ export const ColorPickerGradient = React.forwardRef((props: IProps, ref: any) =>
 
   return (
     <>
-      <InputText ref={currentRef} {...props} value={value} onlyProgrammingChange={true}>
+      <InputText
+        ref={currentRef}
+        {...props}
+        value={value}
+        onlyProgrammingChange={true}
+        color={'rgba(255, 255, 255, 0)'}>
         <ColorPreviewWrapper inputWidth={inputWidth}>
           <ColorPreview
             onClick={handleOpenModal}

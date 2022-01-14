@@ -23,6 +23,7 @@ class ThemeSerializerWrite(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         # исключаем поле type для того чтобы его нельзя было изменить
         validated_data.pop("type", None)
+
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()

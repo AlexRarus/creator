@@ -22,9 +22,13 @@ export const prepareValueToOutput = (formInputs: FormInputs): string => {
 };
 
 // подгтавливаем данные для формы
+// входное значение linear-gradient(to bottom, rgba(255, 0, 0, 1), rgba(255, 255, 255, 0))
 export const prepareDataToForm = (value: string, defaultColors: string[]): FormInputs => {
   const preparedValue = `${value}`.replace(/linear-gradient\((.+)\)/, '$1');
-  const [direction, ...colors] = preparedValue.split(',');
+  const [direction, ...colors] = preparedValue
+    .replace(/,\s#/g, 'SPLIT#')
+    .replace(/,\srgb/g, 'SPLITrgb')
+    .split('SPLIT');
 
   return {
     direction: directions.find((item: IOption) => item.value === direction) || verticalDirection,

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { AvatarPreview } from 'src/components/avatar-preview';
 import Popup from 'src/components/popup';
 import { IUser } from 'src/dal/auth/interfaces';
-import { useThemeContext } from 'src/providers/dark-theme-provider';
+import { useThemeContext } from 'src/providers/main-theme-provider';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import ModeNightIcon from '@mui/icons-material/ModeNightOutlined';
 

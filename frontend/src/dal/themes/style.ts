@@ -22,8 +22,13 @@ export const getUserThemeStyles = (theme?: Partial<ITheme> | null) => {
 
   return css`
     ${backgroundType === 'color' && `background: ${backgroundImageUrl}${backgroundColor}`};
-    ${backgroundType === 'gradient' &&
-    `background-image: ${backgroundImageUrl}${backgroundGradient}`};
+    ${
+      backgroundType === 'gradient' &&
+      css`
+        background-image: ${backgroundImageUrl} ${backgroundGradient};
+        background-color: ${COLORS.white};
+      `
+    }
     background-repeat: ${backgroundRepeat};
     background-size: ${backgroundSize || 'auto'};
     background-position: ${backgroundPosition || 'initial'};

@@ -23,7 +23,7 @@ export function Button(props: IProps) {
     id,
     onClick,
     kind = 'primary',
-    dimension = 'l',
+    dimension = 'm',
     disabled = false,
     block = false,
     type = 'button',

@@ -12,13 +12,15 @@ interface IProps {
   selectedImages: IImage[];
   emptyListMessage: string;
   isMulti?: boolean;
-  blockType?: string; // для какого типа блока запросить (создать) изображения
+  blockType?: string; // для какого типа блока (создать) изображения
+  getBlockTypes?: string[]; // для какого типа блока запросить изображения
   getTags?: string[]; // с какими тегами запросить изображения
 }
 
 export const CommonImagesList = observer((props: IProps) => {
   const {
     blockType,
+    getBlockTypes = [blockType] as string[],
     getTags,
     setSelectedImages,
     selectedImages,
@@ -28,10 +30,10 @@ export const CommonImagesList = observer((props: IProps) => {
   const { commonImages, getCommonImagesAction } = useMapStoreToProps();
 
   useEffect(() => {
-    getCommonImagesAction(blockType, getTags);
+    getCommonImagesAction(getBlockTypes, getTags);
   }, [blockType, getTags]);
 
-  const refreshImages = () => getCommonImagesAction(blockType, getTags);
+  const refreshImages = () => getCommonImagesAction(getBlockTypes, getTags);
 
   const onClickCommonImage = (image: IImage) => {
     const imageHasSelected = selectedImages.some(

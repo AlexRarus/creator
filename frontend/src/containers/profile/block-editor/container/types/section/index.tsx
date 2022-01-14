@@ -52,7 +52,7 @@ export const SectionForm = observer((props: IProps) => {
   });
   const { formState, handleSubmit, setError } = methods;
   const { isValid } = formState;
-  const [submitBlockEditor, isLoading, data, errors] = useSubmitBlockForm<ISectionDataWrite>();
+  const [submitBlockEditor, isLoading, data, errors] = useSubmitBlockForm<ISectionDataWrite>(false);
   const isEditing = blockId !== 'new';
   const blocks = blockData?.blocks as IBlock<any>[]; // TODO Ожидаем { blocks: IBlock<any>[] }
 

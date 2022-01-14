@@ -40,7 +40,8 @@ interface IProps {
   isCommon?: boolean;
   isEditable?: boolean;
   isMulti?: boolean;
-  blockType?: string; // для какого типа блока запросить (создать) изображения
+  blockType?: string; // для какого типа блока (создать) изображения
+  getBlockTypes?: string[]; // для какого типа блока запросить изображения
   getTags?: string[]; // с какими тегами запросить изображения
   createTags?: string[]; // с какими тегами создать изображения
   isEditBorderRadius?: boolean;
@@ -56,6 +57,7 @@ export const MyImagesList = observer((props: IProps) => {
     isEditable = false,
     isMulti = false,
     blockType,
+    getBlockTypes = [blockType] as string[],
     getTags,
     createTags,
     isEditBorderRadius,
@@ -64,10 +66,10 @@ export const MyImagesList = observer((props: IProps) => {
   const { myImages, getMyImagesAction } = useMapStoreToProps();
 
   useEffect(() => {
-    getMyImagesAction(blockType, getTags);
+    getMyImagesAction(getBlockTypes, getTags);
   }, [blockType, getTags]);
 
-  const refreshImages = () => getMyImagesAction(blockType, getTags);
+  const refreshImages = () => getMyImagesAction(getBlockTypes, getTags);
 
   const onClickImage = (image: IImage) => {
     const imageHasSelected = selectedImages.some(

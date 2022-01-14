@@ -23,6 +23,7 @@ interface IThemePalette {
   success?: string;
   warning?: string;
   error?: string;
+  danger?: string;
   link?: string;
   air?: string;
   light?: string;

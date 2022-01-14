@@ -224,10 +224,15 @@ export default function Popup(props: IProps) {
     const preventClose = () => {
       detail.prevent = true;
     };
-    const mouseupHandler = (e: MouseEvent) => {
+    const mouseDownHandler = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       detail.prevent = Boolean(target?.closest('.popup-component-wrapper')) && !isCloseOnClick;
     };
+    // todo поменял mouseUp на mouseDown
+    // const mouseUpHandler = (e: MouseEvent) => {
+    //   const target = e.target as HTMLElement;
+    //   detail.prevent = Boolean(target?.closest('.popup-component-wrapper')) && !isCloseOnClick;
+    // };
 
     // клик на документе
     const clickHandler = () => {
@@ -240,12 +245,14 @@ export default function Popup(props: IProps) {
 
     openerElement?.addEventListener('click', preventClose);
     if (isOpen) {
-      document.body.addEventListener('mouseup', mouseupHandler);
+      // document.body.addEventListener('mouseup', mouseUpHandler);
+      document.body.addEventListener('mousedown', mouseDownHandler);
       document.body.addEventListener('click', clickHandler);
     }
     return () => {
       openerElement?.removeEventListener('click', preventClose);
-      document.body.removeEventListener('mouseup', mouseupHandler);
+      // document.body.removeEventListener('mouseup', mouseUpHandler);
+      document.body.removeEventListener('mousedown', mouseDownHandler);
       document.body.removeEventListener('click', clickHandler);
     };
   }, [isOpen, isCloseOnClick, openerElement]);

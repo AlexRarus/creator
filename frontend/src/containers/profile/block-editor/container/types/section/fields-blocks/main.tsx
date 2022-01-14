@@ -131,7 +131,7 @@ export const FieldBlockMain = (props: IProps) => {
         </GridColumn>
         <GridColumn>
           <ControlledField name='color' control={control} formDefaultValues={formDefaultValues}>
-            <ColorPicker label='Цвет текста' />
+            <ColorPicker label='Цвет текста' disableAlpha={true} />
           </ControlledField>
         </GridColumn>
       </Grid>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
-import { useThemeContext } from 'src/providers/dark-theme-provider';
+import { useThemeContext } from 'src/providers/main-theme-provider';
 
 import { TinyWrapper } from './style';
 export { InnerHTMLBlockByTinyEditor } from './style';

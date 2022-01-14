@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { COLORS } from 'src/components/theme';
+import { isMobile } from 'react-device-detect';
 
 export const ColorPreviewWrapper = styled.div`
   display: flex;
@@ -11,6 +12,21 @@ export const ColorPreviewWrapper = styled.div`
   height: 100%;
 `;
 
+export const FormWrapper = styled.div`
+  height: 100%;
+  background: ${COLORS.white};
+`;
+
+export const ColorPickerWrapper = styled.div`
+  width: 100%;
+  background: ${COLORS.white};
+
+  & .chrome-picker {
+    width: ${isMobile ? '100%' : '300px'} !important;
+    box-shadow: none !important;
+  }
+`;
+
 export const ColorPreview = styled.div<{ background?: string; hasBorder?: boolean }>`
   position: relative;
   z-index: 50;
@@ -19,26 +35,4 @@ export const ColorPreview = styled.div<{ background?: string; hasBorder?: boolea
   cursor: pointer;
   border: ${({ hasBorder }) => (hasBorder ? `1px solid ${COLORS.black}` : 'none')};
   background: ${({ background = 'transparent' }) => background};
-`;
-
-export const PalleteWrapper = styled.div`
-  height: 100%;
-  background: ${COLORS.white};
-
-  .swatches-picker {
-    width: 100% !important;
-    height: 100% !important;
-
-    & > div {
-      height: 100% !important;
-
-      & > div {
-        height: 100% !important;
-
-        & > div {
-          height: 100% !important;
-        }
-      }
-    }
-  }
 `;

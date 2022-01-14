@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useThemeContext } from 'src/providers/dark-theme-provider';
+import { useThemeContext } from 'src/providers/main-theme-provider';
 import { observer } from 'mobx-react';
 import { useHistory } from 'react-router-dom';
 import { ITheme } from 'src/dal/themes/interfaces';

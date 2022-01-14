@@ -286,7 +286,7 @@ class ImageViewSet(
     def my(self, request, *args, **kwargs):
         """При запросе списка изображений с модификатором /my/
         возвращаем только те у которых author=request.user"""
-        queryset = self.filter_queryset(self.queryset).filter(
+        queryset = self.filter_queryset(self.get_queryset()).filter(
             author=request.user,
         )
         page = self.paginate_queryset(queryset)
