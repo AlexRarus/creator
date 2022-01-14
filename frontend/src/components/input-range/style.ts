@@ -2,7 +2,8 @@ import styled from 'styled-components';
 import { COLORS } from 'src/components/theme';
 import { isMobile } from 'react-device-detect';
 
-export const MOBILE_VALUE_PADDING = 10;
+export const MOBILE_VALUE_PADDING_Y = 15;
+export const MOBILE_VALUE_PADDING_X = 30;
 export const VALUE_SIZE = 16;
 
 export const MarkMin = styled.div`
@@ -59,7 +60,7 @@ const getJustifyContent = (props: { stepsLength: number; currentStep: number }) 
 const getLeftPosition = (props: { stepsLength: number; currentStep: number }) => {
   const { stepsLength, currentStep } = props;
   const percent = (currentStep / stepsLength) * 100;
-  let shift = isMobile ? MOBILE_VALUE_PADDING : 0;
+  let shift = isMobile ? MOBILE_VALUE_PADDING_X : 0;
 
   if (percent === 100) {
     shift = VALUE_SIZE + shift;
@@ -75,8 +76,8 @@ export const Value = styled.div<{ stepsLength: number; currentStep: number }>`
   justify-content: ${getJustifyContent};
   position: absolute;
   left: ${getLeftPosition};
-  height: ${VALUE_SIZE + (isMobile ? MOBILE_VALUE_PADDING * 2 : 0)}px;
-  width: ${VALUE_SIZE + (isMobile ? MOBILE_VALUE_PADDING * 2 : 0)}px;
+  height: ${VALUE_SIZE + (isMobile ? MOBILE_VALUE_PADDING_Y * 2 : 0)}px;
+  width: ${VALUE_SIZE + (isMobile ? MOBILE_VALUE_PADDING_X * 2 : 0)}px;
   background: transparent;
   border-radius: 50%;
   cursor: grab;
@@ -98,13 +99,11 @@ export const Value = styled.div<{ stepsLength: number; currentStep: number }>`
     width: ${VALUE_SIZE}px;
     border-radius: 50%;
   }
-
-  // todo сделать старт ДНД для мобилки только по этому компоненту (УВЕЛИЧИТЬ ЕГО РАЗМЕР ДЛЯ МОБИЛКИ)
 `;
 
 export const ValueLabel = styled.div`
   position: absolute;
-  top: -${14 - (isMobile ? MOBILE_VALUE_PADDING : 0)}px;
+  top: -${14 - (isMobile ? MOBILE_VALUE_PADDING_Y : 0)}px;
   font-size: 12px;
   line-height: 16px;
 `;
