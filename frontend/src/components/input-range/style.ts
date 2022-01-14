@@ -43,6 +43,8 @@ export const LineWrapper = styled.div`
   align-items: center;
   position: relative;
   height: 36px;
+  overflow: hidden;
+  padding-top: 1px;
 `;
 
 const getJustifyContent = (props: { stepsLength: number; currentStep: number }) => {
@@ -55,6 +57,10 @@ const getJustifyContent = (props: { stepsLength: number; currentStep: number }) 
   }
 
   return 'center';
+};
+
+const getPadding = () => {
+  return isMobile ? `${MOBILE_VALUE_PADDING_Y}px ${MOBILE_VALUE_PADDING_X}px` : 0;
 };
 
 const getLeftPosition = (props: { stepsLength: number; currentStep: number }) => {
@@ -78,6 +84,7 @@ export const Value = styled.div<{ stepsLength: number; currentStep: number }>`
   left: ${getLeftPosition};
   height: ${VALUE_SIZE + (isMobile ? MOBILE_VALUE_PADDING_Y * 2 : 0)}px;
   width: ${VALUE_SIZE + (isMobile ? MOBILE_VALUE_PADDING_X * 2 : 0)}px;
+  padding: ${getPadding};
   background: transparent;
   border-radius: 50%;
   cursor: grab;
@@ -103,7 +110,7 @@ export const Value = styled.div<{ stepsLength: number; currentStep: number }>`
 
 export const ValueLabel = styled.div`
   position: absolute;
-  top: -${14 - (isMobile ? MOBILE_VALUE_PADDING_Y : 0)}px;
+  top: ${-14 + (isMobile ? MOBILE_VALUE_PADDING_Y : 0)}px;
   font-size: 12px;
   line-height: 16px;
 `;
