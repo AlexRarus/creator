@@ -37,15 +37,16 @@ interface IProps {
   deleteImage?(image: IImage): void;
   updateImage?(image: IImage): void;
   blockType?: string; // для какого типа блока запросить (создать) изображения
-  tags?: string[]; // с какими тегами запросить (создать) изображения
+  getBlockTypes: string[]; // для какого типа блока запросить изображения
+  getTags?: string[]; // с какими тегами запросить (создать) изображения
   isEditBorderRadius?: boolean;
   isEditBorder?: boolean;
 }
 
 export const ImageItem = observer((props: IProps) => {
   const {
-    blockType,
-    tags,
+    getBlockTypes,
+    getTags,
     image,
     onClickImage,
     isSelected,
@@ -86,7 +87,7 @@ export const ImageItem = observer((props: IProps) => {
   const onAction = (actionId: string) => {
     switch (actionId) {
       case 'delete':
-        deleteMyImagesAction([image], blockType, tags);
+        deleteMyImagesAction([image], getBlockTypes, getTags);
         deleteImage && deleteImage(image);
         break;
       case 'edit':
@@ -97,7 +98,7 @@ export const ImageItem = observer((props: IProps) => {
     }
   };
   const onSuccessEditing = (image: IImage) => {
-    getMyImagesAction(blockType, tags);
+    getMyImagesAction(getBlockTypes, getTags);
     updateImage && updateImage(image);
   };
 

@@ -102,6 +102,7 @@ export const MyImagesList = observer((props: IProps) => {
     <MyImagesListWrapper>
       <ImagesList
         blockType={blockType}
+        getBlockTypes={getBlockTypes}
         images={myImages}
         onClickImage={onClickImage}
         deleteImage={deleteImage}
@@ -111,6 +112,7 @@ export const MyImagesList = observer((props: IProps) => {
         addButton={true}
         dropZoneRefCallback={dropZoneRefCallback}
         imageActions={getImageActions(isEditable)}
+        getTags={getTags}
         createTags={createTags}
         isCommon={isCommon}
         isEditBorderRadius={isEditBorderRadius}
