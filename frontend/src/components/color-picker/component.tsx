@@ -1,55 +1,58 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { InputText } from 'src/components/input-text';
 import Popup from 'src/components/popup';
 import Modal from 'src/components/modal';
-import { SwatchesPicker } from 'react-color';
-import Color from 'color';
+import { ChromePicker } from 'react-color';
 import { isMobile } from 'react-device-detect';
+import { Grid, GridColumn } from 'src/components/grid';
+import { Form } from 'src/components/form';
 
 import { IProps } from './interfaces';
-import { ColorPreviewWrapper, ColorPreview, PalleteWrapper } from './style';
+import { ColorPreviewWrapper, FormWrapper, ColorPickerWrapper, ColorPreview } from './style';
 
 export const ColorPicker = React.forwardRef((props: IProps, ref: any) => {
-  const [color, setColor] = useState<any>();
+  const { disableAlpha = false, ...restProps } = props;
   const [isOpenPicker, setOpenPicker] = useState(false);
+  const [innerValue, setInnerValue] = useState(props.value);
   const [colorPreviewElement, colorPreviewRefCallback] = useState<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    try {
-      setColor(props?.value?.length ? Color(props?.value) : null);
-    } catch {
-      setColor(null);
-    }
-  }, [props.value]);
 
   const handleChange = (value: string) => {
     props.onChange && props.onChange(value);
   };
   const handleOpenPicker = () => setOpenPicker(true);
-  const handleClosePicker = () => setOpenPicker(false);
+  const handleClosePicker = () => {
+    setOpenPicker(false);
+  };
+
+  const handleInnerChangeColor = (color: any) => {
+    const { r, g, b, a } = color.rgb;
+    setInnerValue(`rgba(${r}, ${g}, ${b}, ${a})`);
+  };
 
   const handleChangeColor = (color: any) => {
-    handleChange(color?.hex?.toUpperCase());
+    const { r, g, b, a } = color.rgb;
+    handleChange(`rgba(${r}, ${g}, ${b}, ${a})`);
+  };
 
-    if (isMobile) {
-      handleClosePicker();
+  const onAction = (actionId: string) => {
+    switch (actionId) {
+      case 'submit':
+        handleClosePicker();
+        break;
+      default:
+        break;
     }
   };
 
   return (
     <>
-      <InputText
-        ref={ref}
-        {...props}
-        onChange={handleChange}
-        maxLength={7}
-        color={!color?.isDark() ? '#000000' : props.value}>
+      <InputText ref={ref} maxLength={100} {...restProps} onChange={handleChange} color={'#000000'}>
         <ColorPreviewWrapper>
           <ColorPreview
             onClick={handleOpenPicker}
             ref={colorPreviewRefCallback}
             background={props.value}
-            hasBorder={!color?.isDark()}
+            hasBorder={true}
           />
         </ColorPreviewWrapper>
       </InputText>
@@ -68,14 +71,38 @@ export const ColorPicker = React.forwardRef((props: IProps, ref: any) => {
           maxHeight={300}
           zIndex={999}
           isFixed={true}>
-          <SwatchesPicker onChange={handleChangeColor} />
+          <Grid>
+            <GridColumn>
+              <ColorPickerWrapper>
+                <ChromePicker
+                  color={innerValue}
+                  onChange={handleInnerChangeColor}
+                  onChangeComplete={handleChangeColor}
+                  disableAlpha={disableAlpha}
+                />
+              </ColorPickerWrapper>
+            </GridColumn>
+          </Grid>
         </Popup>
       )}
       {isMobile && isOpenPicker && (
         <Modal title='Выбор цвета' onClose={handleClosePicker}>
-          <PalleteWrapper>
-            <SwatchesPicker onChange={handleChangeColor} />
-          </PalleteWrapper>
+          <FormWrapper>
+            <Form onAction={onAction} submitActionLabel='Готово'>
+              <Grid>
+                <GridColumn>
+                  <ColorPickerWrapper>
+                    <ChromePicker
+                      color={innerValue}
+                      onChange={handleInnerChangeColor}
+                      onChangeComplete={handleChangeColor}
+                      disableAlpha={disableAlpha}
+                    />
+                  </ColorPickerWrapper>
+                </GridColumn>
+              </Grid>
+            </Form>
+          </FormWrapper>
         </Modal>
       )}
     </>

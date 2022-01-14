@@ -11,6 +11,21 @@ export const ColorPreviewWrapper = styled.div`
   height: 100%;
 `;
 
+export const FormWrapper = styled.div`
+  height: 100%;
+  background: ${COLORS.white};
+`;
+
+export const ColorPickerWrapper = styled.div`
+  width: 100%;
+  background: ${COLORS.white};
+
+  & .chrome-picker {
+    width: 100% !important;
+    box-shadow: none !important;
+  }
+`;
+
 export const ColorPreview = styled.div<{ background?: string; hasBorder?: boolean }>`
   position: relative;
   z-index: 50;

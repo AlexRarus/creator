@@ -22,5 +22,6 @@ export interface IProps extends Partial<IInputProps> {
   fontSizeInherit?: boolean;
   fontWeight?: string;
   autoFocus?: boolean;
+  disableAlpha?: boolean;
   [key: string]: any;
 }
