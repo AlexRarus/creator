@@ -22,6 +22,7 @@ interface IProps {
 }
 
 const DEFAULT_IMAGE_SIZE = 200;
+const MAX_EDITOR_BORDER = 100;
 const DEFAULT_EDITOR_BORDER = 50;
 
 export const ImageEditorModal = (props: IProps) => {
@@ -49,16 +50,18 @@ export const ImageEditorModal = (props: IProps) => {
           : 100,
       scalePercent: image?.scale ? image.scale * 100 : 120,
       rotate: image?.rotate || 0,
-      borderX: isNaN(parsedBorderX) ? DEFAULT_EDITOR_BORDER : parsedBorderX,
-      borderY: isNaN(parsedBorderY) ? DEFAULT_EDITOR_BORDER : parsedBorderY,
+      width: isNaN(parsedBorderX) ? DEFAULT_EDITOR_BORDER : MAX_EDITOR_BORDER - parsedBorderX,
+      height: isNaN(parsedBorderY) ? DEFAULT_EDITOR_BORDER : MAX_EDITOR_BORDER - parsedBorderY,
     },
   });
   const [updateImage, isLoading, data, errors] = useUpdateImage();
   const borderRadiusPercent = watch('borderRadiusPercent');
   const scalePercent = watch('scalePercent');
   const rotate = watch('rotate');
-  const borderX = parseFloat(watch('borderX') as any);
-  const borderY = parseFloat(watch('borderY') as any);
+  const width = parseFloat(watch('width') as any);
+  const height = parseFloat(watch('height') as any);
+  const borderX = MAX_EDITOR_BORDER - width;
+  const borderY = MAX_EDITOR_BORDER - height;
   const maxBorder = Math.max(borderX, borderY);
   const maxBorderRadius = imageSize / 2 - maxBorder;
 
@@ -97,6 +100,8 @@ export const ImageEditorModal = (props: IProps) => {
       const rawData: RawData = {
         id: image.id,
         ...data,
+        borderX,
+        borderY,
         scale: data.scalePercent / 100,
         borderRadius: data.borderRadiusPercent / 2, // храним в базе значение от 0 до 50, а на форме от 0 до 100
         width, // значение от 0 до 1 (процент ширины изображения который отображается в обрезанной области)
@@ -168,13 +173,13 @@ export const ImageEditorModal = (props: IProps) => {
             {isEditBorder && (
               <>
                 <FormRow>
-                  <ControlledField name='borderX' control={control}>
+                  <ControlledField name='width' control={control}>
                     <InputRange
                       label='Ширина'
-                      min={100}
-                      max={0}
-                      step={-1}
-                      valueLabel={`${100 - borderX}%`}
+                      min={0}
+                      max={MAX_EDITOR_BORDER}
+                      step={1}
+                      valueLabel={`${width}%`}
                       minValueLabel='Мин'
                       maxValueLabel='Макс'
                       withInput={true}
@@ -182,13 +187,13 @@ export const ImageEditorModal = (props: IProps) => {
                   </ControlledField>
                 </FormRow>
                 <FormRow>
-                  <ControlledField name='borderY' control={control}>
+                  <ControlledField name='height' control={control}>
                     <InputRange
                       label='Высота'
-                      min={100}
-                      max={0}
-                      step={-1}
-                      valueLabel={`${100 - borderY}%`}
+                      min={0}
+                      max={MAX_EDITOR_BORDER}
+                      step={1}
+                      valueLabel={`${height}%`}
                       minValueLabel='Мин'
                       maxValueLabel='Макс'
                       withInput={true}
