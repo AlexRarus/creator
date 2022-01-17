@@ -37,44 +37,48 @@ export const AvatarEditModal = (props: IProps) => {
   const [imageSize, setImageSize] = useState<number>(DEFAULT_IMAGE_SIZE);
   const [editor, editorRefCallback] = useState<any>();
   const [imageInfo, setImageInfo] = useState<any>();
-  const maxBorderRadius = imageSize / 2;
   const { handleSubmit, formState, control, watch, setValue } = useForm<FormInputs>({
     defaultValues: {
-      borderRadius: avatar ? (avatar.borderRadius / 100) * imageSize : maxBorderRadius,
-      scale: avatar?.scale || 1.2,
+      borderRadiusPercent:
+        avatar?.borderRadius !== undefined
+          ? avatar.borderRadius * 2 // храним в базе значение от 0 до 50, а на форме от 0 до 100
+          : 100,
+      scalePercent: avatar?.scale ? avatar.scale * 100 : 120,
       rotate: avatar?.rotate || 0,
     },
   });
   const [submitAvatarForm, isLoading, data, errors] = useSubmitAvatarForm();
   const sourceFile = watch('sourceFile');
-  const borderRadius = watch('borderRadius');
-  const scale = watch('scale');
+  const borderRadiusPercent = watch('borderRadiusPercent');
+  const scalePercent = watch('scalePercent');
   const rotate = watch('rotate');
+  const maxBorderRadius = imageSize / 2 - EDITOR_BORDER;
 
   useEffect(() => {
     if (imageInfo) {
       // инициализация канваса сразу после того как загрузилось изображение
       const { width: imageWidth, height: imageHeight } = imageInfo;
-      const halfCanvasImageWindow = imageSize / 2;
-      const shiftXToCenterCanvasWindow = halfCanvasImageWindow / (imageWidth * scale);
-      const shiftYToCenterCanvasWindow = halfCanvasImageWindow / (imageHeight * scale);
-      const positionCenterX = avatar ? avatar.x + shiftXToCenterCanvasWindow : 0.5;
-      const positionCenterY = avatar ? avatar.y + shiftYToCenterCanvasWindow : 0.5;
+      const correctImageSizeWidth = (imageSize - 2 * EDITOR_BORDER) / 2;
+      const correctImageSIzeHeight = (imageSize - 2 * EDITOR_BORDER) / 2;
+      const scale = scalePercent / 100;
+
+      const shiftXToCenterCanvasWindow = correctImageSizeWidth / (imageWidth * scale);
+      const shiftYToCenterCanvasWindow = correctImageSIzeHeight / (imageHeight * scale);
+      const positionCenterX = avatar?.x !== undefined ? avatar.x + shiftXToCenterCanvasWindow : 0.5;
+      const positionCenterY = avatar?.y !== undefined ? avatar.y + shiftYToCenterCanvasWindow : 0.5;
 
       // инициализация центра области preview
       setPosition({
         x: positionCenterX,
         y: positionCenterY,
       });
-      // инициализация borderRadius
-      setValue('borderRadius', avatar ? (avatar.borderRadius / 100) * imageSize : maxBorderRadius);
     }
   }, [imageInfo]);
 
   useEffect(() => {
     if (avatarEditorWrapper) {
       const fullWidth = avatarEditorWrapper.getBoundingClientRect().width;
-      setImageSize(Math.max(fullWidth - 2 * EDITOR_BORDER, DEFAULT_IMAGE_SIZE));
+      setImageSize(Math.max(fullWidth, DEFAULT_IMAGE_SIZE));
     }
   }, [avatarEditorWrapper]);
 
@@ -88,7 +92,8 @@ export const AvatarEditModal = (props: IProps) => {
         height, // значение от 0 до 1 (процент высоты изображения который отображается в обрезанной области)
         x, // значение от 0 до 1 (процент ширины изображения на который оно смещено)
         y, // значение от 0 до 1 (процент высоты изображения на который оно смещено)
-        borderRadius: (borderRadius / imageSize) * 100, // вычисляем процентное значение
+        borderRadius: data.borderRadiusPercent / 2, // храним в базе значение от 0 до 50, а на форме от 0 до 100
+        scale: data.scalePercent / 100,
       };
 
       if (sourceFile) {
@@ -155,12 +160,12 @@ export const AvatarEditModal = (props: IProps) => {
           <AvatarEditor
             ref={editorRefCallback}
             image={image}
-            width={imageSize}
-            height={imageSize}
+            width={Math.abs(imageSize - 2 * EDITOR_BORDER)}
+            height={Math.abs(imageSize - 2 * EDITOR_BORDER)}
             color={[255, 255, 255, 0.6]} // RGBA
             border={EDITOR_BORDER}
-            borderRadius={parseFloat(borderRadius as any)}
-            scale={parseFloat(`${scale || 1}` as any)}
+            borderRadius={(maxBorderRadius * borderRadiusPercent) / 100}
+            scale={scalePercent / 100 || 1}
             rotate={rotate}
             position={position}
             onPositionChange={onPositionChange}
@@ -168,28 +173,31 @@ export const AvatarEditModal = (props: IProps) => {
           />
           <ControlsWrapper>
             <FormRow>
-              <ControlledField name='borderRadius' control={control}>
+              <ControlledField name='borderRadiusPercent' control={control}>
                 <InputRange
                   label='Скругление'
                   min={0}
-                  max={maxBorderRadius}
+                  max={100}
                   step={1}
                   minValueLabel='0%'
                   maxValueLabel='100%'
-                  valueLabel={`${Math.round((borderRadius / maxBorderRadius) * 100)}%`}
+                  valueLabel={`${borderRadiusPercent}%`}
+                  withInput={true}
+                  toFixed={0}
                 />
               </ControlledField>
             </FormRow>
             <FormRow>
-              <ControlledField name='scale' control={control}>
+              <ControlledField name='scalePercent' control={control}>
                 <InputRange
                   label='Увеличение'
-                  min={1}
-                  max={2}
-                  step={0.01}
+                  min={100}
+                  max={200}
+                  step={1}
                   minValueLabel='100%'
                   maxValueLabel='200%'
-                  valueLabel={`${Math.round(scale * 100)}%`}
+                  valueLabel={`${scalePercent}%`}
+                  withInput={true}
                 />
               </ControlledField>
             </FormRow>

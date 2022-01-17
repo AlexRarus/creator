@@ -57,7 +57,7 @@ export interface ISetAvatar {
   height: number;
   borderRadius: number;
   scale: number;
-  rotate: number;
+  rotate?: number;
   sourceFile?: File;
   previewFile?: File;
 }

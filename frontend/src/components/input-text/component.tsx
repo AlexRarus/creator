@@ -82,7 +82,7 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
       {label && (
         <Label
           htmlFor={`input-text-${inputProps.name}-${uniqId}`}
-          isEmpty={!value && !isFocused}
+          isEmpty={!value && value !== 0 && !isFocused}
           dimension={dimension}
           onClick={() => currentRef?.current?.focus()}>
           {label}

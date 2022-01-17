@@ -151,6 +151,7 @@ export const FieldBlockBackground = (props: IProps) => {
                     minValueLabel='10%'
                     maxValueLabel='100%'
                     valueLabel={`${backgroundSizeCustomValue}%`}
+                    withInput={true}
                   />
                 </ControlledField>
               </GridColumn>
