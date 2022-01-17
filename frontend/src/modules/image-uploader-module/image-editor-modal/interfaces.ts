@@ -5,8 +5,10 @@ export type FormInputs = {
   borderRadiusPercent: number;
   scalePercent: number;
   rotate: number;
-  borderX: number;
-  borderY: number;
+  width: number;
+  height: number;
+  // borderX: number;
+  // borderY: number;
 };
 
 // входные значение с формы создание
@@ -18,6 +20,8 @@ export interface RawData extends Partial<FormInputs> {
   height: number;
   borderRadius: number;
   scale: number;
+  borderX: number;
+  borderY: number;
   previewFile?: File;
   // нет на форме, но мы подставляем при отправке формы
 }
