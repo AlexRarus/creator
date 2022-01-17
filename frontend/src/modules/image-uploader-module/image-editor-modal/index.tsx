@@ -39,27 +39,28 @@ export const ImageEditorModal = (props: IProps) => {
   const [imageSize, setImageSize] = useState<number>(DEFAULT_IMAGE_SIZE);
   const [editor, editorRefCallback] = useState<any>();
   const [imageInfo, setImageInfo] = useState<any>();
-  const maxBorderRadius = imageSize / 2;
   const parsedBorderX = parseFloat(image?.borderX as any);
   const parsedBorderY = parseFloat(image?.borderY as any);
   const { handleSubmit, formState, control, watch, setValue } = useForm<FormInputs>({
     defaultValues: {
-      borderRadius:
+      borderRadiusPercent:
         image?.borderRadius !== undefined
-          ? (image.borderRadius / 100) * imageSize
-          : maxBorderRadius, // в форму должны подставить не процент а значение и пикселях
-      scale: image?.scale || 1.2,
+          ? image.borderRadius * 2 // храним в базе значение от 0 до 50, а на форме от 0 до 100
+          : 100,
+      scalePercent: image?.scale ? image.scale * 100 : 120,
       rotate: image?.rotate || 0,
       borderX: isNaN(parsedBorderX) ? DEFAULT_EDITOR_BORDER : parsedBorderX,
       borderY: isNaN(parsedBorderY) ? DEFAULT_EDITOR_BORDER : parsedBorderY,
     },
   });
   const [updateImage, isLoading, data, errors] = useUpdateImage();
-  const borderRadius = watch('borderRadius');
-  const scale = watch('scale');
+  const borderRadiusPercent = watch('borderRadiusPercent');
+  const scalePercent = watch('scalePercent');
   const rotate = watch('rotate');
   const borderX = parseFloat(watch('borderX') as any);
   const borderY = parseFloat(watch('borderY') as any);
+  const maxBorder = Math.max(borderX, borderY);
+  const maxBorderRadius = imageSize / 2 - maxBorder;
 
   useEffect(() => {
     if (imageInfo && !positionInitialized) {
@@ -67,6 +68,7 @@ export const ImageEditorModal = (props: IProps) => {
       const { width: imageWidth, height: imageHeight } = imageInfo;
       const correctImageSizeWidth = (imageSize - 2 * borderX) / 2;
       const correctImageSIzeHeight = (imageSize - 2 * borderY) / 2;
+      const scale = scalePercent / 100;
 
       const shiftXToCenterCanvasWindow = correctImageSizeWidth / (imageWidth * scale);
       const shiftYToCenterCanvasWindow = correctImageSIzeHeight / (imageHeight * scale);
@@ -78,11 +80,6 @@ export const ImageEditorModal = (props: IProps) => {
         x: positionCenterX,
         y: positionCenterY,
       });
-      // инициализация borderRadius
-      setValue(
-        'borderRadius',
-        image?.borderRadius !== undefined ? (image.borderRadius / 100) * imageSize : maxBorderRadius
-      );
     }
   }, [imageInfo]);
 
@@ -100,11 +97,12 @@ export const ImageEditorModal = (props: IProps) => {
       const rawData: RawData = {
         id: image.id,
         ...data,
+        scale: data.scalePercent / 100,
+        borderRadius: data.borderRadiusPercent / 2, // храним в базе значение от 0 до 50, а на форме от 0 до 100
         width, // значение от 0 до 1 (процент ширины изображения который отображается в обрезанной области)
         height, // значение от 0 до 1 (процент высоты изображения который отображается в обрезанной области)
         x, // значение от 0 до 1 (процент ширины изображения на который оно смещено)
         y, // значение от 0 до 1 (процент высоты изображения на который оно смещено)
-        borderRadius: (borderRadius / imageSize) * 100, // вычисляем процентное значение
       };
 
       // получаем ОБРЕЗАННОЕ изображение (Preview)
@@ -159,8 +157,8 @@ export const ImageEditorModal = (props: IProps) => {
             height={Math.abs(imageSize - 2 * borderY)}
             color={[255, 255, 255, 0.6]} // RGBA
             border={[borderX, borderY]}
-            borderRadius={parseFloat(borderRadius as any)}
-            scale={parseFloat(`${scale || 1}` as any)}
+            borderRadius={(maxBorderRadius * borderRadiusPercent) / 100}
+            scale={scalePercent / 100 || 1}
             rotate={rotate}
             position={position}
             onPositionChange={onPositionChange}
@@ -179,6 +177,7 @@ export const ImageEditorModal = (props: IProps) => {
                       valueLabel={`${100 - borderX}%`}
                       minValueLabel='Мин'
                       maxValueLabel='Макс'
+                      withInput={true}
                     />
                   </ControlledField>
                 </FormRow>
@@ -192,6 +191,7 @@ export const ImageEditorModal = (props: IProps) => {
                       valueLabel={`${100 - borderY}%`}
                       minValueLabel='Мин'
                       maxValueLabel='Макс'
+                      withInput={true}
                     />
                   </ControlledField>
                 </FormRow>
@@ -199,30 +199,33 @@ export const ImageEditorModal = (props: IProps) => {
             )}
             {isEditBorderRadius && (
               <FormRow>
-                <ControlledField name='borderRadius' control={control}>
+                <ControlledField name='borderRadiusPercent' control={control}>
                   <InputRange
                     label='Скругление'
                     min={0}
-                    max={maxBorderRadius}
+                    max={100}
                     step={1}
                     minValueLabel='0%'
                     maxValueLabel='100%'
-                    valueLabel={`${Math.round((borderRadius / maxBorderRadius) * 100)}%`}
+                    valueLabel={`${borderRadiusPercent}%`}
+                    withInput={true}
+                    toFixed={0}
                   />
                 </ControlledField>
               </FormRow>
             )}
 
             <FormRow>
-              <ControlledField name='scale' control={control}>
+              <ControlledField name='scalePercent' control={control}>
                 <InputRange
                   label='Увеличение'
-                  min={1}
-                  max={2}
-                  step={0.01}
+                  min={100}
+                  max={200}
+                  step={1}
                   minValueLabel='100%'
                   maxValueLabel='200%'
-                  valueLabel={`${Math.round(scale * 100)}%`}
+                  valueLabel={`${scalePercent}%`}
+                  withInput={true}
                 />
               </ControlledField>
             </FormRow>

@@ -3,7 +3,7 @@ import { COLORS } from 'src/components/theme';
 import { isMobile } from 'react-device-detect';
 
 export const MOBILE_VALUE_PADDING_Y = 15;
-export const MOBILE_VALUE_PADDING_X = 30;
+export const MOBILE_VALUE_PADDING_X = 32;
 export const VALUE_SIZE = 16;
 
 export const MarkMin = styled.div`
@@ -22,7 +22,20 @@ export const MarkMax = styled.div`
   transition: opacity 200ms ease-out;
 `;
 
+export const RangeComponentWrapper = styled.div<{ withInput: boolean; inputWidth: number }>`
+  width: 100%;
+  display: grid;
+  column-gap: ${({ withInput }) => (withInput ? '10px' : 0)};
+  grid-template: 'input-text range' auto / ${({ withInput, inputWidth }) =>
+      withInput ? `${inputWidth}%` : '0%'} 1fr;
+`;
+
+export const InputTextWrapper = styled.div`
+  grid-area: input-text;
+`;
+
 export const InputRangeWrapper = styled.label`
+  grid-area: range;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -35,6 +48,7 @@ export const InnerLabel = styled.div`
   flex-direction: column;
   font-size: 13px;
   line-height: 13px;
+  min-height: 13px;
   color: ${COLORS.grey[500]};
 `;
 
@@ -68,9 +82,9 @@ const getLeftPosition = (props: { stepsLength: number; currentStep: number }) =>
   const percent = (currentStep / stepsLength) * 100;
   let shift = isMobile ? MOBILE_VALUE_PADDING_X : 0;
 
-  if (percent === 100) {
+  if (percent > 95) {
     shift = VALUE_SIZE + shift;
-  } else if (percent !== 0) {
+  } else if (percent > 5) {
     shift = VALUE_SIZE / 2 + shift;
   }
 
