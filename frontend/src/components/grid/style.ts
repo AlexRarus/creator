@@ -79,6 +79,7 @@ const areaTemplate = getAreaTemplateMemoize();
 
 function getTemplate({
   theme,
+  size = 12,
   staticSize,
   breakPoints,
   sizeColumns,
@@ -93,7 +94,7 @@ function getTemplate({
     ...resultTheme.gridBreakPoints,
   };
 
-  const DEFAULT_SIZE = staticSize || 12;
+  const DEFAULT_SIZE = staticSize || size;
   const defaultRows: TRow[] = calculateTemplateArea(sizeColumns, DEFAULT_SIZE);
 
   const resultBreakPointsEntries = Object.entries(resultBreakPoints);

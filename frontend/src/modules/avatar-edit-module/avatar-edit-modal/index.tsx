@@ -49,8 +49,8 @@ export const AvatarEditModal = (props: IProps) => {
   });
   const [submitAvatarForm, isLoading, data, errors] = useSubmitAvatarForm();
   const sourceFile = watch('sourceFile');
-  const borderRadiusPercent = watch('borderRadiusPercent');
-  const scalePercent = watch('scalePercent');
+  const borderRadiusPercent = parseFloat(watch('borderRadiusPercent') as any) || 0;
+  const scalePercent = parseFloat(watch('scalePercent') as any) || 0;
   const rotate = watch('rotate');
   const maxBorderRadius = imageSize / 2 - EDITOR_BORDER;
 

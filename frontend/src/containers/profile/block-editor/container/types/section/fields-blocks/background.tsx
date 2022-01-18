@@ -139,7 +139,7 @@ export const FieldBlockBackground = (props: IProps) => {
                     step={1}
                     minValueLabel='10%'
                     maxValueLabel='100%'
-                    valueLabel={`${backgroundSizeCustomValue}%`}
+                    valueLabel={`${backgroundSizeCustomValue || 10}%`}
                   />
                 </ControlledField>
               </GridColumn>
