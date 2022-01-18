@@ -12,6 +12,7 @@ import {
   MarkMin,
   MarkMax,
   Line,
+  ValueLine,
   Value,
   ValueLabel,
   VALUE_SIZE,
@@ -54,9 +55,9 @@ export const InputRange = (props: IProps) => {
   const [inputRangeElement, inputRangeRefCallback] = useState<HTMLLabelElement | null>(null);
   const [valueElement, valueRefCallback] = useState<HTMLDivElement | null>(null);
   const [lineElement, lineRefCallback] = useState<HTMLDivElement | null>(null);
-  const [inputRangeMetrics, setInputRangeMetrics] = useState<any>(null);
+  const [lineMetrics, setLineMetrics] = useState<any>(null);
   const [diffValues, setDiffValues] = useState(Math.abs(max - min));
-  const [stepsLength, setStepsLength] = useState(Math.round(Math.abs(diffValues / step)));
+  const [stepsCount, setStepsCount] = useState(Math.round(Math.abs(diffValues / step)));
   const [isNegativeDirection, setIsNegativeDirection] = useState(min > max);
   const [currentStep, setCurrentStep] = useState(
     Math.max(0, (isNegativeDirection ? min - value : value - min) / Math.abs(step))
@@ -69,7 +70,7 @@ export const InputRange = (props: IProps) => {
   useEffect(() => {
     const newDiffValues = Math.abs(max - min);
     setDiffValues(newDiffValues);
-    setStepsLength(Math.round(Math.abs(newDiffValues / step)));
+    setStepsCount(Math.round(Math.abs(newDiffValues / step)));
     setIsNegativeDirection(min > max);
   }, [min, max]);
 
@@ -99,30 +100,30 @@ export const InputRange = (props: IProps) => {
 
   useEffect(() => {
     // запоминаем размеры компонента
-    if (inputRangeElement) {
-      setInputRangeMetrics(inputRangeElement.getBoundingClientRect());
+    if (lineElement) {
+      setLineMetrics(lineElement.getBoundingClientRect());
     }
-  }, [inputRangeElement]);
+  }, [lineElement]);
 
   useEffect(() => {
-    if (inputRangeMetrics) {
+    if (lineMetrics) {
       // вычисляем размер одного шага в пикселях
-      setStepPxValue(inputRangeMetrics.width / stepsLength);
+      setStepPxValue(lineMetrics.width / stepsCount);
     }
-  }, [inputRangeMetrics]);
+  }, [lineMetrics]);
 
   const onMouseMove = useCallback(
     (e: any) => {
       // dnd
-      if (inputRangeMetrics && valueElement && lineElement) {
+      if (lineMetrics && valueElement && lineElement) {
         // выставляем в нужную позицию курсор
         const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        const offsetXMax = Math.min(clientX - inputRangeMetrics.x, inputRangeMetrics.width); // расстояние от левого края инпута
+        const offsetXMax = Math.min(clientX - lineMetrics.x, lineMetrics.width); // расстояние от левого края инпута
         const offsetX = Math.max(0, offsetXMax); // расстояние от левого края инпута
         const shift = isMobile ? MOBILE_VALUE_PADDING_X : 0;
         const left = Math.max(
-          -shift,
-          Math.min(offsetX - VALUE_SIZE / 2 - shift, inputRangeMetrics.width - VALUE_SIZE - shift)
+          -(shift + VALUE_SIZE / 2),
+          Math.min(offsetX - VALUE_SIZE / 2 - shift, lineMetrics.width - shift)
         );
         valueElement.setAttribute('style', `left: ${left}px`);
 
@@ -135,20 +136,20 @@ export const InputRange = (props: IProps) => {
         setCurrentStep(Math.round(offsetX / stepPxValue));
       }
     },
-    [inputRangeMetrics, stepPxValue]
+    [lineMetrics, stepPxValue]
   );
 
   const onMouseDown = (e: any) => {
     // start dnd
     setIsDnD(true);
-    if (inputRangeMetrics && valueElement && lineElement) {
+    if (lineMetrics && valueElement && lineElement) {
       const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-      const offsetXMax = Math.min(clientX - inputRangeMetrics.x, inputRangeMetrics.width); // расстояние от левого края инпута
+      const offsetXMax = Math.min(clientX - lineMetrics.x, lineMetrics.width); // расстояние от левого края инпута
       const offsetX = Math.max(0, offsetXMax); // расстояние от левого края инпута
       const shift = isMobile ? MOBILE_VALUE_PADDING_X : 0;
       const left = Math.max(
-        -shift,
-        Math.min(offsetX - VALUE_SIZE / 2 - shift, inputRangeMetrics.width - VALUE_SIZE - shift)
+        -(shift + VALUE_SIZE / 2),
+        Math.min(offsetX - VALUE_SIZE / 2 - shift, lineMetrics.width - shift)
       );
       // выставляем в нужную позицию курсор
       valueElement.setAttribute('style', `left: ${left}px`);
@@ -173,9 +174,9 @@ export const InputRange = (props: IProps) => {
   const onMouseUp = (e: any) => {
     // end dnd
     if (isDnD) {
-      if (inputRangeMetrics && valueElement && lineElement) {
+      if (lineMetrics && valueElement && lineElement) {
         const clientX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
-        const offsetXMax = Math.min(clientX - inputRangeMetrics.x, inputRangeMetrics.width); // расстояние от левого края инпута
+        const offsetXMax = Math.min(clientX - lineMetrics.x, lineMetrics.width); // расстояние от левого края инпута
         const offsetX = Math.max(0, offsetXMax); // расстояние от левого края инпута
         // убираем управление позицией
         valueElement.removeAttribute('style');
@@ -199,9 +200,9 @@ export const InputRange = (props: IProps) => {
   const onMouseLeave = (e: any) => {
     // end dnd
     if (isDnD) {
-      if (inputRangeMetrics && valueElement && lineElement) {
+      if (lineMetrics && valueElement && lineElement) {
         const clientX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
-        const offsetXMax = Math.min(clientX - inputRangeMetrics.x, inputRangeMetrics.width); // расстояние от левого края инпута
+        const offsetXMax = Math.min(clientX - lineMetrics.x, lineMetrics.width); // расстояние от левого края инпута
         const offsetX = Math.max(0, offsetXMax); // расстояние от левого края инпута
         // убираем управление позицией
         valueElement.removeAttribute('style');
@@ -274,15 +275,17 @@ export const InputRange = (props: IProps) => {
         )}
         <input type='hidden' value={value} {...inputProps} />
         <LineWrapper>
-          <Line stepsLength={stepsLength} currentStep={currentStep} ref={lineRefCallback}>
-            <Value
-              stepsLength={stepsLength}
-              currentStep={currentStep}
-              ref={valueRefCallback}
-              onTouchStart={isMobile ? onMouseDown : undefined}
-              onTouchEnd={isMobile ? onMouseUp : undefined}>
-              <ValueLabel>{valueLabel || value}</ValueLabel>
-            </Value>
+          <Line stepsCount={stepsCount} currentStep={currentStep}>
+            <ValueLine stepsCount={stepsCount} currentStep={currentStep} ref={lineRefCallback}>
+              <Value
+                stepsCount={stepsCount}
+                currentStep={currentStep}
+                ref={valueRefCallback}
+                onTouchStart={isMobile ? onMouseDown : undefined}
+                onTouchEnd={isMobile ? onMouseUp : undefined}>
+                <ValueLabel>{valueLabel || value}</ValueLabel>
+              </Value>
+            </ValueLine>
           </Line>
           <MarkMin>{minValueLabel || min}</MarkMin>
           <MarkMax>{maxValueLabel || max}</MarkMax>
