@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { COLORS } from 'src/components/theme';
 
 export const ListFormWrapper = styled.div`
   display: flex;
@@ -18,8 +17,7 @@ export const ListEditModuleWrapper = styled.div`
 export const BaseControlsWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  border-bottom: 1px solid ${COLORS.grey[300]};
-  background: ${COLORS.white};
+  border-bottom: 1px solid ${({ theme }) => theme?.borderColor?.secondary};
   width: 100%;
   padding: 10px;
 `;

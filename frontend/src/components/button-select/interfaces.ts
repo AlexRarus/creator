@@ -8,7 +8,7 @@ export interface IOption {
 }
 
 export interface IProps {
-  value?: any;
+  value?: IOption | any;
   options: IOption[];
   onChange?(value: any): void;
   maxMenuHeight?: number;

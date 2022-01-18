@@ -14,7 +14,6 @@ export const ColorPreviewWrapper = styled.div`
 
 export const FormWrapper = styled.div`
   height: 100%;
-  background: ${COLORS.white};
 `;
 
 export const ColorPickerWrapper = styled.div`

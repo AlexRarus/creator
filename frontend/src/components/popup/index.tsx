@@ -112,6 +112,7 @@ export default function Popup(props: IProps) {
         : openerElement.getBoundingClientRect();
       const { scrollX, scrollY, innerWidth, innerHeight } = window;
 
+      console.log('openerMetrics: ', openerMetrics);
       setViewPort({
         width: innerWidth,
         height: innerHeight,
@@ -461,6 +462,7 @@ export default function Popup(props: IProps) {
 
   const plateProps: ICalcPositionProp = {
     openerPosition,
+    openerInModal: !!openerElement?.closest('.modal-component-wrapper'),
     platePosition,
     fieldCoordinates,
     plateMargin,

@@ -1,9 +1,9 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { ControlledField } from 'src/components/controlled-field';
-import Select from 'src/components/select';
 import InputRange from 'src/components/input-range';
 import { Grid, GridColumn } from 'src/components/grid';
+import ButtonSelect from 'src/components/button-select';
 
 import { fontSizeOptions, templateOptions } from './utils';
 import { FormInputs } from './interfaces';
@@ -24,11 +24,27 @@ export const ListBlockFields = (props: IProps) => {
         <BaseControlsWrapper>
           <Grid verticalGap={10}>
             <GridColumn direction='row'>
-              <ControlledField name='fontSize' control={control}>
-                <Select options={fontSizeOptions} label='Размер текста' />
+              <ControlledField
+                name='fontSize'
+                control={control}
+                formDefaultValues={formDefaultValues}>
+                <ButtonSelect
+                  dimension='l'
+                  kind='formed'
+                  options={fontSizeOptions}
+                  label='Размер текста'
+                />
               </ControlledField>
-              <ControlledField name='template' control={control}>
-                <Select options={templateOptions} label='Расположение иконки' />
+              <ControlledField
+                name='template'
+                control={control}
+                formDefaultValues={formDefaultValues}>
+                <ButtonSelect
+                  dimension='l'
+                  kind='formed'
+                  options={templateOptions}
+                  label='Расположение иконки'
+                />
               </ControlledField>
             </GridColumn>
             <GridColumn>

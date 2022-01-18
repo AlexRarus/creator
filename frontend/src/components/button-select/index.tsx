@@ -48,7 +48,7 @@ export default function ButtonSelect(props: IProps) {
     [menuIsOpen]
   );
   const changeHandler = (option: IOption) => () => {
-    onChange && onChange(option.value);
+    onChange && onChange(option);
     menuIsOpen && closeMenu();
   };
 
