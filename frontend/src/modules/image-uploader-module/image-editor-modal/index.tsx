@@ -55,11 +55,11 @@ export const ImageEditorModal = (props: IProps) => {
     },
   });
   const [updateImage, isLoading, data, errors] = useUpdateImage();
-  const borderRadiusPercent = watch('borderRadiusPercent');
-  const scalePercent = watch('scalePercent');
+  const borderRadiusPercent = parseFloat(watch('borderRadiusPercent') as any) || 0;
+  const scalePercent = parseFloat(watch('scalePercent') as any) || 0;
   const rotate = watch('rotate');
-  const width = parseFloat(watch('width') as any);
-  const height = parseFloat(watch('height') as any);
+  const width = parseFloat(watch('width') as any) || 0;
+  const height = parseFloat(watch('height') as any) || 0;
   const borderX = MAX_EDITOR_BORDER - width;
   const borderY = MAX_EDITOR_BORDER - height;
   const maxBorder = Math.max(borderX, borderY);
@@ -219,7 +219,6 @@ export const ImageEditorModal = (props: IProps) => {
                 </ControlledField>
               </FormRow>
             )}
-
             <FormRow>
               <ControlledField name='scalePercent' control={control}>
                 <InputRange

@@ -57,6 +57,7 @@ export const FieldBlockBackground = (props: IProps) => {
       <BlockTitle>Фон</BlockTitle>
       <Grid
         verticalGap={10}
+        size={8}
         breakPoints={{
           // все переданные здесь значения выставлены по-умолчанию
           // можно передать через контекст ThemeProvider theme: { gridBreakPoints: {...} }
@@ -150,7 +151,7 @@ export const FieldBlockBackground = (props: IProps) => {
                     step={1}
                     minValueLabel='10%'
                     maxValueLabel='100%'
-                    valueLabel={`${backgroundSizeCustomValue}%`}
+                    valueLabel={`${backgroundSizeCustomValue || 10}%`}
                     withInput={true}
                   />
                 </ControlledField>

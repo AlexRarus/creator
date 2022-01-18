@@ -6,6 +6,7 @@ export interface IGridProps {
   verticalGap?: number; // в пикселях - расстояние между соседними строками
   theme?: Partial<ITheme>;
   breakPoints?: IGridBreakPoints; // расположение колонок на разных mediaQuery (по-молчанию ./utils defaultBreakPoints)
+  size?: TGridSize; // размер грида по умолчанию если не применяется ни одно правило из breakPoints
   staticSize?: TGridSize; // если установлен, то грид НЕ будет перестраиваться по mediaQuery
   alignItems?: 'start' | 'end'; // default start
 }
