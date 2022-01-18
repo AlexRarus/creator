@@ -9,7 +9,7 @@ export const VALUE_SIZE = 16;
 export const MarkMin = styled.div`
   position: absolute;
   left: 0;
-  bottom: 0;
+  bottom: -2px;
   font-size: 12px;
   transition: opacity 200ms ease-out;
 `;
@@ -17,7 +17,7 @@ export const MarkMin = styled.div`
 export const MarkMax = styled.div`
   position: absolute;
   right: 0;
-  bottom: 0;
+  bottom: -2px;
   font-size: 12px;
   transition: opacity 200ms ease-out;
 `;
@@ -61,9 +61,9 @@ export const LineWrapper = styled.div`
   padding-top: 1px;
 `;
 
-const getJustifyContent = (props: { stepsLength: number; currentStep: number }) => {
-  const { stepsLength, currentStep } = props;
-  const position = (currentStep / stepsLength) * 100;
+const getJustifyContent = (props: { stepsCount: number; currentStep: number }) => {
+  const { stepsCount, currentStep } = props;
+  const position = (currentStep / stepsCount) * 100;
   if (position < 25) {
     return 'flex-start';
   } else if (position > 75) {
@@ -77,21 +77,21 @@ const getPadding = () => {
   return isMobile ? `${MOBILE_VALUE_PADDING_Y}px ${MOBILE_VALUE_PADDING_X}px` : 0;
 };
 
-const getLeftPosition = (props: { stepsLength: number; currentStep: number }) => {
-  const { stepsLength, currentStep } = props;
-  const percent = (currentStep / stepsLength) * 100;
-  let shift = isMobile ? MOBILE_VALUE_PADDING_X : 0;
+const getLeftPosition = (props: { stepsCount: number; currentStep: number }) => {
+  const { stepsCount, currentStep } = props;
+  const percent = (currentStep / stepsCount) * 100;
+  const shift = isMobile ? MOBILE_VALUE_PADDING_X : 0;
 
-  if (percent > 95) {
-    shift = VALUE_SIZE + shift;
-  } else if (percent > 5) {
-    shift = VALUE_SIZE / 2 + shift;
-  }
+  // if (percent > 95) {
+  //   shift = VALUE_SIZE + shift;
+  // } else if (percent > 5) {
+  //   shift = VALUE_SIZE / 2 + shift;
+  // }
 
-  return `calc(${percent}% - ${shift}px)`;
+  return `calc(${percent}% - ${shift + VALUE_SIZE / 2}px)`;
 };
 
-export const Value = styled.div<{ stepsLength: number; currentStep: number }>`
+export const Value = styled.div<{ stepsCount: number; currentStep: number }>`
   display: flex;
   justify-content: ${getJustifyContent};
   position: absolute;
@@ -129,17 +129,28 @@ export const ValueLabel = styled.div`
   line-height: 16px;
 `;
 
-export const Line = styled.div<{ stepsLength: number; currentStep: number }>`
+export const Line = styled.div<{ stepsCount: number; currentStep: number }>`
   display: flex;
   align-items: center;
   position: relative;
   width: 100%;
   height: 3px;
+  border-radius: 2px;
   background: linear-gradient(
     to right,
     ${COLORS.blue[400]} 0%,
-    ${COLORS.blue[400]} ${({ stepsLength, currentStep }) => (currentStep / stepsLength) * 100}%,
-    ${COLORS.grey[400]} ${({ stepsLength, currentStep }) => (currentStep / stepsLength) * 100}%
+    ${COLORS.blue[400]} ${({ stepsCount, currentStep }) => (currentStep / stepsCount) * 100}%,
+    ${COLORS.grey[400]} ${({ stepsCount, currentStep }) => (currentStep / stepsCount) * 100}%
   );
+  cursor: pointer;
+`;
+
+export const ValueLine = styled.div<{ stepsCount: number; currentStep: number }>`
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin: 0 ${VALUE_SIZE / 2}px;
+  width: calc(100% - ${VALUE_SIZE}px);
+  height: 3px;
   cursor: pointer;
 `;
