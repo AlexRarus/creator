@@ -57,7 +57,10 @@ export const InputRange = (props: IProps) => {
   const [inputRangeMetrics, setInputRangeMetrics] = useState<any>(null);
   const [diffValues, setDiffValues] = useState(Math.abs(max - min));
   const [stepsLength, setStepsLength] = useState(Math.round(Math.abs(diffValues / step)));
-  const [currentStep, setCurrentStep] = useState(Math.abs(min - value) / Math.abs(step));
+  const [isNegativeDirection, setIsNegativeDirection] = useState(min > max);
+  const [currentStep, setCurrentStep] = useState(
+    Math.max(0, (isNegativeDirection ? min - value : value - min) / Math.abs(step))
+  );
   const [stepPxValue, setStepPxValue] = useState(0); // колличество пикселей в одном шаге
   const [isFocusInput, setIsFocusInput] = useState(false);
   const [isFocusRange, setIsFocusRange] = useState(false);
@@ -67,6 +70,7 @@ export const InputRange = (props: IProps) => {
     const newDiffValues = Math.abs(max - min);
     setDiffValues(newDiffValues);
     setStepsLength(Math.round(Math.abs(newDiffValues / step)));
+    setIsNegativeDirection(min > max);
   }, [min, max]);
 
   useEffect(() => {
@@ -80,7 +84,9 @@ export const InputRange = (props: IProps) => {
   useEffect(() => {
     // меняем текущий шаг при изменеии value
     if (!isFocusRange && value !== '-') {
-      const calculatedStep = Math.round(Math.abs(min - value) / Math.abs(step));
+      const calculatedStep = Math.round(
+        Math.max(0, (isNegativeDirection ? min - value : value - min) / Math.abs(step))
+      );
       if (calculatedStep !== currentStep) {
         setCurrentStep(calculatedStep);
       }
@@ -219,7 +225,10 @@ export const InputRange = (props: IProps) => {
   const onChangeInput = (value: string) => {
     const isValidValue = value === '-' || !isNaN(value as any);
     if (inputProps.onChange && isValidValue) {
-      inputProps.onChange(value);
+      const resultValue = isNaN(parseFloat(value as any))
+        ? value
+        : `${Math.min(max, parseFloat(value))}`;
+      inputProps.onChange(resultValue);
     }
   };
 
@@ -233,7 +242,9 @@ export const InputRange = (props: IProps) => {
       const fixedValue = parseFloat(value).toFixed(toFixed);
       const resultValue = Math.min(max, Math.max(min, parseFloat(fixedValue) || 0));
       inputProps.onChange(resultValue);
-      const calculatedStep = Math.abs(min - resultValue) / Math.abs(step);
+      const calculatedStep = Math.round(
+        Math.max(0, (isNegativeDirection ? min - resultValue : resultValue - min) / Math.abs(step))
+      );
       if (calculatedStep !== currentStep) {
         setCurrentStep(calculatedStep);
       }
