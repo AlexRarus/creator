@@ -36,7 +36,9 @@ export default function ButtonSelect(props: IProps) {
   const optionsListRef: RefObject<HTMLDivElement> = useRef(null);
   const activeOptionRef: RefObject<HTMLDivElement> = useRef(null);
   const [componentWidth, setComponentWidth] = useState(menuWidth || 0);
-  const valueOption = options.find((option: IOption) => option.value === value) as IOption;
+  const valueOption = options.find(
+    (option: IOption) => option.value === value || option.value === value?.value
+  ) as IOption;
   const { DEVICE_THEME } = useThemeContext();
 
   const openMenu = () => setOpenMenu(true);

@@ -3,11 +3,10 @@ import { useFormContext } from 'react-hook-form';
 import { ControlledField } from 'src/components/controlled-field';
 import InputRange from 'src/components/input-range';
 import { Grid, GridColumn } from 'src/components/grid';
-import ButtonSelect from 'src/components/button-select';
 
 import { fontSizeOptions, templateOptions } from './utils';
 import { FormInputs } from './interfaces';
-import { BaseControlsWrapper } from './style';
+import { BaseControlsWrapper, StyledButtonSelect } from './style';
 import { ItemsOrderingField } from './items-ordering-field';
 
 interface IProps {
@@ -28,7 +27,7 @@ export const ListBlockFields = (props: IProps) => {
                 name='fontSize'
                 control={control}
                 formDefaultValues={formDefaultValues}>
-                <ButtonSelect
+                <StyledButtonSelect
                   dimension='l'
                   kind='formed'
                   options={fontSizeOptions}
@@ -39,7 +38,7 @@ export const ListBlockFields = (props: IProps) => {
                 name='template'
                 control={control}
                 formDefaultValues={formDefaultValues}>
-                <ButtonSelect
+                <StyledButtonSelect
                   dimension='l'
                   kind='formed'
                   options={templateOptions}

@@ -38,12 +38,8 @@ export const EditorWrapper = styled.div<{ isForm: boolean }>`
   justify-content: center;
   position: relative;
   width: 100%;
-  height: 100%;
 
   box-shadow: 0px 0px 10px ${({ theme }) => rgba(theme?.borderColor?.contrast, 0.1)};
-
-  overflow: hidden;
-  padding-bottom: ${({ isForm }) => (isForm ? FORM_FOOTER_HEIGHT : 0)}px;
 `;
 
 export const StyledMobileView = styled(MobileView)`

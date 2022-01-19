@@ -10,6 +10,15 @@ import {
 export const FORM_HEADER_HEIGHT = 64;
 export const FORM_FOOTER_HEIGHT = 64;
 
+export const ScrollableWrap = styled.div<{ maxHeight?: number }>`
+  ${({ theme, maxHeight }) =>
+    !theme?.isMobile &&
+    css`
+      max-height: ${maxHeight}px;
+      overflow: auto;
+    `}
+`;
+
 export const FormFooter = styled.div`
   position: absolute;
   left: 0;

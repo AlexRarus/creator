@@ -40,7 +40,8 @@ export const FieldsBlockMain = (props: IProps) => {
   const { control, watch } = useFormContext(); // так как Fields рендерятся внутри FormProvider, в контексте доступны значения формы
   const label = watch('label');
   const description = watch('description');
-  const type = watch('type');
+  const typeOption = watch('type');
+  const typeValue = typeOption?.value;
   const icon = watch('icon');
   const kind = watch('kind');
   const backgroundColor = watch('backgroundColor');
@@ -54,7 +55,7 @@ export const FieldsBlockMain = (props: IProps) => {
       label,
       description,
       value: '',
-      type,
+      type: typeValue,
       kind,
       icon,
       backgroundColor,
@@ -108,13 +109,18 @@ export const FieldsBlockMain = (props: IProps) => {
           </ControlledField>
         </GridColumn>
         <GridColumn size={9}>
-          {type ? <Label>{inputLabelMap[type]}</Label> : <FakeLabel />}
+          {typeValue ? <Label>{inputLabelMap[typeValue]}</Label> : <FakeLabel />}
           <ControlledField
             name='value'
             control={control}
             rules={{ ...maxLength(99) }}
             formDefaultValues={formDefaultValues}>
-            <InputMask placeholder={placeholderMap[type]} mask={type} dimension='l' kind='formed' />
+            <InputMask
+              placeholder={placeholderMap[typeValue]}
+              mask={typeValue}
+              dimension='l'
+              kind='formed'
+            />
           </ControlledField>
         </GridColumn>
         <GridColumn size={12}>

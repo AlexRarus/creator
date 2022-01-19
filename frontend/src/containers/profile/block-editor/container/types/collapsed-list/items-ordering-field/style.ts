@@ -56,7 +56,7 @@ export const RemoveIconWrapper = styled.div<{ disabled: boolean }>`
   padding: 10px;
   align-items: center;
   justify-content: center;
-  background: ${COLORS.white};
+  background: ${({ theme }) => theme?.background?.secondary};
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 
   svg {
@@ -71,5 +71,5 @@ export const ItemFieldWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   padding: 10px;
-  background: ${COLORS.white};
+  background: ${({ theme }) => theme?.background?.secondary};
 `;
