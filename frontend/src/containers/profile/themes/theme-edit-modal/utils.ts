@@ -125,10 +125,8 @@ export const prepareDataToForm = (theme: ITheme | null): FormInputs => {
   const backgroundSize =
     backgroundSizes.find((size: IOption) => size.value === theme?.backgroundSize) ||
     backgroundSizeCustom;
-  const parsedBackgroundSizeCustomValue = parseFloat(theme?.backgroundSize as any);
-  const backgroundSizeCustomValue = parsedBackgroundSizeCustomValue
-    ? `${parsedBackgroundSizeCustomValue}`
-    : '50%';
+  const parsedBackgroundSizeCustomValue = parseFloat(theme?.backgroundSize as any) || 50;
+  const backgroundSizeCustomValue = `${parsedBackgroundSizeCustomValue}`;
 
   const backgroundPosition =
     backgroundPositions.find((position: IOption) => position.value === theme?.backgroundPosition) ||

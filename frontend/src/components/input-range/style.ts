@@ -124,7 +124,7 @@ export const Value = styled.div<{ stepsCount: number; currentStep: number }>`
 
 export const ValueLabel = styled.div`
   position: absolute;
-  top: ${-14 + (isMobile ? MOBILE_VALUE_PADDING_Y : 0)}px;
+  top: ${-13 + (isMobile ? MOBILE_VALUE_PADDING_Y : 0)}px;
   font-size: 12px;
   line-height: 16px;
 `;

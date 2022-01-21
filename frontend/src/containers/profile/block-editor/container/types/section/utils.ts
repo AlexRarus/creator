@@ -139,10 +139,8 @@ export const prepareDataToFormValues = (block: IBlock<ISectionData> | null): For
   const backgroundSize =
     backgroundSizes.find((size: IOption) => size.value === block?.data?.backgroundSize) ||
     backgroundSizeCustom;
-  const parsedBackgroundSizeCustomValue = parseFloat(block?.data?.backgroundSize as any);
-  const backgroundSizeCustomValue = parsedBackgroundSizeCustomValue
-    ? `${parsedBackgroundSizeCustomValue}`
-    : '50%';
+  const parsedBackgroundSizeCustomValue = parseFloat(block?.data?.backgroundSize as any) || 50;
+  const backgroundSizeCustomValue = `${parsedBackgroundSizeCustomValue}`;
 
   const backgroundPosition =
     backgroundPositions.find(
