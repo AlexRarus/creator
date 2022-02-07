@@ -153,6 +153,25 @@ class Theme(models.Model):
         blank=True,
         max_length=255,
     )
+    animation = models.FileField(
+        verbose_name="Анимация",
+        help_text="Выберите файл анимации",
+        upload_to="themes/animations/",
+        blank=True,
+        null=True,
+    )
+    animationSize = models.CharField(
+        verbose_name="Размер анимации",
+        null=True,
+        blank=True,
+        max_length=255,
+    )
+    animationPosition = models.CharField(
+        verbose_name="Позиция анимации",
+        null=True,
+        blank=True,
+        max_length=255,
+    )
 
     def __str__(self):
         return self.slug

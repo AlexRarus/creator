@@ -11,10 +11,6 @@ export const FieldLabel = styled.div`
   margin-bottom: 4px;
 `;
 
-export const PictureLabel = styled.div`
-  text-align: center;
-`;
-
 export const PictureCell = styled.div`
   display: flex;
   flex-direction: row;

@@ -37,6 +37,16 @@ export const backgroundSizes: IOption[] = [
   backgroundSizeCustom,
 ];
 
+const animationSizeWidth: IOption = {
+  value: 'auto',
+  label: 'Выравнивание по ширине',
+};
+const animationSizeHeight: IOption = {
+  value: '100%',
+  label: 'Выравнивание по высоте',
+};
+export const animationSizes: IOption[] = [animationSizeWidth, animationSizeHeight];
+
 const backgroundPositionTop: IOption = {
   value: 'top',
   label: 'Сверху',
@@ -64,6 +74,15 @@ export const backgroundPositions: IOption[] = [
   backgroundPositionLeft,
   backgroundPositionRight,
 ];
+const animationPositionTop: IOption = {
+  value: 'top',
+  label: 'Сверху',
+};
+const animationPositionBottom: IOption = {
+  value: 'bottom',
+  label: 'Снизу',
+};
+export const animationPositions: IOption[] = [animationPositionTop, animationPositionBottom];
 
 const backgroundRepeatNo: IOption = {
   value: 'no-repeat',
@@ -100,6 +119,9 @@ export const prepareDataForServer = (rawData: RawData): DataForServer => {
 
   const backgroundRepeat = rawData.formInputs.backgroundRepeat?.value;
 
+  const animationPosition = rawData.formInputs.animationPosition?.value;
+  const animationSize = rawData.formInputs.animationSize?.value;
+
   return {
     id: rawData.id,
     backgroundType,
@@ -110,6 +132,9 @@ export const prepareDataForServer = (rawData: RawData): DataForServer => {
     backgroundSmooth: rawData.formInputs.backgroundSmooth,
     backgroundSize: backgroundSize === 'custom' ? backgroundSizeCustomValue : backgroundSize,
     backgroundPosition,
+
+    animationPosition,
+    animationSize,
 
     color: rawData.formInputs.color,
     headerColor: rawData.formInputs.headerColor,
@@ -136,6 +161,13 @@ export const prepareDataToForm = (theme: ITheme | null): FormInputs => {
     backgroundRepeats.find((repeat: IOption) => repeat.value === theme?.backgroundRepeat) ||
     backgroundRepeatNo;
 
+  const animationPosition =
+    animationPositions.find((position: IOption) => position.value === theme?.animationPosition) ||
+    animationPositionTop;
+  const animationSize =
+    animationSizes.find((size: IOption) => size.value === theme?.animationSize) ||
+    animationSizeWidth;
+
   return {
     backgroundType,
     backgroundColor: theme?.backgroundColor || '#FFFFFF',
@@ -146,6 +178,10 @@ export const prepareDataToForm = (theme: ITheme | null): FormInputs => {
     backgroundSize,
     backgroundSizeCustomValue,
     backgroundPosition,
+
+    animationPosition,
+    animationSize,
+
     color: theme?.color || '#263238',
     headerColor: theme?.headerColor || '#000000',
   };

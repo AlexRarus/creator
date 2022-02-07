@@ -17,6 +17,11 @@ export interface ITheme {
   buttonBackground: string;
   buttonColor: string;
   buttonKind?: string;
+  type?: string;
+  slug?: string;
+  animation?: string; // путь к файлу анимации
+  animationPosition?: string; // позиция анимации
+  animationSize?: string; // масштабирование анимации
 }
 
 // при создании-редактировании темы нужно отправить другие типы полей
@@ -31,6 +36,8 @@ export interface IThemeWrite {
   backgroundSmooth?: boolean;
   backgroundSize?: string;
   backgroundPosition?: string;
+  animationPosition?: string;
+  animationSize?: string;
   color?: string;
   headerColor?: string;
   // и другие свойства, синхронизировать с ITheme

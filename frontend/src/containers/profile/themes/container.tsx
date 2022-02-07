@@ -13,6 +13,7 @@ import Button from 'src/components/button';
 import 'swiper/css/bundle';
 
 import { ThemesHeader } from './header';
+import { ThemeItem } from './theme-item';
 import { ThemeEditModal } from './theme-edit-modal';
 import { useMapStoreToProps } from './selectors';
 import {
@@ -63,7 +64,7 @@ export const ThemesContainer = observer((props: any) => {
   }, [themeType]);
 
   useEffect(() => {
-    // выбираем первую тему актиной
+    // выбираем первую тему активной
     if (themes?.length) {
       setActiveTheme(themes[0]);
     }
@@ -119,15 +120,7 @@ export const ThemesContainer = observer((props: any) => {
                   color={theme.color}
                   isSelected={user?.theme?.id === theme.id}
                   onClick={canEditThemes ? () => openEditingThemeModal(theme.id) : undefined}>
-                  <ThemeItemBackground selectedTheme={theme}>
-                    <UserBlock color={theme.color} />
-                    <ThemeItemHeader color={theme.headerColor}>Заголовок</ThemeItemHeader>
-                    <ThemeItemText color={theme.color}>
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo
-                      ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis
-                      parturient montes, nascetur ridiculus mus.
-                    </ThemeItemText>
-                  </ThemeItemBackground>
+                  <ThemeItem theme={theme} />
                 </PhoneWrapper>
               </SwiperSlide>
             ))}

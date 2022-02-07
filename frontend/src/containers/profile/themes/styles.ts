@@ -112,6 +112,7 @@ export const PhoneWrapper = styled.div<{ isSelected?: boolean; color?: string }>
 `;
 
 export const ThemeItemBackground = styled.div<{ selectedTheme: ITheme | null }>`
+  position: relative;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -126,6 +127,7 @@ export const ThemeItemHeader = styled.div<{ color: string }>`
   font-size: 20px;
   font-weight: bold;
   color: ${({ color }) => color};
+  position: relative;
 `;
 
 export const ThemeItemText = styled.div<{ color: string }>`
@@ -134,6 +136,7 @@ export const ThemeItemText = styled.div<{ color: string }>`
   font-size: 14px;
   text-align: initial;
   color: ${({ color }) => color};
+  position: relative;
 `;
 
 export const ActionRow = styled.div`

@@ -16,7 +16,6 @@ import {
   BlockTitle,
   ItemFieldPictureShape,
   FieldLabel,
-  PictureLabel,
   PictureCell,
   PictureElement,
 } from './style';
@@ -27,7 +26,7 @@ interface IProps {
 
 export const FieldBlockBackground = (props: IProps) => {
   const { formDefaultValues } = props;
-  const [pictureElement, pictureRefCallback] = useState<HTMLDivElement | null>(null);
+  const [uploadPictureElement, uploadPictureRefCallback] = useState<HTMLDivElement | null>(null);
   const { control, watch, setValue } = useFormContext();
   const backgroundType = watch('backgroundType');
   const backgroundColor = watch('backgroundColor');
@@ -48,6 +47,7 @@ export const FieldBlockBackground = (props: IProps) => {
       <BlockTitle>Фон</BlockTitle>
       <Grid
         verticalGap={10}
+        size={8}
         breakPoints={{
           // все переданные здесь значения выставлены по-умолчанию
           // можно передать через контекст ThemeProvider theme: { gridBreakPoints: {...} }
@@ -84,36 +84,21 @@ export const FieldBlockBackground = (props: IProps) => {
           )}
         </GridColumn>
         <GridColumn size={4}>
-          <FieldLabel>Картинка</FieldLabel>
+          <FieldLabel>Фон</FieldLabel>
           <PictureCell>
-            <ItemFieldPictureShape ref={pictureRefCallback}>
-              {backgroundImage ? (
-                <PictureElement
-                  backgroundType={backgroundType}
-                  backgroundColor={backgroundColor}
-                  backgroundGradient={backgroundGradient}
-                  backgroundImage={backgroundImage}
-                  backgroundRepeat={backgroundRepeat}
-                  backgroundSmooth={backgroundSmooth}
-                  backgroundSize={backgroundSize}
-                  backgroundSizeCustomValue={backgroundSizeCustomValue}
-                  backgroundPosition={backgroundPosition}
-                />
-              ) : (
-                <PictureLabel>Загрузить</PictureLabel>
-              )}
-            </ItemFieldPictureShape>
-            <ControlledField
-              control={control}
-              name='backgroundImage'
-              formDefaultValues={formDefaultValues}>
-              <ImageUploaderModule
-                openerElement={pictureElement}
-                blockType='section'
-                isEditable={true}
-                isEditBorder={true}
+            <ItemFieldPictureShape>
+              <PictureElement
+                backgroundType={backgroundType}
+                backgroundColor={backgroundColor}
+                backgroundGradient={backgroundGradient}
+                backgroundImage={backgroundImage}
+                backgroundRepeat={backgroundRepeat}
+                backgroundSmooth={backgroundSmooth}
+                backgroundSize={backgroundSize}
+                backgroundSizeCustomValue={backgroundSizeCustomValue}
+                backgroundPosition={backgroundPosition}
               />
-            </ControlledField>
+            </ItemFieldPictureShape>
           </PictureCell>
         </GridColumn>
         <GridColumn size={4}>
@@ -161,13 +146,27 @@ export const FieldBlockBackground = (props: IProps) => {
               </ControlledField>
             </GridColumn>
             <GridColumn>
-              <Button
-                block={true}
-                disabled={!backgroundImage}
-                kind='danger'
-                onClick={clearBackgroundImage}>
-                Удалить фоновую картинку
-              </Button>
+              {backgroundImage && (
+                <Button block={true} kind='danger' onClick={clearBackgroundImage}>
+                  Убрать фоновую картинку
+                </Button>
+              )}
+              {!backgroundImage && (
+                <Button block={true} kind='secondary' ref={uploadPictureRefCallback}>
+                  Выбрать фоновую картинку
+                </Button>
+              )}
+              <ControlledField
+                control={control}
+                name='backgroundImage'
+                formDefaultValues={formDefaultValues}>
+                <ImageUploaderModule
+                  openerElement={uploadPictureElement}
+                  blockType='section'
+                  isEditable={true}
+                  isEditBorder={true}
+                />
+              </ControlledField>
             </GridColumn>
             {/*<GridColumn>*/}
             {/*  <ControlledField*/}

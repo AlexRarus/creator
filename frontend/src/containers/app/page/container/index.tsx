@@ -5,9 +5,11 @@ import { TargetBlockTypePreview } from 'src/containers/app/block';
 import { IBlock } from 'src/dal/blocks/interfaces';
 import { IPage } from 'src/dal/pages/interfaces';
 import { SelectedThemeProvider } from 'src/providers/selected-theme-provider';
+import { ITheme } from 'src/dal/themes/interfaces';
+import { UserThemeBackground } from 'src/components/user-theme-background';
 
 import { useMapStoreToProps } from './selectors';
-import { PageWrapper, UserThemeStyle, BlockPositioning } from './style';
+import { PageWrapper, BlockPositioning } from './style';
 
 interface IProps {
   username: string;
@@ -20,6 +22,8 @@ export const PageContainer = observer((props: IProps) => {
   const { isLoading, getPageBySlugAction, data } = useMapStoreToProps();
   const { username, pageSlug, previewData } = props;
   const isAuthor = useIsAuthor(username);
+  const pageData: IPage | null = previewData || data;
+  const theme: ITheme | null | undefined = pageData?.author?.theme;
 
   useEffect(() => {
     // если передали данные для предпросмотра то НЕ запрашиваем страницу с бэка
@@ -28,12 +32,10 @@ export const PageContainer = observer((props: IProps) => {
     }
   }, [isAuthor, pageSlug, previewData]);
 
-  const pageData: IPage | null = previewData || data;
-
   return (
-    <SelectedThemeProvider selectedTheme={pageData?.author?.theme}>
+    <SelectedThemeProvider selectedTheme={theme}>
       <PageWrapper>
-        <UserThemeStyle selectedTheme={pageData?.author?.theme}>
+        <UserThemeBackground theme={theme}>
           {isLoading && 'Loading...'}
           {pageData &&
             pageData.blocks.map((block: IBlock<any>) => (
@@ -41,7 +43,7 @@ export const PageContainer = observer((props: IProps) => {
                 <TargetBlockTypePreview block={block} />
               </BlockPositioning>
             ))}
-        </UserThemeStyle>
+        </UserThemeBackground>
       </PageWrapper>
     </SelectedThemeProvider>
   );

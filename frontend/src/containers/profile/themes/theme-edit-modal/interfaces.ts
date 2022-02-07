@@ -13,6 +13,8 @@ export type FormInputs = {
   backgroundSize?: IOption;
   backgroundSizeCustomValue?: string; // есть только на форме
   backgroundPosition?: IOption;
+  animationPosition?: IOption;
+  animationSize?: IOption;
   color?: string;
   headerColor?: string;
 };
