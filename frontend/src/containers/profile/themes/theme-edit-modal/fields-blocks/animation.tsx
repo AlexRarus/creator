@@ -3,6 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import { ControlledField } from 'src/components/controlled-field';
 import { Grid, GridColumn } from 'src/components/grid';
 import { Select } from 'src/components/select';
+import { InputRange } from 'src/components/input-range';
 
 import { animationSizes, animationPositions } from '../utils';
 
@@ -14,7 +15,9 @@ interface IProps {
 
 export const FieldBlockAnimation = (props: IProps) => {
   const { formDefaultValues } = props;
-  const { control } = useFormContext();
+  const { control, watch } = useFormContext();
+  const animationSize = watch('animationSize');
+  const animationSizeCustomValue = watch('animationSizeCustomValue');
 
   return (
     <Block>
@@ -33,20 +36,39 @@ export const FieldBlockAnimation = (props: IProps) => {
         }}>
         <GridColumn size={4}>
           <ControlledField
-            name='animationSize'
-            control={control}
-            formDefaultValues={formDefaultValues}>
-            <Select options={animationSizes} label='Масштабирование' />
-          </ControlledField>
-        </GridColumn>
-        <GridColumn size={4}>
-          <ControlledField
             name='animationPosition'
             control={control}
             formDefaultValues={formDefaultValues}>
             <Select options={animationPositions} label='Расположение' />
           </ControlledField>
         </GridColumn>
+        <GridColumn size={4}>
+          <ControlledField
+            name='animationSize'
+            control={control}
+            formDefaultValues={formDefaultValues}>
+            <Select options={animationSizes} label='Масштабирование' />
+          </ControlledField>
+        </GridColumn>
+        {animationSize.value === 'custom' && (
+          <GridColumn>
+            <ControlledField
+              control={control}
+              name='animationSizeCustomValue'
+              formDefaultValues={formDefaultValues}>
+              <InputRange
+                label='Высота анимации'
+                min={100}
+                max={1000}
+                step={1}
+                minValueLabel='100'
+                maxValueLabel='1000'
+                valueLabel={`${animationSizeCustomValue || 100}`}
+                withInput={true}
+              />
+            </ControlledField>
+          </GridColumn>
+        )}
       </Grid>
     </Block>
   );

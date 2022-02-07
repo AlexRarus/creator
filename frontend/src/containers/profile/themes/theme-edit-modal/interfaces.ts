@@ -15,6 +15,7 @@ export type FormInputs = {
   backgroundPosition?: IOption;
   animationPosition?: IOption;
   animationSize?: IOption;
+  animationSizeCustomValue?: string; // есть только на форме
   color?: string;
   headerColor?: string;
 };

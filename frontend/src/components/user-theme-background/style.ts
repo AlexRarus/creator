@@ -13,7 +13,6 @@ export const ThemeBackground = styled.div<{
   width: 100%;
   height: auto;
   min-height: ${({ backgroundStretch }) => (backgroundStretch ? '100%' : 'auto')};
-  padding: 0 10px;
   ${({ selectedTheme }) => getUserThemeStyles(selectedTheme)}
 `;
 

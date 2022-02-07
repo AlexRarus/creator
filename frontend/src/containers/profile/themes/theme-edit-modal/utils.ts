@@ -45,7 +45,15 @@ const animationSizeHeight: IOption = {
   value: '100%',
   label: 'Выравнивание по высоте',
 };
-export const animationSizes: IOption[] = [animationSizeWidth, animationSizeHeight];
+const animationSizeCustom: IOption = {
+  value: 'custom',
+  label: 'Свой размер',
+};
+export const animationSizes: IOption[] = [
+  animationSizeWidth,
+  animationSizeHeight,
+  animationSizeCustom,
+];
 
 const backgroundPositionTop: IOption = {
   value: 'top',
@@ -121,6 +129,7 @@ export const prepareDataForServer = (rawData: RawData): DataForServer => {
 
   const animationPosition = rawData.formInputs.animationPosition?.value;
   const animationSize = rawData.formInputs.animationSize?.value;
+  const animationSizeCustomValue = `${rawData.formInputs.animationSizeCustomValue}px`;
 
   return {
     id: rawData.id,
@@ -134,7 +143,7 @@ export const prepareDataForServer = (rawData: RawData): DataForServer => {
     backgroundPosition,
 
     animationPosition,
-    animationSize,
+    animationSize: animationSize === 'custom' ? animationSizeCustomValue : animationSize,
 
     color: rawData.formInputs.color,
     headerColor: rawData.formInputs.headerColor,
@@ -166,7 +175,9 @@ export const prepareDataToForm = (theme: ITheme | null): FormInputs => {
     animationPositionTop;
   const animationSize =
     animationSizes.find((size: IOption) => size.value === theme?.animationSize) ||
-    animationSizeWidth;
+    animationSizeCustom;
+  const parsedAnimationSizeCustomValue = parseFloat(theme?.animationSize as any) || 100;
+  const animationSizeCustomValue = `${parsedAnimationSizeCustomValue}`;
 
   return {
     backgroundType,
@@ -181,6 +192,7 @@ export const prepareDataToForm = (theme: ITheme | null): FormInputs => {
 
     animationPosition,
     animationSize,
+    animationSizeCustomValue,
 
     color: theme?.color || '#263238',
     headerColor: theme?.headerColor || '#000000',
