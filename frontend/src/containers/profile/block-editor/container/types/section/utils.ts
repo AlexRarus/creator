@@ -12,11 +12,19 @@ const backgroundTypeColor: IOption = {
   value: 'color',
   label: 'Сплошной цвет',
 };
+const backgroundTypeTransparent: IOption = {
+  value: 'transparent',
+  label: 'Прозрачный',
+};
 const backgroundTypeGradient: IOption = {
   value: 'gradient',
   label: 'Градиент',
 };
-export const backgroundTypes: IOption[] = [backgroundTypeColor, backgroundTypeGradient];
+export const backgroundTypes: IOption[] = [
+  backgroundTypeColor,
+  backgroundTypeTransparent,
+  backgroundTypeGradient,
+];
 
 const backgroundSizeAuto: IOption = {
   value: 'auto',
@@ -134,7 +142,9 @@ export const prepareDataForServer = (rawData: RawData): DataForServer<ISectionDa
 // предзаполняем форму этими данными
 export const prepareDataToFormValues = (block: IBlock<ISectionData> | null): FormInputs => {
   const backgroundType =
-    block?.data?.backgroundType === 'gradient' ? backgroundTypeGradient : backgroundTypeColor;
+    backgroundTypes.find(
+      (backgroundType: IOption) => backgroundType.value === block?.data?.backgroundType
+    ) || backgroundTypeColor;
 
   const backgroundSize =
     backgroundSizes.find((size: IOption) => size.value === block?.data?.backgroundSize) ||
