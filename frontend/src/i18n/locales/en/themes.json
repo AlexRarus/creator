@@ -2,6 +2,7 @@
   "themeType": {
     "custom": "Custom",
     "default": "Base",
+    "base": "Base",
     "advanced": "Advanced",
     "animated": "Animated"
   }

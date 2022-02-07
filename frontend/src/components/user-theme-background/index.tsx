@@ -37,8 +37,10 @@ export const UserThemeBackground = (props: IProps) => {
   useEffect(() => {
     if (contentElement && backgroundElement) {
       const contentHeight = contentElement.getBoundingClientRect().height;
-      const backgroundHeight = backgroundElement.getBoundingClientRect().height;
-      setBackgroundStretch(contentHeight < backgroundHeight);
+      const backgroundParent = backgroundElement?.parentElement;
+      const backgroundParentHeight = backgroundParent?.getBoundingClientRect()?.height as any;
+
+      setBackgroundStretch(contentHeight < backgroundParentHeight);
     }
   }, [backgroundElement, contentElement]);
 
