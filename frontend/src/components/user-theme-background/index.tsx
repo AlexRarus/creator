@@ -19,7 +19,7 @@ export const UserThemeBackground = (props: IProps) => {
   useLayoutEffect(() => {
     if (animationElement && theme?.animation) {
       Lottie.loadAnimation({
-        container: animationElement as Element,
+        container: document.getElementById(`theme-animation-block-${theme.slug}`) as Element,
         renderer: 'svg',
         loop: true,
         autoplay: true,
@@ -49,6 +49,7 @@ export const UserThemeBackground = (props: IProps) => {
       backgroundStretch={backgroundStretch}>
       {theme?.type === 'animated' && (
         <ThemeAnimationBackground
+          id={`theme-animation-block-${theme.slug}`}
           ref={animationBackgroundRefCallback}
           position={theme?.animationPosition}
           size={theme?.animationSize}
