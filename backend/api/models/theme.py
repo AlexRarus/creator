@@ -16,7 +16,7 @@ class ThemeType(models.Model):
         max_length=255,
         blank=True,
         unique=True,
-        default="",
+        default="default",
     )
     pricingPlan = models.ForeignKey(
         PricingPlan,

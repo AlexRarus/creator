@@ -62,6 +62,13 @@ export const ThemesContainer = observer((props: any) => {
   }, [themeType]);
 
   useEffect(() => {
+    // редирект
+    if (!themeType && themesTypes.length) {
+      history.replace(`${themesTypes[0].slug}`);
+    }
+  }, [themeType, themesTypes.length]);
+
+  useEffect(() => {
     const hasThemes = Boolean(themes?.length);
     const lastThemeIndex = themes?.length - 1;
     if (hasThemes && activeThemeIndex > lastThemeIndex) {
