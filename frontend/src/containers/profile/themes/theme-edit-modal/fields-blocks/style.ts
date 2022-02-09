@@ -149,6 +149,8 @@ export const AnimationPreview = styled.div<{ animationPosition: any; animationSi
   ${getAnimationSize}
   ${getAnimationPosition}
   max-height: 100%;
+  overflow: hidden;
+  z-index: 2;
 
   div {
     ${getAnimationSize}
