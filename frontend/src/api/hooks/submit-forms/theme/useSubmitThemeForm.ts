@@ -10,12 +10,23 @@ export const useSubmitThemeForm = () => {
 
   const sendRequest = useCallback(async (dataForServer: DataForServer) => {
     setIsLoading(true);
+    const { animation, ...restDataForServer } = dataForServer;
+    const formData = new FormData();
+
+    Object.keys(restDataForServer).forEach((key: string) => {
+      formData.append(key, restDataForServer[key]);
+    });
+
+    if (animation || animation === null) {
+      formData.append('animation', animation as File);
+    }
+
     try {
       let response: AxiosResponse<any>;
       if (!dataForServer.id) {
-        response = await API.endpoints.themes.createTheme(dataForServer);
+        response = await API.endpoints.themes.createTheme(formData);
       } else {
-        response = await API.endpoints.themes.updateTheme(dataForServer);
+        response = await API.endpoints.themes.updateTheme(formData);
       }
       setErrors(null);
       setData(response.data);

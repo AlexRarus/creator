@@ -55,6 +55,7 @@ export const InputRange = (props: IProps) => {
   const [inputRangeElement, inputRangeRefCallback] = useState<HTMLLabelElement | null>(null);
   const [valueElement, valueRefCallback] = useState<HTMLDivElement | null>(null);
   const [lineElement, lineRefCallback] = useState<HTMLDivElement | null>(null);
+  const [rangeComponentElement, rangeComponentRefCallback] = useState<HTMLDivElement | null>(null);
   const [lineMetrics, setLineMetrics] = useState<any>(null);
   const [diffValues, setDiffValues] = useState(Math.abs(max - min));
   const [stepsCount, setStepsCount] = useState(Math.round(Math.abs(diffValues / step)));
@@ -67,6 +68,13 @@ export const InputRange = (props: IProps) => {
   const [isFocusInput, setIsFocusInput] = useState(false);
   const [isFocusRange, setIsFocusRange] = useState(false);
   const [isDnD, setIsDnD] = useState(false);
+  const [rangeComponentWidth, setRangeComponentWidth] = useState<any>();
+
+  useEffect(() => {
+    if (rangeComponentElement) {
+      setRangeComponentWidth(rangeComponentElement.getBoundingClientRect().width);
+    }
+  }, [rangeComponentElement]);
 
   useEffect(() => {
     const newDiffValues = Math.abs(max - min);
@@ -254,7 +262,10 @@ export const InputRange = (props: IProps) => {
   };
 
   return (
-    <RangeComponentWrapper withInput={withInput} inputWidth={inputWidth}>
+    <RangeComponentWrapper
+      withInput={withInput}
+      inputWidth={inputWidth}
+      ref={rangeComponentRefCallback}>
       {withInput && (
         <InputTextWrapper>
           <InputText
@@ -263,6 +274,7 @@ export const InputRange = (props: IProps) => {
             onChange={onChangeInput}
             onFocus={onFocusInput}
             onBlur={onBlurInput}
+            labelWidth={rangeComponentWidth}
           />
         </InputTextWrapper>
       )}

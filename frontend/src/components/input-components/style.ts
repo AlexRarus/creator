@@ -184,6 +184,7 @@ export const Placeholder = styled.label<{
 export const Label = styled.label<{
   isEmpty: boolean;
   dimension: TDimension;
+  labelWidth?: number;
 }>`
   font-size: ${({ isEmpty }) => (isEmpty ? '16px' : '13px')};
   height: 13px;
@@ -192,6 +193,7 @@ export const Label = styled.label<{
   transform: translateY(${(props) => (props.isEmpty ? getLabelTransform(props) : '0px')});
   transition: all 300ms;
   z-index: 99;
+  width: ${({ labelWidth }) => (labelWidth !== undefined ? `${labelWidth}px` : 'auto')};
 `;
 
 export const StatusBar = styled.div<IStatus>`

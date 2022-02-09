@@ -6,7 +6,7 @@ import { ThemeBackground, ThemeAnimationBackground, Content } from './style';
 
 interface IProps {
   theme?: ITheme | null;
-  children: any;
+  children?: any;
 }
 
 export const UserThemeBackground = (props: IProps) => {
@@ -22,7 +22,7 @@ export const UserThemeBackground = (props: IProps) => {
   const [animationDataHeight, setAnimationDataHeight] = useState<number | null>(null);
 
   useEffect(() => {
-    if (theme?.animation && !animationData) {
+    if (theme?.animation) {
       const fetchAnimation = async () => {
         const json = await fetch(`/lottie/${theme.animation}`).then((res) => res.json());
         setAnimationData(json);
@@ -30,7 +30,7 @@ export const UserThemeBackground = (props: IProps) => {
 
       fetchAnimation();
     }
-  }, [theme, animationData]);
+  }, [theme?.animation]);
 
   useEffect(() => {
     if (animationData && animationDataWidth === null) {
@@ -84,7 +84,7 @@ export const UserThemeBackground = (props: IProps) => {
           />
         </ThemeAnimationBackground>
       )}
-      <Content ref={contentRefCallback}>{children}</Content>
+      {children && <Content ref={contentRefCallback}>{children}</Content>}
     </ThemeBackground>
   );
 };

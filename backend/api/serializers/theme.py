@@ -23,11 +23,18 @@ class ThemeSerializerWrite(serializers.ModelSerializer):
     backgroundImage = serializers.PrimaryKeyRelatedField(
         allow_null=True, required=False, queryset=Image.objects.all()
     )
+    # При создании или редактировании темы можно присылать поле animation
+    animation = serializers.FileField(
+        use_url=False,
+        allow_empty_file=True,
+        required=False,
+        allow_null=True,
+        write_only=True,
+    )
 
     def update(self, instance, validated_data):
-        # исключаем поля type и animation для того чтобы его не меняли
+        # исключаем поле type для того чтобы его не меняли
         validated_data.pop("type", None)
-        validated_data.pop("animation", None)
 
         for attr, value in validated_data.items():
             setattr(instance, attr, value)

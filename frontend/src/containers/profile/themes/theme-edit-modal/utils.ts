@@ -192,6 +192,8 @@ export const prepareDataForServer = (rawData: RawData): DataForServer => {
     backgroundSize: backgroundSize === 'custom' ? backgroundSizeCustomValue : backgroundSize,
     backgroundPosition,
 
+    animation:
+      typeof rawData.formInputs.animation === 'string' ? undefined : rawData.formInputs.animation,
     animationPosition,
     animationSize: animationSize === 'custom' ? animationSizeCustomValue : animationSize,
     animationPreserveAspectRatioX,
@@ -256,6 +258,7 @@ export const prepareDataToForm = (theme: ITheme | null): FormInputs => {
     backgroundSizeCustomValue,
     backgroundPosition,
 
+    animation: theme?.animation, // тут пришла строка (путь для скачивания файла)
     animationPosition,
     animationSize,
     animationSizeCustomValue,

@@ -13,6 +13,7 @@ export type FormInputs = {
   backgroundSize?: IOption;
   backgroundSizeCustomValue?: string; // есть только на форме
   backgroundPosition?: IOption;
+  animation?: null | File | string; // string приходит с бэка, отправить можем null или File
   animationPosition?: IOption;
   animationSize?: IOption;
   animationSizeCustomValue?: string; // есть только на форме

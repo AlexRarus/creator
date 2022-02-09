@@ -20,14 +20,16 @@ function sumArray(arr: number[]) {
 function getCalculateTemplateArea() {
   const memoizeBuffer: any = {};
 
-  return function (sizeColumns: TGridSize[], size: TGridSize): TRow[] {
+  return function (sizeColumns: TGridSize[], size: TGridSize, defaultSize?: TGridSize): TRow[] {
     const stringifyArgs = `cache-${sizeColumns.join('_')}__${size}`;
     if (!(stringifyArgs in memoizeBuffer)) {
       memoizeBuffer[stringifyArgs] = sizeColumns.reduce(
         (result: TRow[], columnSize: TGridSize) => {
           const currentRow: TRow = result[result.length - 1];
           const currentRowSize: number = sumArray(currentRow);
-          const targetCompareValue: TGridSize = Math.min(size, columnSize) as TGridSize;
+          const compareValues =
+            defaultSize !== undefined ? [size, columnSize, defaultSize] : [size, columnSize];
+          const targetCompareValue: TGridSize = Math.min(...compareValues) as TGridSize;
 
           if (currentRowSize + targetCompareValue > size) {
             result.push([targetCompareValue]);
@@ -94,7 +96,7 @@ function getTemplate({
     ...resultTheme.gridBreakPoints,
   };
 
-  const DEFAULT_SIZE = staticSize || size;
+  const DEFAULT_SIZE = staticSize || size || 12;
   const defaultRows: TRow[] = calculateTemplateArea(sizeColumns, DEFAULT_SIZE);
 
   const resultBreakPointsEntries = Object.entries(resultBreakPoints);
@@ -103,7 +105,7 @@ function getTemplate({
   });
   const customMediaQueries = resultBreakPointsEntries.map(([breakPoint, size]) => {
     const numberSize = size as TGridSize;
-    const rows: TRow[] = calculateTemplateArea(sizeColumns, staticSize || numberSize);
+    const rows: TRow[] = calculateTemplateArea(sizeColumns, staticSize || numberSize, DEFAULT_SIZE);
 
     return `
       @media (max-width: ${breakPoint}) {

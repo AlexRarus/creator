@@ -39,6 +39,7 @@ export interface IThemeWrite {
   backgroundSmooth?: boolean;
   backgroundSize?: string;
   backgroundPosition?: string;
+  animation?: null | File; // для удаления файла нужно передать null для перезаписи File.json
   animationPosition?: string;
   animationSize?: string;
   animationPreserveAspectRatioX?: string;

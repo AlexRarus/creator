@@ -9,6 +9,7 @@ export interface IProps {
   multiple?: boolean;
   maxSize?: number;
   accept?: string; // example '.jpeg,.png'
+  hide?: boolean;
 }
 
 export const DropZone = React.forwardRef((props: IProps, ref: any) => {
@@ -17,6 +18,7 @@ export const DropZone = React.forwardRef((props: IProps, ref: any) => {
     maxSize = 15, // в мегабайтах
     multiple = false,
     accept,
+    hide = false,
   } = props;
   const maxSizeBytes: number = maxSize * 1000 * 1000; // в байтах
 
@@ -51,7 +53,7 @@ export const DropZone = React.forwardRef((props: IProps, ref: any) => {
   });
 
   return (
-    <DropZoneWrapper {...getRootProps()} isDragActive={isDragActive}>
+    <DropZoneWrapper {...getRootProps()} isDragActive={isDragActive} hide={hide}>
       <DropZoneIcon ref={ref}>
         <InsertPhotoIcon />
       </DropZoneIcon>

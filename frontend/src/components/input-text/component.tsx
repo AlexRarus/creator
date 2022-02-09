@@ -24,6 +24,7 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
     maxLength,
     color,
     onlyProgrammingChange,
+    labelWidth,
     ...inputProps
   } = props;
   const [componentElement, componentRefCallback] = useState<HTMLElement | null>(null);
@@ -84,7 +85,8 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
           htmlFor={`input-text-${inputProps.name}-${uniqId}`}
           isEmpty={!value && value !== 0 && !isFocused}
           dimension={dimension}
-          onClick={() => currentRef?.current?.focus()}>
+          onClick={() => currentRef?.current?.focus()}
+          labelWidth={labelWidth}>
           {label}
         </Label>
       )}
