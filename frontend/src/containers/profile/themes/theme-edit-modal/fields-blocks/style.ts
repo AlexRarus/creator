@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import { IImage } from 'src/dal/images/interfaces';
 import { IOption } from 'src/components/select';
-import { COLORS } from 'src/components/theme';
+import { COLORS, MEDIA } from 'src/components/theme';
 
 export const FieldLabel = styled.div`
   font-size: 13px;
@@ -136,6 +136,11 @@ export const AnimationPreviewWrapper = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
+  min-height: 400px;
+
+  ${MEDIA.max768({
+    height: '400px',
+  })};
 `;
 
 export const AnimationPreview = styled.div<{ animationPosition: any; animationSize: any }>`
