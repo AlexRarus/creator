@@ -45,6 +45,10 @@ const animationSizeHeight: IOption = {
   value: 'height',
   label: 'Выравнивание по высоте',
 };
+const animationSizeBoth: IOption = {
+  value: 'both',
+  label: 'Растянуть во всех направлениях',
+};
 const animationSizeCustom: IOption = {
   value: 'custom',
   label: 'Свой размер',
@@ -52,6 +56,7 @@ const animationSizeCustom: IOption = {
 export const animationSizes: IOption[] = [
   animationSizeWidth,
   animationSizeHeight,
+  animationSizeBoth,
   animationSizeCustom,
 ];
 

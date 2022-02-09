@@ -105,6 +105,11 @@ const getAnimationSize = (props: { animationSize?: string }) => {
         width: auto;
         height: 100%;
       `;
+    case 'both':
+      return css`
+        width: 100%;
+        height: 100%;
+      `;
     default:
       return css`
         width: 100%;
