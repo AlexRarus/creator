@@ -23,11 +23,8 @@ import {
   CreateButtonLabel,
   SwiperWrapper,
   ThemeItemBackground,
-  ThemeItemText,
   PhoneWrapper,
   ActionRow,
-  ThemeItemHeader,
-  UserBlock,
   EmptyBlock,
   SuccessLabel,
 } from './styles';
@@ -37,7 +34,7 @@ SwiperCore.use([Pagination, Navigation, EffectCoverflow]);
 
 export const ThemesContainer = observer((props: any) => {
   const { username, themeType = '' } = props;
-  const [activeTheme, setActiveTheme] = useState<ITheme | undefined>();
+  const [activeThemeIndex, setActiveThemeIndex] = useState<number>(0);
   const [editingThemeId, setEditingThemeId] = useState<number | 'new' | null>(null);
   const { DEVICE_THEME } = useThemeContext();
   const {
@@ -50,6 +47,7 @@ export const ThemesContainer = observer((props: any) => {
     getThemesTypesAction,
   } = useMapStoreToProps();
   const history = useHistory();
+  const activeTheme = themes[activeThemeIndex as number];
 
   useEffect(() => {
     // получаем типы тем, если их еще нет
@@ -64,20 +62,22 @@ export const ThemesContainer = observer((props: any) => {
   }, [themeType]);
 
   useEffect(() => {
-    // выбираем первую тему активной
-    if (themes?.length) {
-      setActiveTheme(themes[0]);
+    const hasThemes = Boolean(themes?.length);
+    const lastThemeIndex = themes?.length - 1;
+    if (hasThemes && activeThemeIndex > lastThemeIndex) {
+      setActiveThemeIndex(lastThemeIndex);
     }
-  }, [themes]);
+  }, [themes?.length]);
 
   const onClickTheme = (isSelected?: boolean) => () => {
-    isSelected ? toEditPage() : selectThemeAction(activeTheme as ITheme);
+    if (activeTheme) {
+      isSelected ? toEditPage() : selectThemeAction(activeTheme as ITheme);
+    }
   };
 
   const onSlideChange = (swiper: any) => {
     const { realIndex } = swiper;
-    const maxIndex = themes.length - 1;
-    setActiveTheme(realIndex > maxIndex ? undefined : themes[realIndex]);
+    setActiveThemeIndex(realIndex);
   };
 
   const toEditPage = () =>

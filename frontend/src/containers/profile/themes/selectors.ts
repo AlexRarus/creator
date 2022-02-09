@@ -1,3 +1,4 @@
+import { toJS } from 'mobx';
 import { useStores } from 'src/dal/use-stores';
 
 export function useMapStoreToProps() {
@@ -7,7 +8,7 @@ export function useMapStoreToProps() {
     user: dalAuthStore.user,
     selectedPage: dalPagesStore.selectedPage,
     isLoading: dalThemesStore.isLoading,
-    themes: dalThemesStore.themes,
+    themes: toJS(dalThemesStore.themes),
     getThemesByTypeAction: dalThemesStore.getThemesByTypeAction,
     selectThemeAction: dalThemesStore.selectThemeAction,
     getThemesTypesAction: dalThemesStore.getThemesTypesAction,

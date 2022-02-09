@@ -30,6 +30,8 @@ export const UserThemeBackground = (props: IProps) => {
 
       fetchAnimation();
     }
+
+    return () => setAnimationData(null);
   }, [theme?.animation]);
 
   useEffect(() => {
@@ -44,7 +46,7 @@ export const UserThemeBackground = (props: IProps) => {
     if (backgroundElement && themeAnimationElement) {
       const backgroundElementWidth = backgroundElement?.getBoundingClientRect()?.width;
 
-      setBackgroundWidth(backgroundElementWidth);
+      setBackgroundWidth(backgroundElementWidth as number);
     }
   }, [backgroundElement, themeAnimationElement]);
 
