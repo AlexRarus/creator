@@ -22,6 +22,9 @@ export interface ITheme {
   animation?: string; // путь к файлу анимации
   animationPosition?: string; // позиция анимации
   animationSize?: string; // масштабирование анимации
+  animationPreserveAspectRatioX?: string; // выравнивание анимации по горизонтали
+  animationPreserveAspectRatioY?: string; // выравнивание анимации по вертикали
+  animationPreserveAspectRatioScale?: string; // масштаб анимации
 }
 
 // при создании-редактировании темы нужно отправить другие типы полей
@@ -38,6 +41,9 @@ export interface IThemeWrite {
   backgroundPosition?: string;
   animationPosition?: string;
   animationSize?: string;
+  animationPreserveAspectRatioX?: string;
+  animationPreserveAspectRatioY?: string;
+  animationPreserveAspectRatioScale?: string;
   color?: string;
   headerColor?: string;
   // и другие свойства, синхронизировать с ITheme

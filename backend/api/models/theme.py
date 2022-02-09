@@ -161,13 +161,36 @@ class Theme(models.Model):
         null=True,
     )
     animationSize = models.CharField(
-        verbose_name="Размер анимации",
+        verbose_name="Размер обертки анимации",
+        default="width",
         null=True,
         blank=True,
         max_length=255,
     )
     animationPosition = models.CharField(
-        verbose_name="Позиция анимации",
+        verbose_name="Позиция обертки анимации",
+        default="top",
+        null=True,
+        blank=True,
+        max_length=255,
+    )
+    animationPreserveAspectRatioX = models.CharField(
+        verbose_name="Выравнивание анимации по X",
+        default="Min",
+        null=True,
+        blank=True,
+        max_length=255,
+    )
+    animationPreserveAspectRatioY = models.CharField(
+        verbose_name="Выравнивание анимации по Y",
+        default="Min",
+        null=True,
+        blank=True,
+        max_length=255,
+    )
+    animationPreserveAspectRatioScale = models.CharField(
+        verbose_name="Масштаб анимации",
+        default="slice",
         null=True,
         blank=True,
         max_length=255,

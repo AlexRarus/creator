@@ -5,7 +5,13 @@ import { Grid, GridColumn } from 'src/components/grid';
 import { Select } from 'src/components/select';
 import { InputRange } from 'src/components/input-range';
 
-import { animationSizes, animationPositions } from '../utils';
+import {
+  animationSizes,
+  animationPositions,
+  animationPreserveAspectRatioXOptions,
+  animationPreserveAspectRatioYOptions,
+  animationPreserveAspectRatioScaleOptions,
+} from '../utils';
 
 import { Block, BlockTitle } from './style';
 
@@ -39,7 +45,7 @@ export const FieldBlockAnimation = (props: IProps) => {
             name='animationPosition'
             control={control}
             formDefaultValues={formDefaultValues}>
-            <Select options={animationPositions} label='Расположение' />
+            <Select options={animationPositions} label='Расположение обертки' />
           </ControlledField>
         </GridColumn>
         <GridColumn size={4}>
@@ -47,7 +53,7 @@ export const FieldBlockAnimation = (props: IProps) => {
             name='animationSize'
             control={control}
             formDefaultValues={formDefaultValues}>
-            <Select options={animationSizes} label='Масштабирование' />
+            <Select options={animationSizes} label='Размер обертки' />
           </ControlledField>
         </GridColumn>
         {animationSize.value === 'custom' && (
@@ -57,7 +63,7 @@ export const FieldBlockAnimation = (props: IProps) => {
               name='animationSizeCustomValue'
               formDefaultValues={formDefaultValues}>
               <InputRange
-                label='Высота анимации'
+                label='Высота обертки'
                 min={100}
                 max={1000}
                 step={1}
@@ -69,6 +75,36 @@ export const FieldBlockAnimation = (props: IProps) => {
             </ControlledField>
           </GridColumn>
         )}
+        <GridColumn size={4}>
+          <ControlledField
+            name='animationPreserveAspectRatioX'
+            control={control}
+            formDefaultValues={formDefaultValues}>
+            <Select
+              options={animationPreserveAspectRatioXOptions}
+              label='Выравнивании по горизонтали'
+            />
+          </ControlledField>
+        </GridColumn>
+        <GridColumn size={4}>
+          <ControlledField
+            name='animationPreserveAspectRatioY'
+            control={control}
+            formDefaultValues={formDefaultValues}>
+            <Select
+              options={animationPreserveAspectRatioYOptions}
+              label='Выравнивании по вертикали'
+            />
+          </ControlledField>
+        </GridColumn>
+        <GridColumn size={4}>
+          <ControlledField
+            name='animationPreserveAspectRatioScale'
+            control={control}
+            formDefaultValues={formDefaultValues}>
+            <Select options={animationPreserveAspectRatioScaleOptions} label='Масштаб анимации' />
+          </ControlledField>
+        </GridColumn>
       </Grid>
     </Block>
   );

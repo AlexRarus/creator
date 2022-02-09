@@ -38,11 +38,11 @@ export const backgroundSizes: IOption[] = [
 ];
 
 const animationSizeWidth: IOption = {
-  value: 'auto',
+  value: 'width',
   label: 'Выравнивание по ширине',
 };
 const animationSizeHeight: IOption = {
-  value: '100%',
+  value: 'height',
   label: 'Выравнивание по высоте',
 };
 const animationSizeCustom: IOption = {
@@ -84,13 +84,59 @@ export const backgroundPositions: IOption[] = [
 ];
 const animationPositionTop: IOption = {
   value: 'top',
-  label: 'Сверху',
+  label: 'Сверху страницы',
 };
 const animationPositionBottom: IOption = {
   value: 'bottom',
-  label: 'Снизу',
+  label: 'Снизу страницы',
 };
 export const animationPositions: IOption[] = [animationPositionTop, animationPositionBottom];
+const preserveAspectRatioAlignXMin: IOption = {
+  value: 'Min',
+  label: 'Слева',
+};
+const preserveAspectRatioAlignXMid: IOption = {
+  value: 'Mid',
+  label: 'По середине',
+};
+const preserveAspectRatioAlignXMax: IOption = {
+  value: 'Max',
+  label: 'Справа',
+};
+export const animationPreserveAspectRatioXOptions: IOption[] = [
+  preserveAspectRatioAlignXMin,
+  preserveAspectRatioAlignXMid,
+  preserveAspectRatioAlignXMax,
+];
+const preserveAspectRatioAlignYMin: IOption = {
+  value: 'Min',
+  label: 'Сверху',
+};
+const preserveAspectRatioAlignYMid: IOption = {
+  value: 'Mid',
+  label: 'По середине',
+};
+const preserveAspectRatioAlignYMax: IOption = {
+  value: 'Max',
+  label: 'Снизу',
+};
+export const animationPreserveAspectRatioYOptions: IOption[] = [
+  preserveAspectRatioAlignYMin,
+  preserveAspectRatioAlignYMid,
+  preserveAspectRatioAlignYMax,
+];
+const preserveAspectRatioScaleMeet: IOption = {
+  value: 'meet',
+  label: 'Вписать полностью',
+};
+const preserveAspectRatioScaleSlice: IOption = {
+  value: 'slice',
+  label: 'Обрезать',
+};
+export const animationPreserveAspectRatioScaleOptions: IOption[] = [
+  preserveAspectRatioScaleMeet,
+  preserveAspectRatioScaleSlice,
+];
 
 const backgroundRepeatNo: IOption = {
   value: 'no-repeat',
@@ -130,6 +176,10 @@ export const prepareDataForServer = (rawData: RawData): DataForServer => {
   const animationPosition = rawData.formInputs.animationPosition?.value;
   const animationSize = rawData.formInputs.animationSize?.value;
   const animationSizeCustomValue = `${rawData.formInputs.animationSizeCustomValue}px`;
+  const animationPreserveAspectRatioX = rawData.formInputs.animationPreserveAspectRatioX?.value;
+  const animationPreserveAspectRatioY = rawData.formInputs.animationPreserveAspectRatioY?.value;
+  const animationPreserveAspectRatioScale =
+    rawData.formInputs.animationPreserveAspectRatioScale?.value;
 
   return {
     id: rawData.id,
@@ -144,6 +194,9 @@ export const prepareDataForServer = (rawData: RawData): DataForServer => {
 
     animationPosition,
     animationSize: animationSize === 'custom' ? animationSizeCustomValue : animationSize,
+    animationPreserveAspectRatioX,
+    animationPreserveAspectRatioY,
+    animationPreserveAspectRatioScale,
 
     color: rawData.formInputs.color,
     headerColor: rawData.formInputs.headerColor,
@@ -175,9 +228,22 @@ export const prepareDataToForm = (theme: ITheme | null): FormInputs => {
     animationPositionTop;
   const animationSize =
     animationSizes.find((size: IOption) => size.value === theme?.animationSize) ||
-    animationSizeCustom;
+    animationSizeWidth;
   const parsedAnimationSizeCustomValue = parseFloat(theme?.animationSize as any) || 100;
   const animationSizeCustomValue = `${parsedAnimationSizeCustomValue}`;
+
+  const animationPreserveAspectRatioX =
+    animationPreserveAspectRatioXOptions.find(
+      (item: IOption) => item.value === theme?.animationPreserveAspectRatioX
+    ) || preserveAspectRatioAlignXMin;
+  const animationPreserveAspectRatioY =
+    animationPreserveAspectRatioYOptions.find(
+      (item: IOption) => item.value === theme?.animationPreserveAspectRatioY
+    ) || preserveAspectRatioAlignYMin;
+  const animationPreserveAspectRatioScale =
+    animationPreserveAspectRatioScaleOptions.find(
+      (item: IOption) => item.value === theme?.animationPreserveAspectRatioScale
+    ) || preserveAspectRatioScaleSlice;
 
   return {
     backgroundType,
@@ -193,6 +259,9 @@ export const prepareDataToForm = (theme: ITheme | null): FormInputs => {
     animationPosition,
     animationSize,
     animationSizeCustomValue,
+    animationPreserveAspectRatioX,
+    animationPreserveAspectRatioY,
+    animationPreserveAspectRatioScale,
 
     color: theme?.color || '#263238',
     headerColor: theme?.headerColor || '#000000',

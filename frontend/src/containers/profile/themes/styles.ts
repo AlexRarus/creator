@@ -91,6 +91,7 @@ export const PhoneWrapper = styled.div<{ isSelected?: boolean; color?: string }>
   border: 2px solid ${({ color = COLORS.black }) => color};
   border-radius: 30px;
   overflow: hidden;
+  z-index: 2;
   ${({ theme }) =>
     !theme?.isMobile &&
     `

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { ITheme } from 'src/dal/themes/interfaces';
 import { getUserThemeStyles } from 'src/dal/themes/style';
 
@@ -16,22 +16,64 @@ export const ThemeBackground = styled.div<{
   ${({ selectedTheme }) => getUserThemeStyles(selectedTheme)}
 `;
 
-const getAnimationPosition = (props: { position?: string; size?: string }) => {
-  const { position = 'top' } = props;
+const getAnimationSize = (props: { animationSize?: string }) => {
+  const { animationSize = 'width' } = props;
 
-  return `${position}: 0`;
+  switch (animationSize) {
+    case 'width':
+      return css`
+        width: 100%;
+        height: auto;
+      `;
+    case 'height':
+      return css`
+        width: auto;
+        height: 100%;
+      `;
+    default:
+      return css`
+        width: 100%;
+        height: ${animationSize};
+      `;
+  }
 };
 
-export const ThemeAnimationBackground = styled.div<{ position?: string; size?: string }>`
+const getAnimationPosition = (props: { animationPosition?: string }) => {
+  const { animationPosition = 'top' } = props;
+
+  switch (animationPosition) {
+    case 'top':
+      return css`
+        top: 0;
+      `;
+    case 'bottom':
+      return css`
+        bottom: 0;
+      `;
+    default:
+      return css`
+        top: 0;
+      `;
+  }
+};
+
+export const ThemeAnimationBackground = styled.div<{
+  animationPosition?: string;
+  animationSize?: string;
+}>`
   position: absolute;
-  width: auto;
-  height: ${({ size = 'auto' }) => size};
   left: 0;
+  ${getAnimationSize}
   ${getAnimationPosition}
+
+  div {
+    ${getAnimationSize}
+  }
 `;
 
 export const Content = styled.div`
   position: relative;
+  z-index: 2;
   width: 100%;
   height: fit-content;
   min-height: fit-content;
