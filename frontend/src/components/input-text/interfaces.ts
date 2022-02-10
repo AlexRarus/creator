@@ -26,5 +26,6 @@ export interface IProps extends Partial<IInputProps> {
   maxLength?: number;
   color?: string;
   onlyProgrammingChange?: boolean; // возможность менять инпут только програмно
+  labelWidth?: number;
   [key: string]: any;
 }

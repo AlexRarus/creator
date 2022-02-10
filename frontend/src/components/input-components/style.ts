@@ -184,12 +184,14 @@ export const Placeholder = styled.label<{
 export const Label = styled.label<{
   isEmpty: boolean;
   dimension: TDimension;
+  labelWidth?: number;
 }>`
   font-size: ${({ isEmpty }) => (isEmpty ? '16px' : '14px')};
   cursor: text;
   color: ${({ theme }) => theme.textColor.secondary};
   transform: translateY(${(props) => (props.isEmpty ? getLabelTransform(props) : '0px')});
   transition: all 300ms;
+  width: ${({ labelWidth }) => (labelWidth !== undefined ? `${labelWidth}px` : 'auto')};
   margin-bottom: 4px;
 `;
 

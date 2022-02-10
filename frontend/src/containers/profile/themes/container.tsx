@@ -13,6 +13,7 @@ import Button from 'src/components/button';
 import 'swiper/css/bundle';
 
 import { ThemesHeader } from './header';
+import { ThemeItem } from './theme-item';
 import { ThemeEditModal } from './theme-edit-modal';
 import { useMapStoreToProps } from './selectors';
 import {
@@ -22,11 +23,8 @@ import {
   CreateButtonLabel,
   SwiperWrapper,
   ThemeItemBackground,
-  ThemeItemText,
   PhoneWrapper,
   ActionRow,
-  ThemeItemHeader,
-  UserBlock,
   EmptyBlock,
   SuccessLabel,
 } from './styles';
@@ -36,7 +34,7 @@ SwiperCore.use([Pagination, Navigation, EffectCoverflow]);
 
 export const ThemesContainer = observer((props: any) => {
   const { username, themeType = '' } = props;
-  const [activeTheme, setActiveTheme] = useState<ITheme | undefined>();
+  const [activeThemeIndex, setActiveThemeIndex] = useState<number>(0);
   const [editingThemeId, setEditingThemeId] = useState<number | 'new' | null>(null);
   const { DEVICE_THEME } = useThemeContext();
   const {
@@ -49,6 +47,7 @@ export const ThemesContainer = observer((props: any) => {
     getThemesTypesAction,
   } = useMapStoreToProps();
   const history = useHistory();
+  const activeTheme = themes[activeThemeIndex as number];
 
   useEffect(() => {
     // получаем типы тем, если их еще нет
@@ -63,20 +62,29 @@ export const ThemesContainer = observer((props: any) => {
   }, [themeType]);
 
   useEffect(() => {
-    // выбираем первую тему актиной
-    if (themes?.length) {
-      setActiveTheme(themes[0]);
+    // редирект
+    if (!themeType && themesTypes.length) {
+      history.replace(`${themesTypes[0].slug}`);
     }
-  }, [themes]);
+  }, [themeType, themesTypes.length]);
+
+  useEffect(() => {
+    const hasThemes = Boolean(themes?.length);
+    const lastThemeIndex = themes?.length - 1;
+    if (hasThemes && activeThemeIndex > lastThemeIndex) {
+      setActiveThemeIndex(lastThemeIndex);
+    }
+  }, [themes?.length]);
 
   const onClickTheme = (isSelected?: boolean) => () => {
-    isSelected ? toEditPage() : selectThemeAction(activeTheme as ITheme);
+    if (activeTheme) {
+      isSelected ? toEditPage() : selectThemeAction(activeTheme as ITheme);
+    }
   };
 
   const onSlideChange = (swiper: any) => {
     const { realIndex } = swiper;
-    const maxIndex = themes.length - 1;
-    setActiveTheme(realIndex > maxIndex ? undefined : themes[realIndex]);
+    setActiveThemeIndex(realIndex);
   };
 
   const toEditPage = () =>
@@ -119,15 +127,7 @@ export const ThemesContainer = observer((props: any) => {
                   color={theme.color}
                   isSelected={user?.theme?.id === theme.id}
                   onClick={canEditThemes ? () => openEditingThemeModal(theme.id) : undefined}>
-                  <ThemeItemBackground selectedTheme={theme}>
-                    <UserBlock color={theme.color} />
-                    <ThemeItemHeader color={theme.headerColor}>Заголовок</ThemeItemHeader>
-                    <ThemeItemText color={theme.color}>
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo
-                      ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis
-                      parturient montes, nascetur ridiculus mus.
-                    </ThemeItemText>
-                  </ThemeItemBackground>
+                  <ThemeItem theme={theme} />
                 </PhoneWrapper>
               </SwiperSlide>
             ))}

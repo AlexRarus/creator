@@ -46,7 +46,7 @@ export const InputRange = (props: IProps) => {
     minValueLabel,
     maxValueLabel,
     valueLabel,
-    value = 0,
+    value,
     withInput = false,
     inputWidth = 25,
     toFixed = 1,
@@ -55,17 +55,26 @@ export const InputRange = (props: IProps) => {
   const [inputRangeElement, inputRangeRefCallback] = useState<HTMLLabelElement | null>(null);
   const [valueElement, valueRefCallback] = useState<HTMLDivElement | null>(null);
   const [lineElement, lineRefCallback] = useState<HTMLDivElement | null>(null);
+  const [rangeComponentElement, rangeComponentRefCallback] = useState<HTMLDivElement | null>(null);
   const [lineMetrics, setLineMetrics] = useState<any>(null);
   const [diffValues, setDiffValues] = useState(Math.abs(max - min));
   const [stepsCount, setStepsCount] = useState(Math.round(Math.abs(diffValues / step)));
   const [isNegativeDirection, setIsNegativeDirection] = useState(min > max);
+  const parsedValue = isNaN(parseFloat(value)) ? min : parseFloat(value);
   const [currentStep, setCurrentStep] = useState(
-    Math.max(0, (isNegativeDirection ? min - value : value - min) / Math.abs(step))
+    Math.max(0, (isNegativeDirection ? min - parsedValue : parsedValue - min) / Math.abs(step))
   );
   const [stepPxValue, setStepPxValue] = useState(0); // колличество пикселей в одном шаге
   const [isFocusInput, setIsFocusInput] = useState(false);
   const [isFocusRange, setIsFocusRange] = useState(false);
   const [isDnD, setIsDnD] = useState(false);
+  const [rangeComponentWidth, setRangeComponentWidth] = useState<any>();
+
+  useEffect(() => {
+    if (rangeComponentElement) {
+      setRangeComponentWidth(rangeComponentElement.getBoundingClientRect().width);
+    }
+  }, [rangeComponentElement]);
 
   useEffect(() => {
     const newDiffValues = Math.abs(max - min);
@@ -77,7 +86,7 @@ export const InputRange = (props: IProps) => {
   useEffect(() => {
     // при изменении текущего шага, вызываем onChange
     const calculatedValue = min + currentStep * step;
-    if (!isFocusInput && calculatedValue !== value) {
+    if (!isFocusInput && calculatedValue !== parsedValue) {
       inputProps.onChange && inputProps.onChange(calculatedValue);
     }
   }, [isFocusInput, currentStep]);
@@ -86,7 +95,7 @@ export const InputRange = (props: IProps) => {
     // меняем текущий шаг при изменеии value
     if (!isFocusRange && value !== '-') {
       const calculatedStep = Math.round(
-        Math.max(0, (isNegativeDirection ? min - value : value - min) / Math.abs(step))
+        Math.max(0, (isNegativeDirection ? min - parsedValue : parsedValue - min) / Math.abs(step))
       );
       if (calculatedStep !== currentStep) {
         setCurrentStep(calculatedStep);
@@ -253,7 +262,10 @@ export const InputRange = (props: IProps) => {
   };
 
   return (
-    <RangeComponentWrapper withInput={withInput} inputWidth={inputWidth}>
+    <RangeComponentWrapper
+      withInput={withInput}
+      inputWidth={inputWidth}
+      ref={rangeComponentRefCallback}>
       {withInput && (
         <InputTextWrapper>
           <InputText
@@ -262,6 +274,7 @@ export const InputRange = (props: IProps) => {
             onChange={onChangeInput}
             onFocus={onFocusInput}
             onBlur={onBlurInput}
+            labelWidth={rangeComponentWidth}
           />
         </InputTextWrapper>
       )}

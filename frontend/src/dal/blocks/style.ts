@@ -21,6 +21,7 @@ export const getSectionStyle = (section?: Partial<ISectionData> | null) => {
   const backgroundImageUrl = imageUrl ? ` url('/media/${imageUrl}'), ` : '';
 
   return css`
+    ${backgroundType === 'transparent' && `background: transparent`};
     ${backgroundType === 'color' && `background: ${backgroundImageUrl}${backgroundColor}`};
     ${backgroundType === 'gradient' &&
     `background-image: ${backgroundImageUrl}${backgroundGradient}`};

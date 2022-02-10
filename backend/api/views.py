@@ -327,8 +327,44 @@ class ThemeViewSet(viewsets.ModelViewSet):
         theme_type, created = ThemeType.objects.get_or_create(slug=slug)
         serializer.save(author=self.request.user, type=theme_type)
 
+    def create(self, request, *args, **kwargs):
+        data = request.data.dict()
+        if data.get("backgroundImage") == "null":
+            data["backgroundImage"] = None
+        if data.get("animation") == "null":
+            data["animation"] = None
+
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(
+            serializer.data, status=status.HTTP_201_CREATED, headers=headers
+        )
+
     def perform_update(self, serializer):
         serializer.save(author=self.request.user)
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop("partial", False)
+        instance = self.get_object()
+        data = request.data.dict()
+
+        if data.get("backgroundImage") == "null":
+            data["backgroundImage"] = None
+        if data.get("animation") == "null":
+            data["animation"] = None
+
+        serializer = self.get_serializer(instance, data=data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, "_prefetched_objects_cache", None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
 
     @action(["post"], detail=True)
     def select(self, request, *args, **kwargs):

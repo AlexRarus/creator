@@ -8,6 +8,7 @@ import { useMapStoreToProps } from './selectors';
 import { FormInputs, RawData } from './interfaces';
 import { prepareDataForServer, getActions } from './utils';
 import { FieldBlockBackground } from './fields-blocks/background';
+import { FieldBlockAnimation } from './fields-blocks/animation';
 import { FieldBlockFont } from './fields-blocks/font';
 
 interface IProps {
@@ -82,6 +83,7 @@ export const ThemeForm = observer((props: IProps) => {
           themeType={themeType}
           user={user}
         />
+        {themeType === 'animated' && <FieldBlockAnimation formDefaultValues={formDefaultValues} />}
         <FieldBlockFont formDefaultValues={formDefaultValues} />
       </FormProvider>
     </Form>

@@ -9,10 +9,6 @@ export const PageWrapper = styled.div`
   overflow: auto;
 `;
 
-export const UserThemeStyle = styled.div<{ selectedTheme?: ITheme | null }>`
-  ${({ selectedTheme }) => getUserThemeStyles(selectedTheme)};
-`;
-
 // позиционирование блока на странице
 export const BlockPositioning = styled.div<{ isSection?: boolean }>`
   width: 100%;

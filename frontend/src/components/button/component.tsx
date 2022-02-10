@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { forwardRef, ReactNode } from 'react';
 import Replies from 'src/components/replies';
 
 import { TKind, TDimension } from './interfaces';
@@ -17,7 +17,7 @@ interface IProps {
   [key: string]: any; // например style
 }
 
-export function Button(props: IProps) {
+export const Button = forwardRef((props: IProps, ref: any) => {
   const {
     children,
     id,
@@ -38,6 +38,7 @@ export function Button(props: IProps) {
   const ButtonStyledComponent: any = to ? ButtonStyledLink : ButtonStyled;
   return (
     <ButtonStyledComponent
+      ref={ref}
       onClick={clickHandler}
       kind={kind}
       dimension={dimension}
@@ -52,4 +53,4 @@ export function Button(props: IProps) {
       <Replies disabled={disabled} />
     </ButtonStyledComponent>
   );
-}
+});

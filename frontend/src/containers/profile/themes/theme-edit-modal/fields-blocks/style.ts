@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import { IImage } from 'src/dal/images/interfaces';
 import { IOption } from 'src/components/select';
-import { COLORS } from 'src/components/theme';
+import { COLORS, MEDIA } from 'src/components/theme';
 
 export const FieldLabel = styled.div`
   font-size: 13px;
@@ -9,10 +9,6 @@ export const FieldLabel = styled.div`
   color: ${({ theme }) => theme.textColor.secondary};
   transition: all 300ms;
   margin-bottom: 4px;
-`;
-
-export const PictureLabel = styled.div`
-  text-align: center;
 `;
 
 export const PictureCell = styled.div`
@@ -93,4 +89,76 @@ export const BlockTitle = styled.div`
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 10px;
+`;
+
+const getAnimationSize = (props: { animationSize?: string }) => {
+  const { animationSize = 'width' } = props;
+
+  switch (animationSize) {
+    case 'width':
+      return css`
+        width: 100%;
+        height: auto;
+      `;
+    case 'height':
+      return css`
+        width: auto;
+        height: 100%;
+      `;
+    case 'both':
+      return css`
+        width: 100%;
+        height: 100%;
+      `;
+    default:
+      return css`
+        width: 100%;
+        height: ${animationSize};
+      `;
+  }
+};
+
+const getAnimationPosition = (props: { animationPosition?: string }) => {
+  const { animationPosition = 'top' } = props;
+
+  switch (animationPosition) {
+    case 'top':
+      return css`
+        top: 0;
+      `;
+    case 'bottom':
+      return css`
+        bottom: 0;
+      `;
+    default:
+      return css`
+        top: 0;
+      `;
+  }
+};
+
+export const AnimationPreviewWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+
+  ${MEDIA.max768({
+    height: '400px',
+  })};
+`;
+
+export const AnimationPreview = styled.div<{ animationPosition: any; animationSize: any }>`
+  position: absolute;
+  left: 0;
+  ${getAnimationSize}
+  ${getAnimationPosition}
+  max-height: 100%;
+  overflow: hidden;
+  z-index: 2;
+
+  div {
+    ${getAnimationSize}
+    max-height: 100%;
+  }
 `;

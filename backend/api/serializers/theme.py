@@ -8,6 +8,10 @@ class ThemeSerializerRead(serializers.ModelSerializer):
     author = serializers.PrimaryKeyRelatedField(read_only=True)
     type = serializers.CharField(read_only=True, source="type.slug")
     backgroundImage = ImageSerializer()
+    animation = serializers.FileField(
+        use_url=False,
+        read_only=True,
+    )
 
     class Meta:
         model = Theme
@@ -19,9 +23,17 @@ class ThemeSerializerWrite(serializers.ModelSerializer):
     backgroundImage = serializers.PrimaryKeyRelatedField(
         allow_null=True, required=False, queryset=Image.objects.all()
     )
+    # При создании или редактировании темы можно присылать поле animation
+    animation = serializers.FileField(
+        use_url=False,
+        allow_empty_file=True,
+        required=False,
+        allow_null=True,
+        write_only=True,
+    )
 
     def update(self, instance, validated_data):
-        # исключаем поле type для того чтобы его нельзя было изменить
+        # исключаем поле type для того чтобы его не меняли
         validated_data.pop("type", None)
 
         for attr, value in validated_data.items():

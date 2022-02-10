@@ -4,8 +4,8 @@ import { IThemeWrite } from 'src/dal/themes/interfaces';
 export interface IThemeAPI {
   getThemesByType(type: string): AxiosResponse<any>;
   getThemeById(id: number): AxiosResponse<any>;
-  createTheme(data: IThemeWrite): AxiosResponse<any>;
-  updateTheme(data: IThemeWrite): AxiosResponse<any>;
+  createTheme(data: FormData): AxiosResponse<any>;
+  updateTheme(data: FormData): AxiosResponse<any>;
   deleteTheme(id: number): AxiosResponse<any>;
   getThemesTypes(): AxiosResponse<any>;
   selectTheme(id: number): AxiosResponse<any>;
@@ -21,12 +21,12 @@ const getConfig = () => ({
     url: `/themes/${id}/`,
     method: 'GET',
   }),
-  createTheme: (data: IThemeWrite) => ({
+  createTheme: (data: FormData) => ({
     url: `/themes/`,
     method: 'POST',
     data,
   }),
-  updateTheme: (data: IThemeWrite) => ({
+  updateTheme: (data: FormData) => ({
     url: `/themes/`,
     method: 'PUT',
     data,

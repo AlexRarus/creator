@@ -88,6 +88,7 @@ class PageAdmin(admin.ModelAdmin):
 class ThemeAdmin(admin.ModelAdmin):
     list_display = (
         "id",
+        "type",
         "author",
         "label",
         "slug",

@@ -16,7 +16,7 @@ class ThemeType(models.Model):
         max_length=255,
         blank=True,
         unique=True,
-        default="",
+        default="default",
     )
     pricingPlan = models.ForeignKey(
         PricingPlan,
@@ -149,6 +149,48 @@ class Theme(models.Model):
     )
     buttonKind = models.CharField(
         verbose_name="Тип кнопок",
+        null=True,
+        blank=True,
+        max_length=255,
+    )
+    animation = models.FileField(
+        verbose_name="Анимация",
+        help_text="Выберите файл анимации",
+        upload_to="themes/animations/",
+        blank=True,
+        null=True,
+    )
+    animationSize = models.CharField(
+        verbose_name="Размер обертки анимации",
+        default="width",
+        null=True,
+        blank=True,
+        max_length=255,
+    )
+    animationPosition = models.CharField(
+        verbose_name="Позиция обертки анимации",
+        default="top",
+        null=True,
+        blank=True,
+        max_length=255,
+    )
+    animationPreserveAspectRatioX = models.CharField(
+        verbose_name="Выравнивание анимации по X",
+        default="Min",
+        null=True,
+        blank=True,
+        max_length=255,
+    )
+    animationPreserveAspectRatioY = models.CharField(
+        verbose_name="Выравнивание анимации по Y",
+        default="Min",
+        null=True,
+        blank=True,
+        max_length=255,
+    )
+    animationPreserveAspectRatioScale = models.CharField(
+        verbose_name="Масштаб анимации",
+        default="slice",
         null=True,
         blank=True,
         max_length=255,
