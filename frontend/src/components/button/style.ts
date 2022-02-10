@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { lighten } from 'polished';
 import { LIGHT_THEME, ITheme } from 'src/components/theme';
 import { Link } from 'react-router-dom';
 
@@ -58,7 +59,7 @@ const getButtonHeight = (props: IButtonStyledProps) => {
 
   switch (dimension) {
     case 's':
-      return '30px';
+      return '32px';
     case 'm':
       return '40px';
     case 'l':
@@ -104,6 +105,21 @@ const getButtonStyles = (props: IButtonStyledProps) => {
           border-color: ${buttonTheme?.hover?.formed};
         }
       `;
+    case 'based':
+      return css`
+        border-radius: 3px;
+        font-weight: ${({ theme }) => (theme?.isMobile ? 400 : 200)};
+
+        :visited,
+        :active {
+          background-color: ${lighten(0.1, buttonTheme?.active?.based as string)};
+          border-color: ${lighten(0.1, buttonTheme?.borderColor?.based as string)};
+        }
+        :hover {
+          background-color: ${lighten(0.05, buttonTheme?.background?.based as string)};
+          border-color: ${lighten(0.05, buttonTheme?.borderColor?.based as string)};
+        }
+      `;
     default:
       return css`
         border-radius: 4px;
@@ -122,6 +138,10 @@ const getLabelStyles = (props: ILabelProps) => {
         font-weight: ${({ theme }) => (theme?.isMobile ? 400 : 200)};
       `;
     case 'formed':
+      return css`
+        font-weight: ${({ theme }) => (theme?.isMobile ? 400 : 200)};
+      `;
+    case 'based':
       return css`
         font-weight: ${({ theme }) => (theme?.isMobile ? 400 : 200)};
       `;
@@ -193,6 +213,8 @@ ButtonStyled.defaultProps = {
 };
 
 export const Label = styled.div<ILabelProps>`
+  display: flex;
+  align-items: center;
   font-size: ${getLabelFontSize};
   font-weight: bold;
   ${getLabelStyles}

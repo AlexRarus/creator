@@ -32,6 +32,7 @@ interface IThemePalette {
   hover?: string;
   info?: string;
   contrast?: string;
+  based?: string;
 }
 interface IThemeBase {
   color: IThemePalette;

@@ -1,27 +1,8 @@
-import React from 'react';
 import { useStores } from 'src/dal/use-stores';
-import LanguageIcon from '@mui/icons-material/Language';
-import LinkIcon from '@mui/icons-material/Link';
-import CallIcon from '@mui/icons-material/Call';
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
 
 import { store } from '../../store';
 
-import { prepareDataToFormValues } from './utils';
-
-const typeLabelMap = {
-  web: 'Веб сайт',
-  link: 'Внутренняя страница',
-  phone: 'Позвонить',
-  email: 'Написать письмо',
-};
-
-const typeIconMap = {
-  web: <LanguageIcon fontSize={'small'} />,
-  link: <LinkIcon fontSize={'small'} />,
-  phone: <CallIcon fontSize={'small'} />,
-  email: <MailOutlineIcon fontSize={'small'} />,
-};
+import { prepareDataToFormValues, typeLabelMap, typeIconMap } from './utils';
 
 const getTypeOptionsSelector = (buttonTypes: any[]) =>
   buttonTypes.map((btnType) => ({

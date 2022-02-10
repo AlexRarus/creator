@@ -179,24 +179,37 @@ export const topPosition = (props: ICalcPositionProp) => {
     plateMargin,
     verticalShift = 0,
     floatPosition,
+    openerInModal,
   } = props;
 
   if (openerPosition && platePosition && fieldCoordinates) {
     switch (position) {
       case 'top':
         return fieldCoordinates.top - plateMargin < 0 && floatPosition
-          ? openerPosition.top + openerPosition.height + plateMargin - verticalShift
-          : openerPosition.top - platePosition.height - plateMargin - verticalShift;
+          ? openerPosition[openerInModal ? 'y' : 'top'] +
+              openerPosition.height +
+              plateMargin -
+              verticalShift
+          : openerPosition[openerInModal ? 'y' : 'top'] -
+              platePosition.height -
+              plateMargin -
+              verticalShift;
       case 'bottom':
         return fieldCoordinates.bottom - plateMargin < 0 && floatPosition
-          ? openerPosition.top - platePosition.height - plateMargin + verticalShift
-          : openerPosition.top + openerPosition.height + plateMargin + verticalShift;
+          ? openerPosition[openerInModal ? 'y' : 'top'] -
+              platePosition.height -
+              plateMargin +
+              verticalShift
+          : openerPosition[openerInModal ? 'y' : 'top'] +
+              openerPosition.height +
+              plateMargin +
+              verticalShift;
       case 'left':
         return verticalAlign(props) + verticalShift;
       case 'right':
         return verticalAlign(props) + verticalShift;
       default:
-        return openerPosition.top + openerPosition.height;
+        return openerPosition[openerInModal ? 'y' : 'top'] + openerPosition.height;
     }
   }
 

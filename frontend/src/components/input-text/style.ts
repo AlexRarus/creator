@@ -35,7 +35,8 @@ const getInputBackground = (props: IInputStyledProps) => {
     propKey = kind;
   }
 
-  if (disabled) {
+  // kind = primary прозрачный инпут, странно его делать серым, надо подумать
+  if (disabled && kind !== 'primary') {
     propKey = 'disabled';
   }
   const background = theme.component.input.background;

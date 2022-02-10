@@ -461,6 +461,7 @@ export default function Popup(props: IProps) {
 
   const plateProps: ICalcPositionProp = {
     openerPosition,
+    openerInModal: !!openerElement?.closest('.modal-component-wrapper'),
     platePosition,
     fieldCoordinates,
     plateMargin,

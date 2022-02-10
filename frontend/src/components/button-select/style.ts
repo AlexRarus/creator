@@ -121,7 +121,6 @@ export const OptionsListInner = styled.div<IOptionsProps>`
   position: relative;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 0 4px ${({ theme }) => rgba(theme?.textColor?.primary, 0.2)};
   padding: 8px 0;
   border-radius: 4px;
   overflow: hidden;

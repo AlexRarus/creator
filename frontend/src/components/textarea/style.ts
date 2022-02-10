@@ -12,7 +12,7 @@ export const TextareaWrapper = styled.div<{
   max-width: 100%;
 
   & textarea {
-    color: ${COLORS.black};
+    color: inherit;
     background-color: transparent;
     border: none;
     outline: none;
@@ -34,7 +34,7 @@ export const TextareaWrapper = styled.div<{
         box-shadow: ${disabled ? COLORS.grey[200] : COLORS.white} inset;
       `}
     }
-    color: ${COLORS.black} !important;
+    color: inherit !important;
     box-sizing: content-box;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -47,8 +47,8 @@ export const TextareaComponent = styled.div<{
   isFocused?: boolean;
   fontSizeInherit?: boolean;
 }>`
-  ${({ disabled }) => css`
-    background-color: ${disabled ? COLORS.grey[200] : COLORS.white};
+  ${({ disabled, theme }) => css`
+    background-color: ${disabled ? COLORS.grey[200] : theme?.background?.secondary};
   `}
   width: 100%;
   box-sizing: border-box;

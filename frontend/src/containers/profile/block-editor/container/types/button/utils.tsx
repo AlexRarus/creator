@@ -1,8 +1,13 @@
+import React from 'react';
 import { ITab } from 'src/components/tabs';
 import { IAction } from 'src/components/form';
 import { IOption } from 'src/components/select';
 import { IBlock } from 'src/dal/blocks/interfaces';
 import { IButtonData, IButtonDataWrite } from 'src/dal/blocks/button-interfaces';
+import LanguageIcon from '@mui/icons-material/Language';
+import LinkIcon from '@mui/icons-material/Link';
+import CallIcon from '@mui/icons-material/Call';
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
 
 import { DataForServer } from '../../interfaces';
 
@@ -30,7 +35,7 @@ export const prepareDataForServer = ({
     data: {
       label: formInputs.label,
       description: formInputs.description,
-      type: formInputs?.type,
+      type: formInputs?.type?.value,
       value: formInputs?.value,
       kind: formInputs?.kind,
       icon: formInputs?.icon?.id, // при прикреплении изображения нужно отправить его id
@@ -49,7 +54,11 @@ export const prepareDataToFormValues = (block: IBlock<IButtonData> | null): Form
   return {
     label: block?.data.label || 'Кнопка',
     description: block?.data.description || '',
-    type: block?.data?.type || 'web',
+    type: {
+      value: block?.data?.type || 'web',
+      label: typeLabelMap[block?.data?.type || 'web'],
+      icon: typeIconMap[block?.data?.type || 'web'],
+    },
     value: block?.data.value || '',
     kind: block?.data.value || 'simple',
     icon: block?.data?.icon || null,
@@ -103,3 +112,17 @@ export const prepareDataForKinds = (kindsList: any[], selectedKind?: string, ico
       icon,
     },
   }));
+
+export const typeLabelMap = {
+  web: 'Веб сайт',
+  link: 'Внутренняя страница',
+  phone: 'Позвонить',
+  email: 'Написать письмо',
+};
+
+export const typeIconMap = {
+  web: <LanguageIcon fontSize={'small'} />,
+  link: <LinkIcon fontSize={'small'} />,
+  phone: <CallIcon fontSize={'small'} />,
+  email: <MailOutlineIcon fontSize={'small'} />,
+};
