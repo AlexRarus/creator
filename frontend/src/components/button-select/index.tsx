@@ -3,6 +3,7 @@ import Popup from 'src/components/popup';
 import { disableScroll, enableScroll } from 'src/utils/scroll';
 import CheckIcon from '@mui/icons-material/Check';
 import { useThemeContext } from 'src/providers/main-theme-provider';
+import { lighten } from 'polished';
 
 import { IProps, IOption } from './interfaces';
 import {
@@ -91,14 +92,15 @@ export default function ButtonSelect(props: IProps) {
         position='bottom'
         horizontalAlign='start'
         autoAlign={false}
-        floatPosition={true}
+        floatPosition={false}
         hasPointer={false}
         isCloseOnClick={false}
+        fitOnScreen={true}
         plateMargin={4}
         maxHeight={maxMenuHeight || 300}
         zIndex={99999999}
-        borderColor={DEVICE_THEME?.borderColor?.primary}
-        background={DEVICE_THEME?.background?.primary}
+        borderColor={lighten(0.06, DEVICE_THEME?.borderColor?.primary)}
+        background={lighten(0.02, DEVICE_THEME?.background?.primary)}
         color={DEVICE_THEME?.textColor?.primary}
         isFixed={true}>
         <OptionsListOuter ref={optionsListRef} componentWidth={componentWidth}>

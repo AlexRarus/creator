@@ -177,7 +177,7 @@ export const Placeholder = styled.label<{
   height: 100%;
   cursor: text;
   color: ${({ theme }) => theme.textColor.secondary};
-  z-index: 99;
+  z-index: 50;
   ${getPlaceholderHeight}
 `;
 
@@ -185,13 +185,12 @@ export const Label = styled.label<{
   isEmpty: boolean;
   dimension: TDimension;
 }>`
-  font-size: ${({ isEmpty }) => (isEmpty ? '16px' : '13px')};
-  height: 13px;
+  font-size: ${({ isEmpty }) => (isEmpty ? '16px' : '14px')};
   cursor: text;
   color: ${({ theme }) => theme.textColor.secondary};
   transform: translateY(${(props) => (props.isEmpty ? getLabelTransform(props) : '0px')});
   transition: all 300ms;
-  z-index: 99;
+  margin-bottom: 4px;
 `;
 
 export const StatusBar = styled.div<IStatus>`

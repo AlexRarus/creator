@@ -206,7 +206,7 @@ export const DroppableList = (props: IProps) => {
                                 />
                               )}
                               <BlockActionWrapper>
-                                <TargetBlockTypePreview block={block} />
+                                <TargetBlockTypePreview block={block} isFakeBlock={true} />
                               </BlockActionWrapper>
                             </>
                           </DraggableItem>

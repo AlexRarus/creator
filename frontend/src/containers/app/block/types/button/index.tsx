@@ -16,10 +16,11 @@ import {
 
 interface IProps {
   block: IBlock<IButtonData>;
+  isFakeBlock?: boolean;
 }
 
 export const ButtonPreview = (props: IProps) => {
-  const { block } = props;
+  const { block, isFakeBlock } = props;
   const { selectedTheme } = useSelectedThemeContext();
   const buttonType = block?.data?.type;
   const buttonValue = block?.data?.value;
@@ -27,7 +28,7 @@ export const ButtonPreview = (props: IProps) => {
 
   return (
     <ButtonBlock selectedTheme={selectedTheme} data={block.data} isIcon={!!buttonIcon}>
-      <TypeWrapper buttonType={buttonType} value={buttonValue}>
+      <TypeWrapper buttonType={!isFakeBlock && buttonType} value={buttonValue}>
         <Title>{block?.data?.label}</Title>
         <SubTitle>{block?.data?.description}</SubTitle>
         <IconTemplateButton>
@@ -40,7 +41,7 @@ export const ButtonPreview = (props: IProps) => {
 
 interface ITypeWrapper {
   children: any;
-  buttonType?: string;
+  buttonType?: string | boolean;
   value?: string;
 }
 

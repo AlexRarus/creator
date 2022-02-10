@@ -55,7 +55,6 @@ export const FieldsBlockMain = (props: IProps) => {
       label,
       description,
       value: '',
-      type: typeValue,
       kind,
       icon,
       backgroundColor,

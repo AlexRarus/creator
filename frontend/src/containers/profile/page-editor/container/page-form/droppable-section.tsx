@@ -63,7 +63,7 @@ export const DroppableSection = (props: IProps) => {
                       <DragIndicatorIcon />
                     </DragIconBox>
                     <BlockActionWrapper>
-                      <TargetBlockTypePreview block={block} />
+                      <TargetBlockTypePreview block={block} isFakeBlock={true} />
                     </BlockActionWrapper>
                   </DraggableItem>
                 )}

@@ -167,10 +167,10 @@ export const prepareDataToFormValues = (block: IBlock<ISectionData> | null): For
     backgroundSizeCustomValue,
     backgroundPosition,
     color: block?.data?.color,
-    paddingTop: block?.data?.paddingTop || '20',
-    paddingBottom: block?.data?.paddingBottom || '20',
-    paddingRight: block?.data?.paddingRight || '10',
-    paddingLeft: block?.data?.paddingLeft || '10',
+    paddingTop: block?.data?.paddingTop || '0',
+    paddingBottom: block?.data?.paddingBottom || '0',
+    paddingRight: block?.data?.paddingRight || '0',
+    paddingLeft: block?.data?.paddingLeft || '0',
     borderRadius: block?.data?.borderRadius || '0',
   };
 };

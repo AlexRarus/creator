@@ -112,7 +112,6 @@ export default function Popup(props: IProps) {
         : openerElement.getBoundingClientRect();
       const { scrollX, scrollY, innerWidth, innerHeight } = window;
 
-      console.log('openerMetrics: ', openerMetrics);
       setViewPort({
         width: innerWidth,
         height: innerHeight,

@@ -2,6 +2,19 @@ import styled, { css } from 'styled-components';
 import { IOption } from 'src/components/select';
 import { IImage } from 'src/dal/images/interfaces';
 import { COLORS } from 'src/components/theme';
+import ButtonSelect from 'src/components/button-select';
+
+export const SwitchWrap = styled.div`
+  width: auto;
+`;
+
+export const ButtonSelectStyled = styled(ButtonSelect)``;
+
+export const Label = styled.div`
+  font-size: 14px;
+  margin-bottom: 4px;
+  color: ${({ theme }) => theme.textColor.secondary};
+`;
 
 export const FieldLabel = styled.div`
   font-size: 13px;
@@ -21,6 +34,7 @@ export const PictureCell = styled.div`
   width: 100%;
   height: 100%;
   min-height: 200px;
+  margin-bottom: 8px;
 `;
 
 export const ItemFieldPictureShape = styled.div`

@@ -10,7 +10,13 @@ import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined
 
 import { FormInputs, IColor } from './interfaces';
 import { directions, prepareDataToForm, prepareValueToOutput, actions } from './utils';
-import { ColorsFormWrapper, ColorFieldWrapper, DeleteIconWrapper } from './style';
+import {
+  ColorsFormWrapper,
+  ColorFieldWrapper,
+  DeleteIconWrapper,
+  Label,
+  ButtonSelectStyled,
+} from './style';
 
 interface IProps {
   onClose(): void;
@@ -60,11 +66,17 @@ export const ColorsModal = (props: IProps) => {
         <Form onAction={onAction} actions={actions} submitActionLabel='Готово'>
           <Grid verticalGap={10}>
             <GridColumn>
+              <Label>Направление градиента</Label>
               <ControlledField
                 control={control}
                 name='direction'
                 formDefaultValues={formDefaultValues}>
-                <Select options={directions} label='Направление градиента' />
+                <ButtonSelectStyled
+                  options={directions}
+                  dimension='l'
+                  kind='formed'
+                  width={'100%'}
+                />
               </ControlledField>
             </GridColumn>
             <GridColumn>
