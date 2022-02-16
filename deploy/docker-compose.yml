@@ -5,6 +5,7 @@ volumes:
   frontend_static_volume:
   backend_static_volume:
   backend_media_volume:
+  ssl_cert_volume:
 
 services:
   db:
@@ -59,6 +60,7 @@ services:
       - frontend_static_volume:/usr/share/nginx/html/
       - backend_static_volume:/usr/share/nginx/html/backend/static/
       - backend_media_volume:/usr/share/nginx/html/backend/media/
+      - ../ssl:/etc/nginx/ssl/  # <- cert
     depends_on:
       - django
       - redoc
