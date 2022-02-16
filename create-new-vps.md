@@ -7,11 +7,11 @@ ssh-keygen
 
 ### Добвление is_rsa.pub на созданный сервер для подключения
 ```shell
-ssh-copy-id root@37.140.197.221
+ssh-copy-id root@185.20.227.228
 ```
 или
 ```shell
-cat ~/.ssh/id_rsa.pub | ssh root@37.140.197.221 'cat >> ~/.ssh/authorized_keys'
+cat ~/.ssh/id_rsa.pub | ssh root@185.20.227.228 'cat >> ~/.ssh/authorized_keys'
 ```
 
 ## Копирование приватного ключа ssh в секреты на github (PRIVATE_CLIENT_SSH_KEY)
@@ -30,14 +30,14 @@ cat ~/.ssh/id_rsa
 1. PRIVATE_CLIENT_SSH_KEY
 2. HOST
 3. USER
-4. ALLOWED_HOSTS='["localhost", "127.0.0.1", "37.140.197.221", "wallink", "wallink.ru"]'
+4. ALLOWED_HOSTS='["localhost", "127.0.0.1", "185.20.227.228", "wallink", "wallink.ru"]'
 
 ### Копирование директории ./deploy на удаленный сервер
 ```shell
-scp -r ./deploy root@37.140.197.221:/root/
+scp -r ./deploy root@185.20.227.228:/root/
 ```
 
 ### Подключиться к серверу и проверить наличие директории ./deploy
 ```shell
-ssh root@37.140.197.221
+ssh root@185.20.227.228
 ```
