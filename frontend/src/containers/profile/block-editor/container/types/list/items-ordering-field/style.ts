@@ -57,12 +57,12 @@ export const RemoveIconWrapper = styled.div<{ disabled: boolean }>`
   padding: 10px;
   align-items: center;
   justify-content: center;
-  background: ${COLORS.white};
+  background: ${({ theme }) => theme?.background?.secondary};
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 
   svg {
     cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-    color: ${({ disabled }) => (disabled ? COLORS.grey[400] : COLORS.red[600])};
+    color: ${({ disabled }) => (disabled ? 'inherit' : COLORS.red[600])};
   }
 `;
 
@@ -73,7 +73,7 @@ export const ItemFieldWrapper = styled.div<IListItemProps>`
   ${getGridTemplateAreas};
   width: 100%;
   padding: 10px 10px 10px 0;
-  background: ${COLORS.white};
+  background: ${({ theme }) => theme?.background?.secondary};
 `;
 
 export const ItemFieldIconWrapper = styled.div`

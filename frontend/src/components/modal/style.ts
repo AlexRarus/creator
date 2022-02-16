@@ -92,6 +92,7 @@ export const ModalContent = styled.div<{
   isMobile: boolean;
   headerHeight: number;
 }>`
+  overflow: auto;
   display: flex;
   flex-direction: column;
   padding: ${({ padding = null }) => padding || 'none'};

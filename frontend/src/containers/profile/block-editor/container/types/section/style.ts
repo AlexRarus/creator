@@ -13,7 +13,6 @@ export const SectionFormWrapper = styled.div`
 export const MicroRow = styled.div`
   display: flex;
   align-items: center;
-  width: 100%;
 `;
 
 export const MicroLabel = styled.div`

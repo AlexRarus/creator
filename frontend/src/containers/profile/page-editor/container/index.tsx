@@ -205,9 +205,6 @@ export const PageEditorContainer = observer((props: IProps) => {
                         />
                       </DeviceContainer>
                     </ScaleBlock>
-                    <PreviewFooter>
-                      <AwesomeButton>Button</AwesomeButton>
-                    </PreviewFooter>
                   </PreviewWrapper>
                 </GridColumn>
               </StyledGrid>

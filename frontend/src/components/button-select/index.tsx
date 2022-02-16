@@ -3,6 +3,7 @@ import Popup from 'src/components/popup';
 import { disableScroll, enableScroll } from 'src/utils/scroll';
 import CheckIcon from '@mui/icons-material/Check';
 import { useThemeContext } from 'src/providers/main-theme-provider';
+import { lighten } from 'polished';
 
 import { IProps, IOption } from './interfaces';
 import {
@@ -36,7 +37,9 @@ export default function ButtonSelect(props: IProps) {
   const optionsListRef: RefObject<HTMLDivElement> = useRef(null);
   const activeOptionRef: RefObject<HTMLDivElement> = useRef(null);
   const [componentWidth, setComponentWidth] = useState(menuWidth || 0);
-  const valueOption = options.find((option: IOption) => option.value === value) as IOption;
+  const valueOption = options.find(
+    (option: IOption) => option.value === value || option.value === value?.value
+  ) as IOption;
   const { DEVICE_THEME } = useThemeContext();
 
   const openMenu = () => setOpenMenu(true);
@@ -48,7 +51,7 @@ export default function ButtonSelect(props: IProps) {
     [menuIsOpen]
   );
   const changeHandler = (option: IOption) => () => {
-    onChange && onChange(option.value);
+    onChange && onChange(option);
     menuIsOpen && closeMenu();
   };
 
@@ -89,14 +92,15 @@ export default function ButtonSelect(props: IProps) {
         position='bottom'
         horizontalAlign='start'
         autoAlign={false}
-        floatPosition={true}
+        floatPosition={false}
         hasPointer={false}
         isCloseOnClick={false}
+        fitOnScreen={true}
         plateMargin={4}
         maxHeight={maxMenuHeight || 300}
         zIndex={99999999}
-        borderColor={DEVICE_THEME?.borderColor?.primary}
-        background={DEVICE_THEME?.background?.primary}
+        borderColor={lighten(0.06, DEVICE_THEME?.borderColor?.primary)}
+        background={lighten(0.02, DEVICE_THEME?.background?.primary)}
         color={DEVICE_THEME?.textColor?.primary}
         isFixed={true}>
         <OptionsListOuter ref={optionsListRef} componentWidth={componentWidth}>

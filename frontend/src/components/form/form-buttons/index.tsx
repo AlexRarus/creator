@@ -4,10 +4,11 @@ import { BrowserView, MobileView } from 'react-device-detect';
 import Popup from 'src/components/popup';
 import { Loader } from 'src/components/loader';
 import { COLORS } from 'src/components/theme';
+import Button from 'src/components/button';
 
 import { ActionConfirmModal } from './confirm/action-confirm';
 import { MobileActions } from './mobile-actions';
-import { Button } from './button';
+// import { Button } from './button';
 import { ActionButton } from './action-button';
 import type { IAction } from './action-button/interfaces';
 import {
@@ -87,7 +88,7 @@ export const FormButtons = (props: IProps) => {
           <MobileButtonsList>
             {!actions?.length && (
               <Button
-                kind='secondary'
+                kind='based'
                 hasBorder={false}
                 onClick={() => onAction('cancel')}
                 disabled={isLoading}>
@@ -96,9 +97,8 @@ export const FormButtons = (props: IProps) => {
             )}
             {actions?.length === 1 && (
               <Button
-                kind='secondary'
                 {...actions[0]}
-                hasBorder={false}
+                kind='based'
                 onClick={() => actionClickHandler(actions[0])}
                 disabled={isLoading}>
                 <span>{actions[0].label}</span>
@@ -106,8 +106,7 @@ export const FormButtons = (props: IProps) => {
             )}
             {actions && actions.length > 1 && (
               <Button
-                kind='secondary'
-                hasBorder={false}
+                kind='based'
                 disabled={!actions?.length || isLoading}
                 onClick={openMobileActions}>
                 <MoreVertIcon />
@@ -115,8 +114,7 @@ export const FormButtons = (props: IProps) => {
               </Button>
             )}
             <Button
-              kind='primary'
-              hasBorder={false}
+              kind='based'
               onClick={() => onAction('submit')}
               disabled={!isValid || isLoading}>
               {isLoading && <Loader type='ring' size={30} color={COLORS.blue[300]} />}
@@ -135,14 +133,14 @@ export const FormButtons = (props: IProps) => {
       <BrowserView>
         <DesktopButtonsList>
           {!actions?.length && (
-            <Button kind='secondary' onClick={() => onAction('cancel')} disabled={isLoading}>
+            <Button kind='based' onClick={() => onAction('cancel')} disabled={isLoading}>
               <span>Отмена</span>
             </Button>
           )}
           {actions?.length === 1 && (
             <Button
-              kind='secondary'
               {...actions[0]}
+              kind='based'
               onClick={() => actionClickHandler(actions[0])}
               disabled={isLoading}>
               <span>{actions[0].label}</span>
@@ -150,7 +148,7 @@ export const FormButtons = (props: IProps) => {
           )}
           {actions && actions.length > 1 && (
             <Button
-              kind='secondary'
+              kind='based'
               disabled={!actions?.length || isLoading}
               ref={desktopActionsRefCallback}
               onClick={toggleDesktopActions}>
@@ -158,10 +156,7 @@ export const FormButtons = (props: IProps) => {
               <span>Действие</span>
             </Button>
           )}
-          <Button
-            kind='primary'
-            onClick={() => onAction('submit')}
-            disabled={!isValid || isLoading}>
+          <Button kind='based' onClick={() => onAction('submit')} disabled={!isValid || isLoading}>
             {isLoading && <Loader type='ring' size={30} color={COLORS.blue[300]} />}
             {submitActionLabel}
           </Button>

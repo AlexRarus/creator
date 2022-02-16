@@ -11,12 +11,13 @@ import { SeparatorPreview } from './types/separator';
 
 interface IProps {
   block: IBlock<any>;
+  isFakeBlock?: boolean;
   onClick?: any;
 }
 
 // Отображение блоков на пользовательской странице
 export const TargetBlockTypePreview = (props: IProps) => {
-  const { block, onClick } = props;
+  const { block, onClick, isFakeBlock } = props;
   switch (block.type) {
     case 'text':
       return <TextPreview onClick={onClick} {...props} />;
@@ -29,7 +30,7 @@ export const TargetBlockTypePreview = (props: IProps) => {
     case 'collapsed_list':
       return <CollapsedListPreview {...props} />;
     case 'button':
-      return <ButtonPreview {...props} />;
+      return <ButtonPreview {...props} isFakeBlock={isFakeBlock} />;
     case 'separator':
       return <SeparatorPreview {...props} />;
     default:

@@ -1,3 +1,6 @@
+// eslint-disable-next-line react/jsx-boolean-value
+import { lighten } from 'polished';
+
 import { ITheme } from './interfaces';
 import * as COLORS from './colors';
 
@@ -39,6 +42,7 @@ export const LIGHT_THEME: ITheme = {
         formed: COLORS.grey[200],
         success: COLORS.grey[200],
         danger: COLORS.red[600],
+        based: COLORS.grey[900],
       },
       background: {
         primary: COLORS.blue[500],
@@ -48,6 +52,7 @@ export const LIGHT_THEME: ITheme = {
         formed: COLORS.blue[400],
         success: COLORS.green[500],
         danger: COLORS.white,
+        based: lighten(0.1, COLORS.grey[200]),
       },
       hover: {
         primary: COLORS.blue[600],
@@ -57,6 +62,7 @@ export const LIGHT_THEME: ITheme = {
         formed: COLORS.blue[600],
         success: COLORS.green[400],
         danger: COLORS.white,
+        based: lighten(0.12, COLORS.grey[200]),
       },
       active: {
         primary: COLORS.blue[500],
@@ -66,6 +72,7 @@ export const LIGHT_THEME: ITheme = {
         formed: COLORS.blue[500],
         success: COLORS.green[500],
         danger: COLORS.white,
+        based: lighten(0.08, COLORS.grey[200]),
       },
       borderColor: {
         primary: COLORS.blue[500],
@@ -75,6 +82,7 @@ export const LIGHT_THEME: ITheme = {
         formed: COLORS.blue[400],
         success: COLORS.green[500],
         danger: COLORS.red[600],
+        based: COLORS.yellow[700],
       },
     },
     select: {
@@ -203,6 +211,7 @@ export const DARK_THEME: ITheme = {
         formed: COLORS.grey[200],
         success: COLORS.grey[200],
         danger: COLORS.red[600],
+        based: COLORS.grey[300],
       },
       background: {
         primary: COLORS.blue[400],
@@ -212,6 +221,7 @@ export const DARK_THEME: ITheme = {
         formed: COLORS.blue[400],
         success: COLORS.green[500],
         danger: COLORS.white,
+        based: lighten(0.1, COLORS.grey.A700),
       },
       hover: {
         primary: COLORS.blue[300],
@@ -221,6 +231,7 @@ export const DARK_THEME: ITheme = {
         formed: COLORS.blue[600],
         success: COLORS.green[400],
         danger: COLORS.white,
+        based: lighten(0.12, COLORS.grey.A700),
       },
       active: {
         primary: COLORS.blue[300],
@@ -230,6 +241,7 @@ export const DARK_THEME: ITheme = {
         formed: COLORS.blue[500],
         success: COLORS.green[500],
         danger: COLORS.white,
+        based: lighten(0.08, COLORS.grey.A700),
       },
       borderColor: {
         primary: COLORS.blue[400],
@@ -239,6 +251,7 @@ export const DARK_THEME: ITheme = {
         formed: COLORS.blue[400],
         success: COLORS.green[500],
         danger: COLORS.red[600],
+        based: COLORS.grey.A200,
       },
     },
     select: {

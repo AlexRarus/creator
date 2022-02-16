@@ -87,6 +87,7 @@ export interface ICalcPositionProp {
   pointerTargetPosition: IOpenerPosition | null;
   autoAlign: boolean;
   floatPosition: boolean;
+  openerInModal?: boolean; // если opener в модалке, то позицию будем рассчитывать без учета скролла страницы
 }
 
 export interface IPlateContentProps extends Partial<IProps> {

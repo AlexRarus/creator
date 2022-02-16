@@ -1,16 +1,23 @@
-import { AdditionalData } from '../../interfaces';
 import { IImage } from 'src/dal/images/interfaces';
+
+import { AdditionalData } from '../../interfaces';
 
 // поля формы
 export interface FormInputs {
   label: string;
   description: string;
-  type: string;
+  type: IOption;
   value: string;
   kind?: string;
   icon?: IImage | null;
   backgroundColor: string;
   color: string;
+}
+
+export interface IOption {
+  value: string;
+  label: string;
+  icon?: any;
 }
 
 // входные значение с формы создание

@@ -19,9 +19,10 @@ export const MobileButtonsListWrapper = styled.div`
 
 export const MobileButtonsList = styled.div`
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   flex-direction: row;
   width: 100%;
-  border: 1px solid ${COLORS.grey[400]};
   border-radius: 2px;
   overflow: hidden;
   height: 50px;

@@ -15,6 +15,7 @@ import { AwesomeButton } from 'src/components/awesome-button';
 import { PagePreview } from '../page-preview';
 
 import {
+  ScrollableWrap,
   FormFooter,
   AddBlockButtonWrapper,
   SettingsPopupList,
@@ -118,7 +119,7 @@ export const PageForm = (props: IProps) => {
   const onSuccessSubmitBlock = () => onUpdatePageForm();
 
   return (
-    <>
+    <ScrollableWrap maxHeight={window?.innerHeight - 124}>
       {isShowPreview && (
         <PagePreview isUpdating={isUpdating} username={username} pageSlug={pageSlug} data={data} />
       )}
@@ -212,6 +213,6 @@ export const PageForm = (props: IProps) => {
           pageSlug={pageSlug}
         />
       )}
-    </>
+    </ScrollableWrap>
   );
 };
