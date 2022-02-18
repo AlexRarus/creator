@@ -3,10 +3,10 @@
 
 ### Копирование директории ./ssl на удаленный сервер
 ```shell
-scp -r ./ssl root@185.20.227.228:/root/ssl
+scp -r ./ssl wallink@84.201.154.103:/home/wallink/ssl
 ```
 
-### Добавить в секреты на github параметры
+### Добавить в секрет на github
 ```shell
 SSL_ENABLED=True
 ```

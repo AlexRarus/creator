@@ -30,14 +30,14 @@ cat ~/.ssh/id_rsa
 1. PRIVATE_CLIENT_SSH_KEY
 2. HOST
 3. USER
-4. ALLOWED_HOSTS='["localhost", "127.0.0.1", "185.20.227.228", "wallink", "wallink.ru"]'
+4. ALLOWED_HOSTS='["localhost", "127.0.0.1", "84.201.154.103", "wallink", "wallink.ru"]'
 
 ### Копирование директории ./deploy на удаленный сервер
 ```shell
-scp -r ./deploy root@185.20.227.228:/root/
+scp -r ./deploy wallink@84.201.154.103:/home/wallink/
 ```
 
 ### Подключиться к серверу и проверить наличие директории ./deploy
 ```shell
-ssh root@185.20.227.228
+ssh wallink@84.201.154.103
 ```
