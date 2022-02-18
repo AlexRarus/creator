@@ -1,23 +1,12 @@
 version: '3.9'
 
 volumes:
-  postgres_data:
   frontend_static_volume:
   backend_static_volume:
   backend_media_volume:
   ssl_cert_volume:
 
 services:
-  db:
-    image: postgres:12.4
-    container_name: db
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    env_file:
-      - ./.env
-    depends_on:
-      - frontend
-
   django:
 #    build:
 #      context: ../backend
@@ -25,8 +14,6 @@ services:
     image: rarus/creator_backend:latest
     container_name: django
     restart: always
-    depends_on:
-      - db
     command: gunicorn creator.wsgi:application --bind 0.0.0.0:8000
     env_file:
       - ./.env
