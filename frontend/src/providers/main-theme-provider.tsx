@@ -21,6 +21,7 @@ export const MainThemeProvider = ({ children }: any) => {
       ...theme,
       isTablet,
       isMobile,
+      themeType,
     });
   }, [isTablet, isMobile, themeType]);
 

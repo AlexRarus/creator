@@ -13,7 +13,9 @@ export const GlobalStyleApp = createGlobalStyle<any>`
             position: initial;
             height: 100vh;
           `
-        : css``}
+        : css`
+            height: 100%;
+          `}
   }    
   
   body {
@@ -30,7 +32,9 @@ export const GlobalStyleApp = createGlobalStyle<any>`
             ? css`
                 position: fixed;
               `
-            : css``}
+            : css`
+                height: 100%;
+              `}
     
     &.disable-scroll {
       overflow: hidden;

@@ -2,8 +2,30 @@ import styled from 'styled-components';
 import { COLORS } from 'src/components/theme';
 import { rgba } from 'polished';
 import { Link, NavLink } from 'react-router-dom';
+import LogoSvg from 'src/assets/logo.svg';
+import DarkLogoSvg from 'src/assets/dark-logo.svg';
 
 import { MENU_HEIGHT } from '../constants';
+
+export const LogoIcon = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 40px;
+  transform: translate(-50%, -50%);
+  width: 140px;
+  height: 46px;
+  background-image: url(${({ theme }) => (theme?.themeType === 'light' ? DarkLogoSvg : LogoSvg)});
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+`;
+
+export const LogoWrapper = styled.div`
+  position: relative;
+  width: 88px;
+  height: 36px;
+  overflow: hidden;
+`;
 
 export const MobileMenuWrapper = styled.div`
   display: flex;
@@ -66,9 +88,8 @@ export const NavigationList = styled.div<{ isOpen: boolean }>`
 `;
 
 export const Logo = styled(Link)`
-  padding: 15px 20px;
+  padding: 16px 20px;
   text-decoration: none;
-  border: 1px solid ${COLORS.grey[400]};
   margin-right: auto;
 
   :visited,

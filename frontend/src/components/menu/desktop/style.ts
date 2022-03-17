@@ -1,8 +1,31 @@
 import styled from 'styled-components';
+import { rgba } from 'polished';
 import { COLORS } from 'src/components/theme';
 import { Link, NavLink } from 'react-router-dom';
+import LogoSvg from 'src/assets/logo.svg';
+import DarkLogoSvg from 'src/assets/dark-logo.svg';
 
 import { MENU_HEIGHT } from '../constants';
+
+export const LogoIcon = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 40px;
+  transform: translate(-50%, -50%);
+  width: 140px;
+  height: 46px;
+  background-image: url(${({ theme }) => (theme?.themeType === 'light' ? DarkLogoSvg : LogoSvg)});
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+`;
+
+export const LogoWrapper = styled.div`
+  position: relative;
+  width: 88px;
+  height: 36px;
+  overflow: hidden;
+`;
 
 export const DesktopHeaderWrapper = styled.div`
   position: fixed;
@@ -48,9 +71,8 @@ export const ThemeModeButton = styled.div`
 `;
 
 export const Logo = styled(Link)`
-  padding: 15px 0;
   text-decoration: none;
-  margin-right: 50px;
+  margin-right: 40px;
 
   :visited,
   :active {
@@ -60,12 +82,28 @@ export const Logo = styled(Link)`
 
 export const MenuItem = styled(NavLink)`
   display: flex;
-  align-items: center;
-  border-bottom: 1px solid transparent;
-  text-decoration: none;
-  margin-right: 30px;
-  height: ${MENU_HEIGHT}px;
+  background: ${({ theme }) => rgba(theme?.textColor?.primary, 0.1)};
   color: ${({ theme }) => theme?.textColor?.primary};
+  backdrop-filter: blur(8px);
+  border-radius: 16px;
+  margin-bottom: 4px;
+  padding: 8px 10px;
+  transition: all 200ms ease-out;
+
+  &:first-child {
+    border-top: none;
+  }
+  &:last-child {
+    border-bottom: none;
+  }
+
+  cursor: pointer;
+  user-select: none;
+
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  margin-right: 12px;
 
   :last-child {
     margin-right: 0;
@@ -73,11 +111,11 @@ export const MenuItem = styled(NavLink)`
 
   :visited,
   :active {
-    color: ${COLORS.grey[500]};
+    background: ${COLORS.blue[400]};
   }
 
   &.selected {
-    color: ${COLORS.blue[600]};
-    border-bottom: 1px solid ${COLORS.blue[600]};
+    color: ${COLORS.white};
+    background: ${COLORS.blue[500]};
   }
 `;

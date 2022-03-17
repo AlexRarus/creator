@@ -17,6 +17,8 @@ import {
   RightSide,
   Logo,
   MenuItem,
+  LogoWrapper,
+  LogoIcon,
 } from './style';
 
 interface IProps {
@@ -45,7 +47,11 @@ export const DesktopMenu = (props: IProps) => {
       <VerticalSlide duration={200} state={isHideMenu} value={MENU_HEIGHT} direction={-1}>
         <DesktopMenuWrapper>
           <LeftSide>
-            <Logo to='/'>LOGO</Logo>
+            <Logo to='/'>
+              <LogoWrapper>
+                <LogoIcon />
+              </LogoWrapper>
+            </Logo>
             {menuItems.map((menuItem: IMenuItem) => (
               <MenuItem
                 key={menuItem.url}

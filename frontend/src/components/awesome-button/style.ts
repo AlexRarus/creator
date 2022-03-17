@@ -1,123 +1,52 @@
 import styled, { keyframes, css } from 'styled-components';
 
-const shake = keyframes`
-  0%, 100% {
-    transform: translate3d(0, 0, 0);
-  }
-  45%, 55% {
-    transform: translate3d(-1px, 0, 0);
-  }
-  46%, 54% {
-    transform: translate3d(1.5px, 0, 0);
-  }
-  
-  47%, 50%, 53% {
-    transform: translate3d(-1.5px, 0, 0);
-  }
-  48%, 52% {
-    transform: translate3d(1.5px, 0, 0);
-}
-`;
+const buttonColor = css`rgba(51, 217, 178, 1);`;
 
-const topBubbles = keyframes`
-  0% {
- background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%, 40% 90%, 55% 90%, 70% 90%;
-}
- 50% {
- background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%, 50% 50%, 65% 20%, 90% 30%;
-}
- 100% {
-background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%, 50% 40%, 65% 10%, 90% 20%;
- background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
-}
-`;
-
-const bottomBubbles = keyframes`
+const pulse = keyframes`
  0% {
- background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%, 70% -10%, 70% 0%;
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(51, 217, 178, 0.7);
 }
- 50% {
- background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%, 105% 0%;
+
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(51, 217, 178, 0);
 }
- 100% {
- background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%, 110% 10%;
- background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(51, 217, 178, 0);
 }
 `;
 
 export const Button = styled.div<{ isAnimate?: boolean }>`
   font-family: 'Helvetica', 'Arial', sans-serif;
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
   font-size: 1em;
-  padding: 1em 2em;
   -webkit-appearance: none;
   appearance: none;
-  background-color: #ff0081;
   color: #fff;
-  border-radius: 4px;
+  border-radius: 50%;
   border: none;
   cursor: pointer;
   position: relative;
   transition: transform ease-in 0.1s, box-shadow ease-in 0.25s;
-  box-shadow: 0 2px 25px rgba(255, 0, 130, 0.5);
-  animation: ${shake} 5s cubic-bezier(0.36, 0.07, 0.19, 0.97) running infinite;
   animation-delay: 2s;
   cursor: pointer;
+
+  background: ${buttonColor};
+  box-shadow: 0 0 0 0 rgba(51, 217, 178, 1);
+  animation: ${pulse} 2s infinite;
 
   :focus {
     outline: 0;
   }
-  :before,
-  :after {
-    position: absolute;
-    content: '';
-    display: block;
-    width: 140%;
-    height: 100%;
-    left: -20%;
-    z-index: -1000;
-    transition: all ease-in-out 0.5s;
-    background-repeat: no-repeat;
-  }
-  :before {
-    display: ${({ isAnimate }) => (isAnimate ? 'block' : 'none')};
-    top: -75%;
-    background-image: radial-gradient(circle, #ff0081 20%, transparent 20%),
-      radial-gradient(circle, transparent 20%, #ff0081 20%, transparent 30%),
-      radial-gradient(circle, #ff0081 20%, transparent 20%),
-      radial-gradient(circle, #ff0081 20%, transparent 20%),
-      radial-gradient(circle, transparent 10%, #ff0081 15%, transparent 20%),
-      radial-gradient(circle, #ff0081 20%, transparent 20%),
-      radial-gradient(circle, #ff0081 20%, transparent 20%),
-      radial-gradient(circle, #ff0081 20%, transparent 20%),
-      radial-gradient(circle, #ff0081 20%, transparent 20%);
-    background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%, 10% 10%, 18% 18%;
-    ${({ isAnimate }) =>
-      isAnimate &&
-      css`
-        animation: ${topBubbles} ease-in-out 0.75s;
-      `}
-  }
-  :after {
-    display: ${({ isAnimate }) => (isAnimate ? 'block' : 'none')};
-    bottom: -75%;
-    background-image: radial-gradient(circle, #ff0081 20%, transparent 20%),
-      radial-gradient(circle, #ff0081 20%, transparent 20%),
-      radial-gradient(circle, transparent 10%, #ff0081 15%, transparent 20%),
-      radial-gradient(circle, #ff0081 20%, transparent 20%),
-      radial-gradient(circle, #ff0081 20%, transparent 20%),
-      radial-gradient(circle, #ff0081 20%, transparent 20%),
-      radial-gradient(circle, #ff0081 20%, transparent 20%);
-    background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 10% 10%, 20% 20%;
-    ${({ isAnimate }) =>
-      isAnimate &&
-      css`
-        animation: ${bottomBubbles} ease-in-out 0.75s;
-      `}
-  }
   :active {
     transform: scale(0.9);
-    background-color: #e60074;
-    box-shadow: 0 2px 25px rgba(255, 0, 130, 0.2);
+    background-color: ${buttonColor};
   }
 `;

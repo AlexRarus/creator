@@ -5,11 +5,11 @@ import { useHistory } from 'react-router-dom';
 import PaletteIcon from '@mui/icons-material/Palette';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import SettingsIcon from '@mui/icons-material/Settings';
+import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import { BlockEditorModal } from 'src/containers/profile/block-editor';
 import { isMobile } from 'react-device-detect';
 import Popup from 'src/components/popup';
-import { USER_MENU_BACKGROUND } from 'src/components/menu/user-menu/style';
 import { AwesomeButton } from 'src/components/awesome-button';
 
 import { PagePreview } from '../page-preview';
@@ -69,8 +69,8 @@ export const PageForm = (props: IProps) => {
   const [checkedBlockSmallestIndex, setCheckedBlockSmallestIndex] = useState<number>();
   const history = useHistory();
 
-  const openSettingsPopupHandler = () => setIsOpen(true);
   const closeSettingsPopupHandler = () => setIsOpen(false);
+  const toggleSettingsPopupHandler = () => setIsOpen(!isOpen);
   const startCheckBlocks = () => setCheckBlocks(true);
   const cancelCheckBlocks = () => {
     setCheckedBlocks([]);
@@ -119,7 +119,7 @@ export const PageForm = (props: IProps) => {
   const onSuccessSubmitBlock = () => onUpdatePageForm();
 
   return (
-    <ScrollableWrap maxHeight={window?.innerHeight - 124}>
+    <ScrollableWrap maxHeight={window?.innerHeight - 124} isEmpty={blocks?.length === 0}>
       {isShowPreview && (
         <PagePreview isUpdating={isUpdating} username={username} pageSlug={pageSlug} data={data} />
       )}
@@ -156,13 +156,13 @@ export const PageForm = (props: IProps) => {
           </IconButton>
         )}
         <AddBlockButtonWrapper>
-          <AwesomeButton onClick={openAddBlockModal()}>Добавить блок</AwesomeButton>
+          <AwesomeButton onClick={openAddBlockModal()}>
+            <AddIcon fontSize={'large'} />
+          </AwesomeButton>
         </AddBlockButtonWrapper>
         <IconButton
           ref={openerRefCallback as any}
-          onClick={openSettingsPopupHandler}
-          onMouseLeave={closeSettingsPopupHandler}
-          onMouseEnter={openSettingsPopupHandler}
+          onClick={toggleSettingsPopupHandler}
           isOpen={isOpen}
           disabled={isShowPreview}>
           <SettingsIcon />
@@ -171,15 +171,15 @@ export const PageForm = (props: IProps) => {
             onClose={closeSettingsPopupHandler}
             openerElement={openerElement}
             horizontalAlign='end'
-            verticalAlign='start'
-            position='top'
+            verticalAlign={isMobile ? 'start' : 'end'}
+            position={isMobile ? 'top' : 'right'}
             maxHeight={320}
-            plateMargin={0}
+            plateMargin={8}
             zIndex={99}
-            background={USER_MENU_BACKGROUND}
+            background={'transparent'}
             hasBorder={false}
             hasShadow={false}
-            borderRadius='4px 4px 0px 4px'
+            borderRadius={'16px'}
             hasPointer={false}>
             <SettingsPopupList>
               <SettingsItemButton onClick={openPageSettingsModal()}>Настройки</SettingsItemButton>

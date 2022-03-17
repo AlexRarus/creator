@@ -10,13 +10,25 @@ import {
 export const FORM_HEADER_HEIGHT = 64;
 export const FORM_FOOTER_HEIGHT = 64;
 
-export const ScrollableWrap = styled.div<{ maxHeight?: number }>`
+export const ScrollableWrap = styled.div<{ maxHeight?: number; isEmpty?: boolean }>`
   ${({ theme, maxHeight }) =>
     !theme?.isMobile &&
     css`
       max-height: ${maxHeight}px;
       overflow: auto;
     `}
+  width: 100%;
+
+  ${({ isEmpty }) => isEmpty && 'position: relative;'}
+
+  :before {
+    position: absolute;
+    display: ${({ isEmpty }) => (isEmpty ? 'block' : 'none')};
+    content: 'Добавьте свой первый блок';
+    left: 50%;
+    top: 64px;
+    transform: translate(-50%);
+  }
 `;
 
 export const FormFooter = styled.div`
@@ -24,13 +36,18 @@ export const FormFooter = styled.div`
   left: 0;
   bottom: 0;
   height: ${FORM_FOOTER_HEIGHT}px;
-  width: 100%;
-  background: ${rgba(COLORS.grey[800], 0.85)};
-  color: ${COLORS.white};
+  background: ${({ theme }) => rgba(theme?.textColor?.primary, 0.1)};
+  color: ${({ theme }) => theme?.textColor?.primary};
   display: flex;
   flex-direction: row;
   backdrop-filter: blur(4px);
   z-index: 1;
+
+  width: auto;
+  border-radius: 16px;
+  transform: translateX(-50%);
+  bottom: 16px;
+  left: 50%;
 
   ${({ theme }) =>
     theme?.isMobile &&
@@ -38,8 +55,8 @@ export const FormFooter = styled.div`
       position: fixed;
       left: 50%;
       transform: translateX(-50%);
-      border-radius: 8px;
-      bottom: 4px;
+      border-radius: 16px;
+      bottom: 16px;
       height: 60px;
       width: calc(100% - 20px);
     `}
@@ -51,7 +68,7 @@ export const AddBlockButtonWrapper = styled.div`
   justify-content: center;
   flex-grow: 1;
   height: 100%;
-  padding: 5px;
+  padding: 8px 24px;
 `;
 
 export const BlockActionWrapper = styled.div`
@@ -216,17 +233,17 @@ export const SectionWrapper = styled.div<{ isDragging: boolean }>`
 `;
 
 export const SettingsPopupList = styled.div`
-  background: ${USER_MENU_BACKGROUND};
+  backdrop-filter: blur(4px);
 `;
 
 export const SettingsItemButton = styled.div`
-  color: ${COLORS.white};
-  padding: 15px;
+  display: flex;
+  background: ${({ theme }) => rgba(theme?.textColor?.primary, 0.1)};
+  color: ${({ theme }) => theme?.textColor?.primary};
+  border-radius: 16px;
+  margin-bottom: 4px;
+  padding: 8px 10px;
   transition: all 200ms ease-out;
-  background: ${USER_MENU_BACKGROUND};
-
-  border-top: 1px solid ${COLORS.grey[600]};
-  border-bottom: 1px solid ${COLORS.grey[800]};
 
   &:first-child {
     border-top: none;
@@ -235,9 +252,10 @@ export const SettingsItemButton = styled.div`
     border-bottom: none;
   }
 
-  &:hover {
-    background: ${USER_MENU_BACKGROUND_HOVER};
+  :hover {
+    background: ${({ theme }) => rgba(theme?.textColor?.primary, 0.2)};
   }
+
   cursor: pointer;
   user-select: none;
 `;
