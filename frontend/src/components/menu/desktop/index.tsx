@@ -9,6 +9,7 @@ import Button from 'src/components/button';
 import { UserMenu } from '../user-menu';
 import { MENU_HEIGHT } from '../constants';
 import { IMenuItem } from '../interfaces';
+import { LogoComponent } from '../logo';
 
 import {
   DesktopHeaderWrapper,
@@ -45,7 +46,9 @@ export const DesktopMenu = (props: IProps) => {
       <VerticalSlide duration={200} state={isHideMenu} value={MENU_HEIGHT} direction={-1}>
         <DesktopMenuWrapper>
           <LeftSide>
-            <Logo to='/'>LOGO</Logo>
+            <Logo to='/'>
+              <LogoComponent />
+            </Logo>
             {menuItems.map((menuItem: IMenuItem) => (
               <MenuItem
                 key={menuItem.url}

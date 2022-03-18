@@ -34,16 +34,11 @@ export const UserMenu = (props: IProps) => {
     }
   };
 
-  const openHandler = () => setIsOpen(true);
+  const toggleHandler = () => setIsOpen(true);
   const closeHandler = () => setIsOpen(false);
 
   return (
-    <UserMenuWrapper
-      ref={openerRefCallback}
-      isOpen={isOpen}
-      onClick={openHandler}
-      onMouseEnter={openHandler}
-      onMouseLeave={closeHandler}>
+    <UserMenuWrapper ref={openerRefCallback} isOpen={isOpen} onClick={toggleHandler}>
       <AvatarPreview dimension='xs' avatar={user?.avatar} />
       <Popup
         isOpen={isOpen}
@@ -53,12 +48,12 @@ export const UserMenu = (props: IProps) => {
         verticalAlign='end'
         position='bottom'
         maxHeight={320}
-        plateMargin={0}
+        plateMargin={4}
         zIndex={99}
-        background={USER_MENU_BACKGROUND}
+        background={'transparent'}
         hasBorder={false}
         hasShadow={false}
-        borderRadius='4px 0 4px 4px'
+        borderRadius='16px'
         hasPointer={false}>
         <MenuList>
           <MenuItemLink to={`/profile/${user?.username}/pages/`}>Мои страницы</MenuItemLink>

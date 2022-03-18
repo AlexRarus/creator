@@ -10,7 +10,7 @@ import Button from 'src/components/button';
 import { UserMenu } from '../user-menu';
 import { MENU_HEIGHT } from '../constants';
 import { IMenuItem } from '../interfaces';
-// import { ButtonLink } from '../style';
+import { LogoComponent } from '../logo';
 
 import {
   MobileMenuWrapper,
@@ -57,7 +57,11 @@ export const MobileMenu = (props: IProps) => {
               <NavigationIcon />
             </NavigationOpener>
           )}
-          {!hasMenuItems && <Logo to='/'>LOGO</Logo>}
+          {!hasMenuItems && (
+            <Logo to='/'>
+              <LogoComponent />
+            </Logo>
+          )}
           {isProfile && <UserMenu user={user} logoutAction={logoutAction} />}
           {!isProfile && (
             <>
@@ -74,7 +78,9 @@ export const MobileMenu = (props: IProps) => {
       </VerticalSlide>
       <BackPlate isOpen={isOpenNavigation} onClick={closeNavigation} />
       <NavigationList isOpen={isOpenNavigation} onClick={closeNavigation}>
-        <Logo to='/'>LOGO</Logo>
+        <Logo to='/'>
+          <LogoComponent />
+        </Logo>
         {menuItems.map((menuItem: IMenuItem) => (
           <NavigationItem
             key={menuItem.url}

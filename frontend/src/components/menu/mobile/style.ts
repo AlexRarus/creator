@@ -66,9 +66,8 @@ export const NavigationList = styled.div<{ isOpen: boolean }>`
 `;
 
 export const Logo = styled(Link)`
-  padding: 15px 20px;
+  padding: 16px 20px;
   text-decoration: none;
-  border: 1px solid ${COLORS.grey[400]};
   margin-right: auto;
 
   :visited,

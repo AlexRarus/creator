@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { COLORS } from 'src/components/theme';
+import { darken } from 'polished';
 
 import { FORM_FOOTER_HEIGHT } from '../style';
 
@@ -45,8 +46,6 @@ export const IconButtonWrapper = styled.div<IPropsStyled>`
   min-width: ${FORM_FOOTER_HEIGHT}px;
   height: 100%;
   min-height: 100%;
-  border-left: 1px solid ${COLORS.grey[500]};
-  border-right: 1px solid ${COLORS.grey[500]};
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   transition: all 200ms;
 
@@ -54,22 +53,16 @@ export const IconButtonWrapper = styled.div<IPropsStyled>`
     cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   }
 
-  :first-child {
-    border-left: none;
-  }
-  :last-child {
-    border-right: none;
-  }
-
   svg {
     transition: all 300ms;
-    ${({ isOpen }) => isOpen && 'transform: rotate(90deg);'}
-    fill: ${getFillIcon};
+    ${({ isOpen }) => isOpen && 'transform: rotate(45deg);'}
+    fill: ${({ theme }) => theme?.textColor?.primary};
   }
 
   :hover {
     svg {
-      fill: ${getHoverFillIcon};
+        fill: ${({ theme }) => darken(0.08, theme?.textColor?.primary)};
+
     }
   }
 `;

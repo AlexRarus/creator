@@ -5,6 +5,7 @@ import { ITheme } from './interfaces';
 import * as COLORS from './colors';
 
 export const LIGHT_THEME: ITheme = {
+  themeType: 'light',
   isMobile: false,
   isTablet: false,
   scroll: {
@@ -174,6 +175,7 @@ export const LIGHT_THEME: ITheme = {
 };
 
 export const DARK_THEME: ITheme = {
+  themeType: 'dark',
   isMobile: false,
   isTablet: false,
   scroll: {
