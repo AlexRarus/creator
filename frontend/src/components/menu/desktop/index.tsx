@@ -9,6 +9,7 @@ import Button from 'src/components/button';
 import { UserMenu } from '../user-menu';
 import { MENU_HEIGHT } from '../constants';
 import { IMenuItem } from '../interfaces';
+import { LogoComponent } from '../logo';
 
 import {
   DesktopHeaderWrapper,
@@ -17,8 +18,6 @@ import {
   RightSide,
   Logo,
   MenuItem,
-  LogoWrapper,
-  LogoIcon,
 } from './style';
 
 interface IProps {
@@ -48,9 +47,7 @@ export const DesktopMenu = (props: IProps) => {
         <DesktopMenuWrapper>
           <LeftSide>
             <Logo to='/'>
-              <LogoWrapper>
-                <LogoIcon />
-              </LogoWrapper>
+              <LogoComponent />
             </Logo>
             {menuItems.map((menuItem: IMenuItem) => (
               <MenuItem
