@@ -13,6 +13,7 @@ import Facebook from '@mui/icons-material/Facebook';
 import GoogleIcon from '@mui/icons-material/Google';
 import Instagram from '@mui/icons-material/Instagram';
 
+import { AnimateBackground } from '../animate';
 import {
   AuthPageWrapper,
   AuthFormWrapper,
@@ -21,6 +22,7 @@ import {
   AuthRow,
   AuthSeparate,
   ButtonRow,
+  AnimateWrapper,
 } from '../style';
 
 import { useMapStoreToProps } from './selectors';
@@ -58,6 +60,9 @@ export const RegistrationPageContainer = observer(() => {
 
   return (
     <AuthPageWrapper>
+      <AnimateWrapper>
+        <AnimateBackground />
+      </AnimateWrapper>
       <AuthFormWrapper onSubmit={handleSubmit(onSubmit)}>
         <FormTitle>Регистрация</FormTitle>
         {additionalLogins && (
