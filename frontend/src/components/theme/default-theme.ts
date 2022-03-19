@@ -5,6 +5,8 @@ import { ITheme } from './interfaces';
 import * as COLORS from './colors';
 
 export const LIGHT_THEME: ITheme = {
+  mainBackground: '#ffffff',
+  mainGradient: 'linear-gradient(315deg, #ffffff 0%, #d7e1ec 74%)',
   themeType: 'light',
   isMobile: false,
   isTablet: false,
@@ -175,6 +177,8 @@ export const LIGHT_THEME: ITheme = {
 };
 
 export const DARK_THEME: ITheme = {
+  mainBackground: '#537895',
+  mainGradient: 'linear-gradient(315deg, #537895 0%, #09203f 74%)',
   themeType: 'dark',
   isMobile: false,
   isTablet: false,

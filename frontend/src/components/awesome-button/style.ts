@@ -1,6 +1,9 @@
 import styled, { keyframes, css } from 'styled-components';
+import { COLORS } from 'src/components/theme';
 
-const buttonColor = css`rgba(51, 217, 178, 1);`;
+const buttonColor = css`
+  ${COLORS.blue[500]}
+`;
 
 const pulse = keyframes`
  0% {
