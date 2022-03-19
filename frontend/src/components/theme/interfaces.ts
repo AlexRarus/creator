@@ -45,6 +45,8 @@ interface IThemeBase {
 
 export interface ITheme extends IThemeBase {
   themeType: any;
+  mainBackground?: string;
+  mainGradient?: string;
   isMobile?: boolean;
   isTablet?: boolean;
   scroll: {

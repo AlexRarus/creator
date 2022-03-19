@@ -2,10 +2,6 @@ import styled, { css } from 'styled-components';
 import { rgba } from 'polished';
 import { Grid } from 'src/components/grid';
 import { COLORS } from 'src/components/theme';
-import {
-  USER_MENU_BACKGROUND,
-  USER_MENU_BACKGROUND_HOVER,
-} from 'src/components/menu/user-menu/style';
 
 export const FORM_HEADER_HEIGHT = 64;
 export const FORM_FOOTER_HEIGHT = 64;
@@ -18,6 +14,10 @@ export const ScrollableWrap = styled.div<{ maxHeight?: number; isEmpty?: boolean
       overflow: auto;
     `}
   width: 100%;
+  height: inherit;
+
+  background: ${({ theme }) => rgba(theme?.background?.primary, 0.05)};
+  backdrop-filter: blur(4px);
 
   ${({ isEmpty }) => isEmpty && 'position: relative;'}
 
@@ -95,8 +95,6 @@ export const FormWrapperDroppable = styled(Grid)<{
   padding: 24px 28px 64px 24px;
 
   color: inherit;
-  background: ${({ isDraggingOver, theme }) =>
-    isDraggingOver ? rgba(theme.background.primary, 0.9) : theme.background.primary};
   width: 100%;
 `;
 

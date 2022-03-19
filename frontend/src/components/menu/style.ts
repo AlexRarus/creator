@@ -21,11 +21,10 @@ export const ButtonLink = styled(Link)`
 
 export const LogoIcon = styled.div`
   position: absolute;
-  top: 50%;
-  left: 40px;
-  transform: translate(-50%, -50%);
-  width: 140px;
-  height: 46px;
+  left: 56px;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 64px;
   background-image: url(${({ theme }) => (theme?.themeType === 'light' ? DarkLogoSvg : LogoSvg)});
   background-size: cover;
   background-repeat: no-repeat;
@@ -34,7 +33,7 @@ export const LogoIcon = styled.div`
 
 export const LogoWrapper = styled.div`
   position: relative;
-  width: 88px;
-  height: 36px;
+  width: 124px;
+  height: 50px;
   overflow: hidden;
 `;

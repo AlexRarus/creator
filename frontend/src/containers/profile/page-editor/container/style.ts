@@ -32,7 +32,7 @@ export const ScaleBlock = styled.div`
   position: absolute;
   top: -40px;
   left: 50%;
-  transform: scale(0.85) translateX(-50%);
+  transform: scale(0.9) translateX(-50%);
 `;
 
 export const EditorWrapper = styled.div<{ isForm: boolean }>`
@@ -157,6 +157,7 @@ export const LinkActionBlock = styled.div`
   align-items: center;
   min-width: ${FORM_FOOTER_HEIGHT}px;
   min-height: ${FORM_FOOTER_HEIGHT}px;
+  border-left: 1px solid ${({ theme }) => theme?.textColor?.primary};
   border-left: 1px solid ${({ theme }) => theme?.textColor?.primary};
   border-right: 1px solid ${({ theme }) => theme?.textColor?.primary};
   transition: all 200ms;

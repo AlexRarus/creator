@@ -36,6 +36,7 @@ export const ModalBackPlate = styled.div<IModalBackPlateProps>`
   opacity: ${({ isMounted }) => (isMounted ? 1 : 0)};
   transition: opacity 100ms ease-out;
   background: ${rgba(COLORS.black, 0.5)};
+  backdrop-filter: blur(4px);
   overflow-x: auto;
 `;
 
@@ -43,8 +44,9 @@ export const ModalWrapper = styled.div<IModalWrapperProps>`
   display: flex;
   flex-direction: column;
   position: absolute;
-  background: ${({ theme }) => theme?.background?.primary};
-  border-radius: ${({ isMobile }) => (isMobile ? '8px 8px 0 0' : '8px')};
+  background-color: ${({ theme }) => theme?.mainBackground};
+  background-image: ${({ theme }) => theme?.mainGradient};
+  border-radius: ${({ isMobile }) => (isMobile ? '16px 16px 0 0' : '16px')};
   padding-top: ${({ isMobile, hasTitle }) => {
     if (!hasTitle) {
       return isMobile ? '44px' : '58px';

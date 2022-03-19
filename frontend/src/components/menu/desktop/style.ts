@@ -22,7 +22,6 @@ export const DesktopMenuWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   user-select: none;
-  background-color: ${({ theme }) => theme?.background?.primary};
 `;
 
 export const LeftSide = styled.div`
