@@ -30,7 +30,6 @@ export const ScaleBlock = styled.div`
   justify-content: center;
   height: 100%;
   position: absolute;
-  top: -40px;
   left: 50%;
   transform: scale(0.9) translateX(-50%);
 `;

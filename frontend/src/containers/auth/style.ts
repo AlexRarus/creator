@@ -7,6 +7,9 @@ export const AuthPageWrapper = styled.div`
   flex-grow: 1;
   justify-content: center;
   align-items: center;
+
+  background-color: ${({ theme }) => theme?.mainBackground};
+  background-image: ${({ theme }) => theme?.mainGradient};
 `;
 AuthPageWrapper.defaultProps = {
   theme: LIGHT_THEME,
@@ -98,4 +101,10 @@ export const AuthSeparate = styled.div`
     transform: translate(-50%, -50%);
     background-color: ${({ theme }) => theme?.background?.primary};
   }
+`;
+
+export const AnimateWrapper = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
 `;

@@ -13,6 +13,7 @@ import Facebook from '@mui/icons-material/Facebook';
 import GoogleIcon from '@mui/icons-material/Google';
 import Instagram from '@mui/icons-material/Instagram';
 
+import { AnimateBackground } from '../animate';
 import {
   AuthPageWrapper,
   AuthFormWrapper,
@@ -23,6 +24,7 @@ import {
   AuthCommonButton,
   AuthSeparate,
   ButtonRow,
+  AnimateWrapper,
 } from '../style';
 
 import { ForgotPasswordLink } from './style';
@@ -55,6 +57,9 @@ export const LoginPageContainer = observer(() => {
 
   return (
     <AuthPageWrapper>
+      <AnimateWrapper>
+        <AnimateBackground />
+      </AnimateWrapper>
       <AuthFormWrapper onSubmit={handleSubmit(onSubmit)}>
         <FormTitle>Вход</FormTitle>
         {additionalLogins && (
