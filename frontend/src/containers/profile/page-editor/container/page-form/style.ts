@@ -29,7 +29,7 @@ export const ScrollableWrap = styled.div<{ maxHeight?: number; isEmpty?: boolean
   }
 `;
 
-export const FormFooter = styled.div`
+export const FormFooter = styled.div<{ hideToolbar?: boolean }>`
   position: absolute;
   left: 0;
   bottom: 0;
@@ -46,17 +46,17 @@ export const FormFooter = styled.div`
   transform: translateX(-50%);
   bottom: 16px;
   left: 50%;
+  transition: all 200ms;
 
-  ${({ theme }) =>
+  ${({ theme, hideToolbar }) =>
     theme?.isMobile &&
     css`
       position: fixed;
-      left: 50%;
+      left: ${hideToolbar ? '-126px' : 'calc(50% - 32px)'};
       transform: translateX(-50%);
       border-radius: 16px;
       bottom: 16px;
       height: 60px;
-      width: calc(100% - 20px);
     `}
 `;
 
