@@ -36,7 +36,6 @@ export const ModalBackPlate = styled.div<IModalBackPlateProps>`
   opacity: ${({ isMounted }) => (isMounted ? 1 : 0)};
   transition: opacity 100ms ease-out;
   background: ${rgba(COLORS.black, 0.5)};
-  backdrop-filter: blur(4px);
   overflow-x: auto;
 `;
 

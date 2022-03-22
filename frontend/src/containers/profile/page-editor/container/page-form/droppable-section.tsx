@@ -47,8 +47,9 @@ export const DroppableSection = (props: IProps) => {
                 index={index}>
                 {(provided, snapshot) => (
                   <DraggableItem
-                    onClick={onClickEditBlock(block)}
+                    onMouseUp={onClickEditBlock(block)}
                     isDragging={snapshot.isDragging}
+                    type={block.type}
                     ref={provided.innerRef}
                     {...provided.dragHandleProps}
                     {...provided.draggableProps}

@@ -1,14 +1,14 @@
 import styled from 'styled-components';
-import { rgba } from 'polished';
 
 export const BlocksTypesContainerWrapper = styled.div`
   padding: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  display: grid;
+  grid-gap: ${({ theme }) => (theme?.isMobile ? 10 : 16)}px;
+  grid-template-columns: repeat(${({ theme }) => (theme?.isMobile ? 3 : 4)}, 100px);
+  margin: 0 auto;
 `;
 
-export const TypeItemStyled = styled.div`
+export const TypeItemStyled = styled.div<{ background?: string }>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -16,8 +16,8 @@ export const TypeItemStyled = styled.div`
   width: 100px;
   height: 100px;
   cursor: pointer;
-  border-radius: 4px;
-  box-shadow: 0px 0px 10px ${({ theme }) => rgba(theme?.borderColor?.contrast, 0.1)};
+  border-radius: 16px;
+  background: ${({ background }) => background || 'transparent'};
 `;
 
 export const TypeLabel = styled.div`

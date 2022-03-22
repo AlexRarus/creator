@@ -22,6 +22,7 @@ import {
   SettingsItemButton,
   AcceptButton,
   CancelButton,
+  CustomCheckbox,
 } from './style';
 import { IconButton } from './icon-button';
 import { DroppableList } from './droppable-list';
@@ -77,11 +78,25 @@ export const PageForm = (props: IProps) => {
     setCheckBlocks(false);
   };
 
+  const missClickCheckBlocks = (event: any) => {
+    const { target } = event;
+    console.log(target?.closest('.section-action'));
+    if (!target?.closest('.section-action')) {
+      cancelCheckBlocks();
+    }
+  };
+
   useEffect(() => {
     if (data.blocks) {
       setBlocks(data.blocks);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (isCheckBlocks) {
+      document.body.addEventListener('click', missClickCheckBlocks);
+    }
+  }, [isCheckBlocks]);
 
   useEffect(() => {
     const indexes = checkedBlocks.map((checkedBlock: IBlock<any>) => blocks.indexOf(checkedBlock));
@@ -183,7 +198,9 @@ export const PageForm = (props: IProps) => {
             hasPointer={false}>
             <SettingsPopupList>
               <SettingsItemButton onClick={openPageSettingsModal()}>Настройки</SettingsItemButton>
-              <SettingsItemButton onClick={startCheckBlocks}>Добавить секцию</SettingsItemButton>
+              <SettingsItemButton className={'section-action'} onClick={startCheckBlocks}>
+                Добавить секцию
+              </SettingsItemButton>
             </SettingsPopupList>
           </Popup>
         </IconButton>
@@ -191,6 +208,7 @@ export const PageForm = (props: IProps) => {
       {isCheckBlocks && (
         <>
           <AcceptButton
+            className={'section-action'}
             onClick={openAddBlockModal(
               'section',
               { blocks: checkedBlocks },

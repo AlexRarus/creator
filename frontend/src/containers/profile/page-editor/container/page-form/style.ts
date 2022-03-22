@@ -1,7 +1,8 @@
 import styled, { css } from 'styled-components';
-import { rgba } from 'polished';
+import { lighten, rgba } from 'polished';
 import { Grid } from 'src/components/grid';
 import { COLORS } from 'src/components/theme';
+import { typeColors } from 'src/containers/profile/block-editor/types-list/utils';
 
 export const FORM_HEADER_HEIGHT = 64;
 export const FORM_FOOTER_HEIGHT = 64;
@@ -15,9 +16,6 @@ export const ScrollableWrap = styled.div<{ maxHeight?: number; isEmpty?: boolean
     `}
   width: 100%;
   height: inherit;
-
-  background: ${({ theme }) => rgba(theme?.background?.primary, 0.05)};
-  backdrop-filter: blur(4px);
 
   ${({ isEmpty }) => isEmpty && 'position: relative;'}
 
@@ -76,6 +74,7 @@ export const BlockActionWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   cursor: pointer;
+  z-index: 1;
 
   * {
     cursor: pointer;
@@ -85,6 +84,7 @@ export const BlockActionWrapper = styled.div`
 export const FormWrapperDroppable = styled(Grid)<{
   isDraggingOver: boolean;
   width?: number;
+  isCheckBlocks?: boolean;
 }>`
   display: flex;
   flex-direction: column;
@@ -92,38 +92,46 @@ export const FormWrapperDroppable = styled(Grid)<{
   height: auto;
 
   width: ${({ width }) => width}px;
-  padding: 24px 28px 64px 24px;
+  padding: 16px 16px 64px 16px;
+  ${({ isCheckBlocks }) => isCheckBlocks && 'padding-right: 32px;'}
 
   color: inherit;
   width: 100%;
+  transition: all 200ms;
 `;
 
-export const DraggableItem = styled.div<{ isDragging: boolean; isSubItem?: boolean }>`
+export const DraggableItem = styled.div<{
+  isDragging: boolean;
+  isSubItem?: boolean;
+  type: string;
+}>`
   position: relative;
   min-height: 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: calc(100% - 4px);
+  width: 100%;
   padding-left: 48px;
   padding-right: 32px;
-  margin: ${({ isSubItem }) => (isSubItem ? '2px' : '6px 2px')};
+  margin-bottom: 4px;
+
+  :last-child {
+    margin-bottom: 0px;
+  }
 
   &:before {
     content: '';
     position: absolute;
     left: 0px;
     top: 0px;
-    width: calc(100% - 4px);
-    height: 100%;
-    background: ${({ isDragging }) =>
-      isDragging ? rgba(COLORS.white, 0.15) : rgba(COLORS.white, 0.2)};
-    border-radius: 12px;
-    border: 1px dashed;
+    width: 100%;
+    height: calc(100% - 2px);
+    background: ${({ isDragging, type }) =>
+      isDragging ? lighten(0.1, typeColors[type] as string) : typeColors[type]};
+    border-radius: 10px;
+    border: 1px solid;
     border-color: ${({ isDragging }) => (isDragging ? rgba(COLORS.black, 0.1) : 'transparent')};
-    box-shadow: ${({ isDragging }) =>
-      !isDragging ? `0px 0px 10px ${rgba(COLORS.grey[900], 0.1)}` : 'none'};
     transition: all 200ms;
   }
 `;
@@ -144,14 +152,11 @@ export const DragHandleZone = styled.div<{ isDragging: boolean }>`
   justify-content: center;
   align-items: center;
   position: absolute;
-  top: 4px;
-  left: 4px;
+  top: 0px;
+  left: 0px;
   height: 32px;
   width: 32px;
   border-radius: 6px;
-  box-shadow: ${({ isDragging }) =>
-    isDragging ? '0px 15px 20px rgba(46, 229, 157, 0.4)' : 'none'};
-  background: ${({ isDragging, theme }) => (isDragging ? '#2EE59D' : '#7d2ae8')};
 `;
 
 export const DragIconBox = styled.div`
@@ -169,24 +174,21 @@ export const DragIconBox = styled.div`
 
 export const SectionDraggable = styled.div<{ isDragging: boolean }>`
   position: relative;
-  width: calc(100% - 4px);
-  padding: 32px 4px 4px 4px;
-  margin: 8px 2px;
+  width: 100%;
+  padding: 4px 4px 4px 4px;
+  margin-bottom: 6px;
 
   &:before {
     content: '';
     position: absolute;
     left: 0px;
     top: 0px;
-    width: calc(100% - 4px);
-    height: 100%;
-    background: ${({ isDragging }) =>
-      isDragging ? rgba(COLORS.white, 0.15) : rgba(COLORS.white, 0.2)};
-    border-radius: 12px;
-    border: 1px dashed;
-    border-color: ${({ isDragging }) => (isDragging ? rgba(COLORS.black, 0.1) : 'transparent')};
-    box-shadow: ${({ isDragging }) =>
-      !isDragging ? `0px 0px 10px ${rgba(COLORS.grey[900], 0.1)}` : 'none'};
+    width: 100%;
+    height: calc(100% - 2px);
+    border-radius: 10px;
+    border: 1px solid;
+    border-color: ${({ isDragging, theme }) =>
+      isDragging ? COLORS.blue[500] : theme?.textColor?.primary};
     transition: all 200ms;
   }
 `;
@@ -196,14 +198,14 @@ export const SectionHandleZone = styled.div<{ isDragging: boolean }>`
   justify-content: center;
   align-items: center;
   position: absolute;
-  top: 4px;
-  left: 4px;
-  height: 24px;
+  bottom: 4px;
+  right: 4px;
+  height: calc(100% - 34px);
   width: 24px;
   border-radius: 6px;
-  box-shadow: ${({ isDragging }) =>
-    isDragging ? '0px 15px 20px rgba(46, 229, 157, 0.4)' : 'none'};
-  background: ${({ isDragging, theme }) => (isDragging ? '#2EE59D' : '#7d2ae8')};
+  background: ${({ theme }) => theme?.textColor?.primary};
+  color: ${({ theme }) => theme?.background?.primary};
+  writing-mode: vertical-rl;
 `;
 
 export const DeleteSection = styled.div`
@@ -213,8 +215,8 @@ export const DeleteSection = styled.div`
   position: absolute;
   top: 4px;
   right: 4px;
-  padding: 2px 3px;
-  height: 16px;
+  padding: 2px;
+  width: 24px;
   border-radius: 6px;
   font-size: 12px;
   cursor: pointer;
@@ -225,9 +227,8 @@ export const DeleteSection = styled.div`
 export const SectionWrapper = styled.div<{ isDragging: boolean }>`
   position: relative;
   padding: 1px;
-  width: calc(100% - 4px);
+  width: calc(100% - 30px);
   border-radius: 10px;
-  background-color: ${({ theme }) => theme?.background?.primary || 'inherit'};
 `;
 
 export const SettingsPopupList = styled.div`
@@ -239,7 +240,7 @@ export const SettingsItemButton = styled.div`
   background: ${({ theme }) => rgba(theme?.textColor?.primary, 0.1)};
   color: ${({ theme }) => theme?.textColor?.primary};
   border-radius: 16px;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   padding: 8px 10px;
   transition: all 200ms ease-out;
 
@@ -258,20 +259,22 @@ export const SettingsItemButton = styled.div`
   user-select: none;
 `;
 
-export const CustomCheckbox = styled.div<{ isChecked?: boolean }>`
+export const CustomCheckbox = styled.div<{ isChecked?: boolean; isVisible?: boolean }>`
   display: flex;
+  opacity: ${({ isVisible }) => (isVisible ? 1 : 0)}
   align-items: center;
   justify-content: center;
   position: absolute;
   right: -24px;
   top: 4px;
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  border: 2px solid
+  border: 1px solid
     ${({ isChecked, theme }) => (isChecked ? '#2EE59D' : theme.borderColor.contrast)};
   background: ${({ isChecked }) => (isChecked ? '#2EE59D' : 'inherit')};
   cursor: pointer;
+  transition: all 200ms;
 
   &:before {
     content: '';
@@ -280,38 +283,45 @@ export const CustomCheckbox = styled.div<{ isChecked?: boolean }>`
     border-bottom: 2px solid ${({ theme }) => theme?.background?.primary};
     border-left: 2px solid ${({ theme }) => theme?.background?.primary};
     opacity: ${({ isChecked }) => (isChecked ? 1 : 0)};
-    transform: rotate(-45deg) translate(1px, -1px);
+    transform: rotate(-45deg) translate(-2px,1px);
   }
 `;
 
 export const AcceptButton = styled.div`
   position: absolute;
-  bottom: 80px;
+  bottom: ${({ theme }) => (theme?.isMobile ? 180 : 80)}px;
   right: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 32px;
+  background: ${COLORS.blue[500]};
+  color: ${COLORS.white};
+  backdrop-filter: blur(8px);
   border-radius: 16px;
-  padding: 4px 6px;
-  color: ${({ theme }) => theme?.textColor?.primary};
-  background: ${({ theme }) => theme?.background?.primary};
-  border: 2px solid ${({ theme }) => theme?.textColor?.primary};
+  margin-bottom: 4px;
+  padding: 8px 10px;
+  transition: all 200ms ease-out;
+
   cursor: pointer;
+  user-select: none;
 `;
 
 export const CancelButton = styled.div`
   position: absolute;
-  bottom: 80px;
+  bottom: ${({ theme }) => (theme?.isMobile ? 180 : 80)}px;
   left: 32px;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 32px;
+  background: ${COLORS.blue[500]};
+  color: ${COLORS.white};
+  backdrop-filter: blur(8px);
   border-radius: 16px;
-  padding: 4px 6px;
-  color: ${({ theme }) => theme?.textColor?.primary};
-  background: ${({ theme }) => theme?.background?.primary};
-  border: 2px solid ${({ theme }) => theme?.textColor?.primary};
+  margin-bottom: 4px;
+  padding: 8px 10px;
+  transition: all 200ms ease-out;
+
   cursor: pointer;
+  user-select: none;
 `;
