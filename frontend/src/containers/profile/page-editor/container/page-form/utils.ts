@@ -1,5 +1,4 @@
 export function getStyleLockHorizontalDrag(style: any, snapshot: any) {
-  console.log(style);
   if (style.transform) {
     const axisLockY = `translate(0px${style.transform.slice(
       style?.transform?.indexOf(','),
@@ -7,7 +6,7 @@ export function getStyleLockHorizontalDrag(style: any, snapshot: any) {
     )}`;
     return {
       ...style,
-      transform: axisLockY,
+      transform: `${axisLockY} rotate(${snapshot?.isDragging ? -2 : 0}deg)`,
     };
   }
   return style;
