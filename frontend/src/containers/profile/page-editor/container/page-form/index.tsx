@@ -11,6 +11,8 @@ import { BlockEditorModal } from 'src/containers/profile/block-editor';
 import { isMobile } from 'react-device-detect';
 import Popup from 'src/components/popup';
 import { AwesomeButton } from 'src/components/awesome-button';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 import { PagePreview } from '../page-preview';
 
@@ -61,6 +63,7 @@ export const PageForm = (props: IProps) => {
     openPageSettingsModal,
   } = props;
   const [blocks, setBlocks] = useState<IBlock<any>[]>([]);
+  const [viewToolbar, setViewToolbar] = useState(true);
   const [isShowPreview, setIsShowPreview] = useState(false);
   const [selectedBlock, setSelectedBlock] = useState<IBlock<any> | INewBlock | null>(null);
   const [openerElement, openerRefCallback] = useState<HTMLDivElement | null>(null);
@@ -114,6 +117,7 @@ export const PageForm = (props: IProps) => {
 
   const showPagePreview = () => setIsShowPreview(true);
   const hidePagePreview = () => setIsShowPreview(false);
+  const toggleToolbar = () => setViewToolbar(!viewToolbar);
 
   const openAddBlockModal = (blockType?: string, initBlockData?: any, index?: number) => () =>
     setSelectedBlock({
@@ -154,7 +158,12 @@ export const PageForm = (props: IProps) => {
           />
         </>
       )}
-      <FormFooter>
+      <FormFooter hideToolbar={isMobile && !viewToolbar}>
+        {isMobile && (
+          <IconButton onClick={toggleToolbar} isActive={true}>
+            <ArrowBackIosNewIcon />
+          </IconButton>
+        )}
         {isShowPreview && isMobile && (
           <IconButton onClick={hidePagePreview} isActive={true}>
             <EditIcon />
@@ -204,6 +213,11 @@ export const PageForm = (props: IProps) => {
             </SettingsPopupList>
           </Popup>
         </IconButton>
+        {!viewToolbar && isMobile && (
+          <IconButton onClick={toggleToolbar} isActive={true}>
+            <ArrowForwardIosIcon />
+          </IconButton>
+        )}
       </FormFooter>
       {isCheckBlocks && (
         <>
