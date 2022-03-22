@@ -1,6 +1,6 @@
 import React from 'react';
 import { IBlockType } from 'src/dal/blocks/interfaces';
-import { typeIconsMap } from 'src/containers/profile/block-editor/types-list/utils';
+import { typeIconsMap, typeColors } from 'src/containers/profile/block-editor/types-list/utils';
 
 import { TypeItemStyled, TypeLabel } from './style';
 
@@ -15,7 +15,7 @@ export const BlockTypeItem = (props: IProps) => {
   const onClickHandler = () => onClick(type);
 
   return (
-    <TypeItemStyled onClick={onClickHandler}>
+    <TypeItemStyled background={typeColors[type.slug]} onClick={onClickHandler}>
       {typeIconsMap[type.slug]}
       <TypeLabel>{type.label}</TypeLabel>
     </TypeItemStyled>
