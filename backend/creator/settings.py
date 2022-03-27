@@ -24,6 +24,9 @@ env = environ.Env(
     AWS_S3_ACCESS_KEY_ID=(str, "AWS_S3_ACCESS_KEY_ID"),
     AWS_S3_SECRET_ACCESS_KEY=(str, "AWS_S3_SECRET_ACCESS_KEY"),
     SSL_ENABLED=(bool, False),
+    YANDEX_S3_BUCKET_NAME=(str, "YANDEX_S3_BUCKET_NAME"),
+    YANDEX_S3_ACCESS_KEY_ID=(str, "YANDEX_S3_ACCESS_KEY_ID"),
+    YANDEX_S3_SECRET_ACCESS_KEY=(str, "YANDEX_S3_SECRET_ACCESS_KEY"),
 )
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -53,6 +56,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "debug_toolbar",
     "corsheaders",
+    "storages",
     "rest_framework_simplejwt.token_blacklist",
     "rest_framework",
     "django_filters",
@@ -189,11 +193,13 @@ EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 
 ADMIN_EMPTY_VALUE_DISPLAY = "-пусто-"
 
-DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
-AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME")
-AWS_S3_ACCESS_KEY_ID = env("AWS_S3_ACCESS_KEY_ID")
-AWS_S3_SECRET_ACCESS_KEY = env("AWS_S3_SECRET_ACCESS_KEY")
-
+# ----Yandex s3----
+DEFAULT_FILE_STORAGE = "yandex_s3_storage.ClientDocsStorage"
+YANDEX_S3_BUCKET_NAME = env("YANDEX_S3_BUCKET_NAME")
+AWS_ACCESS_KEY_ID = env("YANDEX_S3_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = env("YANDEX_S3_SECRET_ACCESS_KEY")
+AWS_S3_ENDPOINT_URL = "https://storage.yandexcloud.net"
+AWS_S3_REGION_NAME = "storage"
 
 SECURE_PROXY_SSL_HEADER = (
     "HTTP_X_FORWARDED_PROTO",

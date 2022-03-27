@@ -1,5 +1,6 @@
 import uuid
 
+from creator.yandex_s3_storage import ClientDocsStorage
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -25,6 +26,7 @@ class Avatar(models.Model):
         on_delete=models.CASCADE,
     )
     sourceFile = models.ImageField(
+        storage=ClientDocsStorage(),
         verbose_name="Исходный Файл",
         help_text="Выберите файл",
         upload_to=get_upload_path,
@@ -32,6 +34,7 @@ class Avatar(models.Model):
         null=True,
     )
     previewFile = models.ImageField(
+        storage=ClientDocsStorage(),
         verbose_name="Файл для предпросмотра",
         help_text="Выберите файл",
         upload_to=get_upload_path,

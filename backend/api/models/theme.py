@@ -1,5 +1,6 @@
 from api.models.image import Image
 from api.models.pricing_plan import PricingPlan
+from creator.yandex_s3_storage import ClientDocsStorage
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models.signals import pre_save
@@ -154,6 +155,7 @@ class Theme(models.Model):
         max_length=255,
     )
     animation = models.FileField(
+        storage=ClientDocsStorage(),
         verbose_name="Анимация",
         help_text="Выберите файл анимации",
         upload_to="themes/animations/",

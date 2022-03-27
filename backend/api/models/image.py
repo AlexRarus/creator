@@ -1,5 +1,6 @@
 import uuid
 
+from creator.yandex_s3_storage import ClientDocsStorage
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -31,6 +32,7 @@ class Image(models.Model):
         null=True,
     )
     file = models.ImageField(
+        storage=ClientDocsStorage(),
         verbose_name="Файл",
         help_text="Выберите файл",
         upload_to=get_upload_path,
@@ -38,6 +40,7 @@ class Image(models.Model):
         null=True,
     )
     previewFile = models.ImageField(
+        storage=ClientDocsStorage(),
         verbose_name="Файл для предпросмотра",
         help_text="Выберите файл",
         upload_to=get_upload_path,
