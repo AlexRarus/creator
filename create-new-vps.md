@@ -41,3 +41,58 @@ scp -r ./deploy wallink@84.201.154.103:/home/wallink/
 ```shell
 ssh wallink@84.201.154.103
 ```
+
+### autorun
+
+```shell
+chmod +x /home/wallink/deploy/autorun.sh
+```
+
+добавляем в конец bashrc:
+
+```shell
+vim ~/.bashrc
+```
+
+```shell
+chmod +x /home/wallink/deploy/autorun.sh systemctl start creator.service
+```
+
+Создаем файл нашей службы:
+
+```shell
+sudo touch /etc/systemd/system/creator.service
+sudo chmod 664 /etc/systemd/system/creator.service
+sudo vim /etc/systemd/system/creator.service
+```
+
+Содержимое файла:
+
+```shell
+[Unit]
+Description=Template Settings Service
+After=network.target
+
+[Service]
+Type=oneshot
+User=root
+ExecStart=/home/wallink/deploy/autorun.sh
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Проверяем и перезапускаем:
+
+```shell
+sudo systemctl daemon-reload
+```
+
+разрешим этот "сервис" для автозапуска:
+```shell
+sudo systemctl enable creator.service
+```
+
+```shell
+sudo systemctl status creator.service
+```
