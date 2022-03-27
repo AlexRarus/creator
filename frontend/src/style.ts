@@ -1,10 +1,12 @@
 import styled, { createGlobalStyle, css } from 'styled-components';
 import { rgba } from 'polished';
-import { MEDIA, FONTS } from 'src/components/theme';
+import { MEDIA } from 'src/components/theme';
 
 export const GlobalStyleApp = createGlobalStyle<any>`  
   html {
-    background: ${({ theme }) => theme.background?.primary};
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: ${({ theme }) => theme?.mainBackground};
+    background-image: ${({ theme }) => theme?.mainGradient};
     color: ${({ theme }) => theme.textColor?.primary};
     
     ${({ theme, appType }: any) =>
@@ -13,15 +15,18 @@ export const GlobalStyleApp = createGlobalStyle<any>`
             position: initial;
             height: 100vh;
           `
-        : css``}
+        : css`
+            height: 100%;
+          `}
   }    
   
   body {
-    ${FONTS.InterStyle};
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     margin: 0;
     padding: 0;   
     font-size: 14px;
-    background: ${({ theme }) => theme.background?.primary};
+    background-color: ${({ theme }) => theme?.mainBackground};
+    background-image: ${({ theme }) => theme?.mainGradient};
     color: ${({ theme }) => theme.textColor?.primary};
     width: 100%;
     
@@ -30,7 +35,9 @@ export const GlobalStyleApp = createGlobalStyle<any>`
             ? css`
                 position: fixed;
               `
-            : css``}
+            : css`
+                height: 100%;
+              `}
     
     &.disable-scroll {
       overflow: hidden;
@@ -52,7 +59,8 @@ export const GlobalStyleApp = createGlobalStyle<any>`
   }
 
   h1, h2, h3, h4, h5, h6 {
-    ${FONTS.InterBoldStyle};
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 600;
     margin: 0;
   }
   

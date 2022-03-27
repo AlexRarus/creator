@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import { useHistory } from 'react-router-dom';
 import { GridColumn } from 'src/components/grid';
 import { useIsAuthor } from 'src/utils/useIsAuthor';
-import { DeviceContainer } from 'src/containers/profile/device-wrapper';
+import { DeviceContainer } from 'src/containers/profile/device-wrapper/new-iphone';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import EditIcon from '@mui/icons-material/Edit';
 import DoneIcon from '@mui/icons-material/Done';
@@ -11,7 +11,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import { copyTextToClipboard } from 'src/utils/copyToClipboard';
 import { v4 as uuidv4 } from 'uuid';
 import InputText from 'src/components/input-text';
-import { AwesomeButton } from 'src/components/awesome-button';
 import { SelectedThemeProvider } from 'src/providers/selected-theme-provider';
 import { useAppTypeContext } from 'src/providers/app-type-provider';
 

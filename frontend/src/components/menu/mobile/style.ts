@@ -38,7 +38,6 @@ export const MobileMenuHeader = styled.div`
   height: ${MENU_HEIGHT}px;
   width: 100%;
   padding: 12px;
-  background-color: ${({ theme }) => theme?.background?.primary};
 `;
 
 export const NavigationOpener = styled.div`
@@ -66,9 +65,8 @@ export const NavigationList = styled.div<{ isOpen: boolean }>`
 `;
 
 export const Logo = styled(Link)`
-  padding: 15px 20px;
+  padding: 16px 20px;
   text-decoration: none;
-  border: 1px solid ${COLORS.grey[400]};
   margin-right: auto;
 
   :visited,
@@ -82,14 +80,15 @@ export const NavigationItem = styled(NavLink)`
   text-decoration: none;
   color ${({ theme }) => theme?.textColor?.primary};
   font-size: ${({ theme }) => (theme?.isMobile ? '18px' : '16px')};
-  font-weight: ${({ theme }) => (theme?.isMobile ? '600' : '400')};
+  font-weight: ${({ theme }) => (theme?.isMobile ? '500' : '400')};
 
   :last-child {
     margin-right: 0;
   }
 
   &.selected {
-    background-color: ${({ theme }) => theme?.component?.input?.borderColor?.hover};
+    background-color: ${COLORS.blue[500]};
+    color ${COLORS.white};
   }
 `;
 

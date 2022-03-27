@@ -5,7 +5,8 @@ import { ISectionData } from 'src/dal/blocks/section-interfaces';
 import { TargetBlockTypePreview } from 'src/containers/app/block';
 import { IPage } from 'src/dal/pages/interfaces';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
-import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
+// import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
+import ClearIcon from '@mui/icons-material/Clear';
 import { isMobile } from 'react-device-detect';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { typeIconsMap } from 'src/containers/profile/block-editor/types-list/utils';
@@ -135,6 +136,7 @@ export const DroppableList = (props: IProps) => {
           return (
             <FormWrapperDroppable
               width={isMobile ? window.innerWidth : 500}
+              isCheckBlocks={isCheckBlocks}
               selectedTheme={null}
               isDraggingOver={snapshot.isDraggingOver}
               verticalGap={32}
@@ -151,7 +153,7 @@ export const DroppableList = (props: IProps) => {
                       {(provided: any, snapshot: any) =>
                         block.type === 'section' ? (
                           <SectionDraggable
-                            onClick={onClickEditBlock(block)}
+                            onMouseUp={onClickEditBlock(block)}
                             isDragging={snapshot.isDragging}
                             ref={provided.innerRef}
                             {...provided.dragHandleProps}
@@ -164,11 +166,11 @@ export const DroppableList = (props: IProps) => {
                             <SectionHandleZone
                               onClick={onClickStopPropagation}
                               isDragging={snapshot.isDragging}>
-                              <DragIcon isDragging={snapshot.isDragging}>
-                                <ViewAgendaIcon fontSize='small' />
-                              </DragIcon>
+                              section
                             </SectionHandleZone>
-                            <DeleteSection onClick={deleteSection(block.id)}>удалить</DeleteSection>
+                            <DeleteSection onClick={deleteSection(block.id)}>
+                              <ClearIcon fontSize={'small'} />
+                            </DeleteSection>
                             <DroppableSection
                               section={block}
                               isDragging={snapshot.isDragging}
@@ -177,8 +179,9 @@ export const DroppableList = (props: IProps) => {
                           </SectionDraggable>
                         ) : (
                           <DraggableItem
-                            onClick={onClickEditBlock(block)}
+                            onMouseUp={onClickEditBlock(block)}
                             isDragging={snapshot.isDragging}
+                            type={block.type}
                             ref={provided.innerRef}
                             {...provided.dragHandleProps}
                             {...provided.draggableProps}
@@ -201,7 +204,9 @@ export const DroppableList = (props: IProps) => {
                               </DragIconBox>
                               {isCheckBlocks && (
                                 <CustomCheckbox
-                                  onClick={onClickCheckbox(block)}
+                                  className={'section-action'}
+                                  isVisible={isCheckBlocks}
+                                  onMouseUp={onClickCheckbox(block)}
                                   isChecked={checkedBlocks.includes(block)}
                                 />
                               )}

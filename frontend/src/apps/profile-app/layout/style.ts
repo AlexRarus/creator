@@ -9,6 +9,9 @@ export const ProfileLayoutWrapper = styled.div`
   ${FONTS.InterStyle};
   background: inherit;
   padding-top: ${MENU_HEIGHT}px;
+
+  background-color: ${({ theme }) => theme?.mainBackground};
+  background-image: ${({ theme }) => theme?.mainGradient};
 `;
 
 export const PageWrapper = styled.div`
