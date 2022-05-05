@@ -131,8 +131,8 @@ class PageViewSet(viewsets.ModelViewSet):
 
     @action(["post"], detail=False)
     def create_by_template(self, request, *args, **kwargs):
-        templateId = request.data.get("templateId", None)
-        template = get_object_or_404(Template, id=templateId)
+        template_id = request.data.get("templateId", None)
+        template = get_object_or_404(Template, id=template_id)
         template_theme = template.theme
         template_blocks = template.blocks.order_by(
             "templateblockrelation__order"

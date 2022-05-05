@@ -6,12 +6,12 @@ def get_ip_address():
     try:
         # doesn't even have to be reachable
         s.connect(("8.8.8.8", 80))
-        IP = s.getsockname()[0]
+        ip = s.getsockname()[0]
     except Exception:
-        IP = "localhost"
+        ip = "localhost"
     finally:
         s.close()
-    return IP
+    return ip
 
 
 LOCAL_MACHINE_IP = get_ip_address()
