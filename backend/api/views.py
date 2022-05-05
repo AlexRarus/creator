@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
@@ -15,7 +16,8 @@ from .models.block import Block
 from .models.block_type import BlockType
 from .models.image import Image
 from .models.page import Page
-from .models.relations import PageBlockRelation
+from .models.relations import PageBlockRelation, TemplateBlockRelation
+from .models.template import Template
 from .models.theme import Theme, ThemeType
 from .models.types.button import ButtonType
 from .models.types.collapsed_list import CollapsedListItemBlock
@@ -26,20 +28,157 @@ from .permissions import (
     IsAvatarPermission,
     IsImagePermission,
     IsPagePermission,
+    IsTemplatePermission,
 )
 from .serializers.avatar import AvatarExistsExceptionError, AvatarSerializer
 from .serializers.block import BlockSerializerRead, BlockSerializerWrite
 from .serializers.block_type import BlockTypeSerializer
 from .serializers.image import ImageSerializer
 from .serializers.page import PageReadSerializer, PageWriteSerializer
+from .serializers.template import (
+    TemplateReadSerializer,
+    TemplateWriteSerializer,
+)
 from .serializers.theme import ThemeSerializerRead, ThemeSerializerWrite
 from .serializers.theme_type import ThemeTypeSerializer
-from .serializers.types.button import ButtonTypeSerializerRead
+from .serializers.types.avatar import block_avatar_clone
+from .serializers.types.button import (
+    ButtonTypeSerializerRead,
+    block_button_clone,
+)
+from .serializers.types.collapsed_list import block_collapsed_list_clone
+from .serializers.types.list import block_list_clone
+from .serializers.types.separator import block_separator_clone
+from .serializers.types.text import block_text_clone
+
+
+class TemplateViewSet(viewsets.ModelViewSet):
+    pagination_class = CustomPagination
+    lookup_field = "slug"
+
+    def get_permissions(self):
+        if self.action in ["retrieve"]:
+            return [AllowAny()]
+        elif self.action in [
+            "create",
+            "update",
+            "partial_update",
+            "destroy",
+            "list",
+        ]:
+            return [IsTemplatePermission()]
+        else:
+            return [AllowAny()]
+
+    def get_queryset(self):
+        return Template.objects.prefetch_related(
+            Prefetch(
+                "blocks",
+                queryset=Block.objects.order_by(
+                    "templateblockrelation__order"
+                ),
+            ),
+            Prefetch(
+                "blocks__section__blocks",
+                queryset=Block.objects.order_by("sectionblockrelation__order"),
+            ),
+            Prefetch(
+                "blocks__list__items",
+                queryset=ListItemBlock.objects.order_by(
+                    "listitemblockrelation__order"
+                ),
+            ),
+            Prefetch(
+                "blocks__collapsed_list__items",
+                queryset=CollapsedListItemBlock.objects.order_by(
+                    "collapsedlistitemblockrelation__order"
+                ),
+            ),
+        )
+
+    def get_object(self):
+        lookup_field = self.kwargs["slug"]
+        if self.action == "retrieve":
+            return get_object_or_404(
+                self.get_queryset(),
+                slug=lookup_field,
+            )
+        else:
+            return get_object_or_404(
+                self.get_queryset(),
+                id=lookup_field,
+            )
+
+    def get_serializer_class(self):
+        if self.action == "retrieve" or self.action == "list":
+            return TemplateReadSerializer
+        return TemplateWriteSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
+    def perform_update(self, serializer):
+        serializer.save(author=self.request.user)
 
 
 class PageViewSet(viewsets.ModelViewSet):
     pagination_class = CustomPagination
     lookup_field = "slug"
+
+    """
+    Create a model instance by template.
+    """
+
+    @action(["post"], detail=False)
+    def create_by_template(self, request, *args, **kwargs):
+        templateId = request.data.get("templateId", None)
+        template = get_object_or_404(Template, id=templateId)
+        template_theme = template.theme
+        template_blocks = template.blocks.order_by(
+            "templateblockrelation__order"
+        )
+        cloned_blocks_ids = []
+
+        # todo клонируем все блоки из шаблона
+        for block in template_blocks.all():
+            cloned_block = None
+            if block.type.slug == "text":
+                cloned_block = block_text_clone(block)
+            elif block.type.slug == "button":
+                cloned_block = block_button_clone(block)
+            elif block.type.slug == "section":
+                from api.serializers.types.section import block_section_clone
+
+                cloned_block = block_section_clone(block)
+            elif block.type.slug == "avatar":
+                cloned_block = block_avatar_clone(block)
+            elif block.type.slug == "list":
+                cloned_block = block_list_clone(block)
+            elif block.type.slug == "collapsed_list":
+                cloned_block = block_collapsed_list_clone(block)
+            elif block.type.slug == "separator":
+                cloned_block = block_separator_clone(block)
+            else:
+                raise ValidationError({"error": ["неизвестный тип блока"]})
+
+            if cloned_block:
+                cloned_blocks_ids.append(cloned_block.id)
+
+        data = {"blocks": cloned_blocks_ids, "label": template.label}
+
+        # todo создаем новую страницу и проверяем данные на валидность
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+
+        # todo выставляем пользователю тему из шаблона
+        request.user.theme = template_theme
+        request.user.save()
+
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(
+            serializer.data, status=status.HTTP_201_CREATED, headers=headers
+        )
 
     def get_permissions(self):
         if self.action in ["retrieve"]:
@@ -118,16 +257,29 @@ class BlockViewSet(viewsets.ModelViewSet):
         return BlockSerializerWrite
 
     def perform_create(self, serializer):
-        page = get_object_or_404(
-            Page,
-            author=self.request.user,
-            slug=self.request.data["page_slug"],
-        )
-        serializer.save(
-            author=self.request.user,
-            page=page,
-            type=BlockType.objects.get(slug=self.request.data["type"]),
-        )
+        page_slug = self.request.data.get("page_slug", None)
+        template_slug = self.request.data.get("template_slug", None)
+        if page_slug:
+            page = get_object_or_404(
+                Page,
+                author=self.request.user,
+                slug=page_slug,
+            )
+            serializer.save(
+                author=self.request.user,
+                page=page,
+                type=BlockType.objects.get(slug=self.request.data["type"]),
+            )
+        else:
+            template = get_object_or_404(
+                Template,
+                slug=template_slug,
+            )
+            serializer.save(
+                author=self.request.user,
+                template=template,
+                type=BlockType.objects.get(slug=self.request.data["type"]),
+            )
 
     def perform_destroy(self, instance):
         if instance.type.slug == "section":

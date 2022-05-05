@@ -8,8 +8,9 @@ import { BlocksFormContainer } from './container';
 interface IProps {
   onSuccess(): void;
   onClose(): void;
-  username: string;
-  pageSlug: string;
+  username?: string;
+  pageSlug?: string;
+  templateSlug?: string;
   blockId: number | 'new';
   blockData?: any;
   blockType?: string;

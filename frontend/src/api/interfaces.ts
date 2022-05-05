@@ -3,6 +3,7 @@ import { IPagesAPI } from './endpoints/pages';
 import { IBlocksAPI } from './endpoints/blocks';
 import { IThemeAPI } from './endpoints/themes';
 import { IImagesAPI } from './endpoints/images';
+import { ITemplatesAPI } from './endpoints/templates';
 
 export interface IAPI {
   auth: IAuthAPI;
@@ -10,6 +11,7 @@ export interface IAPI {
   blocks: IBlocksAPI;
   themes: IThemeAPI;
   images: IImagesAPI;
+  templates: ITemplatesAPI;
 }
 
 export interface IGetListParams {

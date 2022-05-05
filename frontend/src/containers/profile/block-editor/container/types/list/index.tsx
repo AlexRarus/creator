@@ -16,8 +16,8 @@ import { prepareDataForServer, blockTabs, TabValue } from './utils';
 import { ListBlockFields } from './fields';
 
 interface IProps {
-  username: string;
-  pageSlug: string;
+  pageSlug?: string;
+  templateSlug?: string;
   blockType: string;
   blockId: number | 'new';
   onSuccess(data: any): void;
@@ -31,6 +31,7 @@ interface IProps {
 export const ListForm = observer((props: IProps) => {
   const {
     pageSlug,
+    templateSlug,
     blockType,
     blockId,
     onSuccess,
@@ -53,7 +54,7 @@ export const ListForm = observer((props: IProps) => {
   const isEditing = blockId !== 'new' && !isCloning;
 
   const submit = async (formInputs: FormInputs) => {
-    const rawData: RawData = { formInputs, pageSlug, blockType };
+    const rawData: RawData = { formInputs, pageSlug, templateSlug, blockType };
 
     if (isEditing) {
       rawData.blockId = blockId as number;

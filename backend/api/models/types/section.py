@@ -127,6 +127,18 @@ class Section(models.Model):
         blank=True,
     )
 
+    def delete(self, *args, **kwargs):
+        # если происходит каскадное удаление (например при удалении страницы)
+        # то вызывается этот метод
+        # при удалении секции через интерфейс действие предварительно
+        # перехватывается во View чтобы сохранить блоки
+        for block in self.blocks.filter(sections=self):
+            # делаем так что бы у КАЖДОГО блока вызвался
+            # собственный метод удаления
+            block.delete()
+
+        return super(self.__class__, self).delete(*args, **kwargs)
+
     def __str__(self):
         return f"{self.id} - {self.label}"
 

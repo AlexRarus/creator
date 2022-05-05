@@ -4,6 +4,7 @@ import { IBlock } from 'src/dal/blocks/interfaces';
 import { ISectionData } from 'src/dal/blocks/section-interfaces';
 import { TargetBlockTypePreview } from 'src/containers/app/block';
 import { IPage } from 'src/dal/pages/interfaces';
+import { ITemplate } from 'src/dal/templates/interfaces';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 // import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -31,7 +32,7 @@ import {
 import { DroppableSection } from './droppable-section';
 
 interface IProps {
-  data: IPage;
+  data: IPage | ITemplate;
   isCheckBlocks: boolean;
   blocks: IBlock<any>[];
   setBlocks: (blocks: IBlock<any>[]) => void;

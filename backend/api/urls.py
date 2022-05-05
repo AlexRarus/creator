@@ -6,6 +6,7 @@ from .views import (
     BlockViewSet,
     ImageViewSet,
     PageViewSet,
+    TemplateViewSet,
     ThemeTypesViewSet,
     ThemeViewSet,
 )
@@ -21,6 +22,8 @@ router_v1.register(
     PageViewSet,
     "PageViewSet",
 )
+
+router_v1.register(r"v1/templates", TemplateViewSet, "TemplateViewSet")
 
 # создание редактирование блоков
 router_v1.register("v1/blocks", BlockViewSet)

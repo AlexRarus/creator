@@ -7,7 +7,12 @@ from .models.block_type import BlockType
 from .models.image import Image, ImageTag
 from .models.page import Page
 from .models.pricing_plan import PricingPlan
-from .models.relations import PageBlockRelation, SectionBlockRelation
+from .models.relations import (
+    PageBlockRelation,
+    SectionBlockRelation,
+    TemplateBlockRelation,
+)
+from .models.template import Template
 from .models.theme import Theme, ThemeType
 from .models.types.avatar import AvatarBlock
 from .models.types.button import Button, ButtonType
@@ -72,6 +77,24 @@ class PageAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "author",
+        "label",
+        "slug",
+        # "blocks",
+    )
+    search_fields = (
+        "id",
+        "label",
+        "slug",
+    )
+    empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
+
+
+@admin.register(Template)
+class TemplateAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "author",
+        "theme",
         "label",
         "slug",
         # "blocks",
@@ -158,6 +181,16 @@ class PageBlockRelationAdmin(admin.ModelAdmin):
 class SectionBlockRelationAdmin(admin.ModelAdmin):
     list_display = (
         "section",
+        "block",
+        "order",
+    )
+    empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
+
+
+@admin.register(TemplateBlockRelation)
+class TemplateBlockRelationAdmin(admin.ModelAdmin):
+    list_display = (
+        "template",
         "block",
         "order",
     )

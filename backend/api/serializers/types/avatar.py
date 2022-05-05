@@ -21,3 +21,16 @@ def block_avatar_update(avatar_instance, data):
     serializer.is_valid(raise_exception=True)
 
     return serializer.save()
+
+
+def block_avatar_clone(block_instance):
+    block_instance_avatar = block_instance.avatar
+    # todo клонируем содержимое блока
+    block_instance_avatar.pk = None
+    block_instance_avatar.save()
+    # todo клонируем блок
+    block_instance.pk = None
+    block_instance.avatar = block_instance_avatar
+    block_instance.save()
+
+    return block_instance

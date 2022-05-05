@@ -96,3 +96,27 @@ def block_list_update(list_instance, data):
         )
 
     return serializer.save()
+
+
+def block_list_clone(block_instance):
+    block_instance_list = block_instance.list
+    # достаем все элементы списка
+    items = block_instance_list.items.order_by("listitemblockrelation__order")
+    # todo клонируем содержимое блока
+    block_instance_list.pk = None
+    block_instance_list.save()
+    # создаем и прикрепляем новые элементы к списку
+    for order, item in enumerate(items):
+        item.pk = None
+        item.save()
+        ListItemBlockRelation.objects.create(
+            list=block_instance_list,
+            item=item,
+            order=order,
+        )
+    # todo клонируем блок
+    block_instance.pk = None
+    block_instance.list = block_instance_list
+    block_instance.save()
+
+    return block_instance

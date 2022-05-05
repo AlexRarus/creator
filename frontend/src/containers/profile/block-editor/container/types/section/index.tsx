@@ -18,8 +18,8 @@ import { SectionPreview } from './preview';
 import { TabValue, blockTabs, prepareDataForServer, blockActions } from './utils';
 
 interface IProps {
-  username: string;
-  pageSlug: string;
+  pageSlug?: string;
+  templateSlug?: string;
   blockType: string;
   blockId: number | 'new';
   onSuccess(data: any): void;
@@ -32,6 +32,7 @@ interface IProps {
 export const SectionForm = observer((props: IProps) => {
   const {
     pageSlug,
+    templateSlug,
     blockType,
     blockId,
     onSuccess,
@@ -61,6 +62,7 @@ export const SectionForm = observer((props: IProps) => {
       formInputs,
       blocks: blocks.map((block: IBlock<any>) => block.id),
       pageSlug,
+      templateSlug,
       blockType,
     };
 

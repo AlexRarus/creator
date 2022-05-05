@@ -28,6 +28,33 @@ class PageBlockRelation(models.Model):
         ]
 
 
+class TemplateBlockRelation(models.Model):
+    block = models.ForeignKey(
+        "api.Block",
+        verbose_name="блок",
+        on_delete=models.CASCADE,
+    )
+    template = models.ForeignKey(
+        "api.Template",
+        verbose_name="шаблон",
+        on_delete=models.CASCADE,
+    )
+    order = models.PositiveIntegerField(
+        default=0,
+    )
+
+    class Meta:
+        verbose_name = "Связь блока с шаблоном"
+        verbose_name_plural = "Связи блоков с шаблонами"
+        ordering = ("order",)
+        constraints = [
+            models.UniqueConstraint(
+                fields=("block", "template"),
+                name="template_block_relation",
+            )
+        ]
+
+
 class SectionBlockRelation(models.Model):
     block = models.ForeignKey(
         "api.Block",

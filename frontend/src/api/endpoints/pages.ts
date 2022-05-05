@@ -5,6 +5,7 @@ export interface IPagesAPI {
   getMyPageBySlug(pageSlug: string): AxiosResponse<any>; // запрос одной страницы
   getPageBySlug(username: string, pageSlug: string): AxiosResponse<any>; // запрос одной страницы
   createPage(data?: IWritePage): AxiosResponse<any>;
+  createPageByTemplate(templateId: number): AxiosResponse<any>;
   updatePage(data?: IWritePage): AxiosResponse<any>;
   partialUpdatePage(data?: IWritePage): AxiosResponse<any>;
   deletePage(id: number): AxiosResponse<any>;
@@ -37,6 +38,11 @@ const getConfig = () => ({
       blocks: [],
       ...data,
     },
+  }),
+  createPageByTemplate: (templateId: number) => ({
+    url: `/pages/my/create_by_template/`,
+    method: 'POST',
+    data: { templateId },
   }),
   updatePage: ({ id, ...data }: IWritePage) => ({
     url: `/pages/my/${id}/`,

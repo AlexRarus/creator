@@ -8,6 +8,7 @@ export function useMapStoreToProps() {
     pages: dalPagesStore.pages,
     getMyPagesAction: dalPagesStore.getMyPagesAction,
     selectedPage: dalPagesStore.selectedPage,
+    deletePageAction: dalPagesStore.deletePageAction,
     user: dalAuthStore.user,
   };
 }

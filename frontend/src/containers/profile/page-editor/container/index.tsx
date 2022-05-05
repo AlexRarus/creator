@@ -183,12 +183,12 @@ export const PageEditorContainer = observer((props: IProps) => {
                       username={username}
                       pageSlug={pageSlug}
                       isUpdating={isUpdating}
-                      onUpdatePageForm={onUpdatePageForm}
+                      onUpdateForm={onUpdatePageForm}
                       onDragEndAction={onDragEndAction}
                       createBlockAction={createBlockAction}
                       deleteBlockAction={deleteBlockAction}
                       updateBlockAction={updateBlockAction}
-                      openPageSettingsModal={openPageSettingsModal}
+                      openSettingsModal={openPageSettingsModal}
                     />
                   </EditorWrapper>
                 </GridColumn>
@@ -236,12 +236,12 @@ export const PageEditorContainer = observer((props: IProps) => {
                 username={username}
                 isUpdating={isUpdating}
                 pageSlug={pageSlug}
-                onUpdatePageForm={onUpdatePageForm}
+                onUpdateForm={onUpdatePageForm}
                 onDragEndAction={onDragEndAction}
                 createBlockAction={createBlockAction}
                 deleteBlockAction={deleteBlockAction}
                 updateBlockAction={updateBlockAction}
-                openPageSettingsModal={openPageSettingsModal}
+                openSettingsModal={openPageSettingsModal}
               />
             </FlexBlock>
           </StyledMobileView>

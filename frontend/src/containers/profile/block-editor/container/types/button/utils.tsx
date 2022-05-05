@@ -27,6 +27,7 @@ export const backgroundTypes: IOption[] = [backgroundTypeColor, backgroundTypeGr
 export const prepareDataForServer = ({
   formInputs,
   pageSlug,
+  templateSlug,
   blockId,
   blockType,
   index,
@@ -43,6 +44,7 @@ export const prepareDataForServer = ({
       color: formInputs?.color,
     },
     page_slug: pageSlug, // меняем поле для отправки на бэк
+    template_slug: templateSlug, // меняем поле для отправки на бэк
     type: blockType, // меняем поле для отправки на бэк
     id: blockId as any, // id может не быть поэтому any
     index: index as any, // index может не быть поэтому any

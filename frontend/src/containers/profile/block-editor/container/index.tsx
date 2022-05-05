@@ -9,8 +9,9 @@ interface IProps {
   onSuccess(data: any): void;
   onCancel(): void;
   onClose(): void;
-  username: string;
-  pageSlug: string;
+  username?: string;
+  pageSlug?: string;
+  templateSlug?: string;
   blockType: string;
   blockId: number | 'new';
   isCloning: boolean;
@@ -21,14 +22,14 @@ interface IProps {
 
 // контейнер форма создания блока, можно нарисовать в любом месте приложения (в модалке или на отдельной странице)
 export const BlocksFormContainer = observer((props: IProps) => {
-  const { username, pageSlug, blockType, blockId } = props;
+  const { username, pageSlug, templateSlug, blockType, blockId } = props;
   const { isLoading, initAction, resetAction, initialized } = useMapStoreToProps();
 
   useEffect(() => {
     initAction(blockId);
 
     return () => resetAction();
-  }, [username, pageSlug, blockType, blockId]);
+  }, [username, pageSlug, templateSlug, blockType, blockId]);
 
   if (!initialized) {
     return <div>Loading...</div>;

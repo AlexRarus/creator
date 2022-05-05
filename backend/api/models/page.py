@@ -33,6 +33,14 @@ class Page(models.Model):
         through="api.PageBlockRelation",
     )
 
+    def delete(self, *args, **kwargs):
+        for block in self.blocks.filter(pages=self):
+            # делаем так что бы у КАЖДОГО блока вызвался
+            # собственный метод удаления
+            block.delete()
+
+        return super(self.__class__, self).delete(*args, **kwargs)
+
     def __str__(self):
         return f"{self.id}"
 

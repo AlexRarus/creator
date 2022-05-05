@@ -16,8 +16,8 @@ import { ButtonKinds } from './kinds';
 import { TabValue, blockTabs, prepareDataForServer, blockActions } from './utils';
 
 interface IProps {
-  username: string;
-  pageSlug: string;
+  pageSlug?: string;
+  templateSlug?: string;
   blockType: string;
   blockId: number | 'new';
   onSuccess(data: any): void;
@@ -27,7 +27,16 @@ interface IProps {
 }
 
 export const ButtonForm = observer((props: IProps) => {
-  const { pageSlug, blockType, blockId, onSuccess, onCancel, onClose, blockIndex } = props;
+  const {
+    pageSlug,
+    templateSlug,
+    blockType,
+    blockId,
+    onSuccess,
+    onCancel,
+    onClose,
+    blockIndex,
+  } = props;
   const [tabs, activeTab, onChangeTab] = useTabs(blockTabs);
   const {
     formDefaultValues,
@@ -55,6 +64,7 @@ export const ButtonForm = observer((props: IProps) => {
     const rawData: RawData = {
       formInputs,
       pageSlug,
+      templateSlug,
       blockType,
     };
 

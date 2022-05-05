@@ -36,3 +36,16 @@ def block_separator_update(separator_instance, data):
     serializer.is_valid(raise_exception=True)
 
     return serializer.save()
+
+
+def block_separator_clone(block_instance):
+    block_instance_separator = block_instance.separator
+    # todo клонируем содержимое блока
+    block_instance_separator.pk = None
+    block_instance_separator.save()
+    # todo клонируем блок
+    block_instance.pk = None
+    block_instance.separator = block_instance_separator
+    block_instance.save()
+
+    return block_instance

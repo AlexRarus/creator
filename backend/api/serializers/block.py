@@ -1,5 +1,5 @@
 from api.models.block import Block
-from api.models.relations import PageBlockRelation
+from api.models.relations import PageBlockRelation, TemplateBlockRelation
 from api.models.types.collapsed_list import CollapsedListItemBlock
 from api.models.types.list import ListItemBlock
 from api.serializers.avatar import AvatarSerializer
@@ -94,6 +94,7 @@ class BlockSerializerWrite(serializers.ModelSerializer):
     author = serializers.PrimaryKeyRelatedField(read_only=True)
     data = serializers.SerializerMethodField(read_only=True)
     page = serializers.PrimaryKeyRelatedField(read_only=True)
+    template = serializers.PrimaryKeyRelatedField(read_only=True)
 
     def get_data(self, block):
         # так как это сериализатор Write то этот метод будет вызываться
@@ -119,9 +120,18 @@ class BlockSerializerWrite(serializers.ModelSerializer):
 
     def create(self, validated_data):
         page = validated_data.pop("page", None)
+        template = validated_data.pop("template", None)
 
         data = self.initial_data.pop("data")
-        order = self.initial_data.pop("index", page.blocks.count())  # от 0
+
+        if page:
+            order = self.initial_data.pop("index", page.blocks.count())  # от 0
+        elif template:
+            order = self.initial_data.pop(
+                "index", template.blocks.count()
+            )  # от 0
+        else:
+            order = 0
 
         block = Block.objects.create(**validated_data)
 
@@ -148,17 +158,34 @@ class BlockSerializerWrite(serializers.ModelSerializer):
             block.save()
 
             # устанавливаем блок в нужную позицию (order)
-            page_blocks_list = list(
-                page.blocks.order_by("pageblockrelation__order").all()
-            )  # create list
-            page_blocks_list.insert(order, block)
-            page.blocks.clear()  # открепляем все блоки от страницы
-            for order, item in enumerate(page_blocks_list):
-                PageBlockRelation.objects.update_or_create(
-                    page=page,
-                    block=item,
-                    order=order,
-                )
+            if page:
+                # todo если блок создавался для страницы
+                page_blocks_list = list(
+                    page.blocks.order_by("pageblockrelation__order").all()
+                )  # create list
+                page_blocks_list.insert(order, block)
+                page.blocks.clear()  # открепляем все блоки от страницы
+                for order, item in enumerate(page_blocks_list):
+                    PageBlockRelation.objects.update_or_create(
+                        page=page,
+                        block=item,
+                        order=order,
+                    )
+            elif template:
+                # todo если блок создавался для шаблона
+                template_blocks_list = list(
+                    template.blocks.order_by(
+                        "templateblockrelation__order"
+                    ).all()
+                )  # create list
+                template_blocks_list.insert(order, block)
+                template.blocks.clear()  # открепляем все блоки от страницы
+                for order, item in enumerate(template_blocks_list):
+                    TemplateBlockRelation.objects.update_or_create(
+                        template=template,
+                        block=item,
+                        order=order,
+                    )
 
         except UnknowTypeError:
             raise ValidationError({"error": ["неизвестный тип блока"]})
@@ -238,4 +265,5 @@ class BlockSerializerWrite(serializers.ModelSerializer):
             "type",
             "data",
             "page",
+            "template",
         )  # динамический набор полей в поле data

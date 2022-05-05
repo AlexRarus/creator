@@ -8,10 +8,12 @@ class CollapsedListBlock(models.Model):
         related_name="lists",
         through="api.CollapsedListItemBlockRelation",
     )
+    fontSize = models.CharField(
+        verbose_name="Размер текста", max_length=15, null=True, blank=True
+    )
 
     def __str__(self):
-        block = self.block
-        return f"data_id = {self.id} in " f"block_id = {block}"
+        return f"data_id = {self.id}"
 
     class Meta:
         verbose_name = "[Контент Блока] Вопрос Ответ"

@@ -16,6 +16,17 @@ class IsPagePermission(BasePermission):
         return request.user == obj.author
 
 
+class IsTemplatePermission(BasePermission):
+    # список шаблонов может получить кто угодно
+    def has_permission(self, request, view):
+        return True
+
+    # создавать и обновлять может только админ
+    def has_object_permission(self, request, view, obj):
+        user = request.user
+        return user.is_admin or user.is_moderator
+
+
 class IsAuthorPermission(BasePermission):
     def has_permission(self, request, view):
         return request.method in SAFE_METHODS or request.user.is_authenticated

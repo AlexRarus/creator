@@ -9,8 +9,8 @@ import { ButtonForm } from './button';
 import { SeparatorForm } from './separator';
 
 interface IProps {
-  username: string;
-  pageSlug: string;
+  pageSlug?: string;
+  templateSlug?: string;
   blockType: string;
   blockId: number | 'new';
   onSuccess(data: any): void;

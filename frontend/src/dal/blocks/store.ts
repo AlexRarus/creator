@@ -53,6 +53,9 @@ export default class DalBlocksStore {
     try {
       yield this.API.createBlock({ index, type, data, page_slug: pageSlug });
       this.rootStore.dalPagesStore.syncSelectPageAction();
+      if (this.rootStore.dalTemplatesStore.selectedTemplate) {
+        this.rootStore.dalTemplatesStore.syncSelectTemplateAction();
+      }
     } catch (e) {
       console.log('createBlockAction', e);
     }
@@ -65,6 +68,9 @@ export default class DalBlocksStore {
     try {
       yield this.API.updateBlock({ id, index, type, data, page_slug: pageSlug });
       this.rootStore.dalPagesStore.syncSelectPageAction();
+      if (this.rootStore.dalTemplatesStore.selectedTemplate) {
+        this.rootStore.dalTemplatesStore.syncSelectTemplateAction();
+      }
     } catch (e) {
       console.log('updateBlockAction', e);
     }
@@ -75,6 +81,9 @@ export default class DalBlocksStore {
       yield this.API.deleteBlock(id);
       // после успешного удаления блока СИНХРОНИЗИРУЕМ текущую редактируемую страницу с бэком
       this.rootStore.dalPagesStore.syncSelectPageAction();
+      if (this.rootStore.dalTemplatesStore.selectedTemplate) {
+        this.rootStore.dalTemplatesStore.syncSelectTemplateAction();
+      }
       addNotificationItem({
         level: 'success',
         message: 'Блок успешно удален',

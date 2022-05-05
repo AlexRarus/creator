@@ -2,6 +2,7 @@ import { flow, makeAutoObservable } from 'mobx';
 import API from 'src/api';
 import { History } from 'history';
 import { addNotificationItem } from 'src/components/notification';
+import { AxiosResponse } from 'axios';
 
 import { IRootStore } from '../interfaces';
 import { IWritePage } from '../../api/endpoints/pages';
@@ -14,6 +15,7 @@ export default class DalPagesStore {
 
   isUpdating = false; // loader для обновления данных, чтобы не мигала вся страница
   isLoading = false;
+  isCreatingByTemplate = false;
   total = 0;
   pages: IPage[] = [];
   selectedPage: IPage | null = null;
@@ -126,7 +128,9 @@ export default class DalPagesStore {
       this.pages = this.pages.filter((page: IPage) => page.id !== id);
       this.selectedPage = this.pages[0];
       const username = this.rootStore.dalAuthStore.user?.username;
-      this.routerStore.push(`/profile/${username}/pages/`); // переходим к списку страниц
+      if (this.routerStore.location.pathname !== `/profile/${username}/pages/`) {
+        this.routerStore.push(`/profile/${username}/pages/`); // переходим к списку страниц
+      }
       addNotificationItem({
         level: 'success',
         message: 'Страница успешно удалена',
@@ -137,6 +141,29 @@ export default class DalPagesStore {
         message: 'При удалении страницы что-то пошло не так.',
       });
       console.log('deletePageAction', e);
+    }
+  });
+
+  createPageByTemplate = flow(function* (this: DalPagesStore, templateId: number) {
+    try {
+      this.isCreatingByTemplate = true;
+      const response: AxiosResponse<any> = yield this.API.createPageByTemplate(templateId);
+      const createdPageData = response.data;
+      yield this.rootStore.dalAuthStore.updateMeAction();
+      const username = this.rootStore.dalAuthStore.user?.username;
+      this.isCreatingByTemplate = false;
+      this.routerStore.push(`/profile/${username}/pages/${createdPageData.slug}/`); // переходим к созданной странице
+      addNotificationItem({
+        level: 'success',
+        message: 'Страница успешно создана из шаблона',
+      });
+    } catch (e) {
+      addNotificationItem({
+        level: 'error',
+        message: 'При создании страницы из шаблона что-то пошло не так.',
+      });
+      console.log('createPageByTemplate', e);
+      this.isCreatingByTemplate = false;
     }
   });
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useStores } from 'src/dal/use-stores';
 
-export const useIsAuthor = (username: string) => {
+export const useIsAuthor = (username?: string) => {
   const { dalAuthStore } = useStores();
   const user = dalAuthStore.user;
   const [isAuthor, setIsAuthor] = useState(username === user?.username);

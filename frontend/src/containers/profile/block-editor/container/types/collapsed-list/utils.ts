@@ -19,6 +19,7 @@ export const prepareDataForServer = (rawData: RawData): DataForServer<ICollapsed
     })) as ICollapsedListItemWrite[],
   },
   page_slug: rawData.pageSlug, // меняем поле для отправки на бэк
+  template_slug: rawData.templateSlug, // меняем поле для отправки на бэк
   type: rawData.blockType, // меняем поле для отправки на бэк
   id: rawData.blockId as any, // id может не быть поэтому any
   index: rawData.index as any, // id может не быть поэтому any

@@ -14,8 +14,8 @@ import { SeparatorFields } from './fields';
 import { TabValue, blockTabs, prepareDataForServer, blockActions } from './utils';
 
 interface IProps {
-  username: string;
-  pageSlug: string;
+  pageSlug?: string;
+  templateSlug?: string;
   blockType: string;
   blockId: number | 'new';
   onSuccess(data: any): void;
@@ -25,7 +25,16 @@ interface IProps {
 }
 
 export const SeparatorForm = observer((props: IProps) => {
-  const { pageSlug, blockType, blockId, onSuccess, onCancel, onClose, blockIndex } = props;
+  const {
+    pageSlug,
+    templateSlug,
+    blockType,
+    blockId,
+    onSuccess,
+    onCancel,
+    onClose,
+    blockIndex,
+  } = props;
   const [tabs, activeTab, onChangeTab] = useTabs(blockTabs);
   const {
     formDefaultValues,
@@ -53,6 +62,7 @@ export const SeparatorForm = observer((props: IProps) => {
     const rawData: RawData = {
       formInputs,
       pageSlug,
+      templateSlug,
       blockType,
     };
 
@@ -63,8 +73,6 @@ export const SeparatorForm = observer((props: IProps) => {
     if (blockIndex !== undefined) {
       rawData.index = blockIndex;
     }
-
-    console.log('formInputs', formInputs);
 
     await submitBlockEditor(prepareDataForServer(rawData));
   };

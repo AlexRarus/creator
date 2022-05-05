@@ -53,3 +53,16 @@ def block_button_update(button_instance, data):
     serializer.is_valid(raise_exception=True)
 
     return serializer.save()
+
+
+def block_button_clone(block_instance):
+    block_instance_button = block_instance.button
+    # todo клонируем содержимое блока
+    block_instance_button.pk = None
+    block_instance_button.save()
+    # todo клонируем блок
+    block_instance.pk = None
+    block_instance.button = block_instance_button
+    block_instance.save()
+
+    return block_instance

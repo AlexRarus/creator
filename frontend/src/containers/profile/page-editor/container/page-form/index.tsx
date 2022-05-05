@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { IBlock } from 'src/dal/blocks/interfaces';
 import { IPage } from 'src/dal/pages/interfaces';
+import { ITemplate } from 'src/dal/templates/interfaces';
 import { useHistory } from 'react-router-dom';
 import PaletteIcon from '@mui/icons-material/Palette';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -24,23 +25,22 @@ import {
   SettingsItemButton,
   AcceptButton,
   CancelButton,
-  CustomCheckbox,
 } from './style';
 import { IconButton } from './icon-button';
 import { DroppableList } from './droppable-list';
 
 interface IProps {
-  data: IPage;
-  username: string;
-  pageSlug: string;
+  data: IPage | ITemplate;
+  username?: string; // при редактировании шаблона через эту форму username не обязательный
   isUpdating: boolean;
-  onUpdatePageForm: (slug?: string) => void;
+  onUpdateForm: (slug?: string) => void;
   onDragEndAction: (list: number[]) => void;
   createBlockAction: (data: any) => void;
   updateBlockAction: (data: any) => void;
   deleteBlockAction: (id: any) => void;
-
-  openPageSettingsModal: any;
+  openSettingsModal(): any;
+  pageSlug?: string;
+  templateSlug?: string;
 }
 
 interface INewBlock {
@@ -54,13 +54,14 @@ export const PageForm = (props: IProps) => {
   const {
     data,
     username,
-    pageSlug,
     isUpdating,
-    onUpdatePageForm,
+    onUpdateForm,
     onDragEndAction,
     updateBlockAction,
     deleteBlockAction,
-    openPageSettingsModal,
+    openSettingsModal,
+    pageSlug,
+    templateSlug,
   } = props;
   const [blocks, setBlocks] = useState<IBlock<any>[]>([]);
   const [viewToolbar, setViewToolbar] = useState(true);
@@ -134,13 +135,19 @@ export const PageForm = (props: IProps) => {
 
   const toThemesPage = () => history.push(`/profile/${username}/themes/`);
 
-  // todo на успешную отправку формы нужно вызвать onUpdatePageForm БЕЗ аргументов
-  const onSuccessSubmitBlock = () => onUpdatePageForm();
+  // todo на успешную отправку формы нужно вызвать onUpdateForm БЕЗ аргументов
+  const onSuccessSubmitBlock = () => onUpdateForm();
 
   return (
     <ScrollableWrap maxHeight={window?.innerHeight - 124} isEmpty={blocks?.length === 0}>
       {isShowPreview && (
-        <PagePreview isUpdating={isUpdating} username={username} pageSlug={pageSlug} data={data} />
+        <PagePreview
+          isUpdating={isUpdating}
+          username={username}
+          pageSlug={pageSlug}
+          templateSlug={templateSlug}
+          data={data}
+        />
       )}
       {!isShowPreview && (
         <>
@@ -206,7 +213,7 @@ export const PageForm = (props: IProps) => {
             borderRadius={'16px'}
             hasPointer={false}>
             <SettingsPopupList>
-              <SettingsItemButton onClick={openPageSettingsModal()}>Настройки</SettingsItemButton>
+              <SettingsItemButton onClick={openSettingsModal()}>Настройки</SettingsItemButton>
               <SettingsItemButton className={'section-action'} onClick={startCheckBlocks}>
                 Добавить секцию
               </SettingsItemButton>
@@ -243,6 +250,7 @@ export const PageForm = (props: IProps) => {
           onClose={closeAddBlockModal}
           username={username}
           pageSlug={pageSlug}
+          templateSlug={templateSlug}
         />
       )}
     </ScrollableWrap>

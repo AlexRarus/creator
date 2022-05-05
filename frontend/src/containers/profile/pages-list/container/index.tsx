@@ -5,6 +5,7 @@ import { useIsAuthor } from 'src/utils/useIsAuthor';
 import { IPage } from 'src/dal/pages/interfaces';
 import AddIcon from '@mui/icons-material/Add';
 import { useHistory } from 'react-router-dom';
+import { Confirm } from 'src/components/confirm';
 
 import { AddPageModal } from './add-page-modal';
 import { PagePreviewItem } from './page-preview-item';
@@ -22,11 +23,18 @@ interface IProps {
 }
 
 export const PagesListContainer = observer((props: IProps) => {
-  const { isLoading, pages, getMyPagesAction, selectedPage } = useMapStoreToProps();
+  const {
+    isLoading,
+    pages,
+    getMyPagesAction,
+    selectedPage,
+    deletePageAction,
+  } = useMapStoreToProps();
   const { username } = props;
   const { push } = useHistory();
   const isAuthor = useIsAuthor(username);
   const [isOpenAddPageModal, setIsOpenAddPageModal] = useState(false);
+  const [removingPage, setRemovingPage] = useState<IPage | null>(null);
 
   useEffect(() => {
     if (isAuthor) {
@@ -39,6 +47,16 @@ export const PagesListContainer = observer((props: IProps) => {
 
   const onSuccessAddPage = (data: any) => push(`/profile/${username}/pages/${data.slug}/`);
 
+  const onConfirmRemovePage = () => {
+    if (removingPage) {
+      deletePageAction(removingPage.id);
+      setRemovingPage(null);
+    }
+  };
+  const onDeclineRemovePage = () => {
+    setRemovingPage(null);
+  };
+
   return (
     <PagesListWrapper>
       <PagesListTitleDesktop>Мои страницы</PagesListTitleDesktop>
@@ -48,7 +66,13 @@ export const PagesListContainer = observer((props: IProps) => {
         <Grid>
           {pages.map((page: IPage) => (
             <GridColumn size={2} alignItems='center' key={page.slug}>
-              <PagePreviewItem username={username} page={page} selectedPage={selectedPage} />
+              <PagePreviewItem
+                username={username}
+                page={page}
+                selectedPage={selectedPage}
+                isLastPage={pages.length === 1}
+                onRemovePage={setRemovingPage}
+              />
             </GridColumn>
           ))}
           {!isLoading && (
@@ -65,6 +89,18 @@ export const PagesListContainer = observer((props: IProps) => {
       )}
       {isOpenAddPageModal && (
         <AddPageModal onClose={closeAddPageModal} onSuccess={onSuccessAddPage} />
+      )}
+      {Boolean(removingPage) && (
+        <Confirm
+          onConfirm={onConfirmRemovePage}
+          onClose={onDeclineRemovePage}
+          confirmMessage='Удалить страницу и все ее данные?'
+          confirmTitle='Удаление страницы'
+          confirmButton={{
+            label: 'Удалить',
+            kind: 'delete',
+          }}
+        />
       )}
     </PagesListWrapper>
   );

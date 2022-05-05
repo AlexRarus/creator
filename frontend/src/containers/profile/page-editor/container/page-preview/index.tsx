@@ -1,13 +1,15 @@
 import React from 'react';
 import { PageContainer } from 'src/containers/app/page/container';
 import { IPage } from 'src/dal/pages/interfaces';
+import { ITemplate } from 'src/dal/templates/interfaces';
 
 import { PagePreviewWrapper } from './style';
 
 interface IProps {
-  data: IPage;
-  username: string;
-  pageSlug: string;
+  data: IPage | ITemplate;
+  username?: string;
+  pageSlug?: string;
+  templateSlug?: string;
   isUpdating: boolean;
 }
 

@@ -32,6 +32,10 @@ export const PageLabel = styled.div`
   transition: all 200ms ease-out;
 `;
 
+export const PagePreviewWrapper = styled.div`
+  position: relative;
+`;
+
 export const PagePreviewItemWrapper = styled(Link)`
   display: flex;
   flex-direction: column;
@@ -129,5 +133,22 @@ export const NewPageButton = styled.div`
     svg {
       fill: ${COLORS.blue[500]};
     }
+  }
+`;
+
+export const RemoveIconWrapper = styled.div<{ disabled: boolean }>`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  width: 24px;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+
+  svg {
+    cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+    color: ${({ disabled }) => (disabled ? COLORS.grey[400] : COLORS.red[600])};
   }
 `;
