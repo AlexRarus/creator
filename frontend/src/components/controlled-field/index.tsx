@@ -1,11 +1,11 @@
 import React from 'react';
-import { useController } from 'react-hook-form';
+import { useController, RegisterOptions } from 'react-hook-form';
 
 interface IProps {
   children: any;
   name: string;
   control: any;
-  rules?: any;
+  rules?: RegisterOptions;
   defaultValue?: any;
   formDefaultValues?: any;
 }
@@ -34,6 +34,7 @@ export function ControlledField(props: IProps) {
           ...{
             ...child.props,
             ...inputProps,
+            checked: inputProps.value,
             error: error?.message,
             key: child.props.name,
           },

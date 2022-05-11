@@ -52,7 +52,7 @@ export const ResetPasswordConfirmPageContainer = observer(() => {
       <AuthFormWrapper onSubmit={handleSubmit(onSubmit)}>
         <Grid verticalGap={24}>
           <GridColumn>
-            <FormTitle>Восстановаление пароля</FormTitle>
+            <FormTitle>Восстановление пароля</FormTitle>
           </GridColumn>
           <GridColumn>
             <ControlledField

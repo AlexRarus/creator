@@ -1,9 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Error, StatusBar, Label, Placeholder } from '../input-components';
+import { Error, StatusBar, Label, Placeholder, ErrorPreview } from '../input-components';
 
 import { IProps } from './interfaces';
-import { TextareaWrapper, TextareaComponent, TextareaElementAutoresize } from './style';
+import {
+  TextareaWrapper,
+  TextareaComponent,
+  TextareaElementAutoresize,
+  PlaceholderPositionWrapper,
+} from './style';
 
 export const Textarea = React.forwardRef((props: IProps, ref: any) => {
   const {
@@ -54,30 +59,33 @@ export const Textarea = React.forwardRef((props: IProps, ref: any) => {
           {label}
         </Label>
       )}
-      {placeholder && (value?.length <= 0 || !value) && (
-        <Placeholder
-          isFocused={isFocused}
-          dimension={dimension}
-          onClick={() => currentRef?.current?.focus()}>
-          {placeholder}
-        </Placeholder>
-      )}
-      <TextareaComponent
-        disabled={disabled}
-        error={error}
-        isFocused={isFocused}
-        fontSizeInherit={fontSizeInherit}>
-        <TextareaElementAutoresize
-          id={`textarea-${textareaProps.name}-${uniqId}`}
-          value={value || ''}
-          {...textareaProps}
-          onFocus={focusHandler}
-          onBlur={blurHandler}
+      <PlaceholderPositionWrapper>
+        {placeholder && (value?.length <= 0 || !value) && (
+          <Placeholder
+            isFocused={isFocused}
+            dimension={dimension}
+            onClick={() => currentRef?.current?.focus()}>
+            {placeholder}
+          </Placeholder>
+        )}
+        <TextareaComponent
           disabled={disabled}
-          ref={currentRef}
-        />
-      </TextareaComponent>
+          error={error}
+          isFocused={isFocused}
+          fontSizeInherit={fontSizeInherit}>
+          <TextareaElementAutoresize
+            id={`textarea-${textareaProps.name}-${uniqId}`}
+            value={value || ''}
+            {...textareaProps}
+            onFocus={focusHandler}
+            onBlur={blurHandler}
+            disabled={disabled}
+            ref={currentRef}
+          />
+        </TextareaComponent>
+      </PlaceholderPositionWrapper>
       <StatusBar markError={markError} isFocused={isFocused} />
+      <ErrorPreview>{error || ''}</ErrorPreview>
       <Error isOpen={isOpenError} openerElement={componentElement}>
         {error}
       </Error>

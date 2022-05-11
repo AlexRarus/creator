@@ -185,11 +185,14 @@ export const Label = styled.label<{
   isEmpty: boolean;
   dimension: TDimension;
   labelWidth?: number;
+  isStatic?: boolean;
 }>`
-  font-size: ${({ isEmpty }) => (isEmpty ? '16px' : '14px')};
+  font-size: ${({ isEmpty, isStatic }) => (isEmpty && !isStatic ? '16px' : '14px')};
   cursor: text;
   color: ${({ theme }) => theme.textColor.secondary};
-  transform: translateY(${(props) => (props.isEmpty ? getLabelTransform(props) : '0px')});
+  transform: translateY(
+    ${(props) => (props.isEmpty && !props.isStatic ? getLabelTransform(props) : '0px')}
+  );
   transition: all 300ms;
   width: ${({ labelWidth }) => (labelWidth !== undefined ? `${labelWidth}px` : 'auto')};
   margin-bottom: 4px;
@@ -223,4 +226,13 @@ export const ErrorStyled = styled.div`
   max-width: 200px;
   padding: 20px;
   background: ${COLORS.white};
+`;
+
+export const ErrorPreview = styled.div`
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: ${({ theme }) => theme.color.error};
+  font-size: 12px;
+  height: 14px;
 `;

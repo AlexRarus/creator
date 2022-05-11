@@ -1,10 +1,10 @@
 import React, { FocusEvent, useEffect, useState, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Error, StatusBar, Label, Placeholder } from '../input-components';
+import { Error, ErrorPreview, StatusBar, Label, Placeholder } from '../input-components';
 
 import { IProps } from './interfaces';
-import { ComponentWrapper, InputStyled, IconWrapper } from './style';
+import { ComponentWrapper, InputStyled, IconWrapper, PlaceholderPositionWrapper } from './style';
 
 export const InputText = React.forwardRef((props: IProps, ref: any) => {
   const {
@@ -86,42 +86,46 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
           isEmpty={!value && value !== 0 && !isFocused}
           dimension={dimension}
           onClick={() => currentRef?.current?.focus()}
-          labelWidth={labelWidth}>
+          labelWidth={labelWidth}
+          isStatic={Boolean(placeholder) || kind === 'formed'}>
           {label}
         </Label>
       )}
-      {placeholder && (value?.length <= 0 || !value) && (
-        <Placeholder
-          isFocused={isFocused}
+      <PlaceholderPositionWrapper>
+        {placeholder && (value?.length <= 0 || !value) && (
+          <Placeholder
+            isFocused={isFocused}
+            dimension={dimension}
+            onClick={() => currentRef?.current?.focus()}>
+            {placeholder}
+          </Placeholder>
+        )}
+        <InputStyled
+          id={`input-text-${inputProps.name}-${uniqId}`}
+          ref={currentRef}
+          type={type}
+          kind={kind}
+          value={value}
+          {...inputProps}
+          onChange={changeHandler}
+          onBlur={blurHandler}
+          onFocus={focusHandler}
+          disabled={disabled}
           dimension={dimension}
-          onClick={() => currentRef?.current?.focus()}>
-          {placeholder}
-        </Placeholder>
-      )}
-      <InputStyled
-        id={`input-text-${inputProps.name}-${uniqId}`}
-        ref={currentRef}
-        type={type}
-        kind={kind}
-        value={value}
-        {...inputProps}
-        onChange={changeHandler}
-        onBlur={blurHandler}
-        onFocus={focusHandler}
-        disabled={disabled}
-        dimension={dimension}
-        iconWrapperWidth={iconWrapperWidth}
-        textAlign={textAlign}
-        fontSizeInherit={fontSizeInherit}
-        fontWeight={fontWeight}
-        markError={markError}
-        autoFocus={autoFocus}
-        color={color}
-      />
+          iconWrapperWidth={iconWrapperWidth}
+          textAlign={textAlign}
+          fontSizeInherit={fontSizeInherit}
+          fontWeight={fontWeight}
+          markError={markError}
+          autoFocus={autoFocus}
+          color={color}
+        />
+      </PlaceholderPositionWrapper>
       <IconWrapper kind={kind} ref={iconWrapperRefCallback} dimension={dimension}>
         {children}
       </IconWrapper>
       <StatusBar kind={kind} markError={markError} isFocused={isFocused} />
+      <ErrorPreview>{error || ''}</ErrorPreview>
       <Error isOpen={isOpenError} openerElement={componentElement}>
         {error}
       </Error>

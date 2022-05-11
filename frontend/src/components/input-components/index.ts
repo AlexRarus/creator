@@ -8,5 +8,6 @@ export {
   Label,
   StatusBar,
   Placeholder,
+  ErrorPreview,
 } from './style';
 export type { TDimension } from './interfaces';

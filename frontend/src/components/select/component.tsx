@@ -4,7 +4,7 @@ import ReactSelect, { components } from 'react-select';
 import { isMobile } from 'react-device-detect';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
-import { Error, StatusBar, Label } from '../input-components';
+import { Error, ErrorPreview, StatusBar, Label } from '../input-components';
 
 import {
   WrapperCRS,
@@ -143,6 +143,7 @@ export const Select = React.forwardRef((props: IProps, ref: any) => {
         />
       )}
       <StatusBar markError={markError} isFocused={isFocusedSelect} />
+      <ErrorPreview>{error || ''}</ErrorPreview>
       <Error isOpen={isOpenError} openerElement={componentElement}>
         {error}
       </Error>

@@ -40,12 +40,20 @@ export const RegistrationPageContainer = observer(() => {
   const { search, email } = useQuery({
     next: '/auth/message?type=registration-confirm&email=',
   });
-  const { watch, handleSubmit, formState, control } = useForm<FormInputs>({
-    mode: 'onBlur',
-    reValidateMode: 'onBlur',
+  const { watch, handleSubmit, formState, control, trigger } = useForm<FormInputs>({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
   });
   const [hasErrors, setHasErrors] = useState(!checkEmptyObject(formState.errors));
+  const { isDirty, touchedFields } = formState;
   const password = watch('password');
+
+  useEffect(() => {
+    // триггер запускает ре-валидацию на изменение password
+    if (isDirty && touchedFields.repeatPassword) {
+      trigger('repeatPassword');
+    }
+  }, [password]);
 
   useEffect(() => {
     setHasErrors(!checkEmptyObject(formState.errors));
@@ -53,7 +61,8 @@ export const RegistrationPageContainer = observer(() => {
 
   const onSubmit = async (data: FormInputs) => {
     await registrationAction({
-      ...data,
+      email: data.email,
+      password: data.password,
       // next: next + data.email,
     });
   };
@@ -90,12 +99,12 @@ export const RegistrationPageContainer = observer(() => {
               ...required(),
               ...emailVal(),
             }}>
-            <InputText dimension={'xl'} kind={'formed'} placeholder='Введите почту' />
+            <InputText dimension='xl' kind='formed' label='Email' />
           </ControlledField>
         </AuthRow>
         <AuthRow>
           <ControlledField name='password' control={control} rules={required()}>
-            <InputPassword dimension={'xl'} kind={'formed'} placeholder='Придумайте пароль' />
+            <InputPassword dimension='xl' kind='formed' label='Пароль' />
           </ControlledField>
         </AuthRow>
         <AuthRow>
@@ -106,7 +115,7 @@ export const RegistrationPageContainer = observer(() => {
               ...required(),
               validate: (value: any) => value === password || 'Введеные пароли не совпадают',
             }}>
-            <InputPassword dimension={'xl'} kind={'formed'} placeholder='Повторите пароль' />
+            <InputPassword dimension='xl' kind='formed' label='Повторите пароль' />
           </ControlledField>
         </AuthRow>
         <ButtonRow>

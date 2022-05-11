@@ -46,7 +46,7 @@ export const ResetPasswordPageContainer = observer(() => {
   return (
     <AuthPageWrapper>
       <AuthFormWrapper onSubmit={handleSubmit(onSubmit)}>
-        <FormTitle>Восстановаление пароля</FormTitle>
+        <FormTitle>Восстановление пароля</FormTitle>
         <AuthRow>
           <ControlledField
             name='email'

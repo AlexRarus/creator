@@ -71,7 +71,7 @@ const getButtonHeight = (props: IButtonStyledProps) => {
   }
 };
 const getButtonStyles = (props: IButtonStyledProps) => {
-  const { kind, theme } = props;
+  const { kind, theme, disabled } = props;
   const buttonTheme = theme?.component?.button;
 
   switch (kind) {
@@ -80,44 +80,68 @@ const getButtonStyles = (props: IButtonStyledProps) => {
         border-radius: 8px;
       `;
     case 'secondary':
+      const backgroundActiveSecondary = disabled
+        ? buttonTheme?.background?.disabled
+        : buttonTheme?.active?.secondary;
       return css`
         border-radius: 8px;
         font-weight: ${({ theme }) => (theme?.isMobile ? 400 : 200)};
 
         :visited,
         :active {
-          background-color: ${buttonTheme?.active?.secondary};
-          border-color: ${buttonTheme?.active?.secondary};
+          background-color: ${backgroundActiveSecondary};
+          border-color: ${backgroundActiveSecondary};
         }
       `;
     case 'formed':
+      const backgroundActiveFormed = disabled
+        ? buttonTheme?.background?.disabled
+        : buttonTheme?.active?.formed;
+      const backgroundHoverFormed = disabled
+        ? buttonTheme?.background?.disabled
+        : buttonTheme?.hover?.formed;
+
       return css`
         border-radius: 3px;
         font-weight: ${({ theme }) => (theme?.isMobile ? 400 : 200)};
 
         :visited,
         :active {
-          background-color: ${buttonTheme?.active?.formed};
-          border-color: ${buttonTheme?.active?.formed};
+          background-color: ${backgroundActiveFormed};
+          border-color: ${backgroundActiveFormed};
         }
         :hover {
-          background-color: ${buttonTheme?.hover?.formed};
-          border-color: ${buttonTheme?.hover?.formed};
+          background-color: ${backgroundHoverFormed};
+          border-color: ${backgroundHoverFormed};
         }
       `;
     case 'based':
+      const backgroundActiveBased = disabled
+        ? buttonTheme?.background?.disabled
+        : buttonTheme?.active?.based;
+      const borderActiveBased = disabled
+        ? buttonTheme?.background?.disabled
+        : buttonTheme?.borderColor?.based;
+
+      const backgroundHoverBased = disabled
+        ? buttonTheme?.background?.disabled
+        : buttonTheme?.background?.based;
+      const borderHoverBased = disabled
+        ? buttonTheme?.background?.disabled
+        : buttonTheme?.borderColor?.based;
+
       return css`
         border-radius: 3px;
         font-weight: ${({ theme }) => (theme?.isMobile ? 400 : 200)};
 
         :visited,
         :active {
-          background-color: ${lighten(0.1, buttonTheme?.active?.based as string)};
-          border-color: ${lighten(0.1, buttonTheme?.borderColor?.based as string)};
+          background-color: ${lighten(0.1, backgroundActiveBased as string)};
+          border-color: ${lighten(0.1, borderActiveBased as string)};
         }
         :hover {
-          background-color: ${lighten(0.05, buttonTheme?.background?.based as string)};
-          border-color: ${lighten(0.05, buttonTheme?.borderColor?.based as string)};
+          background-color: ${lighten(0.05, backgroundHoverBased as string)};
+          border-color: ${lighten(0.05, borderHoverBased as string)};
         }
       `;
     default:

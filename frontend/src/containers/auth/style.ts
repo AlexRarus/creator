@@ -69,11 +69,12 @@ export const AuthRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `;
 
 export const ButtonRow = styled(AuthRow)`
   height: 40px;
+  margin-top: 20px;
 `;
 
 export const AuthColumn = styled.div`

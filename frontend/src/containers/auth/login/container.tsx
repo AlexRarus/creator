@@ -80,13 +80,13 @@ export const LoginPageContainer = observer(() => {
         )}
         <AuthRow>
           <ControlledField name='email' control={control} rules={required()}>
-            <InputText dimension={'xl'} kind={'formed'} placeholder='Email' />
+            <InputText dimension='xl' kind='formed' label='Email' />
           </ControlledField>
         </AuthRow>
         <AuthColumn>
           <AuthSpan>
             <ControlledField name='password' control={control} rules={required()}>
-              <InputPassword dimension={'xl'} kind={'formed'} placeholder='Пароль' />
+              <InputPassword dimension='xl' kind='formed' label='Пароль' />
             </ControlledField>
           </AuthSpan>
           <AuthSpan>
@@ -97,7 +97,7 @@ export const LoginPageContainer = observer(() => {
           </AuthSpan>
         </AuthColumn>
         <ButtonRow>
-          <Button kind={'formed'} block={true} type='submit' disabled={hasErrors}>
+          <Button kind='formed' block={true} type='submit' disabled={hasErrors}>
             Войти
           </Button>
         </ButtonRow>

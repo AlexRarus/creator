@@ -119,3 +119,7 @@ export const IconWrapper = styled.div`
 IconWrapper.defaultProps = {
   theme: LIGHT_THEME,
 };
+
+export const PlaceholderPositionWrapper = styled.div`
+  position: relative;
+`;
