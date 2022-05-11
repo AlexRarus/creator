@@ -12,7 +12,7 @@ export const ThemeItem = (props: IProps) => {
   const { theme } = props;
 
   return (
-    <UserThemeBackground theme={theme}>
+    <UserThemeBackground theme={theme} minHeight='100%'>
       <UserBlock color={theme.color} />
       <ThemeItemHeader color={theme.headerColor}>Заголовок</ThemeItemHeader>
       <ThemeItemText color={theme.color}>

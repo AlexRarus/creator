@@ -7,15 +7,17 @@ import { ThemeBackground, ThemeAnimationBackground, Content } from './style';
 interface IProps {
   theme?: ITheme | null;
   children?: any;
+  minHeight?: string;
 }
 
 export const UserThemeBackground = (props: IProps) => {
-  const { theme, children } = props;
+  const { theme, children, minHeight: initialMinHeight } = props;
+  const [initialized, setInitialized] = useState(false);
   const [backgroundStretch, setBackgroundStretch] = useState(false);
   const [backgroundElement, backgroundRefCallback] = useState<HTMLDivElement | null>(null);
   const [themeAnimationElement, themeAnimationRefCallback] = useState<HTMLDivElement | null>(null);
   const [contentElement, contentRefCallback] = useState<HTMLDivElement | null>(null);
-  const [backgroundWidth, setBackgroundWidth] = useState<number | null>(null);
+  const [minHeight, setMinHeight] = useState<string | null>(null);
 
   const [animationData, setAnimationData] = useState<any>();
   const [animationDataWidth, setAnimationDataWidth] = useState<number | null>(null);
@@ -39,16 +41,27 @@ export const UserThemeBackground = (props: IProps) => {
       const { w, h } = animationData;
       setAnimationDataWidth(w);
       setAnimationDataHeight(h);
+      setInitialized(true); // этот флаг нужен только если ЕСТЬ анимация
     }
   }, [animationData]);
 
   useEffect(() => {
-    if (backgroundElement && themeAnimationElement) {
-      const backgroundElementWidth = backgroundElement?.getBoundingClientRect()?.width;
+    if (backgroundElement && themeAnimationElement && initialized) {
+      const backgroundElementRect = backgroundElement?.getBoundingClientRect();
+      const themeAnimationElementRect = themeAnimationElement?.getBoundingClientRect();
+      const backgroundElementHeight = backgroundElementRect?.height;
+      const themeAnimationElementHeight = themeAnimationElementRect?.height;
 
-      setBackgroundWidth(backgroundElementWidth as number);
+      // выбираем максимальное значение - оно буде в качестве минимальной высоты блока
+      if (initialMinHeight) {
+        setMinHeight(initialMinHeight);
+      } else {
+        setMinHeight(
+          `${Math.max(backgroundElementHeight as number, themeAnimationElementHeight as number)}px`
+        );
+      }
     }
-  }, [backgroundElement, themeAnimationElement]);
+  }, [backgroundElement, themeAnimationElement, initialized]);
 
   useEffect(() => {
     if (contentElement && backgroundElement) {
@@ -60,17 +73,12 @@ export const UserThemeBackground = (props: IProps) => {
     }
   }, [backgroundElement, contentElement]);
 
-  const onDOMLoadedAnimation = () => {
-    if (themeAnimationElement && backgroundWidth) {
-      themeAnimationElement.querySelector('svg')?.setAttribute('width', `${backgroundWidth}`);
-    }
-  };
-
   return (
     <ThemeBackground
       selectedTheme={theme}
       ref={backgroundRefCallback}
-      backgroundStretch={backgroundStretch}>
+      backgroundStretch={backgroundStretch}
+      minHeight={minHeight}>
       {animationData && (
         <ThemeAnimationBackground
           ref={themeAnimationRefCallback}

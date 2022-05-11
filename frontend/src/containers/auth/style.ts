@@ -16,6 +16,7 @@ AuthPageWrapper.defaultProps = {
 };
 
 export const AuthFormWrapper = styled.form`
+  position: relative;
   padding: 20px;
   width: 480px;
   max-width: 100%;

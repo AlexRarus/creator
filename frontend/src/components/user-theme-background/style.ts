@@ -5,14 +5,22 @@ import { getUserThemeStyles } from 'src/dal/themes/style';
 export const ThemeBackground = styled.div<{
   selectedTheme?: ITheme | null;
   backgroundStretch: boolean;
+  minHeight: null | string;
 }>`
   position: relative;
   display: flex;
+  flex-grow: 1;
   align-items: center;
   flex-direction: column;
   width: 100%;
   height: auto;
-  min-height: ${({ backgroundStretch }) => (backgroundStretch ? '100%' : 'auto')};
+  min-height: ${({ backgroundStretch, minHeight }) => {
+    if (minHeight !== null) {
+      return minHeight;
+    }
+
+    return backgroundStretch ? '100%' : 'auto';
+  }};
   ${({ selectedTheme }) => getUserThemeStyles(selectedTheme)}
 `;
 

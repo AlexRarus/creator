@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, SyntheticEvent } from 'react';
 import { InputText } from 'src/components/input-text';
 import Popup from 'src/components/popup';
 import Modal from 'src/components/modal';
@@ -20,17 +20,22 @@ import {
 export const ColorPicker = React.forwardRef((props: IProps, ref: any) => {
   const { disableAlpha = false, ...restProps } = props;
   const [isOpenPicker, setOpenPicker] = useState(false);
-  const [innerValue, setInnerValue] = useState(props.value);
-  const [colorName, setColorName] = useState('');
+  const [innerValue, setInnerValue] = useState<string>(props.value);
+  const [colorName, setColorName] = useState<string>('');
   const [colorPreviewElement, colorPreviewRefCallback] = useState<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (innerValue) {
       const colorObj = Color(innerValue);
-      const colorName = colorObj?.keyword();
+      const colorName = colorObj?.keyword() || '';
       setColorName(colorName);
     }
   }, [innerValue]);
+
+  useEffect(() => {
+    // при открытии-закрытии палитры синхронизируем значение цвета
+    setInnerValue(props.value);
+  }, [isOpenPicker]);
 
   const handleChange = (value: string) => {
     props.onChange && props.onChange(value);
@@ -57,11 +62,20 @@ export const ColorPicker = React.forwardRef((props: IProps, ref: any) => {
   const onAction = (actionId: string) => {
     switch (actionId) {
       case 'submit':
+        handleChange(innerValue);
+        handleClosePicker();
+        break;
+      case 'cancel':
         handleClosePicker();
         break;
       default:
         break;
     }
+  };
+
+  const stopPropagation = (e: SyntheticEvent) => {
+    e.stopPropagation();
+    e.nativeEvent.stopPropagation();
   };
 
   return (
@@ -102,7 +116,7 @@ export const ColorPicker = React.forwardRef((props: IProps, ref: any) => {
       )}
       {isMobile && isOpenPicker && (
         <Modal title='Выбор цвета' onClose={handleClosePicker}>
-          <FormWrapper>
+          <FormWrapper onClick={stopPropagation}>
             <Form onAction={onAction} submitActionLabel='Готово'>
               <Grid>
                 <GridColumn>
@@ -110,7 +124,7 @@ export const ColorPicker = React.forwardRef((props: IProps, ref: any) => {
                     <ChromePicker
                       color={innerValue || undefined}
                       onChange={handleInnerChangeColor}
-                      onChangeComplete={handleChangeColor}
+                      onChangeComplete={handleInnerChangeColor}
                       disableAlpha={disableAlpha}
                     />
                   </ColorPickerWrapper>
