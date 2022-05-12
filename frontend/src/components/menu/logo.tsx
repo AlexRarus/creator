@@ -1,11 +1,25 @@
 import React from 'react';
+import { withTheme } from 'styled-components';
 
-import { LogoWrapper, LogoIcon } from './style';
+import { SvgDarkLogo, SvgLightLogo } from '../icons';
+import { ITheme } from '../theme';
 
-export const LogoComponent = () => {
+import { LogoWrapper } from './style';
+
+interface IProps {
+  theme: ITheme;
+}
+
+export const LogoComponent = withTheme((props: IProps) => {
+  const { theme } = props;
+
   return (
     <LogoWrapper>
-      <LogoIcon />
+      {theme.themeType === 'light' ? (
+        <SvgDarkLogo width={124} height={50} />
+      ) : (
+        <SvgLightLogo width={124} height={50} />
+      )}
     </LogoWrapper>
   );
-};
+});

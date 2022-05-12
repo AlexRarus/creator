@@ -24,15 +24,25 @@ const Root = observer((props: any) => {
     // иногда страница остается подвешеной на несколько пикселей выше нуля
     // из за этого любой первый клик по странице сначала "возвращает" ее в нормальное состояние
     // а потом только элементы начинают реагировать на клики (этим ХУКОМ проблема РЕШАЕТСЯ)
+
     setStartVisualViewportHeight(window.visualViewport?.height || 0);
 
     const syncPageTop = (e: any) => {
-      if (e.target.height === startVisualViewportHeight && e.target.pageTop > 0) {
+      const htmlHeight = document.documentElement.getBoundingClientRect().height;
+      const scrollHeight = document.documentElement.scrollHeight;
+
+      // todo данная проблема возникает только на страницах БЕЗ скрола
+      if (
+        htmlHeight === scrollHeight &&
+        e.target.height >= startVisualViewportHeight &&
+        e.target.pageTop > 0
+      ) {
         window.scroll(0, 0);
       }
     };
 
     window.visualViewport.addEventListener('resize', syncPageTop);
+
     return () => {
       window.visualViewport.removeEventListener('resize', syncPageTop);
     };
