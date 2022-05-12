@@ -7,7 +7,7 @@ import {
   TextareaWrapper,
   TextareaComponent,
   TextareaElementAutoresize,
-  PlaceholderPositionWrapper,
+  PositionWrapper,
 } from './style';
 
 export const Textarea = React.forwardRef((props: IProps, ref: any) => {
@@ -59,7 +59,7 @@ export const Textarea = React.forwardRef((props: IProps, ref: any) => {
           {label}
         </Label>
       )}
-      <PlaceholderPositionWrapper>
+      <PositionWrapper>
         {placeholder && (value?.length <= 0 || !value) && (
           <Placeholder
             isFocused={isFocused}
@@ -83,8 +83,8 @@ export const Textarea = React.forwardRef((props: IProps, ref: any) => {
             ref={currentRef}
           />
         </TextareaComponent>
-      </PlaceholderPositionWrapper>
-      <StatusBar markError={markError} isFocused={isFocused} />
+        <StatusBar markError={markError} isFocused={isFocused} />
+      </PositionWrapper>
       <ErrorPreview>{error || ''}</ErrorPreview>
       <Error isOpen={isOpenError} openerElement={componentElement}>
         {error}

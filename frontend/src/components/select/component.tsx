@@ -12,6 +12,7 @@ import {
   MobileSelect,
   MobileSelectOption,
   MobileSelectIconWrapper,
+  PositionWrapper,
 } from './style';
 import { IProps } from './interfaces';
 
@@ -101,48 +102,50 @@ export const Select = React.forwardRef((props: IProps, ref: any) => {
           {label}
         </Label>
       )}
-      {isMobile && !isMulti && (
-        <MobileSelectWrapper>
-          <MobileSelect value={value?.value} onChange={mobileHandleChange}>
-            {options?.map((option: any) => (
-              <MobileSelectOption key={option.value} value={option.value}>
-                {option.label}
-              </MobileSelectOption>
-            ))}
-          </MobileSelect>
-          <MobileSelectIconWrapper>
-            <KeyboardArrowDownIcon />
-          </MobileSelectIconWrapper>
-        </MobileSelectWrapper>
-      )}
-      {(!isMobile || isMulti) && (
-        <ReactSelect
-          components={{
-            LoadingIndicator,
-          }}
-          inputId={inputProps.name}
-          classNamePrefix='CRS' /* CRS - custom react-select */
-          options={options}
-          {...inputProps}
-          value={value}
-          placeholder={placeholder}
-          isSearchable={true}
-          noOptionsMessage={() => ''}
-          minMenuHeight={minMenuHeight}
-          maxMenuHeight={maxMenuHeight}
-          onInputChange={debounceTime ? handleSearchInput : inputChangeHandler}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          onChange={handleChange}
-          isLoading={props.isLoading}
-          menuIsOpen={
-            menuIsOpen != undefined ? Boolean(isFocusedSelect && menuIsOpen) : isFocusedSelect
-          }
-          isMulti={isMulti}
-          innerRef={ref}
-        />
-      )}
-      <StatusBar markError={markError} isFocused={isFocusedSelect} />
+      <PositionWrapper>
+        {isMobile && !isMulti && (
+          <MobileSelectWrapper>
+            <MobileSelect value={value?.value} onChange={mobileHandleChange}>
+              {options?.map((option: any) => (
+                <MobileSelectOption key={option.value} value={option.value}>
+                  {option.label}
+                </MobileSelectOption>
+              ))}
+            </MobileSelect>
+            <MobileSelectIconWrapper>
+              <KeyboardArrowDownIcon />
+            </MobileSelectIconWrapper>
+          </MobileSelectWrapper>
+        )}
+        {(!isMobile || isMulti) && (
+          <ReactSelect
+            components={{
+              LoadingIndicator,
+            }}
+            inputId={inputProps.name}
+            classNamePrefix='CRS' /* CRS - custom react-select */
+            options={options}
+            {...inputProps}
+            value={value}
+            placeholder={placeholder}
+            isSearchable={true}
+            noOptionsMessage={() => ''}
+            minMenuHeight={minMenuHeight}
+            maxMenuHeight={maxMenuHeight}
+            onInputChange={debounceTime ? handleSearchInput : inputChangeHandler}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            isLoading={props.isLoading}
+            menuIsOpen={
+              menuIsOpen != undefined ? Boolean(isFocusedSelect && menuIsOpen) : isFocusedSelect
+            }
+            isMulti={isMulti}
+            innerRef={ref}
+          />
+        )}
+        <StatusBar markError={markError} isFocused={isFocusedSelect} />
+      </PositionWrapper>
       <ErrorPreview>{error || ''}</ErrorPreview>
       <Error isOpen={isOpenError} openerElement={componentElement}>
         {error}

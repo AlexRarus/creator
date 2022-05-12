@@ -118,3 +118,7 @@ export const MobileSelectIconWrapper = styled.label`
     font-size: 24px;
   }
 `;
+
+export const PositionWrapper = styled.div`
+  position: relative;
+`;

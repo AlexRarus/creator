@@ -188,14 +188,18 @@ export const Label = styled.label<{
   isStatic?: boolean;
 }>`
   font-size: ${({ isEmpty, isStatic }) => (isEmpty && !isStatic ? '16px' : '14px')};
+  height: 14px;
   cursor: text;
   color: ${({ theme }) => theme.textColor.secondary};
-  transform: translateY(
-    ${(props) => (props.isEmpty && !props.isStatic ? getLabelTransform(props) : '0px')}
+  transform: translate3d(
+    0,
+    ${(props) => (props.isEmpty && !props.isStatic ? getLabelTransform(props) : '0px')},
+    0
   );
   transition: all 300ms;
   width: ${({ labelWidth }) => (labelWidth !== undefined ? `${labelWidth}px` : 'auto')};
-  margin-bottom: 4px;
+  margin-bottom: ${({ isStatic }) => (isStatic ? 4 : 0)}px;
+  z-index: 99;
 `;
 
 export const StatusBar = styled.div<IStatus>`

@@ -120,6 +120,6 @@ IconWrapper.defaultProps = {
   theme: LIGHT_THEME,
 };
 
-export const PlaceholderPositionWrapper = styled.div`
+export const PositionWrapper = styled.div`
   position: relative;
 `;

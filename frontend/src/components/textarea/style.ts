@@ -65,6 +65,6 @@ export const TextareaElementAutoresize = styled(Textarea)`
   box-sizing: border-box;
 `;
 
-export const PlaceholderPositionWrapper = styled.div`
+export const PositionWrapper = styled.div`
   position: relative;
 `;

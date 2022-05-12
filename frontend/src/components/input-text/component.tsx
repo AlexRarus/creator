@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Error, ErrorPreview, StatusBar, Label, Placeholder } from '../input-components';
 
 import { IProps } from './interfaces';
-import { ComponentWrapper, InputStyled, IconWrapper, PlaceholderPositionWrapper } from './style';
+import { ComponentWrapper, InputStyled, IconWrapper, PositionWrapper } from './style';
 
 export const InputText = React.forwardRef((props: IProps, ref: any) => {
   const {
@@ -91,7 +91,7 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
           {label}
         </Label>
       )}
-      <PlaceholderPositionWrapper>
+      <PositionWrapper>
         {placeholder && (value?.length <= 0 || !value) && (
           <Placeholder
             isFocused={isFocused}
@@ -120,11 +120,11 @@ export const InputText = React.forwardRef((props: IProps, ref: any) => {
           autoFocus={autoFocus}
           color={color}
         />
-      </PlaceholderPositionWrapper>
-      <IconWrapper kind={kind} ref={iconWrapperRefCallback} dimension={dimension}>
-        {children}
-      </IconWrapper>
-      <StatusBar kind={kind} markError={markError} isFocused={isFocused} />
+        <IconWrapper kind={kind} ref={iconWrapperRefCallback} dimension={dimension}>
+          {children}
+        </IconWrapper>
+        <StatusBar kind={kind} markError={markError} isFocused={isFocused} />
+      </PositionWrapper>
       <ErrorPreview>{error || ''}</ErrorPreview>
       <Error isOpen={isOpenError} openerElement={componentElement}>
         {error}
