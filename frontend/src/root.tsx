@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 import { Route, Switch } from 'react-router-dom';
 import AuthApp from 'src/apps/auth-app';
@@ -17,6 +17,26 @@ const Root = observer((props: any) => {
   const { initAuthAction, logoutAction, access } = useMapStoreToProps();
   const { appType } = useAppTypeContext();
   const { isDragging } = useHackDndContext();
+  const [startVisualViewportHeight, setStartVisualViewportHeight] = useState<number>(0);
+
+  useEffect(() => {
+    // на мобилках есть странный баг, когда закрывается виртуальная клавиатура
+    // иногда страница остается подвешеной на несколько пикселей выше нуля
+    // из за этого любой первый клик по странице сначала "возвращает" ее в нормальное состояние
+    // а потом только элементы начинают реагировать на клики (этим ХУКОМ проблема РЕШАЕТСЯ)
+    setStartVisualViewportHeight(window.visualViewport?.height || 0);
+
+    const syncPageTop = (e: any) => {
+      if (e.target.height === startVisualViewportHeight && e.target.pageTop > 0) {
+        window.scroll(0, 0);
+      }
+    };
+
+    window.visualViewport.addEventListener('resize', syncPageTop);
+    return () => {
+      window.visualViewport.removeEventListener('resize', syncPageTop);
+    };
+  }, [startVisualViewportHeight]);
 
   useEffect(() => {
     // блокируем скролл window чтобы пользователь не смог проскроллить до черной полосы в сафари
