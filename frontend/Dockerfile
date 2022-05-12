@@ -16,6 +16,7 @@ RUN npm install
 
 COPY ./frontend/ ./
 
+RUN ./build_icons.sh
 RUN npm run build
 
 CMD cp -r build result_build
