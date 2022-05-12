@@ -7,6 +7,9 @@ export const DeviceWrapper = styled.div`
   box-sizing: content-box !important;
 `;
 
+export const Speaker = styled.i``;
+export const Camera = styled.b``;
+
 export const IphoneX = styled(DeviceWrapper)`
   position: relative;
   margin: 40px auto;
@@ -51,10 +54,8 @@ export const IphoneX = styled(DeviceWrapper)`
     z-index: 2;
   }
 
-  i,
-  b,
-  s,
-  span {
+  ${Speaker},
+  ${Camera} {
     position: absolute;
     display: block;
     color: transparent;
@@ -62,7 +63,7 @@ export const IphoneX = styled(DeviceWrapper)`
   }
 
   // speaker
-  i {
+  ${Speaker} {
     top: 0px;
     left: 50%;
     transform: translate(-50%, 6px);
@@ -75,7 +76,7 @@ export const IphoneX = styled(DeviceWrapper)`
   }
 
   // camera
-  b {
+  ${Camera} {
     left: 10%;
     top: 0px;
     transform: translate(180px, 4px);
