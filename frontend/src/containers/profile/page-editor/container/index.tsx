@@ -180,7 +180,7 @@ export const PageEditorContainer = observer((props: IProps) => {
                     <PrefixPath>
                       {window.location.origin}/{username}
                     </PrefixPath>
-                    <PageSlug>/{pageSlug}</PageSlug>
+                    {user?.index_page?.id !== data.id && <PageSlug>/{pageSlug}</PageSlug>}
                   </LinkToPageValue>
                   <LinkCopyIndicator>
                     <BlinkMessage showId={copyBlinkId}>(Скопировано)</BlinkMessage>
