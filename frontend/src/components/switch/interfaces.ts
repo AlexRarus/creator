@@ -14,5 +14,7 @@ export interface IProps extends Partial<IInputProps> {
   id?: string;
   children?: any; // label
   disabled?: boolean;
+  labelPosition?: 'left' | 'right';
+  justify?: 'flex-start' | 'flex-end' | 'space-between';
   [key: string]: any;
 }

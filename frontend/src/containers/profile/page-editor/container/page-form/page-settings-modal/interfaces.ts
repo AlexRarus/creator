@@ -6,6 +6,8 @@ export enum TabValue {
 
 // поля формы
 export type FormInputs = {
+  isIndex?: boolean; // tab "LINK"
+  username?: string; // tab "LINK"
   slug?: string; // tab "LINK"
   title?: string; // tab "SEO"
 };

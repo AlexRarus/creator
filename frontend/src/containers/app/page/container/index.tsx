@@ -31,7 +31,7 @@ export const PageContainer = observer((props: IProps) => {
 
   useEffect(() => {
     // если передали данные для предпросмотр то НЕ запрашиваем с бэка
-    if (!previewData && username && pageSlug) {
+    if (!previewData && username) {
       getPageBySlugAction(username, pageSlug);
     }
     if (!previewData && templateSlug) {

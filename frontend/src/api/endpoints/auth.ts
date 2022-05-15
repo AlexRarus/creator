@@ -13,6 +13,7 @@ export interface IAuthAPI {
   setAvatar(data: FormData): AxiosResponse<any>; // создание (изменение) аватара
   setEmail(data: ISetEmail): AxiosResponse<any>; // изменение email
   updateUsername(data: IUpdateUsername): AxiosResponse<any>; // изменение username
+  updateUserIndexPage(data: IUpdateUserIndexPage): AxiosResponse<any>; // изменение indexPageSlug
   setPassword(data: ISetPassword): AxiosResponse<any>; // изменение password
   checkValidUsername(data: ICheckValidUsername): AxiosResponse<any>; // проверка валидности username
 }
@@ -77,6 +78,10 @@ export interface ISetPassword {
 // просто нужно подобрать не занятый username (есть валидация)
 export interface IUpdateUsername {
   username: string;
+}
+
+export interface IUpdateUserIndexPage {
+  index_page: number | null;
 }
 
 // доступно дня НЕ ЗАЛОГИНЕНЫХ пользователей
@@ -149,6 +154,11 @@ const getConfig = () => ({
   }),
   updateUsername: (data: IUpdateUsername) => ({
     url: `/auth/users/update_username/`,
+    method: 'POST',
+    data,
+  }),
+  updateUserIndexPage: (data: IUpdateUserIndexPage) => ({
+    url: `/auth/users/update_index_page/`,
     method: 'POST',
     data,
   }),

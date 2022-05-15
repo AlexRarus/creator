@@ -1,11 +1,12 @@
 import json
 
+from django.contrib.auth import get_user_model
 from django.db.models import Prefetch
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
-from rest_framework.exceptions import ValidationError
+from rest_framework.exceptions import NotFound, ValidationError
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
@@ -16,7 +17,7 @@ from .models.block import Block
 from .models.block_type import BlockType
 from .models.image import Image
 from .models.page import Page
-from .models.relations import PageBlockRelation, TemplateBlockRelation
+from .models.relations import PageBlockRelation
 from .models.template import Template
 from .models.theme import Theme, ThemeType
 from .models.types.button import ButtonType
@@ -50,6 +51,8 @@ from .serializers.types.collapsed_list import block_collapsed_list_clone
 from .serializers.types.list import block_list_clone
 from .serializers.types.separator import block_separator_clone
 from .serializers.types.text import block_text_clone
+
+User = get_user_model()
 
 
 class TemplateViewSet(viewsets.ModelViewSet):
@@ -225,6 +228,15 @@ class PageViewSet(viewsets.ModelViewSet):
     def get_object(self):
         lookup_field = self.kwargs["slug"]
         if self.action == "retrieve":
+            if lookup_field == "index":
+                author_username = self.kwargs.get("author_username")
+                author = get_object_or_404(User, username=author_username)
+                if author.index_page:
+                    return author.index_page
+                else:
+                    raise NotFound(
+                        detail="Error 404, page not found", code=404
+                    )
             return get_object_or_404(
                 self.get_queryset(),
                 slug=lookup_field,

@@ -1,4 +1,4 @@
-import { flow, makeAutoObservable } from 'mobx';
+import { flow, makeAutoObservable, runInAction } from 'mobx';
 import API from 'src/api';
 import {
   ILoginData,
@@ -62,18 +62,22 @@ export default class DalAuthStore {
     }
   });
 
-  public updateMeAction = flow(function* (this: DalAuthStore) {
+  public updateMeAction = async () => {
     try {
-      const response: AxiosResponse<any> = yield this.API.getMe();
-      this.user = (response && response.data) || null;
+      const response: AxiosResponse<any> = await this.API.getMe();
+      runInAction(() => {
+        this.user = (response && response.data) || null;
+      });
+      return response.data;
     } catch (err) {
       console.log(err, 'DalAuthStore');
       addNotificationItem({
         level: 'error',
         message: 'Произошла ошибка на сервере',
       });
+      return this.user;
     }
-  });
+  };
 
   public loginAction = flow(function* (this: DalAuthStore, data: ILoginData) {
     try {

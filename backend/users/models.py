@@ -78,6 +78,14 @@ class CustomUser(AbstractUser):
         null=True,
         blank=True,
     )
+    index_page = models.ForeignKey(
+        "api.Page",
+        related_name="index_users",
+        verbose_name="Индексная страница",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 

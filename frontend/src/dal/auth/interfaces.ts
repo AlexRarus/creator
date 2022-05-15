@@ -6,6 +6,11 @@ import {
 
 import { ITheme } from '../themes/interfaces';
 
+export interface IIndexPage {
+  id: number;
+  slug: string;
+}
+
 export interface IUser {
   id: number;
   email: string;
@@ -15,6 +20,7 @@ export interface IUser {
   last_name?: string;
   avatar?: IAvatar;
   role: 'user' | 'admin' | 'moderator';
+  index_page?: IIndexPage; // страница которая открывается по-умолчанию https://wallink.ru/{{username}}
 }
 
 export interface IAvatar {

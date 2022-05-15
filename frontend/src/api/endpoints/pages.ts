@@ -3,7 +3,7 @@ import { AxiosResponse } from 'axios';
 export interface IPagesAPI {
   getMyPages(): AxiosResponse<any>; // запрос все страниц пользователя
   getMyPageBySlug(pageSlug: string): AxiosResponse<any>; // запрос одной страницы
-  getPageBySlug(username: string, pageSlug: string): AxiosResponse<any>; // запрос одной страницы
+  getPageBySlug(username: string, pageSlug?: string): AxiosResponse<any>; // запрос одной страницы
   createPage(data?: IWritePage): AxiosResponse<any>;
   createPageByTemplate(templateId: number): AxiosResponse<any>;
   updatePage(data?: IWritePage): AxiosResponse<any>;
@@ -15,6 +15,7 @@ export interface IWritePage {
   blocks?: number[]; // id блоков в том порядке в котором они должны сохраниться
   label?: string;
   slug?: string;
+  title?: string;
   id?: number;
 }
 
@@ -27,7 +28,7 @@ const getConfig = () => ({
     url: `/pages/my/${pageSlug}/`,
     method: 'GET',
   }),
-  getPageBySlug: (username: string, pageSlug: string) => ({
+  getPageBySlug: (username: string, pageSlug = 'index') => ({
     url: `/pages/${username}/${pageSlug}/`,
     method: 'GET',
   }),

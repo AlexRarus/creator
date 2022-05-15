@@ -86,6 +86,8 @@ class PageWriteSerializer(serializers.ModelSerializer):
             "blocks",
             "slug",
             "label",
+            "title",
+            "description",
         )
 
 
@@ -109,4 +111,6 @@ class PageReadSerializer(serializers.ModelSerializer):
             "blocks",
             "slug",
             "label",
+            "title",
+            "description",
         )

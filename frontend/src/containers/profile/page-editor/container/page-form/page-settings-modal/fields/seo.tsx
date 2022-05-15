@@ -3,11 +3,13 @@ import { useFormContext } from 'react-hook-form';
 import { Grid, GridColumn } from 'src/components/grid';
 import { ControlledField } from 'src/components/controlled-field';
 import InputText from 'src/components/input-text';
+import { IPage } from 'src/dal/pages/interfaces';
 
 import { FormInputs } from '../interfaces';
 
 interface IProps {
   formDefaultValues: FormInputs | null;
+  pageData: IPage;
 }
 
 export const SEOFields = (props: IProps) => {

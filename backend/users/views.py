@@ -13,7 +13,11 @@ from rest_framework_simplejwt.token_blacklist.models import (
 )
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .serializers import CheckValidUsernameSerializer, UpdateUsernameSerializer
+from .serializers import (
+    CheckValidUsernameSerializer,
+    UpdateUserIndexPageSerializer,
+    UpdateUsernameSerializer,
+)
 
 
 class CsrfExemptSessionAuthentication(SessionAuthentication):
@@ -27,6 +31,8 @@ class CustomUserViewSet(UserViewSet):
             self.permission_classes = [AllowAny]
         if self.action == "update_username":
             self.permission_classes = [IsAuthenticated]
+        if self.action == "update_index_page":
+            self.permission_classes = [IsAuthenticated]
         return super().get_permissions()
 
     def get_serializer_class(self):
@@ -34,6 +40,8 @@ class CustomUserViewSet(UserViewSet):
             return CheckValidUsernameSerializer
         if self.action == "update_username":
             return UpdateUsernameSerializer
+        if self.action == "update_index_page":
+            return UpdateUserIndexPageSerializer
         return super().get_serializer_class()
 
     @action(["post"], detail=False)
@@ -51,6 +59,18 @@ class CustomUserViewSet(UserViewSet):
         serializer.is_valid(raise_exception=True)
 
         return Response(status=status.HTTP_200_OK, data=serializer.data)
+
+    @action(["post"], detail=False)
+    def update_index_page(self, request, *args, **kwargs):
+        serializer = self.get_serializer(
+            self.request.user,
+            data=request.data,
+            partial=True,
+            context={"request": request},
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(status=status.HTTP_200_OK)
 
 
 class LogoutView(APIView):

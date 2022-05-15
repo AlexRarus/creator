@@ -14,6 +14,7 @@ export function useMapStoreToProps() {
     updateMyPageAction: dalPagesStore.updateMyPageAction,
     updatePageBlocksAction: dalPagesStore.updatePageBlocksAction,
     user: dalAuthStore.user,
+    updateMeAction: dalAuthStore.updateMeAction,
     selectPageAction: dalPagesStore.selectPageAction,
     pages: dalPagesStore.pages,
   };
