@@ -64,6 +64,7 @@ export const PageEditorContainer = observer((props: IProps) => {
   const { replace } = useHistory();
   const isAuthor = useIsAuthor(username);
   const [initialized, setInitialized] = useState(false);
+  const isIndexPage = user?.index_page?.id === data?.id;
 
   const openPageSettingsModal = (activeTab = TabValue.LINK) => () =>
     setPageSettingsModalTab(activeTab);
@@ -129,7 +130,7 @@ export const PageEditorContainer = observer((props: IProps) => {
                     <PrefixPath>
                       {window.location.origin}/{username}
                     </PrefixPath>
-                    {user?.index_page?.id !== data.id && <PageSlug>/{pageSlug}</PageSlug>}
+                    {!isIndexPage && <PageSlug>/{pageSlug}</PageSlug>}
                   </LinkToPageValue>
                   <LinkCopyIndicator>
                     <BlinkMessage showId={copyBlinkId}>(Скопировано)</BlinkMessage>
@@ -180,7 +181,7 @@ export const PageEditorContainer = observer((props: IProps) => {
                     <PrefixPath>
                       {window.location.origin}/{username}
                     </PrefixPath>
-                    {user?.index_page?.id !== data.id && <PageSlug>/{pageSlug}</PageSlug>}
+                    {!isIndexPage && <PageSlug>/{pageSlug}</PageSlug>}
                   </LinkToPageValue>
                   <LinkCopyIndicator>
                     <BlinkMessage showId={copyBlinkId}>(Скопировано)</BlinkMessage>
