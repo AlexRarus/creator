@@ -84,6 +84,13 @@ export const InputStyled = styled.input<IInputStyledProps>`
   [type='number'] {
     -moz-appearance: textfield;
   }
+
+  :-webkit-autofill,
+  :-webkit-autofill:hover,
+  :-webkit-autofill:focus,
+  :-webkit-autofill:active {
+    transition: all 9999s ease-in-out 0s;
+  }
 `;
 InputStyled.defaultProps = {
   theme: LIGHT_THEME,
