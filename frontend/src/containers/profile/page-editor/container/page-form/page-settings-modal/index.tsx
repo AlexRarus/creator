@@ -2,25 +2,16 @@ import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
 import Modal, { MobileSize, DesktopSize } from 'src/components/modal';
 import { useForm, FormProvider } from 'react-hook-form';
-import { useSubmitUsernameForm } from 'src/api/hooks/submit-forms/auth/useSubmitUsernameForm';
-import { useSubmitUserIndexPageForm } from 'src/api/hooks/submit-forms/auth/useSubmitUserIndexPageForm';
-import { useSubmitPageForm } from 'src/api/hooks/submit-forms/page/useSubmitPageForm';
 import { IPage } from 'src/dal/pages/interfaces';
 import { Tabs, TabContainer, useTabs } from 'src/components/tabs';
 import { Form } from 'src/components/form';
 
-import { TabValue, FormInputs, RawData } from './interfaces';
+import { TabValue, FormInputs } from './interfaces';
 import { LinkFields } from './fields/link';
 import { SEOFields } from './fields/seo';
-import {
-  prepareDataForUsernameUpdate,
-  prepareDataForUserIndexPageUpdate,
-  prepareDataForPageUpdate,
-  pageTabs,
-  getActions,
-} from './utils';
+import { pageTabs, getActions } from './utils';
 import { useMapStoreToProps } from './selectors';
-import { useDefaultValues } from './hooks';
+import { useDefaultValues, useValidateUsername, useSubmit } from './hooks';
 
 interface IProps {
   onClose(): void;
@@ -44,84 +35,34 @@ export const PageSettingsModal = observer((props: IProps) => {
     reValidateMode: 'onChange',
     defaultValues,
   });
-  const { formState, setError, handleSubmit } = methods;
-  const { isValid } = formState;
-  const [
-    submitUsernameForm,
-    isLoadingUsername,
-    dataUsername,
-    errorsUsername,
-  ] = useSubmitUsernameForm<{ username?: string }>();
-  const [
-    submitUserPageSlugForm,
-    isLoadingUserPageSlug,
-    dataUserPageSlug,
-    errorsUserPageSlug,
-  ] = useSubmitUserIndexPageForm<{ index_page_slug?: string }>();
-  const [submitPageForm, isLoadingPage, dataPage, errorsPage] = useSubmitPageForm<FormInputs>(true);
-
-  const submit = async (formInputs: FormInputs) => {
-    // todo по сути с этой модалки может уйти до трех запросов (сделано дл удобства пользователей) чтобы не приходилось бегать между формами
-    // 1) обновление username
-    // 2) обновление указателя на главную страницу
-    // 3) обновление данных самой страницы
-    const rawData: RawData = { id: pageData.id, ...formInputs };
-    const usernameDataUpdate = prepareDataForUsernameUpdate(rawData, user);
-    const usernameIndexPageDataUpdate = prepareDataForUserIndexPageUpdate(rawData, user, pageData);
-    const pageDataUpdate = prepareDataForPageUpdate(rawData);
-
-    if (usernameDataUpdate) {
-      // 1) обновление username
-      await submitUsernameForm(usernameDataUpdate);
-    }
-    if (usernameIndexPageDataUpdate) {
-      // 2) обновление указателя на главную страницу
-      await submitUserPageSlugForm(usernameIndexPageDataUpdate);
-    }
-    if (pageDataUpdate) {
-      // 3) обновление данных самой страницы
-      await submitPageForm(pageDataUpdate);
-    }
-  };
+  const { formState, setError, handleSubmit, watch } = methods;
+  const { isValid, isDirty } = formState;
+  const isIndex = watch('isIndex');
+  const username = watch('username');
+  const usernameErrors = useValidateUsername(isDirty, user, username);
+  const [submit, isLoading, dataPage, errors] = useSubmit(user, pageData);
 
   // форма успешно (без ошибок) отправлена
   useEffect(() => {
-    const isLoading = isLoadingPage || isLoadingUserPageSlug || isLoadingUsername;
-    const errors = errorsPage || errorsUserPageSlug || errorsUsername;
     if (!isLoading && formState.isSubmitSuccessful && !errors && dataPage) {
       onSuccess(dataPage?.slug);
       onClose(); // При УСПЕШНОЙ отправке формы закрываем ее
     }
-  }, [
-    formState,
-    errorsPage,
-    errorsUserPageSlug,
-    errorsUsername,
-    dataPage,
-    dataUserPageSlug,
-    dataUsername,
-    isLoadingPage,
-    isLoadingUserPageSlug,
-    isLoadingUsername,
-  ]);
+  }, [formState, errors, dataPage, isLoading]);
 
   // заполнение формы ошибками валидации пришедшими с бэка
   useEffect(() => {
-    if (errorsPage || errorsUserPageSlug || errorsUsername) {
-      const errors = {
-        ...errorsPage,
-        ...errorsUserPageSlug,
-        ...errorsUsername,
-      };
-      const fieldNames = Object.keys(errors);
+    if (errors || usernameErrors) {
+      const combineErrors = errors || usernameErrors;
+      const fieldNames = Object.keys(combineErrors);
       fieldNames.forEach((fieldName: any) =>
         setError(fieldName, {
           type: 'server',
-          message: errors[fieldName][0],
+          message: combineErrors[fieldName][0],
         })
       );
     }
-  }, [errorsPage, errorsUserPageSlug, errorsUsername, setError]);
+  }, [errors, usernameErrors, setError]);
 
   const onAction = (actionId: string) => {
     switch (actionId) {

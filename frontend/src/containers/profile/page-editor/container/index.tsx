@@ -111,7 +111,13 @@ export const PageEditorContainer = observer((props: IProps) => {
   };
 
   const onCopyToClipboard = () => {
-    copyTextToClipboard(`${window.location.origin}/${username}/${pageSlug}`);
+    let url = `${window.location.origin}/${username}`;
+
+    if (!isIndexPage) {
+      url += `/${pageSlug}`;
+    }
+
+    copyTextToClipboard(url);
     setCopyBlinkId(uuidv4());
   };
 

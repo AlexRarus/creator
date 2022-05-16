@@ -16,7 +16,8 @@ export interface IConfirmButton extends IButton {
 }
 
 interface IProps {
-  onConfirm(data: any): void;
+  onConfirm?(data: any): void;
+  onCancel?(data: any): void;
   onClose(): void;
   confirmTitle: string;
   confirmMessage: string;
@@ -27,6 +28,7 @@ interface IProps {
 export const Confirm = (props: IProps) => {
   const {
     onConfirm,
+    onCancel,
     onClose,
     confirmTitle,
     confirmMessage,
@@ -35,7 +37,12 @@ export const Confirm = (props: IProps) => {
   } = props;
 
   const confirmHandler = () => {
-    onConfirm(data);
+    onConfirm && onConfirm(data);
+    onClose();
+  };
+
+  const cancelHandler = () => {
+    onCancel && onCancel(data);
     onClose();
   };
 
@@ -52,7 +59,7 @@ export const Confirm = (props: IProps) => {
         <FormButtonsWrapper>
           <MobileView>
             <MobileButtonsList>
-              <Button kind='secondary' hasBorder={false} onClick={onClose}>
+              <Button kind='secondary' hasBorder={false} onClick={cancelHandler}>
                 <span>Отмена</span>
               </Button>
               <Button
@@ -66,7 +73,7 @@ export const Confirm = (props: IProps) => {
           </MobileView>
           <DesktopView>
             <DesktopButtonsList>
-              <Button kind='secondary' onClick={onClose}>
+              <Button kind='secondary' onClick={cancelHandler}>
                 <span>Отмена</span>
               </Button>
               <Button

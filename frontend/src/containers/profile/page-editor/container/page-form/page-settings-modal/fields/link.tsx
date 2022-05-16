@@ -7,6 +7,7 @@ import InputText from 'src/components/input-text';
 import { IPage } from 'src/dal/pages/interfaces';
 import { IUser } from 'src/dal/auth/interfaces';
 import { Switch } from 'src/components/switch';
+import { Confirm } from 'src/components/confirm';
 
 import { FormInputs } from '../interfaces';
 
@@ -19,9 +20,10 @@ interface IProps {
 }
 
 export const LinkFields = (props: IProps) => {
-  const { formDefaultValues } = props;
+  const { formDefaultValues, pageData, user } = props;
   const { control, watch, unregister, setValue } = useFormContext(); // так как Fields рендерятся внутри FormProvider, в контексте доступны значения формы
   const [activeField, setActiveField] = useState<string | null>(null);
+  const [isOpenIndexConfirm, setIsOpenIndexConfirm] = useState(false);
   const domain = 'wallink.ru';
   const isIndex = watch('isIndex');
   const username = watch('username');
@@ -35,6 +37,13 @@ export const LinkFields = (props: IProps) => {
     }
   }, [isIndex]);
 
+  useEffect(() => {
+    if (isIndex && user?.index_page?.id !== pageData?.id) {
+      // если уже есть индексная страница, переспросить подтверждение
+      setIsOpenIndexConfirm(true);
+    }
+  }, [isIndex]);
+
   const onFocusSlug = () => {
     setActiveField('slug');
   };
@@ -44,6 +53,14 @@ export const LinkFields = (props: IProps) => {
 
   const onBlur = () => {
     setActiveField(null);
+  };
+
+  const onDeclineIndex = () => {
+    setValue('isIndex', false);
+  };
+
+  const onCloseConfirmIndex = () => {
+    setIsOpenIndexConfirm(false);
   };
 
   return (
@@ -81,6 +98,17 @@ export const LinkFields = (props: IProps) => {
             <InputText onFocus={onFocusSlug} onBlur={onBlur} label='Slug' />
           </ControlledField>
         </GridColumn>
+      )}
+      {isOpenIndexConfirm && (
+        <Confirm
+          onCancel={onDeclineIndex}
+          onClose={onCloseConfirmIndex}
+          confirmMessage='У Вас уже есть главная страница, вы точно хотите установить текущую страницу в качестве главной?'
+          confirmTitle='Изменение главной страницы'
+          confirmButton={{
+            label: 'Подтвердить',
+          }}
+        />
       )}
     </Grid>
   );

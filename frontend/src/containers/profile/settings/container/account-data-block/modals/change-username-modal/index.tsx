@@ -10,6 +10,7 @@ import { required } from 'src/utils/validators';
 
 import { FormInputs, RawData } from './interfaces';
 import { prepareDataForServer } from './utils';
+import { useValidateUsername } from './hooks';
 
 interface IProps {
   onClose(): void;
@@ -19,13 +20,17 @@ interface IProps {
 
 export const ChangeUsernameModal = (props: IProps) => {
   const { onClose, onSuccess, user } = props;
-  const { handleSubmit, formState, setError, control } = useForm<FormInputs>({
+  const { handleSubmit, formState, setError, control, watch } = useForm<FormInputs>({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
     defaultValues: {
       username: user?.username || '',
     },
   });
-  const { isValid } = formState;
+  const { isValid, isDirty } = formState;
   const [submitUsernameForm, isLoading, data, errors] = useSubmitUsernameForm<Record<any, any>>();
+  const username = watch('username');
+  const usernameErrors = useValidateUsername(isDirty, user, username);
 
   const submit = async (data: FormInputs) => {
     const rawData: RawData = { ...data };
@@ -43,16 +48,17 @@ export const ChangeUsernameModal = (props: IProps) => {
 
   // заполнение формы ошибками валидации пришедшими с бэка
   useEffect(() => {
-    if (errors) {
-      const fieldNames = Object.keys(errors);
+    if (errors || usernameErrors) {
+      const combineErrors: any = errors || usernameErrors;
+      const fieldNames = Object.keys(combineErrors);
       fieldNames.forEach((fieldName: any) =>
         setError(fieldName, {
           type: 'server',
-          message: errors[fieldName][0],
+          message: combineErrors[fieldName][0],
         })
       );
     }
-  }, [errors, setError]);
+  }, [errors, usernameErrors, setError]);
 
   const onAction = (actionId: string) => {
     switch (actionId) {
