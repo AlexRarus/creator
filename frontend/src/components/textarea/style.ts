@@ -47,8 +47,8 @@ export const TextareaComponent = styled.div<{
   isFocused?: boolean;
   fontSizeInherit?: boolean;
 }>`
-  ${({ disabled, theme }) => css`
-    background-color: ${disabled ? COLORS.grey[200] : theme?.background?.secondary};
+  ${({ disabled }) => css`
+    background-color: ${disabled ? COLORS.grey[200] : ''};
   `}
   width: 100%;
   box-sizing: border-box;

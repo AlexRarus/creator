@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 import Modal, { MobileSize, DesktopSize } from 'src/components/modal';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -8,6 +8,7 @@ import { Form } from 'src/components/form';
 
 import { TabValue, FormInputs } from './interfaces';
 import { LinkFields } from './fields/link';
+import { QRCodeFields } from './fields/qrcode';
 import { SEOFields } from './fields/seo';
 import { pageTabs, getActions } from './utils';
 import { useMapStoreToProps } from './selectors';
@@ -26,10 +27,8 @@ export const PageSettingsModal = observer((props: IProps) => {
   const { activeTabValue: initActiveTabValue, onClose, onSuccess, pageData } = props;
   const [tabs, activeTab, onChangeTab] = useTabs(pageTabs, initActiveTabValue);
   const { myPages, deletePageAction, user, pagesCount } = useMapStoreToProps();
+  const [QRCodeWrapperElement, QRCodeWrapperRefCallback] = useState<HTMLDivElement | null>(null);
   const defaultValues = useDefaultValues(pageData, user);
-  // todo хук useForm создает форму и возвращает методы и состояние формы
-  // todo все поля зарегистрированные в форме управляются этой формой
-  // todo поле можно зарегистрировать (например) при помощи обертки <ControlledField> и "methods.control"
   const methods = useForm<FormInputs>({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -76,6 +75,16 @@ export const PageSettingsModal = observer((props: IProps) => {
         deletePageAction(pageData.id);
         onClose();
         break;
+      case 'download-qr-code':
+        if (QRCodeWrapperElement) {
+          const link = document.createElement('a');
+          const canvas = QRCodeWrapperElement.querySelector('canvas') as HTMLCanvasElement;
+          link.download = `${pageData.label}_QR.png`;
+          link.href = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+          link.click();
+          link.remove();
+        }
+        break;
       default:
         console.warn('Unknown action type', actionId);
     }
@@ -89,7 +98,10 @@ export const PageSettingsModal = observer((props: IProps) => {
       padding={null}
       title='Настройки страницы'>
       <Tabs tabs={tabs} activeTab={activeTab} onChangeTab={onChangeTab} />
-      <Form onAction={onAction} actions={getActions(myPages)} isValid={isValid}>
+      <Form
+        onAction={onAction}
+        actions={getActions(myPages, activeTab)}
+        isValid={isValid && activeTab.value !== TabValue.QR}>
         <FormProvider {...methods}>
           <TabContainer value={TabValue.LINK} activeTabValue={activeTab.value}>
             <LinkFields
@@ -100,7 +112,7 @@ export const PageSettingsModal = observer((props: IProps) => {
             />
           </TabContainer>
           <TabContainer value={TabValue.QR} activeTabValue={activeTab.value}>
-            QR code tab content
+            <QRCodeFields ref={QRCodeWrapperRefCallback} isOpen={activeTab.value === TabValue.QR} />
           </TabContainer>
           <TabContainer value={TabValue.SEO} activeTabValue={activeTab.value}>
             <SEOFields formDefaultValues={defaultValues} pageData={pageData} />

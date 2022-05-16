@@ -16,6 +16,7 @@ export interface IWritePage {
   label?: string;
   slug?: string;
   title?: string;
+  description?: string;
   id?: number;
 }
 

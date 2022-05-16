@@ -25,7 +25,6 @@ export const LinkFields = (props: IProps) => {
   const { control, watch, unregister, setValue } = useFormContext(); // так как Fields рендерятся внутри FormProvider, в контексте доступны значения формы
   const [activeField, setActiveField] = useState<string | null>(null);
   const [isOpenIndexConfirm, setIsOpenIndexConfirm] = useState(false);
-  const domain = 'wallink.ru';
   const isIndex = watch('isIndex');
   const username = watch('username');
   const slug = watch('slug');
@@ -70,7 +69,7 @@ export const LinkFields = (props: IProps) => {
     <Grid verticalGap={24}>
       <GridColumn>
         <LinkRow>
-          <DomainPart>https://{domain}/</DomainPart>
+          <DomainPart>{window.location.origin}/</DomainPart>
           <UsernamePart isActive={activeField === 'username'}>{username}</UsernamePart>
           <SlugPart isActive={activeField === 'slug'}>{isIndex ? '' : `/${slug}`}</SlugPart>
         </LinkRow>

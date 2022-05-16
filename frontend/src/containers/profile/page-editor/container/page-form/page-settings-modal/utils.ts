@@ -22,15 +22,27 @@ export const pageTabs: ITab<TabValue>[] = [
   },
 ];
 
-export const getActions = (pages: IPage[]): IAction[] => [
-  {
-    id: 'delete',
-    label: 'Удалить',
-    kind: 'delete',
-    disabled: pages?.length === 1,
-    needConfirm: true,
-  },
-];
+export const getActions = (pages: IPage[], activeTab: ITab<TabValue>): IAction[] => {
+  if (activeTab.value === TabValue.QR) {
+    return [
+      {
+        id: 'download-qr-code',
+        label: 'Скачать QR',
+        kind: 'primary',
+      },
+    ];
+  }
+
+  return [
+    {
+      id: 'delete',
+      label: 'Удалить',
+      kind: 'delete',
+      disabled: pages?.length === 1,
+      needConfirm: true,
+    },
+  ];
+};
 
 export const prepareDataForUsernameUpdate = (
   rawData: RawData,
@@ -68,6 +80,7 @@ export const prepareDataForPageUpdate = (rawData: RawData): IWritePage => ({
   id: rawData.id as any, // id может не быть поэтому any
   slug: rawData.slug,
   title: rawData.title,
+  description: rawData.description,
 });
 
 export const prepareDataToFormValues = (page: IPage | null): FormInputs => ({

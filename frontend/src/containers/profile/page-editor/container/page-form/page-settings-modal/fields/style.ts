@@ -31,3 +31,19 @@ export const SlugPart = styled.div<{ isActive: boolean }>`
   font-weight: ${({ isActive }) => (isActive ? 'bold' : 'normal')};
   color: ${({ theme }) => (theme.themeType === 'light' ? COLORS.pink[700] : COLORS.pink[500])};
 `;
+
+export const CanvasWrapperOuter = styled.div<{ isShow: boolean }>`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  padding: 0 20px;
+  background: ${COLORS.white};
+  opacity: ${({ isShow }) => (isShow ? 1 : 0)};
+  transition: opacity 200ms ease-out;
+`;
+
+export const CanvasWrapperInner = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+`;
