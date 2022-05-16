@@ -20,6 +20,7 @@ export default function Modal(props: IPropsModal) {
     onClose,
     children,
     isCloseOutside = true,
+    hasCloseButton = true,
     padding,
     mobileSize = MobileSize.M,
     desktopSize = MobileSize.S,
@@ -78,9 +79,11 @@ export default function Modal(props: IPropsModal) {
         animationTime={ANIMATION_TIME}
         animation={animation}
         onClick={(e: MouseEvent) => e.preventDefault()}>
-        <CloseButton onClick={closeModal} isMobile={isMobile} hasTitle={Boolean(title)}>
-          <CloseIcon />
-        </CloseButton>
+        {hasCloseButton && (
+          <CloseButton onClick={closeModal} isMobile={isMobile} hasTitle={Boolean(title)}>
+            <CloseIcon />
+          </CloseButton>
+        )}
         {title && (
           <ModalHeader ref={headerRefCallback} isMobile={isMobile}>
             <ModalTitle isMobile={isMobile}>{title}</ModalTitle>

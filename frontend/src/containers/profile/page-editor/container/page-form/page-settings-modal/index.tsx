@@ -25,7 +25,7 @@ export { TabValue } from './interfaces';
 export const PageSettingsModal = observer((props: IProps) => {
   const { activeTabValue: initActiveTabValue, onClose, onSuccess, pageData } = props;
   const [tabs, activeTab, onChangeTab] = useTabs(pageTabs, initActiveTabValue);
-  const { myPages, deletePageAction, user } = useMapStoreToProps();
+  const { myPages, deletePageAction, user, pagesCount } = useMapStoreToProps();
   const defaultValues = useDefaultValues(pageData, user);
   // todo хук useForm создает форму и возвращает методы и состояние формы
   // todo все поля зарегистрированные в форме управляются этой формой
@@ -37,7 +37,6 @@ export const PageSettingsModal = observer((props: IProps) => {
   });
   const { formState, setError, handleSubmit, watch } = methods;
   const { isValid, isDirty } = formState;
-  const isIndex = watch('isIndex');
   const username = watch('username');
   const usernameErrors = useValidateUsername(isDirty, user, username);
   const [submit, isLoading, dataPage, errors] = useSubmit(user, pageData);
@@ -93,7 +92,12 @@ export const PageSettingsModal = observer((props: IProps) => {
       <Form onAction={onAction} actions={getActions(myPages)} isValid={isValid}>
         <FormProvider {...methods}>
           <TabContainer value={TabValue.LINK} activeTabValue={activeTab.value}>
-            <LinkFields formDefaultValues={defaultValues} pageData={pageData} user={user} />
+            <LinkFields
+              formDefaultValues={defaultValues}
+              pageData={pageData}
+              user={user}
+              pagesCount={pagesCount}
+            />
           </TabContainer>
           <TabContainer value={TabValue.QR} activeTabValue={activeTab.value}>
             QR code tab content

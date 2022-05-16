@@ -85,6 +85,7 @@ class CustomUser(AbstractUser):
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
+        default=None,
     )
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []

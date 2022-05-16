@@ -232,7 +232,7 @@ class PageViewSet(viewsets.ModelViewSet):
                 author_username = self.kwargs.get("author_username")
                 author = get_object_or_404(User, username=author_username)
                 if author.index_page:
-                    return author.index_page
+                    lookup_field = author.index_page.slug
                 else:
                     raise NotFound(
                         detail="Error 404, page not found", code=404
@@ -254,9 +254,24 @@ class PageViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+        self.set_index_page()
 
     def perform_update(self, serializer):
         serializer.save(author=self.request.user)
+
+    def perform_destroy(self, instance):
+        index_page = self.request.user.index_page
+        is_destroyed_index = False
+        if index_page:
+            is_destroyed_index = index_page.id == instance.id
+        instance.delete()
+        self.set_index_page(is_destroyed_index)
+
+    def set_index_page(self, is_destroyed_index=False):
+        user = self.request.user
+        if is_destroyed_index or not user.index_page:
+            user.index_page = self.get_queryset().first()
+            user.save()
 
 
 class BlockViewSet(viewsets.ModelViewSet):

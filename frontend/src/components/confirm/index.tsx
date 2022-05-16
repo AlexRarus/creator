@@ -53,6 +53,8 @@ export const Confirm = (props: IProps) => {
       desktopSize={DesktopSize.S}
       title={confirmTitle}
       padding={null}
+      isCloseOutside={false}
+      hasCloseButton={false}
       zIndex={1000}>
       <ConfirmContent>
         <ConfirmMessage>{confirmMessage}</ConfirmMessage>

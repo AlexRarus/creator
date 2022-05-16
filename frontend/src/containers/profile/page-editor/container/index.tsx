@@ -77,7 +77,7 @@ export const PageEditorContainer = observer((props: IProps) => {
   }, [isAuthor, pageSlug]);
 
   useEffect(() => {
-    // некоторые блоки зависят от юзера, есди он изменился нужно обновить страницу
+    // некоторые блоки зависят от юзера, если он изменился нужно обновить страницу
     if (initialized && isAuthor) {
       updateMyPageAction();
     }
@@ -93,6 +93,8 @@ export const PageEditorContainer = observer((props: IProps) => {
   // todo передавать slug ТОЛЬКО если он изменился в настройках страницы
   const onUpdatePageForm = async (pageSlug?: string) => {
     if (pageSlug) {
+      // todo обновление юзера приводит к перезапросу данных страницы,
+      //  но еще мы должны сделать REPLACE потому что у пользователя мог изменится username
       const me = await updateMeAction();
       replace(`/profile/${me.username}/pages/${pageSlug}`);
     } else {

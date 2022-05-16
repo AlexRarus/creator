@@ -6,6 +6,7 @@ export function useMapStoreToProps() {
   return {
     myPages: dalPagesStore.pages,
     deletePageAction: dalPagesStore.deletePageAction,
+    pagesCount: dalPagesStore.pages.length,
     user: dalAuthStore.user,
   };
 }

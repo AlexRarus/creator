@@ -17,10 +17,11 @@ interface IProps {
   formDefaultValues: FormInputs | null;
   pageData: IPage;
   user: IUser | null;
+  pagesCount: number;
 }
 
 export const LinkFields = (props: IProps) => {
-  const { formDefaultValues, pageData, user } = props;
+  const { formDefaultValues, pageData, user, pagesCount } = props;
   const { control, watch, unregister, setValue } = useFormContext(); // так как Fields рендерятся внутри FormProvider, в контексте доступны значения формы
   const [activeField, setActiveField] = useState<string | null>(null);
   const [isOpenIndexConfirm, setIsOpenIndexConfirm] = useState(false);
@@ -28,6 +29,8 @@ export const LinkFields = (props: IProps) => {
   const isIndex = watch('isIndex');
   const username = watch('username');
   const slug = watch('slug');
+  // показываем переключатель если у пользователя кол-во страниц больше 1 ИЛИ (если страница 1) НЕТ индексной страницы
+  const hasIndexPageSwitch = pagesCount !== 1 || user?.index_page?.id !== pageData?.id;
 
   useEffect(() => {
     if (isIndex) {
@@ -38,7 +41,7 @@ export const LinkFields = (props: IProps) => {
   }, [isIndex]);
 
   useEffect(() => {
-    if (isIndex && user?.index_page?.id !== pageData?.id) {
+    if (isIndex && user?.index_page && user?.index_page?.id !== pageData?.id) {
       // если уже есть индексная страница, переспросить подтверждение
       setIsOpenIndexConfirm(true);
     }
@@ -72,13 +75,15 @@ export const LinkFields = (props: IProps) => {
           <SlugPart isActive={activeField === 'slug'}>{isIndex ? '' : `/${slug}`}</SlugPart>
         </LinkRow>
       </GridColumn>
-      <GridColumn>
-        <ControlledField control={control} name='isIndex' formDefaultValues={formDefaultValues}>
-          <Switch justify='flex-start' labelPosition='right'>
-            Главная страница
-          </Switch>
-        </ControlledField>
-      </GridColumn>
+      {hasIndexPageSwitch && (
+        <GridColumn>
+          <ControlledField control={control} name='isIndex' formDefaultValues={formDefaultValues}>
+            <Switch justify='flex-start' labelPosition='right'>
+              Главная страница
+            </Switch>
+          </ControlledField>
+        </GridColumn>
+      )}
       <GridColumn>
         <ControlledField
           name='username'

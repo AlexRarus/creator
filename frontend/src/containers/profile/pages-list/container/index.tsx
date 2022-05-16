@@ -45,7 +45,9 @@ export const PagesListContainer = observer((props: IProps) => {
   const openAddPageModal = () => setIsOpenAddPageModal(true);
   const closeAddPageModal = () => setIsOpenAddPageModal(false);
 
-  const onSuccessAddPage = (data: any) => push(`/profile/${username}/pages/${data.slug}/`);
+  const onSuccessAddPage = (data: any) => {
+    push(`/profile/${username}/pages/${data.slug}/`);
+  };
 
   const onConfirmRemovePage = () => {
     if (removingPage) {
