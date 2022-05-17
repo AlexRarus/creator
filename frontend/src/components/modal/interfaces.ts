@@ -3,6 +3,7 @@ import React, { ReactNode } from 'react';
 export interface IProps extends Partial<IPropsModal> {
   onClose(event: React.MouseEvent<HTMLDivElement>): void;
   isCloseOutside?: boolean;
+  hasCloseButton?: boolean;
   [key: string]: any;
 }
 
@@ -21,6 +22,7 @@ export enum DesktopSize {
 export interface IPropsModal {
   onClose(event?: React.MouseEvent<HTMLDivElement>): void;
   isCloseOutside?: boolean;
+  hasCloseButton?: boolean;
   padding?: string | null; // по дефолту паддинга нет совсем
   children?: ReactNode;
   title?: string;

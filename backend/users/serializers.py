@@ -1,3 +1,4 @@
+from api.models.page import Page
 from api.serializers.avatar import AvatarSerializer
 from api.serializers.theme import ThemeSerializerRead
 from django.contrib.auth import get_user_model
@@ -7,9 +8,16 @@ from rest_framework.exceptions import ValidationError
 User = get_user_model()
 
 
+class IndexPageSerializerRead(serializers.ModelSerializer):
+    class Meta:
+        model = Page
+        fields = ("id", "slug")
+
+
 class UserSerializer(serializers.ModelSerializer):
     avatar = AvatarSerializer(read_only=True)
     theme = ThemeSerializerRead(read_only=True)
+    index_page = IndexPageSerializerRead(read_only=True)
 
     class Meta:
         fields = (
@@ -21,6 +29,7 @@ class UserSerializer(serializers.ModelSerializer):
             "avatar",
             "theme",
             "role",
+            "index_page",
         )
         model = User
 
@@ -61,3 +70,34 @@ class UpdateUsernameSerializer(
     def save(self, **kwargs):
         kwargs["username"] = self.validated_data.get("username")
         return super().save(**kwargs)
+
+
+class UpdateUserIndexPageSerializer(serializers.ModelSerializer):
+    index_page = serializers.PrimaryKeyRelatedField(
+        queryset=Page.objects.all(), allow_null=True, allow_empty=True
+    )
+
+    class Meta:
+        model = User
+        fields = ("index_page",)
+
+    def validate(self, data):
+        """
+        Проверка принадлежности страницы
+        """
+        target_user = self.context.get("request").user
+        index_page = data["index_page"]
+        if index_page and index_page.author.id != target_user.id:
+            raise serializers.ValidationError(
+                "Страница не принадлежит текущему пользователю"
+            )
+        return data
+
+    def save(self, **kwargs):
+        kwargs["index_page"] = self.validated_data.get("index_page")
+        return super().save(**kwargs)
+
+    def update(self, user, validated_data):
+        user.index_page = validated_data["index_page"]
+        user.save()
+        return user

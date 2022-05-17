@@ -15,7 +15,7 @@ const appRoutes: IRoute[] = [
   },
   {
     exact: true,
-    path: `/:username/:pageSlug`,
+    path: `/:username/:pageSlug?`,
     component: lazy(() =>
       import(/* webpackChunkName: "page_landing_main" */ 'src/containers/app/page')
     ),

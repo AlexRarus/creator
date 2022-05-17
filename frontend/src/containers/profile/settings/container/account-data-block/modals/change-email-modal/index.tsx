@@ -19,7 +19,10 @@ interface IProps {
 
 export const ChangeEmailModal = (props: IProps) => {
   const { onClose, onSuccess } = props;
-  const { handleSubmit, formState, setError, control } = useForm<FormInputs>();
+  const { handleSubmit, formState, setError, control } = useForm<FormInputs>({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+  });
   const { isValid } = formState;
   const [submitEmailForm, isLoading, data, errors] = useSubmitEmailForm<Record<any, any>>();
 

@@ -24,7 +24,7 @@ class PageStore {
     this.routerStore = RootStore.routing;
   }
 
-  getPageBySlugAction = flow(function* (this: PageStore, username: string, pageSlug: string) {
+  getPageBySlugAction = flow(function* (this: PageStore, username: string, pageSlug?: string) {
     try {
       this.isLoading = true;
       const response = yield this.API.pages.getPageBySlug(username, pageSlug);
@@ -32,6 +32,9 @@ class PageStore {
       this.isLoading = false;
     } catch (e) {
       console.log('getPageBySlugAction', e);
+      if (e.response.status === 404) {
+        this.routerStore.replace(`/${username}/404/page_not_found`);
+      }
       this.isLoading = false;
     }
   });

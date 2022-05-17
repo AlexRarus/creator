@@ -38,6 +38,7 @@ export default class DalPagesStore {
       if (!this.pages.length) {
         // если у пользователя еще НЕТ созданных страниц, то создаем новую страницу автоматически за него (упрощаем вход)
         const responseFirstPage = yield this.API.createPage({ label: 'new_page' });
+        yield this.rootStore.dalAuthStore.updateMeAction(); // обновляем пользователя т.к. у него могла изменится индексная страница
         const firstPage = responseFirstPage.data;
         this.pages = [firstPage];
         this.total = 1;
@@ -125,6 +126,7 @@ export default class DalPagesStore {
   deletePageAction = flow(function* (this: DalPagesStore, id: number) {
     try {
       yield this.API.deletePage(id);
+      yield this.rootStore.dalAuthStore.updateMeAction(); // обновляем пользователя т.к. у него могла изменится индексная страница
       this.pages = this.pages.filter((page: IPage) => page.id !== id);
       this.selectedPage = this.pages[0];
       const username = this.rootStore.dalAuthStore.user?.username;
@@ -149,7 +151,7 @@ export default class DalPagesStore {
       this.isCreatingByTemplate = true;
       const response: AxiosResponse<any> = yield this.API.createPageByTemplate(templateId);
       const createdPageData = response.data;
-      yield this.rootStore.dalAuthStore.updateMeAction();
+      yield this.rootStore.dalAuthStore.updateMeAction(); // обновляем пользователя т.к. у него могла изменится тема (выставилась из шаблона)
       const username = this.rootStore.dalAuthStore.user?.username;
       this.isCreatingByTemplate = false;
       this.routerStore.push(`/profile/${username}/pages/${createdPageData.slug}/`); // переходим к созданной странице

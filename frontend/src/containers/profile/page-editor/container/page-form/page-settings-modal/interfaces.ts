@@ -6,8 +6,11 @@ export enum TabValue {
 
 // поля формы
 export type FormInputs = {
+  isIndex?: boolean; // tab "LINK"
+  username?: string; // tab "LINK"
   slug?: string; // tab "LINK"
   title?: string; // tab "SEO"
+  description?: string; // tab "SEO"
 };
 
 // входные значение с формы создание

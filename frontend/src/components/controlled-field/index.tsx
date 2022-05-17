@@ -34,6 +34,10 @@ export function ControlledField(props: IProps) {
           ...{
             ...child.props,
             ...inputProps,
+            onBlur: (e: any) => {
+              inputProps.onBlur && inputProps.onBlur();
+              child.props.onBlur && child.props.onBlur(e);
+            },
             checked: inputProps.value,
             error: error?.message,
             key: child.props.name,

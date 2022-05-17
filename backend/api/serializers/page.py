@@ -40,6 +40,8 @@ class PageWriteSerializer(serializers.ModelSerializer):
 
         page.slug = validated_data.get("slug", page.slug)
         page.label = validated_data.get("label", page.label)
+        page.title = validated_data.get("title", page.title)
+        page.description = validated_data.get("description", page.description)
         page.save()
 
         if blocks is not None:
@@ -86,6 +88,8 @@ class PageWriteSerializer(serializers.ModelSerializer):
             "blocks",
             "slug",
             "label",
+            "title",
+            "description",
         )
 
 
@@ -109,4 +113,6 @@ class PageReadSerializer(serializers.ModelSerializer):
             "blocks",
             "slug",
             "label",
+            "title",
+            "description",
         )

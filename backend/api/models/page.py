@@ -15,6 +15,18 @@ class Page(models.Model):
         null=False,
         blank=False,
     )
+    title = models.CharField(
+        max_length=100,
+        verbose_name="Заголовок страницы (SEO)",
+        null=True,
+        blank=True,
+    )
+    description = models.CharField(
+        max_length=100,
+        verbose_name="Описание страницы (SEO)",
+        null=True,
+        blank=True,
+    )
     slug = models.SlugField(
         max_length=80,
         verbose_name="Строковый идентификатор (задает пользователь)",

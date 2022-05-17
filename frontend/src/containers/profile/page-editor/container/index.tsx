@@ -6,11 +6,8 @@ import { useIsAuthor } from 'src/utils/useIsAuthor';
 import { DeviceContainer } from 'src/containers/profile/device-wrapper/new-iphone';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import EditIcon from '@mui/icons-material/Edit';
-import DoneIcon from '@mui/icons-material/Done';
-import CloseIcon from '@mui/icons-material/Close';
 import { copyTextToClipboard } from 'src/utils/copyToClipboard';
 import { v4 as uuidv4 } from 'uuid';
-import InputText from 'src/components/input-text';
 import { SelectedThemeProvider } from 'src/providers/selected-theme-provider';
 import { useAppTypeContext } from 'src/providers/app-type-provider';
 
@@ -36,7 +33,6 @@ import {
   ActionWrapper,
   LinkActionBlock,
   PreviewWrapper,
-  PreviewFooter,
   FlexBlock,
 } from './style';
 
@@ -59,24 +55,20 @@ export const PageEditorContainer = observer((props: IProps) => {
     createBlockAction,
     updateBlockAction,
     user,
+    updateMeAction,
   } = useMapStoreToProps();
   const { appType } = useAppTypeContext();
   const { username, pageSlug } = props;
   const [pageSettingsModalTab, setPageSettingsModalTab] = useState<TabValue | null>(null);
   const [copyBlinkId, setCopyBlinkId] = useState<string>();
-  const [isEditingLink, setEditingLink] = useState(false);
-  const [inputLinkValue, setLinkValue] = useState(pageSlug);
   const { replace } = useHistory();
   const isAuthor = useIsAuthor(username);
   const [initialized, setInitialized] = useState(false);
+  const isIndexPage = user?.index_page?.id === data?.id;
 
   const openPageSettingsModal = (activeTab = TabValue.LINK) => () =>
     setPageSettingsModalTab(activeTab);
   const closePageSettingsModal = () => setPageSettingsModalTab(null);
-
-  const onChangeLink = (value: string) => {
-    setLinkValue(value);
-  };
 
   useEffect(() => {
     if (isAuthor) {
@@ -85,7 +77,7 @@ export const PageEditorContainer = observer((props: IProps) => {
   }, [isAuthor, pageSlug]);
 
   useEffect(() => {
-    // некоторые блоки зависят от юзера, есди он изменился нужно обновить страницу
+    // некоторые блоки зависят от юзера, если он изменился нужно обновить страницу
     if (initialized && isAuthor) {
       updateMyPageAction();
     }
@@ -99,25 +91,15 @@ export const PageEditorContainer = observer((props: IProps) => {
   }, [pageSlug, data]);
 
   // todo передавать slug ТОЛЬКО если он изменился в настройках страницы
-  const onUpdatePageForm = (slug?: string) => {
-    if (slug) {
-      replace(`/profile/${username}/pages/${slug}`);
+  const onUpdatePageForm = async (pageSlug?: string) => {
+    if (pageSlug) {
+      // todo обновление юзера приводит к перезапросу данных страницы,
+      //  но еще мы должны сделать REPLACE потому что у пользователя мог изменится username
+      const me = await updateMeAction();
+      replace(`/profile/${me.username}/pages/${pageSlug}`);
     } else {
       updateMyPageAction();
     }
-  };
-
-  const onToggleEditingLink = () => {
-    setEditingLink(!isEditingLink);
-    if (isEditingLink) {
-      setLinkValue(pageSlug);
-    }
-  };
-
-  const onSuccessEditingLink = () => {
-    setEditingLink(false);
-    setLinkValue(inputLinkValue);
-    onUpdatePageForm(inputLinkValue);
   };
 
   const onDragEndAction = (listIds?: any[]) => {
@@ -131,7 +113,13 @@ export const PageEditorContainer = observer((props: IProps) => {
   };
 
   const onCopyToClipboard = () => {
-    copyTextToClipboard(`${window.location.origin}/${username}/${pageSlug}`);
+    let url = `${window.location.origin}/${username}`;
+
+    if (!isIndexPage) {
+      url += `/${pageSlug}`;
+    }
+
+    copyTextToClipboard(url);
     setCopyBlinkId(uuidv4());
   };
 
@@ -150,30 +138,13 @@ export const PageEditorContainer = observer((props: IProps) => {
                     <PrefixPath>
                       {window.location.origin}/{username}
                     </PrefixPath>
-                    {!isEditingLink ? (
-                      <PageSlug>/{pageSlug}</PageSlug>
-                    ) : (
-                      <InputText
-                        onChange={onChangeLink}
-                        value={inputLinkValue}
-                        dimension='s'
-                        autoFocus={true}
-                      />
-                    )}
+                    {!isIndexPage && <PageSlug>/{pageSlug}</PageSlug>}
                   </LinkToPageValue>
                   <LinkCopyIndicator>
                     <BlinkMessage showId={copyBlinkId}>(Скопировано)</BlinkMessage>
                     <ContentCopyIcon />
                   </LinkCopyIndicator>
                 </LinkToPageField>
-                <LinkActionBlock>
-                  <ActionWrapper onClick={onToggleEditingLink}>
-                    {isEditingLink ? <CloseIcon /> : <EditIcon />}
-                  </ActionWrapper>
-                  <ActionWrapper isHide={!isEditingLink} onClick={onSuccessEditingLink}>
-                    <DoneIcon />
-                  </ActionWrapper>
-                </LinkActionBlock>
               </EditorHeader>
               <StyledGrid gap={0}>
                 <GridColumn size={6} alignItems='center'>
@@ -218,7 +189,7 @@ export const PageEditorContainer = observer((props: IProps) => {
                     <PrefixPath>
                       {window.location.origin}/{username}
                     </PrefixPath>
-                    <PageSlug>/{pageSlug}</PageSlug>
+                    {!isIndexPage && <PageSlug>/{pageSlug}</PageSlug>}
                   </LinkToPageValue>
                   <LinkCopyIndicator>
                     <BlinkMessage showId={copyBlinkId}>(Скопировано)</BlinkMessage>
