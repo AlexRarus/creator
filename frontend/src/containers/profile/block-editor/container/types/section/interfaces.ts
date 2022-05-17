@@ -1,6 +1,7 @@
-import { AdditionalData } from '../../interfaces';
 import { IImage } from 'src/dal/images/interfaces';
 import { IOption } from 'src/components/select';
+
+import { AdditionalData } from '../../interfaces';
 
 // поля формы
 export interface FormInputs {
@@ -21,6 +22,7 @@ export interface FormInputs {
   paddingBottom?: string;
   paddingRight?: string;
   paddingLeft?: string;
+  isVisible?: boolean;
 }
 
 // входные значение с формы создание

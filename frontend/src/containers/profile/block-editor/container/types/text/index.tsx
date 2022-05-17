@@ -6,7 +6,7 @@ import { Form } from 'src/components/form';
 import { Tabs, TabContainer, useTabs } from 'src/components/tabs';
 
 import { FormWrapper } from '../../style';
-import { blockActions } from '../../utils';
+import { SettingsTab } from '../settings-tab';
 
 import { TextFormWrapper } from './style';
 import { useMapStoreToProps } from './selectors';
@@ -93,7 +93,7 @@ export const TextForm = observer((props: IProps) => {
         // тут фому не закрываем так как с бэка могли вернуться ошибки
         break;
       case 'cancel':
-        onCancel();
+        isEditing ? onClose() : onCancel();
         break;
       case 'delete':
         deleteBlockAction(blockId as number);
@@ -108,14 +108,24 @@ export const TextForm = observer((props: IProps) => {
     }
   };
 
+  const onDeleteBlock = () => {
+    deleteBlockAction(blockId as number);
+    onClose();
+  };
+
+  const onCloneBlock = () => {
+    console.log('CLONE');
+    setIsCloning(true);
+  };
+
+  const toggleHideBlock = () => {
+    console.log('toggle hide');
+  };
+
   return (
     <TextFormWrapper>
       <Tabs tabs={tabs} activeTab={activeTab} onChangeTab={onChangeTab} />
-      <Form
-        onAction={onAction}
-        actions={isEditing ? blockActions : []}
-        isValid={isValid}
-        submitActionLabel='Сохранить'>
+      <Form onAction={onAction} isValid={isValid} submitActionLabel='Сохранить'>
         <FormProvider {...methods}>
           <FormWrapper>
             <TabContainer value={TabValue.text} activeTabValue={activeTab.value}>
@@ -125,7 +135,13 @@ export const TextForm = observer((props: IProps) => {
               Tab preview content
             </TabContainer>
             <TabContainer value={TabValue.settings} activeTabValue={activeTab.value}>
-              Tab settings content
+              <SettingsTab
+                isLoading={isLoading}
+                isVisible={formDefaultValues?.isVisible}
+                toggleHide={toggleHideBlock}
+                onClone={onCloneBlock}
+                onRemove={onDeleteBlock}
+              />
             </TabContainer>
           </FormWrapper>
         </FormProvider>

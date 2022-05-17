@@ -7,6 +7,7 @@ const getInitialFormDefaultVale = (block: any) => {
     isTransparent: block?.data?.isTransparent || false,
     kind: block?.data?.kind || 'empty',
     icon: block?.data?.icon,
+    isVisible: block?.data?.isVisible || true,
   };
 };
 

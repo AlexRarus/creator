@@ -12,6 +12,7 @@ export interface FormInputs {
   icon?: IImage | null;
   backgroundColor: string;
   color: string;
+  isVisible?: boolean;
 }
 
 export interface IOption {

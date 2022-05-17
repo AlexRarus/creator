@@ -20,6 +20,7 @@ export type FormInputs = {
   fontSize?: IOption;
   template?: IOption;
   items?: IListItem[];
+  isVisible?: boolean;
 };
 
 // входные значение с формы создание

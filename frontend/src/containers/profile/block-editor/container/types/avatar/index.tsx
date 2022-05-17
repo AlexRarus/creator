@@ -7,7 +7,7 @@ import { Tabs, TabContainer, useTabs } from 'src/components/tabs';
 import { IUser } from 'src/dal/auth/interfaces';
 
 import { FormWrapper } from '../../style';
-import { blockActions } from '../../utils';
+import { SettingsTab } from '../settings-tab';
 
 import { AvatarFormWrapper } from './style';
 import { useMapStoreToProps } from './selectors';
@@ -95,7 +95,7 @@ export const AvatarForm = observer((props: IProps) => {
         // тут фому не закрываем так как с бэка могли вернуться ошибки
         break;
       case 'cancel':
-        onCancel();
+        isEditing ? onClose() : onCancel();
         break;
       case 'delete':
         deleteBlockAction(blockId as number);
@@ -110,14 +110,24 @@ export const AvatarForm = observer((props: IProps) => {
     }
   };
 
+  const onDeleteBlock = () => {
+    deleteBlockAction(blockId as number);
+    onClose();
+  };
+
+  const onCloneBlock = () => {
+    console.log('CLONE');
+    setIsCloning(true);
+  };
+
+  const toggleHideBlock = () => {
+    console.log('toggle hide');
+  };
+
   return (
     <AvatarFormWrapper>
       <Tabs tabs={tabs} activeTab={activeTab} onChangeTab={onChangeTab} />
-      <Form
-        onAction={onAction}
-        actions={isEditing ? blockActions : []}
-        isValid={isValid}
-        submitActionLabel='Сохранить'>
+      <Form onAction={onAction} isValid={isValid} submitActionLabel='Сохранить'>
         <FormProvider {...methods}>
           <FormWrapper>
             <TabContainer value={TabValue.editor} activeTabValue={activeTab.value}>
@@ -125,7 +135,13 @@ export const AvatarForm = observer((props: IProps) => {
               <AvatarBlockFields formDefaultValues={formDefaultValues} />
             </TabContainer>
             <TabContainer value={TabValue.settings} activeTabValue={activeTab.value}>
-              Tab settings content
+              <SettingsTab
+                isLoading={isLoading}
+                isVisible={formDefaultValues?.isVisible}
+                toggleHide={toggleHideBlock}
+                onClone={onCloneBlock}
+                onRemove={onDeleteBlock}
+              />
             </TabContainer>
           </FormWrapper>
         </FormProvider>

@@ -9,13 +9,14 @@ import { IUser } from 'src/dal/auth/interfaces';
 import { ISectionDataWrite } from 'src/dal/blocks/section-interfaces';
 
 import { FormWrapper } from '../../style';
+import { SettingsTab } from '../settings-tab';
 
 import { FormInputs, RawData } from './interfaces';
 import { useMapStoreToProps } from './selectors';
 import { SectionFormWrapper } from './style';
 import { SectionFields } from './fields';
 import { SectionPreview } from './preview';
-import { TabValue, blockTabs, prepareDataForServer, blockActions } from './utils';
+import { TabValue, blockTabs, prepareDataForServer } from './utils';
 
 interface IProps {
   pageSlug?: string;
@@ -105,7 +106,7 @@ export const SectionForm = observer((props: IProps) => {
         // тут фому НЕ закрываем так как с бэка могли вернуться ошибки
         break;
       case 'cancel':
-        onCancel();
+        isEditing ? onClose() : onCancel();
         break;
       case 'delete':
         deleteBlockAction(blockId as number);
@@ -116,15 +117,24 @@ export const SectionForm = observer((props: IProps) => {
     }
   };
 
+  const onDeleteBlock = () => {
+    deleteBlockAction(blockId as number);
+    onClose();
+  };
+
+  const onCloneBlock = () => {
+    console.log('CLONE');
+  };
+
+  const toggleHideBlock = () => {
+    console.log('toggle hide');
+  };
+
   return (
     <SectionFormWrapper>
       <Tabs tabs={tabs} activeTab={activeTab} onChangeTab={onChangeTab} />
       <FormWrapper>
-        <Form
-          onAction={onAction}
-          actions={isEditing ? blockActions : []}
-          isValid={isValid}
-          submitActionLabel='Сохранить'>
+        <Form onAction={onAction} isValid={isValid} submitActionLabel='Сохранить'>
           <FormProvider {...methods}>
             <TabContainer value={TabValue.section} activeTabValue={activeTab.value}>
               <SectionFields formDefaultValues={formDefaultValues} />
@@ -133,7 +143,13 @@ export const SectionForm = observer((props: IProps) => {
               <SectionPreview selectedTheme={user?.theme} blocks={blocks} user={user as IUser} />
             </TabContainer>
             <TabContainer value={TabValue.settings} activeTabValue={activeTab.value}>
-              Tab settings content
+              <SettingsTab
+                isLoading={isLoading}
+                isVisible={formDefaultValues?.isVisible}
+                toggleHide={toggleHideBlock}
+                onClone={onCloneBlock}
+                onRemove={onDeleteBlock}
+              />
             </TabContainer>
           </FormProvider>
         </Form>

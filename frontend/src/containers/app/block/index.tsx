@@ -8,6 +8,7 @@ import { ListPreview } from './types/list';
 import { CollapsedListPreview } from './types/collapsed-list';
 import { ButtonPreview } from './types/button';
 import { SeparatorPreview } from './types/separator';
+import { BlockWrapper } from './style';
 
 interface IProps {
   block: IBlock<any>;
@@ -22,7 +23,7 @@ export const TargetBlockTypePreview = (props: IProps) => {
 
   // останавливаем клик по блоку в dnd обертках, чтобы не прокликивались кнопки и списки
   const onClickFakeBlock = (event: any) => {
-    event.stopPropagation();
+    // event.stopPropagation();
   };
 
   useEffect(() => {
@@ -56,5 +57,9 @@ export const TargetBlockTypePreview = (props: IProps) => {
     }
   };
 
-  return <div ref={fakeBlockRefCallback}>{getBlock(block)}</div>;
+  return (
+    <BlockWrapper isFake={isFakeBlock} ref={fakeBlockRefCallback}>
+      {getBlock(block)}
+    </BlockWrapper>
+  );
 };

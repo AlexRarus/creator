@@ -10,7 +10,9 @@ import {
   ModalTitle,
   CloseButton,
   ModalContent,
+  ModalPreWrapper,
 } from './style';
+import { addAnimationHook } from './animation';
 
 const ANIMATION_TIME = 200;
 
@@ -31,7 +33,17 @@ export default function Modal(props: IPropsModal) {
   const [headerHeight, setHeaderHeight] = useState<number>(0);
   const [modalHeight, setModalHeight] = useState<number>(0);
   const [modalElement, modalRefCallback] = useState<HTMLDivElement | null>(null);
+  const [modalContainerElement, modalContainerCallback] = useState<HTMLDivElement | null>(null);
   const [headerElement, headerRefCallback] = useState<HTMLDivElement | null>(null);
+  const closeModal = (e?: MouseEvent) => {
+    if (!e?.isDefaultPrevented()) {
+      console.log('!e?.isDefaultPrevented(): ', !e?.isDefaultPrevented());
+      setAnimation('close');
+      onClose();
+    }
+  };
+
+  addAnimationHook(modalContainerElement, modalElement, closeModal);
 
   useEffect(() => {
     setMounted(true);
@@ -53,12 +65,6 @@ export default function Modal(props: IPropsModal) {
     }
   }, [animation]);
 
-  const closeModal = (e: MouseEvent) => {
-    if (!e.isDefaultPrevented()) {
-      setAnimation('close');
-    }
-  };
-
   const handleOutside = isCloseOutside ? closeModal : () => null;
 
   return (
@@ -68,31 +74,43 @@ export default function Modal(props: IPropsModal) {
       isMounted={isMounted}
       onClick={handleOutside}
       isMobile={isMobile}>
-      <ModalWrapper
-        ref={modalRefCallback}
-        className={props.className || ''}
+      <ModalPreWrapper
+        ref={modalContainerCallback}
+        className={'modal-container'}
         mobileSize={mobileSize as MobileSize}
         desktopSize={desktopSize as DesktopSize}
         isMobile={isMobile}
-        hasTitle={Boolean(title)}
-        modalHeight={modalHeight}
-        animationTime={ANIMATION_TIME}
-        animation={animation}
         onClick={(e: MouseEvent) => e.preventDefault()}>
-        {hasCloseButton && (
-          <CloseButton onClick={closeModal} isMobile={isMobile} hasTitle={Boolean(title)}>
-            <CloseIcon />
-          </CloseButton>
-        )}
-        {title && (
-          <ModalHeader ref={headerRefCallback} isMobile={isMobile}>
-            <ModalTitle isMobile={isMobile}>{title}</ModalTitle>
-          </ModalHeader>
-        )}
-        <ModalContent padding={padding} isMobile={isMobile} headerHeight={headerHeight}>
-          {children}
-        </ModalContent>
-      </ModalWrapper>
+        <ModalWrapper
+          ref={modalRefCallback}
+          className={'modal'}
+          mobileSize={mobileSize as MobileSize}
+          desktopSize={desktopSize as DesktopSize}
+          isMobile={isMobile}
+          hasTitle={Boolean(title)}
+          modalHeight={modalHeight}
+          animationTime={ANIMATION_TIME}
+          animation={animation}
+          onClick={(e: MouseEvent) => e.preventDefault()}>
+          {hasCloseButton && (
+            <CloseButton
+              className={'cancel-modal'}
+              // onClick={closeModal}
+              isMobile={isMobile}
+              hasTitle={Boolean(title)}>
+              <CloseIcon />
+            </CloseButton>
+          )}
+          {title && (
+            <ModalHeader ref={headerRefCallback} isMobile={isMobile}>
+              <ModalTitle isMobile={isMobile}>{title}</ModalTitle>
+            </ModalHeader>
+          )}
+          <ModalContent padding={padding} isMobile={isMobile} headerHeight={headerHeight}>
+            {children}
+          </ModalContent>
+        </ModalWrapper>
+      </ModalPreWrapper>
     </ModalBackPlate>
   );
 }
