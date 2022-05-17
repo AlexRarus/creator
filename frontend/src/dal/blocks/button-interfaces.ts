@@ -10,6 +10,7 @@ export interface IButtonData {
   icon: IImage | null;
   backgroundColor: string;
   color: string;
+  isVisible?: boolean;
 }
 
 export interface IButtonDataWrite {

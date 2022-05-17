@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
+import { Loader } from 'src/components/loader';
 
 import { useMapStoreToProps } from './selectors';
-import { BlockEditorContainerWrapper } from './style';
+import { BlockEditorContainerWrapper, LoadingBox } from './style';
 import { TargetTypeForm } from './types';
 
 interface IProps {
@@ -32,12 +33,20 @@ export const BlocksFormContainer = observer((props: IProps) => {
   }, [username, pageSlug, templateSlug, blockType, blockId]);
 
   if (!initialized) {
-    return <div>Loading...</div>;
+    return (
+      <LoadingBox>
+        <Loader size={48} />
+      </LoadingBox>
+    );
   }
 
   return (
     <BlockEditorContainerWrapper>
-      {isLoading && <div>Loading...</div>}
+      {isLoading && (
+        <LoadingBox>
+          <Loader size={48} />
+        </LoadingBox>
+      )}
       {!isLoading && <TargetTypeForm {...props} />}
     </BlockEditorContainerWrapper>
   );

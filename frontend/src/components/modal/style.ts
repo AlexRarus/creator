@@ -39,19 +39,10 @@ export const ModalBackPlate = styled.div<IModalBackPlateProps>`
   overflow-x: auto;
 `;
 
-export const ModalWrapper = styled.div<IModalWrapperProps>`
+export const ModalPreWrapper = styled.div<Partial<IModalWrapperProps>>`
   display: flex;
   flex-direction: column;
   position: absolute;
-  background-color: ${({ theme }) => theme?.mainBackground};
-  background-image: ${({ theme }) => theme?.mainGradient};
-  border-radius: ${({ isMobile }) => (isMobile ? '16px 16px 0 0' : '16px')};
-  padding-top: ${({ isMobile, hasTitle }) => {
-    if (!hasTitle) {
-      return isMobile ? '44px' : '58px';
-    }
-    return 0;
-  }};
   ${({ mobileSize, desktopSize, isMobile }) => {
     if (isMobile) {
       // на мобилке size влияет на высоту модалки (не может быть больше экрана)
@@ -64,14 +55,23 @@ export const ModalWrapper = styled.div<IModalWrapperProps>`
       return `width: ${desktopSize};`;
     }
   }};
+`;
+
+export const ModalWrapper = styled.div<IModalWrapperProps>`
+  display: flex;
+  flex-direction: column;
+  background-color: ${({ theme }) => theme?.mainBackground};
+  background-image: ${({ theme }) => theme?.mainGradient};
+  border-radius: ${({ isMobile }) => (isMobile ? '16px 16px 0 0' : '16px')};
+  padding-top: ${({ isMobile, hasTitle }) => {
+    if (!hasTitle) {
+      return isMobile ? '44px' : '58px';
+    }
+    return 0;
+  }};
   max-height: 100%;
   max-width: 100%;
-
-  animation: ${({ isMobile, animation, modalHeight }) =>
-      isMobile
-        ? getMobileAnimation(animation, modalHeight)
-        : getDesktopAnimation(animation, modalHeight)}
-    ${({ animationTime }) => animationTime}ms ease-out forwards;
+  height: 100%;
 `;
 
 export const ModalHeader = styled.div<{ isMobile: boolean }>`

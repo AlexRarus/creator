@@ -186,8 +186,8 @@ export const PageForm = (props: IProps) => {
             <PaletteIcon />
           </IconButton>
         )}
-        <AddBlockButtonWrapper>
-          <AwesomeButton onClick={openAddBlockModal()}>
+        <AddBlockButtonWrapper className={'modal-trigger'}>
+          <AwesomeButton className={'modal-trigger'} onClick={openAddBlockModal()}>
             <AddIcon fontSize={'large'} />
           </AwesomeButton>
         </AddBlockButtonWrapper>

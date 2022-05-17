@@ -102,7 +102,7 @@ const getButtonStyles = (props: IButtonStyledProps) => {
         : buttonTheme?.hover?.formed;
 
       return css`
-        border-radius: 3px;
+        border-radius: 8px;
         font-weight: ${({ theme }) => (theme?.isMobile ? 400 : 200)};
 
         :visited,
@@ -131,7 +131,7 @@ const getButtonStyles = (props: IButtonStyledProps) => {
         : buttonTheme?.borderColor?.based;
 
       return css`
-        border-radius: 3px;
+        border-radius: 8px;
         font-weight: ${({ theme }) => (theme?.isMobile ? 400 : 200)};
 
         :visited,

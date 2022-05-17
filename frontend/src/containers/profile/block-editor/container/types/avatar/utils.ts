@@ -19,6 +19,7 @@ export const prepareDataForServer = (rawData: RawData): DataForServer<FormInputs
 
 export const prepareDataToFormValues = (block: IBlock<FormInputs> | null): FormInputs => ({
   dimension: block?.data?.dimension || 'm',
+  isVisible: block?.data?.isVisible || true,
 });
 
 export enum TabValue {

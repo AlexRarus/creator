@@ -9,6 +9,7 @@ export interface ICollapsedListItem {
 // поля формы
 export type FormInputs = {
   items?: ICollapsedListItem[];
+  isVisible?: boolean;
 };
 
 // входные значение с формы создание

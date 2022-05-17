@@ -23,6 +23,7 @@ export interface IListData {
   fontSize?: string;
   template?: string;
   items: IListItem[];
+  isVisible?: boolean;
 }
 
 export interface IListItemWrite {
@@ -45,6 +46,7 @@ export interface ICollapsedListDataWrite {
 
 export interface ICollapsedListData {
   items: IListItem[];
+  isVisible?: boolean;
 }
 
 export interface ICollapsedListItemWrite {

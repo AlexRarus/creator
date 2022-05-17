@@ -70,6 +70,7 @@ export const prepareDataToFormValues = (block: IBlock<IListData> | null): FormIn
     templateOptions.find((option: IOption) => option.value === block?.data?.template) ||
     templateOptions[0],
   items: block?.data?.items || [{ id: Math.random(), title: '', description: '' }],
+  isVisible: block?.data?.isVisible || true,
 });
 
 export enum TabValue {
