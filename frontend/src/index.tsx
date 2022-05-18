@@ -13,3 +13,5 @@ function importBuildTarget() {
 importBuildTarget().then((Environment) => {
   return Environment;
 });
+
+export {};
