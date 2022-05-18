@@ -1,16 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+function importBuildTarget() {
+  switch (process.env.NODE_ENV) {
+    case 'production':
+      return import('./entry.production');
+    case 'development':
+      return import('./entry.development');
+    default:
+      return Promise.reject(new Error('No such build target: ' + process.env.NODE_ENV));
+  }
+}
 
-import Root from './root';
-import './i18n';
-import { AppCommonProvider } from './providers';
-
-ReactDOM.hydrate(
-  <BrowserRouter>
-    <AppCommonProvider>
-      <Root />
-    </AppCommonProvider>
-  </BrowserRouter>,
-  document.getElementById('root')
-);
+// Import the entry point and render it's default export
+importBuildTarget().then((Environment) => {
+  return Environment;
+});

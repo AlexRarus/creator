@@ -66,6 +66,12 @@ docker build -f ./frontend/Dockerfile -t rarus/creator_frontend:latest .
 docker push rarus/creator_frontend:latest
 ```
 
+## Отдельная сборка image ssr
+```shell
+docker build  -f ./frontend/Dockerfile.ssr -t rarus/creator_frontend_ssr:latest .
+docker push rarus/creator_frontend_ssr:latest
+```
+
 ## Отдельная сборка image бэка
 ```shell
 docker build -f ./backend/Dockerfile -t rarus/creator_backend:latest ./backend

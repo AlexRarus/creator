@@ -30,6 +30,19 @@ services:
     volumes:
       - frontend_static_volume:/app/result_build/build/
 
+  frontend_ssr:
+#    build:
+#      context: ../ # нужно для того что-бы подцепить репозиторий .git
+#      dockerfile: ./frontend/Dockerfile.ssr
+    container_name: frontend_ssr
+    image: rarus/creator_frontend_ssr:latest
+    env_file:
+      - ./.env
+    volumes:
+      - frontend_static_volume:/app/build/
+    depends_on:
+      - frontend
+
   redoc:
     image: redocly/redoc
     container_name: redoc

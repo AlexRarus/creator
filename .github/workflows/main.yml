@@ -58,6 +58,28 @@ jobs:
           echo SSL_ENABLED=${{ secrets.SSL_ENABLED }} >> .env
           # запустить написанные разработчиком тесты
           python manage.py test
+  build_and_push_to_docker_hub_frontend_ssr:
+    name: Push Frontend SSR Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    needs: tests
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2 # Проверяет доступность репозитория DockerHub для workflow
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1 # Вызывает сборщик контейнеров docker
+      - name: Login to Docker
+        uses: docker/login-action@v1 # Запуск скрипта авторизации на DockerHub
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Push to Docker Hub
+        uses: docker/build-push-action@v2 # Выполняет push образа в DockerHub
+        with:
+          context: . # Build's context is the set of files located in the specified
+          file: ./frontend/Dockerfile.ssr
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME_FRONTEND_SSR }}:latest
   build_and_push_to_docker_hub_frontend:
     name: Push Frontend Docker image to Docker Hub
     runs-on: ubuntu-latest
@@ -143,6 +165,7 @@ jobs:
               echo YANDEX_S3_ACCESS_KEY_ID=${{ secrets.YANDEX_S3_ACCESS_KEY_ID }} >> .env
               echo YANDEX_S3_SECRET_ACCESS_KEY=${{ secrets.YANDEX_S3_SECRET_ACCESS_KEY }} >> .env
               echo SSL_ENABLED=${{ secrets.SSL_ENABLED }} >> .env
+              echo SSR_API_URL=${{ secrets.SSR_API_URL }} >> .env
               sudo docker-compose up -d
   send_message:
     runs-on: ubuntu-latest

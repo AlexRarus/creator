@@ -1,0 +1,23 @@
+# build_ssr env
+FROM node:16.5.0-alpine as build_ssr
+
+# Install git
+RUN apk update && apk upgrade && \
+    apk add --no-cache bash git openssh
+
+COPY .git/ .git/
+
+WORKDIR /app
+
+# todo КОНТЕКСТ при запуске (через ./deploy/docker-compose.yml) установлен в корне git репозитория
+COPY ./frontend/package*.json ./
+
+RUN npm install
+
+COPY ./frontend/ ./
+
+# Собираем приложение для серверного рендеринга
+RUN npm run build:ssr
+
+# Запускаем сервер
+CMD npm run start:ssr
