@@ -6,7 +6,7 @@ interface IExtraProps {
 
 export interface IRoute {
   path: string;
-  component?: LazyExoticComponent<ComponentType<any>>;
+  component?: LazyExoticComponent<ComponentType<any>> | ComponentType<any>;
   componentExtraProps?: IExtraProps;
   // Preloader for lazy loading
   fallback?: NonNullable<ReactNode> | null;

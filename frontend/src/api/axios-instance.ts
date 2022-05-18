@@ -1,11 +1,12 @@
 import axios, { AxiosInstance } from 'axios';
+import { isSsr } from 'src/utils/detectEnvironment';
 
 import { GlobalEventEmitter } from './event-emitter';
 
 export type { AxiosResponse, AxiosError, AxiosRequestConfig } from 'axios';
 
 export const axiosInstance: AxiosInstance = axios.create({
-  baseURL: `/api/v1/`,
+  baseURL: isSsr ? `${process.env.SSR_API_URL}/api/v1/` : `/api/v1/`,
   validateStatus: (status) => status >= 200 && status < 400,
   timeout: 60000,
 });

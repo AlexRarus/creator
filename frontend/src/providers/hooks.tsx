@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { isBrowser } from 'src/utils/detectEnvironment';
 
 type TThemeType = 'light' | 'dark';
 
@@ -8,10 +9,14 @@ interface IThemeItem {
 
 const initialThemesList: IThemeItem[] = [{ type: 'light' }, { type: 'dark' }];
 
+let defaultTheme = 'light';
+// todo ssr костыль
+if (isBrowser) {
+  defaultTheme = window.localStorage.getItem('theme') || 'light';
+}
+
 export const useThemeMode = () => {
-  const [themeType, setThemeType] = useState<TThemeType>(
-    (window.localStorage.getItem('theme') || 'light') as TThemeType
-  );
+  const [themeType, setThemeType] = useState<TThemeType>(defaultTheme as TThemeType);
   const toggleTheme = (type: TThemeType) => {
     setThemeType(type);
     window.localStorage.setItem('theme', type);

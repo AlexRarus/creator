@@ -8,6 +8,7 @@ import React, {
   useContext,
 } from 'react';
 import { COLORS } from 'src/components/theme';
+import { isBrowser } from 'src/utils/detectEnvironment';
 
 import Modal from './modal';
 import { PlateWrapper, PlateContent, ChildrenWrapper, topPosition, leftPosition } from './style';
@@ -36,6 +37,9 @@ const usePrev = (value: any) => {
 export const REPOSITION_POPUP_MARKER = 'reposition-popup-marker';
 export const PopupContext = React.createContext({} as any);
 export const usePopupContext = () => useContext(PopupContext);
+
+// todo ssr костыль
+const useLayoutEffectSsr = isBrowser ? useLayoutEffect : useEffect;
 
 export default function Popup(props: IProps) {
   const {
@@ -71,7 +75,8 @@ export default function Popup(props: IProps) {
     hasBorder = true,
     hasShadow = true,
   } = props;
-  const isWin = navigator?.appVersion.toLowerCase().includes('win');
+  // todo ssr костыль
+  const isWin = isBrowser ? navigator?.appVersion.toLowerCase().includes('win') : false;
   const prevIsOpen: boolean = usePrev(isOpen);
   const plateRef: RefObject<HTMLDivElement> = useRef(null);
   const [viewPort, setViewPort] = useState<ISize | null>(null);
@@ -217,7 +222,7 @@ export default function Popup(props: IProps) {
     setPosition(); // пересчет позиции
   }, [maxHeight]);
 
-  useLayoutEffect(() => {
+  useLayoutEffectSsr(() => {
     const popupElement: HTMLDivElement | null = plateRef.current;
     const detail: any = detailRef.current;
 

@@ -6,7 +6,7 @@ import Root from './root';
 import './i18n';
 import { AppCommonProvider } from './providers';
 
-ReactDOM.render(
+ReactDOM.hydrate(
   <BrowserRouter>
     <AppCommonProvider>
       <Root />

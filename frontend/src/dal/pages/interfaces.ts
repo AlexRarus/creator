@@ -7,6 +7,8 @@ interface IPageAuthor {
 
 export interface IPage {
   id: number;
+  title: string | null;
+  description: string | null;
   author: IPageAuthor;
   label: string;
   slug: string; // строковый идентификатор страницы, который может задавать пользователь

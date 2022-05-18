@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { createPortal } from 'react-dom';
+import { isBrowser } from 'src/utils/detectEnvironment';
 
 import { GlobalStyle } from './style';
 import NotificationList from './list';
@@ -29,10 +30,12 @@ export default class Notification extends Component<IProps> {
 
   constructor(props: IProps) {
     super(props);
-
-    this.notification = document.createElement('div');
-    this.notification.setAttribute('id', props.parentNodeId || '');
-    document.body.appendChild(this.notification);
+    // todo ssr костыль
+    if (isBrowser) {
+      this.notification = document.createElement('div');
+      this.notification.setAttribute('id', props.parentNodeId || '');
+      document.body.appendChild(this.notification);
+    }
   }
 
   render() {
@@ -45,18 +48,21 @@ export default class Notification extends Component<IProps> {
       locale = 'ru',
     } = this.props;
 
-    return createPortal(
-      <>
-        <GlobalStyle parentNodeId={parentNodeId} isMobile={isMobile} width={width} />
-        <NotificationList
-          isMobile={isMobile}
-          width={width}
-          maxShowItems={maxShowItems}
-          onCloseItem={onCloseItem}
-          locale={locale}
-        />
-      </>,
-      this.notification
-    );
+    // todo ssr костыль
+    return isBrowser
+      ? createPortal(
+          <>
+            <GlobalStyle parentNodeId={parentNodeId} isMobile={isMobile} width={width} />
+            <NotificationList
+              isMobile={isMobile}
+              width={width}
+              maxShowItems={maxShowItems}
+              onCloseItem={onCloseItem}
+              locale={locale}
+            />
+          </>,
+          this.notification
+        )
+      : null;
   }
 }

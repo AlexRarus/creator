@@ -1,4 +1,5 @@
 import React, { useRef, useState, ReactNode, useLayoutEffect, useEffect } from 'react';
+import { isBrowser } from 'src/utils/detectEnvironment';
 
 import { AnimationHeightWrapper } from './style';
 
@@ -8,6 +9,9 @@ interface IProps {
   time?: number;
 }
 
+// todo ssr костыль
+const useLayoutEffectSsr = isBrowser ? useLayoutEffect : useEffect;
+
 export function AnimationHeight(props: IProps) {
   const { isOpen, children, time = 500 } = props;
   const [targetElement, targetRefCallback] = useState<HTMLDivElement | null>(null);
@@ -16,7 +20,7 @@ export function AnimationHeight(props: IProps) {
   const [initialized, setInitialized] = useState(false);
   const timerTransitionEndRef = useRef<number | null>(null);
 
-  useLayoutEffect(() => {
+  useLayoutEffectSsr(() => {
     if (targetElement) {
       const { height } = targetElement.getBoundingClientRect();
       setFullHeight(height);
@@ -26,7 +30,7 @@ export function AnimationHeight(props: IProps) {
       }
     }
   }, [targetElement]);
-  useLayoutEffect(() => {
+  useLayoutEffectSsr(() => {
     if (!isOpen && currentHeight === null && targetElement) {
       const { height } = targetElement.getBoundingClientRect();
       setCurrentHeight(height);
@@ -35,14 +39,14 @@ export function AnimationHeight(props: IProps) {
 
   // закрытие
   // (анимация) установка нулевой высоты
-  useLayoutEffect(() => {
+  useLayoutEffectSsr(() => {
     if (!isOpen && currentHeight) {
       setTimeout(() => setCurrentHeight(0), 0);
     }
   }, [isOpen, currentHeight]);
   // закрытие
   // (подготовка) установка фиксированной высоты
-  useLayoutEffect(() => {
+  useLayoutEffectSsr(() => {
     if (!isOpen && currentHeight === null && targetElement) {
       const { height } = targetElement.getBoundingClientRect();
       setFullHeight(height);
@@ -52,7 +56,7 @@ export function AnimationHeight(props: IProps) {
 
   // открытие
   // установка фиксированной высоты
-  useLayoutEffect(() => {
+  useLayoutEffectSsr(() => {
     if (isOpen && currentHeight !== null && targetElement) {
       setCurrentHeight(fullHeight);
     }

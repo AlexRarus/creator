@@ -3,6 +3,7 @@ import 'react-app-polyfill/stable';
 import React from 'react';
 import * as mobx from 'mobx';
 import { RootStoreProvider } from 'src/dal/store-provider';
+import { isBrowser } from 'src/utils/detectEnvironment';
 
 import { MainThemeProvider } from './main-theme-provider';
 import { AppTypeProvider } from './app-type-provider';
@@ -18,7 +19,10 @@ mobx.configure({
   enforceActions: 'observed',
 });
 
-window['__localeId__'] = 'ru';
+// todo ssr костыль
+if (isBrowser) {
+  window['__localeId__'] = 'ru';
+}
 
 export const AppCommonProvider = (props: any) => {
   const { children } = props;

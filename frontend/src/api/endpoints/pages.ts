@@ -30,7 +30,7 @@ const getConfig = () => ({
     method: 'GET',
   }),
   getPageBySlug: (username: string, pageSlug = 'index') => ({
-    url: `/pages/${username}/${pageSlug}/`,
+    url: `/pages/${username}/${pageSlug || 'index'}/`,
     method: 'GET',
   }),
   createPage: (data: IWritePage) => ({

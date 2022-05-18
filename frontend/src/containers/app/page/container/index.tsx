@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import { TargetBlockTypePreview } from 'src/containers/app/block';
 import { IBlock } from 'src/dal/blocks/interfaces';
@@ -20,8 +21,15 @@ interface IProps {
 
 // TODO тему для отображения пользовательской страницы берем у АВТОРА страницы
 export const PageContainer = observer((props: IProps) => {
-  const { isLoading, getPageBySlugAction, getTemplateBySlugAction, data } = useMapStoreToProps();
   const { username, pageSlug, templateSlug, previewData } = props;
+  const {
+    initialized,
+    isLoading,
+    getPageBySlugAction,
+    getTemplateBySlugAction,
+    data,
+    resetStoreAction,
+  } = useMapStoreToProps();
   const pageData: IPage | null = (previewData || data) as IPage;
   const templateData: ITemplate | null = (previewData || data) as ITemplate;
   const isTemplate = Boolean(templateSlug);
@@ -31,13 +39,17 @@ export const PageContainer = observer((props: IProps) => {
 
   useEffect(() => {
     // если передали данные для предпросмотр то НЕ запрашиваем с бэка
-    if (!previewData && username) {
+    if (!initialized && !previewData && username) {
       getPageBySlugAction(username, pageSlug);
     }
-    if (!previewData && templateSlug) {
+    if (!initialized && !previewData && templateSlug) {
       getTemplateBySlugAction(templateSlug);
     }
-  }, [username, pageSlug, templateSlug, previewData]);
+
+    return () => resetStoreAction();
+  }, [initialized, username, pageSlug, templateSlug, previewData]);
+
+  console.log('data', data && toJS(data));
 
   return (
     <SelectedThemeProvider selectedTheme={theme}>
@@ -45,7 +57,7 @@ export const PageContainer = observer((props: IProps) => {
         <UserThemeBackground theme={theme}>
           {isLoading && 'Loading...'}
           {pageData &&
-            pageData.blocks.map((block: IBlock<any>) => (
+            pageData.blocks?.map((block: IBlock<any>) => (
               <BlockPositioning key={block.id} isSection={block.type === 'section'}>
                 <TargetBlockTypePreview block={block} />
               </BlockPositioning>

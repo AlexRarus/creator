@@ -8,6 +8,7 @@ import {
 import { AxiosResponse } from 'axios';
 import { History } from 'history';
 import { addNotificationItem } from 'src/components/notification';
+import { isBrowser } from 'src/utils/detectEnvironment';
 
 import { IRootStore } from '../interfaces';
 
@@ -27,8 +28,9 @@ export default class DalAuthStore {
 
   isLoading = false;
   user: IUser | null = null;
-  access: string | null = localStorage.getItem('access');
-  refresh: string | null = localStorage.getItem('refresh');
+  // todo ssr костыль
+  access: string | null = isBrowser ? window.localStorage.getItem('access') : null;
+  refresh: string | null = isBrowser ? window.localStorage.getItem('refresh') : null;
 
   constructor(RootStore: IRootStore, routerStore: History) {
     this.rootStore = RootStore;

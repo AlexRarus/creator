@@ -1,7 +1,6 @@
-/* eslint import/dynamic-import-chunkname: 0 */
-/* eslint react/display-name: 0 */
-//
-import { lazy } from 'react';
+import Landing from 'src/containers/app/main';
+import UserPage from 'src/containers/app/page';
+import Page404 from 'src/containers/404';
 
 import { IRoute } from '../interfaces';
 
@@ -9,20 +8,16 @@ const appRoutes: IRoute[] = [
   {
     exact: true,
     path: `/`,
-    component: lazy(() =>
-      import(/* webpackChunkName: "page_landing_main" */ 'src/containers/app/main')
-    ),
+    component: Landing,
   },
   {
     exact: true,
     path: `/:username/:pageSlug?`,
-    component: lazy(() =>
-      import(/* webpackChunkName: "page_landing_main" */ 'src/containers/app/page')
-    ),
+    component: UserPage,
   },
   {
     path: `*`,
-    component: lazy(() => import(/* webpackChunkName: "page_404" */ 'src/containers/404')),
+    component: Page404,
   },
 ];
 

@@ -10,6 +10,7 @@ class PageStore {
   rootStore!: IRootStore;
   routerStore!: History;
 
+  initialized = false;
   isLoading = false;
   data: IPage | ITemplate | null = null;
 
@@ -24,12 +25,21 @@ class PageStore {
     this.routerStore = RootStore.routing;
   }
 
+  initSsrAction = (ssrComponentData: any) => {
+    // при серверном рендеринге заполняем стор данными
+    if (ssrComponentData) {
+      this.data = ssrComponentData as IPage | null;
+      this.initialized = true;
+    }
+  };
+
   getPageBySlugAction = flow(function* (this: PageStore, username: string, pageSlug?: string) {
     try {
       this.isLoading = true;
       const response = yield this.API.pages.getPageBySlug(username, pageSlug);
       this.data = response.data;
       this.isLoading = false;
+      this.initialized = true;
     } catch (e) {
       console.log('getPageBySlugAction', e);
       if (e.response.status === 404) {
@@ -45,11 +55,17 @@ class PageStore {
       const response = yield this.API.templates.getTemplateBySlug(templateSlug);
       this.data = response.data;
       this.isLoading = false;
+      this.initialized = true;
     } catch (e) {
       console.log('getTemplateBySlugAction', e);
       this.isLoading = false;
     }
   });
+
+  resetStoreAction = () => {
+    this.data = null;
+    this.initialized = false;
+  };
 }
 
 export const store = new PageStore(RootStore);
