@@ -8,9 +8,5 @@ export const useSsrComponentData = () => {
   const ssrContext = isSsr ? staticContext : SSR_INITIAL_STATE;
   const isTargetUrl = pathname === ssrContext?.url;
 
-  console.log('staticContext', staticContext);
-  console.log('ssrContext?.url', ssrContext?.url);
-  console.log('pathname', pathname);
-
   return isTargetUrl ? ssrContext.componentData : null;
 };
