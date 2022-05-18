@@ -1,7 +1,7 @@
 import { IImage } from '../images/interfaces';
+import { IOption } from '../../components/select';
 
 import { IBlock } from './interfaces';
-import { IOption } from '../../components/select';
 
 export interface ISectionData {
   id?: number;
@@ -22,6 +22,7 @@ export interface ISectionData {
   paddingBottom: string;
   paddingRight: string;
   paddingLeft: string;
+  isVisible?: boolean;
 }
 
 export interface ISectionDataWrite {

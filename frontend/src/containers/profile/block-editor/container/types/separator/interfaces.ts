@@ -7,6 +7,7 @@ export interface FormInputs {
   value: string;
   kind: string;
   icon?: IButtonIcon;
+  isVisible?: boolean;
 }
 
 export interface IButtonIcon {

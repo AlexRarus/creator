@@ -123,11 +123,12 @@ export const DroppableList = (props: IProps) => {
   };
 
   const onClickEditBlock = (block: IBlock<any>) => (event: any) => {
+    console.log('CLICK');
     setSelectedBlock(block);
   };
 
   const onClickStopPropagation = (event: any) => {
-    event.stopPropagation();
+    // event.stopPropagation();
   };
 
   return (
@@ -154,7 +155,8 @@ export const DroppableList = (props: IProps) => {
                       {(provided: any, snapshot: any) =>
                         block.type === 'section' ? (
                           <SectionDraggable
-                            onMouseUp={onClickEditBlock(block)}
+                            className={'modal-trigger'}
+                            onClick={onClickEditBlock(block)}
                             isDragging={snapshot.isDragging}
                             ref={provided.innerRef}
                             {...provided.dragHandleProps}
@@ -180,7 +182,8 @@ export const DroppableList = (props: IProps) => {
                           </SectionDraggable>
                         ) : (
                           <DraggableItem
-                            onMouseUp={onClickEditBlock(block)}
+                            className={'modal-trigger'}
+                            onClick={onClickEditBlock(block)}
                             isDragging={snapshot.isDragging}
                             type={block.type}
                             ref={provided.innerRef}
@@ -193,9 +196,7 @@ export const DroppableList = (props: IProps) => {
                             index={index + 1}
                             key={block.id}>
                             <>
-                              <DragHandleZone
-                                onClick={onClickStopPropagation}
-                                isDragging={snapshot.isDragging}>
+                              <DragHandleZone isDragging={snapshot.isDragging}>
                                 <DragIcon isDragging={snapshot.isDragging}>
                                   {typeIconsMap[block.type]}
                                 </DragIcon>

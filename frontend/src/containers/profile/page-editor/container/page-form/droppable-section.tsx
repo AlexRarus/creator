@@ -47,6 +47,7 @@ export const DroppableSection = (props: IProps) => {
                 index={index}>
                 {(provided, snapshot) => (
                   <DraggableItem
+                    className={'modal-trigger'}
                     onMouseUp={onClickEditBlock(block)}
                     isDragging={snapshot.isDragging}
                     type={block.type}

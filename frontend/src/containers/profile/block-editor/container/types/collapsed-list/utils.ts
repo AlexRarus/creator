@@ -27,6 +27,7 @@ export const prepareDataForServer = (rawData: RawData): DataForServer<ICollapsed
 
 export const prepareDataToFormValues = (block: IBlock<ICollapsedListData> | null): FormInputs => ({
   items: block?.data?.items || [{ id: Math.random(), title: '', description: '' }],
+  isVisible: block?.data?.isVisible || true,
 });
 
 export enum TabValue {

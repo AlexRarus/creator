@@ -20,7 +20,7 @@ export enum DesktopSize {
 }
 
 export interface IPropsModal {
-  onClose(event: React.MouseEvent<HTMLDivElement>): void;
+  onClose(event?: React.MouseEvent<HTMLDivElement>): void;
   isCloseOutside?: boolean;
   hasCloseButton?: boolean;
   padding?: string | null; // по дефолту паддинга нет совсем

@@ -181,6 +181,7 @@ export const prepareDataToFormValues = (block: IBlock<ISectionData> | null): For
     paddingRight: block?.data?.paddingRight || '0',
     paddingLeft: block?.data?.paddingLeft || '0',
     borderRadius: block?.data?.borderRadius || '0',
+    isVisible: block?.data?.isVisible || true,
   };
 };
 

@@ -7,13 +7,14 @@ import { IButtonDataWrite } from 'src/dal/blocks/button-interfaces';
 import { useSubmitBlockForm } from 'src/api/hooks/submit-forms/block/useSubmitBlockForm';
 
 import { FormWrapper } from '../../style';
+import { SettingsTab } from '../settings-tab';
 
 import { FormInputs, RawData } from './interfaces';
 import { useMapStoreToProps } from './selectors';
 import { ButtonFormWrapper } from './style';
 import { ButtonFields } from './fields';
 import { ButtonKinds } from './kinds';
-import { TabValue, blockTabs, prepareDataForServer, blockActions } from './utils';
+import { TabValue, blockTabs, prepareDataForServer } from './utils';
 
 interface IProps {
   pageSlug?: string;
@@ -107,7 +108,7 @@ export const ButtonForm = observer((props: IProps) => {
         // тут фому НЕ закрываем так как с бэка могли вернуться ошибки
         break;
       case 'cancel':
-        onCancel();
+        isEditing ? onClose() : onCancel();
         break;
       case 'delete':
         deleteBlockAction(blockId as number);
@@ -118,14 +119,23 @@ export const ButtonForm = observer((props: IProps) => {
     }
   };
 
+  const onDeleteBlock = () => {
+    deleteBlockAction(blockId as number);
+    onClose();
+  };
+
+  const onCloneBlock = () => {
+    console.log('CLONE');
+  };
+
+  const toggleHideBlock = () => {
+    console.log('toggle hide');
+  };
+
   return (
     <ButtonFormWrapper>
       <Tabs tabs={tabs} activeTab={activeTab} onChangeTab={onChangeTab} />
-      <Form
-        onAction={onAction}
-        actions={isEditing ? blockActions : []}
-        isValid={isValid}
-        submitActionLabel='Сохранить'>
+      <Form onAction={onAction} isValid={isValid} submitActionLabel='Сохранить'>
         <FormProvider {...methods}>
           <FormWrapper>
             <TabContainer value={TabValue.button} activeTabValue={activeTab.value}>
@@ -135,7 +145,13 @@ export const ButtonForm = observer((props: IProps) => {
               <ButtonKinds />
             </TabContainer>
             <TabContainer value={TabValue.settings} activeTabValue={activeTab.value}>
-              Tab settings content
+              <SettingsTab
+                isLoading={isLoading}
+                isVisible={formDefaultValues?.isVisible}
+                toggleHide={toggleHideBlock}
+                onClone={onCloneBlock}
+                onRemove={onDeleteBlock}
+              />
             </TabContainer>
           </FormWrapper>
         </FormProvider>

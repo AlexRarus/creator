@@ -18,6 +18,7 @@ export const prepareDataForServer = (rawData: RawData): DataForServer<FormInputs
 
 export const prepareDataToFormValues = (block: IBlock<FormInputs> | null): FormInputs => ({
   text: block?.data?.text,
+  isVisible: block?.data?.isVisible || true,
 });
 
 export enum TabValue {

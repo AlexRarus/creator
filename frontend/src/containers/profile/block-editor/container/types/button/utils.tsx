@@ -66,6 +66,7 @@ export const prepareDataToFormValues = (block: IBlock<IButtonData> | null): Form
     icon: block?.data?.icon || null,
     backgroundColor: block?.data.backgroundColor || '',
     color: block?.data?.color || '',
+    isVisible: block?.data?.isVisible || true,
   };
 };
 
