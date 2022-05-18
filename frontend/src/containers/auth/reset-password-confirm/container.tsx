@@ -17,6 +17,7 @@ import { useMapStoreToProps } from './selectors';
 interface IParams {
   uid: string;
   token: string;
+  [key: string]: string | undefined;
 }
 
 type FormInputs = {
@@ -43,7 +44,8 @@ export const ResetPasswordConfirmPageContainer = observer(() => {
   const onSubmit = (data: FormInputs) =>
     resetPasswordConfirmAction({
       new_password: data.newPassword,
-      ...params,
+      uid: params.uid as string,
+      token: params.token as string,
       next,
     });
 

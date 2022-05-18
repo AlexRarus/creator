@@ -4,7 +4,8 @@ import path from 'path';
 import fs from 'fs';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { StaticRouter, matchPath } from 'react-router-dom';
+import { StaticRouter } from 'react-router-dom/server';
+import { matchPath } from 'react-router-dom';
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 import Root from 'src/root';
 import { AppCommonProvider } from 'src/providers';
@@ -25,15 +26,15 @@ app.use(cookieParser('secret'));
 // в ответ на любые другие запросы отправляем 'index.html'
 app.get('*', async (req: any, res: any) => {
   // получаем совпадающий роут
-  const matchRoute: any = routes.find((route) => matchPath(req.originalUrl, route));
+  const matchRoute: any = routes.find((route) => matchPath(route as any, req.originalUrl as any));
   const params = getPathParams(req.originalUrl, matchRoute);
 
   // получаем данные совпавшего компонента
   let componentData = null;
   let SSR_INITIAL_STATE = null;
 
-  if (typeof matchRoute.component.fetchData === 'function') {
-    componentData = await matchRoute.component.fetchData(params);
+  if (typeof matchRoute?.Component?.fetchData === 'function') {
+    componentData = await matchRoute.Component.fetchData(params);
 
     SSR_INITIAL_STATE = {
       componentData,

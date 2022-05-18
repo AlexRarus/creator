@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { IUser } from 'src/dal/auth/interfaces';
 import { IPage } from 'src/dal/pages/interfaces';
 import { VerticalSlide } from 'src/components/animations';
@@ -30,7 +30,7 @@ interface IProps {
 
 export const DesktopMenu = (props: IProps) => {
   const { user, logoutAction, selectedPage, isProfile, menuItems } = props;
-  const history = useHistory();
+  const navigate = useNavigate();
   const isHideMenu: boolean = useScrollDirection(false, 15, 15);
   const { pathname } = useLocation();
 
@@ -38,7 +38,7 @@ export const DesktopMenu = (props: IProps) => {
     const link = user
       ? `/profile/${user.username}/pages/${selectedPage?.slug}/`
       : `${pathname === '/auth/login/' ? '/auth/registration' : '/auth/login/'}`;
-    history.push(link);
+    navigate(link);
   };
 
   return (
@@ -52,7 +52,6 @@ export const DesktopMenu = (props: IProps) => {
             {menuItems.map((menuItem: IMenuItem) => (
               <MenuItem
                 key={menuItem.url}
-                activeClassName='selected'
                 to={menuItem.url
                   .replace(/{{username}}/gim, user?.username || '')
                   .replace(/{{pageSlug}}/gim, selectedPage?.slug || '')}>

@@ -3,7 +3,7 @@ import { ITemplate } from 'src/dal/templates/interfaces';
 import { IBlock } from 'src/dal/blocks/interfaces';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import {
   TemplatePreviewWrapper,
@@ -24,14 +24,14 @@ interface IProps {
 
 export const TemplatePreviewItem = (props: IProps) => {
   const { template, onClick, onRemoveTemplate } = props;
-  const { push } = useHistory();
+  const navigate = useNavigate();
 
   const clickHandler = () => {
     onClick(template);
   };
 
   const editHandler = () => {
-    push(`/profile/templates/${template.slug}/`);
+    navigate(`/profile/templates/${template.slug}/`);
   };
 
   const removeHandler = () => {

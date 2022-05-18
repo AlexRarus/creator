@@ -6,18 +6,21 @@ import { IRoute } from '../interfaces';
 
 const appRoutes: IRoute[] = [
   {
-    exact: true,
+    index: true,
     path: `/`,
-    component: Landing,
+    Component: Landing,
   },
   {
-    exact: true,
-    path: `/:username/:pageSlug?`,
-    component: UserPage,
+    path: `/:username/:pageSlug`,
+    Component: UserPage,
+  },
+  {
+    path: `/:username`,
+    Component: UserPage,
   },
   {
     path: `*`,
-    component: Page404,
+    Component: Page404,
   },
 ];
 

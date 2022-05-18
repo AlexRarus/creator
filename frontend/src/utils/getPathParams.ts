@@ -1,6 +1,4 @@
-import { match } from 'react-router';
-
-export function getPathParams(url: string, matchPath: match | null) {
+export function getPathParams(url: string, matchPath: any | null) {
   if (!matchPath) {
     return null;
   }

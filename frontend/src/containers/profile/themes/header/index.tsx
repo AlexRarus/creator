@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import ButtonGroup, { IButton } from 'src/components/buttons-group';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { IThemeType } from 'src/dal/themes/interfaces';
 
@@ -26,7 +26,7 @@ export const ThemesHeader = (props: IProps) => {
   const [headerHeight, setHeaderHeight] = useState(0);
   const [hasLeftScroll, setHasLeftScroll] = useState(false);
   const [hasRightScroll, setHasRightScroll] = useState(false);
-  const history = useHistory();
+  const navigate = useNavigate();
   const { i18n, t } = useTranslation('themes');
 
   const themesButtons: IButton[] = useMemo(
@@ -39,7 +39,7 @@ export const ThemesHeader = (props: IProps) => {
   );
 
   const changeThemeType = (value: string) => {
-    history.push(`/profile/${username}/themes/${value}`);
+    navigate(`/profile/${username}/themes/${value}`);
   };
 
   useEffect(() => {

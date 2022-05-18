@@ -63,4 +63,5 @@ services:
       - ../ssl:/etc/nginx/ssl/  # <- cert
     depends_on:
       - django
+      - frontend_ssr
       - redoc

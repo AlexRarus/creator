@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { IBlock } from 'src/dal/blocks/interfaces';
 import { IPage } from 'src/dal/pages/interfaces';
 import { ITemplate } from 'src/dal/templates/interfaces';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import PaletteIcon from '@mui/icons-material/Palette';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -72,7 +72,7 @@ export const PageForm = (props: IProps) => {
   const [isCheckBlocks, setCheckBlocks] = useState(false);
   const [checkedBlocks, setCheckedBlocks] = useState<IBlock<any>[]>([]);
   const [checkedBlockSmallestIndex, setCheckedBlockSmallestIndex] = useState<number>();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const closeSettingsPopupHandler = () => setIsOpen(false);
   const toggleSettingsPopupHandler = () => setIsOpen(!isOpen);
@@ -133,7 +133,7 @@ export const PageForm = (props: IProps) => {
     setSelectedBlock(null);
   };
 
-  const toThemesPage = () => history.push(`/profile/${username}/themes/`);
+  const toThemesPage = () => navigate(`/profile/${username}/themes/`);
 
   // todo на успешную отправку формы нужно вызвать onUpdateForm БЕЗ аргументов
   const onSuccessSubmitBlock = () => onUpdateForm();

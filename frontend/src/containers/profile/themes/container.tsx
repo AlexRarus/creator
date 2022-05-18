@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 // import { useThemeContext } from 'src/providers/main-theme-provider';
 import { observer } from 'mobx-react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ITheme } from 'src/dal/themes/interfaces';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 // import AddIcon from '@mui/icons-material/Add';
@@ -47,7 +47,7 @@ export const ThemesContainer = observer((props: any) => {
     themesTypes,
     getThemesTypesAction,
   } = useMapStoreToProps();
-  const history = useHistory();
+  const navigate = useNavigate();
   const activeTheme = themes[activeThemeIndex as number];
 
   useEffect(() => {
@@ -65,7 +65,7 @@ export const ThemesContainer = observer((props: any) => {
   useEffect(() => {
     // редирект
     if (!themeType && themesTypes.length) {
-      history.replace(`${themesTypes[0].slug}`);
+      navigate(`${themesTypes[0].slug}`, { replace: true });
     }
   }, [themeType, themesTypes.length]);
 
@@ -88,8 +88,7 @@ export const ThemesContainer = observer((props: any) => {
     setActiveThemeIndex(realIndex);
   };
 
-  const toEditPage = () =>
-    history.push(`/profile/${username}/pages/${selectedPage?.slug || 'main'}`);
+  const toEditPage = () => navigate(`/profile/${username}/pages/${selectedPage?.slug || 'main'}`);
 
   const closeEditingThemeModal = () => {
     setEditingThemeId(null);

@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 import { AvatarBlock } from './avatar-block';
 import { AccountDataBlock } from './account-data-block';
@@ -16,7 +16,7 @@ export const SettingsContainer = observer((props: IProps) => {
   const { username } = props;
 
   if (user && user?.username !== username) {
-    return <Redirect to={`/profile/${user?.username}/settings/`} />;
+    return <Navigate to={`/profile/${user?.username}/settings/`} replace={true} />;
   }
 
   return (

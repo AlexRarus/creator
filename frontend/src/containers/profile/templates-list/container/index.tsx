@@ -4,7 +4,7 @@ import { Grid, GridColumn } from 'src/components/grid';
 import { Confirm } from 'src/components/confirm';
 import { ITemplate } from 'src/dal/templates/interfaces';
 import AddIcon from '@mui/icons-material/Add';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { AddTemplateModal } from './add-template-modal';
 import { TemplatePreviewItem } from './template-preview-item';
@@ -25,7 +25,7 @@ export const TemplatesListContainer = observer((props: any) => {
     createPageByTemplate,
     deleteTemplateAction,
   } = useMapStoreToProps();
-  const { push } = useHistory();
+  const navigate = useNavigate();
   const [confirmTemplate, setConfirmTemplate] = useState<ITemplate | null>(null);
   const [isOpenAddTemplateModal, setIsOpenAddTemplateModal] = useState(false);
   const [removingTemplate, setRemovingTemplate] = useState<ITemplate | null>(null);
@@ -49,7 +49,7 @@ export const TemplatesListContainer = observer((props: any) => {
   const openAddTemplateModal = () => setIsOpenAddTemplateModal(true);
   const closeAddTemplateModal = () => setIsOpenAddTemplateModal(false);
 
-  const onSuccessAddTemplate = (data: any) => push(`/profile/templates/${data.slug}/`);
+  const onSuccessAddTemplate = (data: any) => navigate(`/profile/templates/${data.slug}/`);
 
   const onConfirmRemoveTemplate = () => {
     if (removingTemplate) {

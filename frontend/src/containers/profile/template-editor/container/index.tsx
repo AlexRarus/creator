@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { GridColumn } from 'src/components/grid';
 import { DeviceContainer } from 'src/containers/profile/device-wrapper/new-iphone';
 import { SelectedThemeProvider } from 'src/providers/selected-theme-provider';
@@ -42,7 +42,7 @@ export const TemplateEditorContainer = observer((props: IProps) => {
   const { appType } = useAppTypeContext();
   const { templateSlug } = props;
   const [templateSettingsModalTab, setTemplateSettingsModalTab] = useState<TabValue | null>(null);
-  const { replace } = useHistory();
+  const navigate = useNavigate();
   const [initialized, setInitialized] = useState(false);
 
   const openTemplateSettingsModal = (activeTab = TabValue.LINK) => () =>
@@ -71,7 +71,7 @@ export const TemplateEditorContainer = observer((props: IProps) => {
   // todo передавать slug ТОЛЬКО если он изменился в настройках страницы
   const onUpdateTemplateForm = (slug?: string) => {
     if (slug) {
-      replace(`/profile/templates/${slug}`);
+      navigate(`/profile/templates/${slug}`, { replace: true });
     } else {
       updateSelectedTemplateAction();
     }

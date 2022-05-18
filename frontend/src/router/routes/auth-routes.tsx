@@ -7,56 +7,46 @@ import { IRoute } from '../interfaces';
 
 const authRoutes: IRoute[] = [
   {
-    exact: true,
     path: `/auth/login`,
-    component: lazy(() =>
+    Component: lazy(() =>
       import(/* webpackChunkName: "page_auth_login" */ 'src/containers/auth/login')
     ),
   },
   {
-    exact: true,
     path: `/auth/registration`,
-    component: lazy(() =>
+    Component: lazy(() =>
       import(/* webpackChunkName: "page_auth_registration" */ 'src/containers/auth/registration')
     ),
   },
   {
-    exact: true,
     path: `/auth/registration-confirm/:uid/:token`,
-    component: lazy(() =>
+    Component: lazy(() =>
       import(
         /* webpackChunkName: "page_auth_registration_confirm" */ 'src/containers/auth/registration-confirm'
       )
     ),
   },
   {
-    exact: true,
     path: `/auth/reset-password`,
-    component: lazy(() =>
+    Component: lazy(() =>
       import(
         /* webpackChunkName: "page_auth_reset_password" */ 'src/containers/auth/reset-password'
       )
     ),
   },
   {
-    exact: true,
     path: `/auth/reset-password-confirm/:uid/:token`,
-    component: lazy(() =>
+    Component: lazy(() =>
       import(
         /* webpackChunkName: "page_auth_reset_password_confiem" */ 'src/containers/auth/reset-password-confirm'
       )
     ),
   },
   {
-    exact: true,
     path: `/auth/message`,
-    component: lazy(() =>
+    Component: lazy(() =>
       import(/* webpackChunkName: "page_auth_message" */ 'src/containers/auth/message')
     ),
-  },
-  {
-    path: `*`,
-    component: lazy(() => import(/* webpackChunkName: "page_404" */ 'src/containers/404')),
   },
 ];
 

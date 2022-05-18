@@ -9,7 +9,7 @@ import { store } from './container/store';
 interface IParams {
   username: string;
   pageSlug: string;
-  staticContext?: any; // контекст из StaticRouter для SSR
+  [key: string]: string | undefined;
 }
 
 // отображение пользовательской страницы

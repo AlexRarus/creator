@@ -1,12 +1,10 @@
-import { History } from 'history';
-
 class BrowserHistoryStore {
   static instance: BrowserHistoryStore;
 
-  public routing: History;
+  public routing: any;
 
-  set historyRouter(__historyRouter__: History) {
-    this.routing = __historyRouter__;
+  set navigate(__navigate__: any) {
+    this.routing = __navigate__;
   }
 
   constructor() {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { IUser } from 'src/dal/auth/interfaces';
 import { IPage } from 'src/dal/pages/interfaces';
 
@@ -19,7 +19,7 @@ interface IProps {
 
 export const AccountDataBlock = (props: IProps) => {
   const { user, selectedPage } = props;
-  const { replace } = useHistory();
+  const navigate = useNavigate();
   const [isOpenChangeEmail, setIsOpenChangeEmail] = useState(false);
   const [isOpenChangeUsername, setIsOpenChangeUsername] = useState(false);
   const [isOpenChangePassword, setIsOpenChangePassword] = useState(false);
@@ -34,7 +34,7 @@ export const AccountDataBlock = (props: IProps) => {
 
   const onSuccessSubmitEmail = (data: any) => console.log('onSuccessSubmitEmail', data);
   const onSuccessSubmitUsername = (data: any) => {
-    replace(`/profile/${data.username}/settings/`);
+    navigate(`/profile/${data.username}/settings/`, { replace: true });
   };
   const onSuccessSubmitPassword = (data: any) => console.log('onSuccessSubmitPassword', data);
 

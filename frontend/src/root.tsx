@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
-import { Route, Switch } from 'react-router-dom';
-import AuthApp from 'src/apps/auth-app';
-import ProfileApp from 'src/apps/profile-app';
-import App from 'src/apps/app';
 import Notification from 'src/components/notification';
 import { ScrollGlobalStyle } from 'src/utils/scroll';
 import { useAppTypeContext } from 'src/providers/app-type-provider';
 import API from 'src/api';
 import { useHackDndContext } from 'src/providers/hack-dnd-provider';
+import { Route, Routes } from 'react-router-dom';
+import { isBrowser } from 'src/utils/detectEnvironment';
+import { HasAuthProvider } from 'src/providers/has-auth-provider';
 
 import { useMapStoreToProps } from './selectors';
 import { GlobalStyleApp } from './style';
+import authRoutes from './router/routes/auth-routes';
+import profileRoutes from './router/routes/profile-routes';
+import appRoutes from './router/routes/app-routes';
+import { ProtectedRoute } from './router/protected-route';
 
+const SsrCompatibleSuspense = isBrowser ? Suspense : ({ children }: any) => children;
 const Root = observer((props: any) => {
   const { initAuthAction, logoutAction, access } = useMapStoreToProps();
   const { appType } = useAppTypeContext();
@@ -94,16 +98,48 @@ const Root = observer((props: any) => {
   }, [access]);
 
   return (
-    <>
+    <HasAuthProvider access={access}>
       <GlobalStyleApp appType={appType} isDragging={isDragging} />
       <ScrollGlobalStyle />
       <Notification maxShowItems={5} />
-      <Switch>
-        {!access && <Route path='/auth' render={() => <AuthApp />} />}
-        {access && <Route path='/profile' render={() => <ProfileApp />} />}
-        <Route path='/' render={() => <App />} />
-      </Switch>
-    </>
+      <SsrCompatibleSuspense fallback={''}>
+        <Routes>
+          <Route path='/auth'>
+            {authRoutes.map(({ index, path, Component }: any) => (
+              <Route
+                key={path}
+                index={index}
+                path={path}
+                element={
+                  <ProtectedRoute allow={!access}>
+                    <Component />
+                  </ProtectedRoute>
+                }
+              />
+            ))}
+          </Route>
+          <Route path='/profile'>
+            {profileRoutes.map(({ index, path, Component }: any) => (
+              <Route
+                key={path}
+                index={index}
+                path={path}
+                element={
+                  <ProtectedRoute allow={Boolean(access)}>
+                    <Component />
+                  </ProtectedRoute>
+                }
+              />
+            ))}
+          </Route>
+          <Route path='/'>
+            {appRoutes.map(({ index, path, Component }: any) => (
+              <Route key={path} index={index} path={path} element={<Component />} />
+            ))}
+          </Route>
+        </Routes>
+      </SsrCompatibleSuspense>
+    </HasAuthProvider>
   );
 });
 

@@ -1,5 +1,5 @@
 import React, { createContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useThemeContext } from 'src/providers/main-theme-provider';
 import { ThemeProvider } from 'styled-components';
 
@@ -13,7 +13,7 @@ export const StoreProvider = StoreContext.Provider;
 // eslint-disable-next-line react/prop-types
 export const RootStoreProvider = (props: any) => {
   const { DEVICE_THEME } = useThemeContext();
-  BrowserHistoryStore.historyRouter = useHistory();
+  BrowserHistoryStore.navigate = useNavigate();
   RootStore.init();
 
   return (

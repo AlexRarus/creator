@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { GridColumn } from 'src/components/grid';
 import { useIsAuthor } from 'src/utils/useIsAuthor';
 import { DeviceContainer } from 'src/containers/profile/device-wrapper/new-iphone';
@@ -61,7 +61,7 @@ export const PageEditorContainer = observer((props: IProps) => {
   const { username, pageSlug } = props;
   const [pageSettingsModalTab, setPageSettingsModalTab] = useState<TabValue | null>(null);
   const [copyBlinkId, setCopyBlinkId] = useState<string>();
-  const { replace } = useHistory();
+  const navigate = useNavigate();
   const isAuthor = useIsAuthor(username);
   const [initialized, setInitialized] = useState(false);
   const isIndexPage = user?.index_page?.id === data?.id;
@@ -96,7 +96,7 @@ export const PageEditorContainer = observer((props: IProps) => {
       // todo обновление юзера приводит к перезапросу данных страницы,
       //  но еще мы должны сделать REPLACE потому что у пользователя мог изменится username
       const me = await updateMeAction();
-      replace(`/profile/${me.username}/pages/${pageSlug}`);
+      navigate(`/profile/${me.username}/pages/${pageSlug}`, { replace: true });
     } else {
       updateMyPageAction();
     }

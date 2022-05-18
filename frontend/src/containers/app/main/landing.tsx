@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react';
 import { useForm } from 'react-hook-form';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import InputText from 'src/components/input-text';
 import Button from 'src/components/button';
 import { COLORS } from 'src/components/theme';
@@ -85,10 +85,10 @@ export const LandingContainer = observer(() => {
     setSelectedAllow(nextAllow);
   };
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const onClickStart = () => {
-    history.push(`auth/registration?email=${username}`);
+    navigate(`auth/registration?email=${username}`);
   };
 
   return (

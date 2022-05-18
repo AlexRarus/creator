@@ -4,7 +4,7 @@ import { Grid, GridColumn } from 'src/components/grid';
 import { useIsAuthor } from 'src/utils/useIsAuthor';
 import { IPage } from 'src/dal/pages/interfaces';
 import AddIcon from '@mui/icons-material/Add';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Confirm } from 'src/components/confirm';
 
 import { AddPageModal } from './add-page-modal';
@@ -31,7 +31,7 @@ export const PagesListContainer = observer((props: IProps) => {
     deletePageAction,
   } = useMapStoreToProps();
   const { username } = props;
-  const { push } = useHistory();
+  const navigate = useNavigate();
   const isAuthor = useIsAuthor(username);
   const [isOpenAddPageModal, setIsOpenAddPageModal] = useState(false);
   const [removingPage, setRemovingPage] = useState<IPage | null>(null);
@@ -46,7 +46,7 @@ export const PagesListContainer = observer((props: IProps) => {
   const closeAddPageModal = () => setIsOpenAddPageModal(false);
 
   const onSuccessAddPage = (data: any) => {
-    push(`/profile/${username}/pages/${data.slug}/`);
+    navigate(`/profile/${username}/pages/${data.slug}/`);
   };
 
   const onConfirmRemovePage = () => {

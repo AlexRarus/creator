@@ -12,6 +12,7 @@ import { useMapStoreToProps } from './selectors';
 interface IParams {
   uid: string;
   token: string;
+  [key: string]: string | undefined;
 }
 
 export const RegistrationConfirmPageContainer = observer(() => {
@@ -22,7 +23,11 @@ export const RegistrationConfirmPageContainer = observer(() => {
   });
 
   useEffect(() => {
-    registrationConfirmAction({ ...params, next });
+    registrationConfirmAction({
+      uid: params.uid as string,
+      token: params.token as string,
+      next,
+    });
   }, []);
 
   // TODO здесь можно вывести лоадер запроса registrationConfirmAction и в случае неудачи показать информативное сообщение
