@@ -101,3 +101,5 @@ ssh user@example.com
 > API доступно на: [http://178.154.216.28/api/](http://178.154.216.28/api/)
 
 > **Внимание:** Проект запускается на адресе: [http://178.154.216.28/](http://178.154.216.28/)
+
+docker exec -it <mycontainer> bash

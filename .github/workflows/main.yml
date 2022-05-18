@@ -152,6 +152,7 @@ jobs:
               # удалем все не используемые имаджи перед скачиванием обновленных
               sudo docker image prune -fa
               sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME_FRONTEND }}:latest
+              sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME_FRONTEND_SSR }}:latest
               sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME_BACKEND }}:latest
               sudo docker-compose stop
               sudo docker-compose rm django frontend
