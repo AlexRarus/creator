@@ -15,7 +15,7 @@ interface IParams {
 // отображение пользовательской страницы
 const Page = (props: any) => {
   const params = useParams<IParams>();
-  const ssrComponentData = useSsrComponentData(props.staticContext);
+  const ssrComponentData = useSsrComponentData();
   store.initSsrAction(ssrComponentData);
 
   return <PageContainer {...props} {...params} />;

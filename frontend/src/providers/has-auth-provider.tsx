@@ -8,11 +8,6 @@ interface IProps {
   access: string | null;
 }
 
-/**
- * Закидываем в провайдер нужную пользовательскую тему и она будет доступна везде в атрибуте selectedTheme
- * @param props
- * @constructor
- */
 export const HasAuthProvider = (props: IProps) => {
   const { access, children } = props;
 

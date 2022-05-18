@@ -11,6 +11,7 @@ import Root from 'src/root';
 import { AppCommonProvider } from 'src/providers';
 import routes from 'src/router/routes/app-routes';
 import { getPathParams } from 'src/utils/getPathParams';
+import { StaticContextProvider } from 'src/providers/static-context-provider';
 
 // создание express приложения
 const app = express();
@@ -50,12 +51,14 @@ app.get('*', async (req: any, res: any) => {
 
   // получаем HTML строку путем преобразования компонента 'App'
   const appHTML = renderToString(
-    <StaticRouter location={req.originalUrl} context={SSR_INITIAL_STATE}>
-      <AppCommonProvider>
-        <StyleSheetManager sheet={sheet.instance}>
-          <Root />
-        </StyleSheetManager>
-      </AppCommonProvider>
+    <StaticRouter location={req.originalUrl}>
+      <StaticContextProvider context={SSR_INITIAL_STATE}>
+        <AppCommonProvider>
+          <StyleSheetManager sheet={sheet.instance}>
+            <Root />
+          </StyleSheetManager>
+        </AppCommonProvider>
+      </StaticContextProvider>
     </StaticRouter>
   );
   // получаем стили
