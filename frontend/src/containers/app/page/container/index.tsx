@@ -19,7 +19,6 @@ interface IProps {
   previewData?: IPage | ITemplate;
 }
 
-// TODO тему для отображения пользовательской страницы берем у АВТОРА страницы
 export const PageContainer = observer((props: IProps) => {
   const { username, pageSlug, templateSlug, previewData } = props;
   const {
@@ -50,7 +49,7 @@ export const PageContainer = observer((props: IProps) => {
     return () => {
       resetStoreAction();
     };
-    // todo Внимание! НЕ следить за флагом initialized - приведет к рекурсивным рендерам
+    // Внимание! НЕ следить за флагом initialized - приведет к рекурсивным рендерам
   }, [username, pageSlug, templateSlug, previewData]);
 
   useEffect(() => {

@@ -13,6 +13,7 @@ WORKDIR /app
 COPY ./frontend/package*.json ./
 
 RUN npm install
+RUN npm install pm2@latest -g
 
 COPY ./frontend/ ./
 
@@ -20,4 +21,4 @@ COPY ./frontend/ ./
 RUN npm run build:ssr
 
 # Запускаем сервер
-CMD npm run start:ssr
+CMD pm2 start ecosystem.config.js
