@@ -21,7 +21,6 @@ class RootStore implements IRootStore {
   dalTemplatesStore: DalTemplatesStore;
 
   init() {
-    console.log('RootStore init', BrowserHistoryStore.navigate);
     if (!this.isInit) {
       this.isInit = true;
     } else {

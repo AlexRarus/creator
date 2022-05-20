@@ -17,18 +17,13 @@ fs.readdirSync("node_modules")
   });
 
 // todo определять из окружения
-const isEnvProduction = false;
+const isEnvProduction = process.env.NODE_ENV === 'production';
 
 export default function () {
   const getStyleLoaders = (cssOptions, preProcessor) => {
     const loaders = [
       'isomorphic-style-loader',
       !isEnvProduction && require.resolve('style-loader'),
-      isEnvProduction && {
-        loader: MiniCssExtractPlugin.loader,
-        // css is located in `static/css`, use '../../' to locate index.html folder
-        options: { publicPath: '../../' },
-      },
       {
         loader: require.resolve('css-loader'),
         options: cssOptions,
@@ -70,7 +65,8 @@ export default function () {
       clean: true,
     },
     // Control how source maps are generated
-    devtool: 'eval',
+    mode: isEnvProduction ? 'production' : 'development',
+    devtool: isEnvProduction ? 'source-map' : 'eval',
     target: 'node',
     // target: "browserslist:node 16.1",
     externals: nodeModules,

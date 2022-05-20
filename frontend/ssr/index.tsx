@@ -50,9 +50,14 @@ app.get('*', async (req: any, res: any) => {
   const matchRoute: any = routes.find((route) => matchPath(route as any, req.originalUrl as any));
   const params = getPathParams(req.originalUrl, matchRoute);
 
-  // получаем данные совпавшего компонента
   let SSR_INITIAL_STATE = null;
 
+  // читаем файл `index.html`
+  let indexHTML = fs.readFileSync(path.resolve(__dirname, '../build/index.html'), {
+    encoding: 'utf8',
+  });
+
+  // получаем данные совпавшего компонента
   if (typeof matchRoute?.Component?.fetchData === 'function') {
     const { status, ...componentData } = await matchRoute.Component.fetchData(params);
 
@@ -62,17 +67,29 @@ app.get('*', async (req: any, res: any) => {
       url = pageNotFoundPath(url);
     }
 
+    // если у страницы есть свой кастомный title
+    if (componentData?.title) {
+      // заполняем тег <title>
+      indexHTML = indexHTML.replace(
+        /<title>(.+)<\/title>/,
+        `<title>${componentData.title}</title>`
+      );
+    }
+    // если у страницы есть свой кастомный title
+    if (componentData?.description) {
+      // заполняем description
+      indexHTML = indexHTML.replace(
+        /<meta name="description" content="(.+)"\/>/,
+        `<meta name="description" content="${componentData.description}" />`
+      );
+    }
+
     SSR_INITIAL_STATE = {
       componentData,
       params,
       url,
     };
   }
-
-  // читаем файл `index.html`
-  let indexHTML = fs.readFileSync(path.resolve(__dirname, '../build/index.html'), {
-    encoding: 'utf8',
-  });
 
   // получаем HTML строку путем преобразования компонента 'App'
   const appHTML = renderToString(

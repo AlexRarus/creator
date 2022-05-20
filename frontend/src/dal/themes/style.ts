@@ -20,8 +20,6 @@ export const getUserThemeStyles = (theme?: Partial<ITheme> | null) => {
   const imageUrl = backgroundImage?.preview || backgroundImage?.src || '';
   const backgroundImageUrl = imageUrl ? ` url('/media/${imageUrl}'), ` : '';
 
-  console.log('headerColor', headerColor);
-
   return css`
     ${backgroundType === 'color' && `background: ${backgroundImageUrl}${backgroundColor}`};
     ${

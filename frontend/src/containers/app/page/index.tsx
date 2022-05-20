@@ -30,9 +30,10 @@ Page.fetchData = async (params: any) => {
       status: 200,
     };
   } catch (e) {
+    const status = e.response.status || 500;
     return {
-      title: `wallink.ru`,
-      description: `description wallink.ru`,
+      title: `wallink.ru [error ${status}]`,
+      description: `wallink.ru - error ${status}`,
       status: e.response.status || 500,
     };
   }
