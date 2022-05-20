@@ -1,6 +1,5 @@
 import { flow, makeAutoObservable } from 'mobx';
 import API from 'src/api';
-import { History } from 'history';
 
 import { IRootStore } from '../interfaces';
 
@@ -8,7 +7,7 @@ import { IImage } from './interfaces';
 
 export default class DalImagesStore {
   rootStore!: IRootStore;
-  routerStore!: History;
+  navigate!: any;
 
   isLoadingMyImages = false;
   myImagesTotal = 0;
@@ -22,9 +21,9 @@ export default class DalImagesStore {
     return API.endpoints.images;
   }
 
-  constructor(RootStore: IRootStore, routerStore: History) {
+  constructor(RootStore: IRootStore, navigate: any) {
     this.rootStore = RootStore;
-    this.routerStore = routerStore;
+    this.navigate = navigate;
 
     makeAutoObservable(this, {}, { autoBind: true });
   }

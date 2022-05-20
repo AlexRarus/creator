@@ -1,5 +1,3 @@
-import { History } from 'history';
-
 import { IRootStore } from './interfaces';
 import DalAuthStore from './auth/store';
 import DalPagesStore from './pages/store';
@@ -13,7 +11,7 @@ class RootStore implements IRootStore {
   static instance: RootStore;
   isInit = false;
 
-  public routing: History;
+  public navigate: any;
 
   dalAuthStore: DalAuthStore;
   dalPagesStore: DalPagesStore;
@@ -23,6 +21,7 @@ class RootStore implements IRootStore {
   dalTemplatesStore: DalTemplatesStore;
 
   init() {
+    console.log('RootStore init', BrowserHistoryStore.navigate);
     if (!this.isInit) {
       this.isInit = true;
     } else {
@@ -30,14 +29,14 @@ class RootStore implements IRootStore {
       return this;
     }
 
-    this.routing = BrowserHistoryStore.routing;
+    this.navigate = BrowserHistoryStore.navigate;
 
-    this.dalAuthStore = new DalAuthStore(this, this.routing);
-    this.dalPagesStore = new DalPagesStore(this, this.routing);
-    this.dalThemesStore = new DalThemesStore(this, this.routing);
-    this.dalImagesStore = new DalImagesStore(this, this.routing);
-    this.dalBlocksStore = new DalBlocksStore(this, this.routing);
-    this.dalTemplatesStore = new DalTemplatesStore(this, this.routing);
+    this.dalAuthStore = new DalAuthStore(this, this.navigate);
+    this.dalPagesStore = new DalPagesStore(this, this.navigate);
+    this.dalThemesStore = new DalThemesStore(this, this.navigate);
+    this.dalImagesStore = new DalImagesStore(this, this.navigate);
+    this.dalBlocksStore = new DalBlocksStore(this, this.navigate);
+    this.dalTemplatesStore = new DalTemplatesStore(this, this.navigate);
 
     return this;
   }

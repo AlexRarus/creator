@@ -1,5 +1,3 @@
-import { History } from 'history';
-
 import DalAuthStore from './auth/store';
 import DalPagesStore from './pages/store';
 import DalBlocksStore from './blocks/store';
@@ -8,7 +6,7 @@ import DalImagesStore from './images/store';
 import DalTemplatesStore from './templates/store';
 
 export interface IRootStore {
-  routing: History;
+  navigate: any;
   dalAuthStore: DalAuthStore;
   dalPagesStore: DalPagesStore;
   dalBlocksStore: DalBlocksStore;

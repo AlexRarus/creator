@@ -25,11 +25,15 @@ Page.fetchData = async (params: any) => {
   try {
     // запрашиваем данные страницы
     const response = await API.endpoints.pages.getPageBySlug(params.username, params.pageSlug);
-    return response.data;
+    return {
+      ...response.data,
+      status: 200,
+    };
   } catch (e) {
     return {
       title: `wallink.ru`,
       description: `description wallink.ru`,
+      status: e.response.status || 500,
     };
   }
 };

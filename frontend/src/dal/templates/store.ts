@@ -1,6 +1,5 @@
 import { flow, makeAutoObservable } from 'mobx';
 import API from 'src/api';
-import { History } from 'history';
 import { IWriteTemplate } from 'src/api/endpoints/templates';
 
 import { IRootStore } from '../interfaces';
@@ -10,7 +9,7 @@ import { ITemplate } from './interfaces';
 
 export default class DalTemplatesStore {
   rootStore!: IRootStore;
-  routerStore!: History;
+  navigate!: any;
 
   isLoading = false;
   isUpdating = false;
@@ -22,9 +21,9 @@ export default class DalTemplatesStore {
     return API.endpoints.templates;
   }
 
-  constructor(RootStore: IRootStore, routerStore: History) {
+  constructor(RootStore: IRootStore, navigate: any) {
     this.rootStore = RootStore;
-    this.routerStore = routerStore;
+    this.navigate = navigate;
 
     makeAutoObservable(this, {}, { autoBind: true });
   }

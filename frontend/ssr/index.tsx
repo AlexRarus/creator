@@ -1,23 +1,42 @@
+import React from 'react';
 import express from 'express';
 import cookieParser from 'cookie-parser';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 import path from 'path';
 import fs from 'fs';
-import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom/server';
 import { matchPath } from 'react-router-dom';
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 import Root from 'src/root';
 import { AppCommonProvider } from 'src/providers';
-import routes from 'src/router/routes/app-routes';
-import { getPathParams } from 'src/utils/getPathParams';
 import { StaticContextProvider } from 'src/providers/static-context-provider';
+import routes, { pageNotFoundPath } from 'src/router/routes/app-routes';
+import { getPathParams } from 'src/utils/getPathParams';
 
 // создание express приложения
 const app = express();
 
 // обслуживание статических ресурсов
-app.get(/\.(js|css|map|ico|png|webmanifest)$/, express.static(path.resolve(__dirname, '../build')));
+const staticPath = path.resolve(__dirname, '../build');
+app.get(/\.(js|css|map|ico|png|webmanifest)$/, express.static(staticPath));
+
+if (process.env.NODE_ENV === 'development') {
+  // создаем прокси для /api
+  const apiProxy = createProxyMiddleware('/api', {
+    target: 'http://127.0.0.1:8000',
+    changeOrigin: true,
+    ws: false,
+    pathRewrite: {
+      '^/api': '/api',
+    },
+    secure: false,
+    headers: {
+      Connection: 'keep-alive',
+    },
+  });
+  app.use(apiProxy);
+}
 
 // создание страницы стилей
 const sheet = new ServerStyleSheet();
@@ -27,20 +46,26 @@ app.use(cookieParser('secret'));
 // в ответ на любые другие запросы отправляем 'index.html'
 app.get('*', async (req: any, res: any) => {
   // получаем совпадающий роут
+  let url = req.originalUrl;
   const matchRoute: any = routes.find((route) => matchPath(route as any, req.originalUrl as any));
   const params = getPathParams(req.originalUrl, matchRoute);
 
   // получаем данные совпавшего компонента
-  let componentData = null;
   let SSR_INITIAL_STATE = null;
 
   if (typeof matchRoute?.Component?.fetchData === 'function') {
-    componentData = await matchRoute.Component.fetchData(params);
+    const { status, ...componentData } = await matchRoute.Component.fetchData(params);
+
+    if (status === 404) {
+      // чтобы отрендерить 404 ошибку, нужно изменить урл для роутера на неизвестный ему
+      // либо установить урл на котором 100% рендерится 404 страница (в роутах она прописана отдельно)
+      url = pageNotFoundPath(url);
+    }
 
     SSR_INITIAL_STATE = {
       componentData,
       params,
-      url: req.originalUrl,
+      url,
     };
   }
 
@@ -51,7 +76,7 @@ app.get('*', async (req: any, res: any) => {
 
   // получаем HTML строку путем преобразования компонента 'App'
   const appHTML = renderToString(
-    <StaticRouter location={req.originalUrl}>
+    <StaticRouter location={url}>
       <StaticContextProvider context={SSR_INITIAL_STATE}>
         <AppCommonProvider>
           <StyleSheetManager sheet={sheet.instance}>

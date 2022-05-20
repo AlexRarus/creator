@@ -10,10 +10,9 @@ import { IRootStore } from './interfaces';
 export const StoreContext = createContext<IRootStore>({} as IRootStore);
 export const StoreProvider = StoreContext.Provider;
 
-// eslint-disable-next-line react/prop-types
 export const RootStoreProvider = (props: any) => {
   const { DEVICE_THEME } = useThemeContext();
-  BrowserHistoryStore.navigate = useNavigate();
+  BrowserHistoryStore.navigateMethod = useNavigate();
   RootStore.init();
 
   return (

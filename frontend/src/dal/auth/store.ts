@@ -6,7 +6,6 @@ import {
   IResendRegistrationConfirmData,
 } from 'src/api/endpoints/auth';
 import { AxiosResponse } from 'axios';
-import { History } from 'history';
 import { addNotificationItem } from 'src/components/notification';
 import { isBrowser } from 'src/utils/detectEnvironment';
 
@@ -24,7 +23,7 @@ export default class DalAuthStore {
     return API.endpoints.auth;
   }
   rootStore!: IRootStore;
-  routerStore!: History;
+  navigate!: any;
 
   isLoading = false;
   user: IUser | null = null;
@@ -32,9 +31,9 @@ export default class DalAuthStore {
   access: string | null = isBrowser ? window.localStorage.getItem('access') : null;
   refresh: string | null = isBrowser ? window.localStorage.getItem('refresh') : null;
 
-  constructor(RootStore: IRootStore, routerStore: History) {
+  constructor(RootStore: IRootStore, navigate: any) {
     this.rootStore = RootStore;
-    this.routerStore = routerStore;
+    this.navigate = navigate;
 
     makeAutoObservable(this, {}, { autoBind: true });
   }
@@ -92,7 +91,7 @@ export default class DalAuthStore {
       localStorage.setItem('access', token?.access);
       localStorage.setItem('refresh', token?.refresh);
       const selectedPageSlug = this.rootStore.dalPagesStore.selectedPage?.slug;
-      this.routerStore.push(`/profile/${this.user?.username}/pages/${selectedPageSlug}/`); // редирект на страницу пользователя
+      this.navigate(`/profile/${this.user?.username}/pages/${selectedPageSlug}/`); // редирект на страницу пользователя
     } catch (err) {
       console.log(err, 'DalAuthStore');
       addNotificationItem({
@@ -127,7 +126,7 @@ export default class DalAuthStore {
         message: 'Зегистрация завершена',
       });
       if (next) {
-        this.routerStore.push(next);
+        this.navigate(next);
       }
     } catch (err) {
       console.log(err, 'DalAuthStore');
@@ -192,7 +191,7 @@ export default class DalAuthStore {
     API.removeDefaultHeaders(['Authorization']);
     localStorage.removeItem('access');
     localStorage.removeItem('refresh');
-    this.routerStore.push('/');
+    this.navigate('/');
   };
 
   public resetPasswordAction = flow(function* (this: DalAuthStore, data: IResetPasswordActionData) {
@@ -200,7 +199,7 @@ export default class DalAuthStore {
     try {
       yield this.API.resetPassword(resetPasswordData);
       if (next) {
-        this.routerStore.push(next);
+        this.navigate(next);
       }
     } catch (err) {
       console.log(err, 'DalAuthStore');
@@ -223,7 +222,7 @@ export default class DalAuthStore {
         message: 'Пароль успешно восстановлен',
       });
       if (next) {
-        this.routerStore.push(next);
+        this.navigate(next);
       }
     } catch (err) {
       console.log(err, 'DalAuthStore');

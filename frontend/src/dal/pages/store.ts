@@ -1,8 +1,8 @@
 import { flow, makeAutoObservable } from 'mobx';
 import API from 'src/api';
-import { History } from 'history';
 import { addNotificationItem } from 'src/components/notification';
 import { AxiosResponse } from 'axios';
+import { isBrowser } from 'src/utils/detectEnvironment';
 
 import { IRootStore } from '../interfaces';
 import { IWritePage } from '../../api/endpoints/pages';
@@ -11,7 +11,7 @@ import { IPage } from './interfaces';
 
 export default class DalPagesStore {
   rootStore!: IRootStore;
-  routerStore!: History;
+  navigate!: any;
 
   isUpdating = false; // loader для обновления данных, чтобы не мигала вся страница
   isLoading = false;
@@ -24,9 +24,9 @@ export default class DalPagesStore {
     return API.endpoints.pages;
   }
 
-  constructor(RootStore: IRootStore, routerStore: History) {
+  constructor(RootStore: IRootStore, navigate: any) {
     this.rootStore = RootStore;
-    this.routerStore = routerStore;
+    this.navigate = navigate;
 
     makeAutoObservable(this, {}, { autoBind: true });
   }
@@ -130,8 +130,8 @@ export default class DalPagesStore {
       this.pages = this.pages.filter((page: IPage) => page.id !== id);
       this.selectedPage = this.pages[0];
       const username = this.rootStore.dalAuthStore.user?.username;
-      if (this.routerStore.location.pathname !== `/profile/${username}/pages/`) {
-        this.routerStore.push(`/profile/${username}/pages/`); // переходим к списку страниц
+      if (isBrowser && window.location.pathname !== `/profile/${username}/pages/`) {
+        this.navigate(`/profile/${username}/pages/`); // переходим к списку страниц
       }
       addNotificationItem({
         level: 'success',
@@ -154,7 +154,7 @@ export default class DalPagesStore {
       yield this.rootStore.dalAuthStore.updateMeAction(); // обновляем пользователя т.к. у него могла изменится тема (выставилась из шаблона)
       const username = this.rootStore.dalAuthStore.user?.username;
       this.isCreatingByTemplate = false;
-      this.routerStore.push(`/profile/${username}/pages/${createdPageData.slug}/`); // переходим к созданной странице
+      this.navigate(`/profile/${username}/pages/${createdPageData.slug}/`); // переходим к созданной странице
       addNotificationItem({
         level: 'success',
         message: 'Страница успешно создана из шаблона',

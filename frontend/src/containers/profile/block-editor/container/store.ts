@@ -1,5 +1,4 @@
 import { flow, makeAutoObservable } from 'mobx';
-import { History } from 'history';
 import { IRootStore } from 'src/dal/interfaces';
 import API from 'src/api';
 import RootStore from 'src/dal/root-store';
@@ -7,7 +6,7 @@ import { IBlock } from 'src/dal/blocks/interfaces';
 
 class BlocksFormStore {
   rootStore!: IRootStore;
-  routerStore!: History;
+  navigate!: any;
 
   initialized = false;
   isLoading = true;
@@ -21,7 +20,7 @@ class BlocksFormStore {
     makeAutoObservable(this, {}, { autoBind: true });
 
     this.rootStore = RootStore;
-    this.routerStore = RootStore.routing;
+    this.navigate = RootStore.navigate;
   }
 
   initAction = (blockId: number | string) => {

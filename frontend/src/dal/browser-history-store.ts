@@ -1,10 +1,10 @@
 class BrowserHistoryStore {
   static instance: BrowserHistoryStore;
 
-  public routing: any;
+  public navigate: any;
 
-  set navigate(__navigate__: any) {
-    this.routing = __navigate__;
+  set navigateMethod(__navigate__: any) {
+    this.navigate = __navigate__;
   }
 
   constructor() {

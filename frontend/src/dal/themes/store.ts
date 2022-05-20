@@ -1,6 +1,5 @@
 import { flow, makeAutoObservable } from 'mobx';
 import API from 'src/api';
-import { History } from 'history';
 
 import { IRootStore } from '../interfaces';
 
@@ -8,7 +7,7 @@ import { ITheme, IThemeType } from './interfaces';
 
 export default class DalThemesStore {
   rootStore!: IRootStore;
-  routerStore!: History;
+  navigate!: any;
 
   isLoading = false;
   total = 0;
@@ -19,9 +18,9 @@ export default class DalThemesStore {
     return API.endpoints.themes;
   }
 
-  constructor(RootStore: IRootStore, routerStore: History) {
+  constructor(RootStore: IRootStore, navigate: any) {
     this.rootStore = RootStore;
-    this.routerStore = routerStore;
+    this.navigate = navigate;
 
     makeAutoObservable(this, {}, { autoBind: true });
   }

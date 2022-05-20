@@ -1,6 +1,5 @@
 import { flow, makeAutoObservable } from 'mobx';
 import API from 'src/api';
-import { History } from 'history';
 import { AxiosResponse } from 'axios';
 import { addNotificationItem } from 'src/components/notification';
 
@@ -10,7 +9,7 @@ import { IBlockType } from './interfaces';
 
 export default class DalBlocksStore {
   rootStore!: IRootStore;
-  routerStore!: History;
+  navigate!: any;
 
   types: IBlockType[] = [];
   buttonTypes: any[] = [];
@@ -20,9 +19,9 @@ export default class DalBlocksStore {
     return API.endpoints.blocks;
   }
 
-  constructor(RootStore: IRootStore, routerStore: History) {
+  constructor(RootStore: IRootStore, navigate: any) {
     this.rootStore = RootStore;
-    this.routerStore = routerStore;
+    this.navigate = navigate;
 
     makeAutoObservable(this, {}, { autoBind: true });
   }

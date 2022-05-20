@@ -1,14 +1,14 @@
 import { flow, makeAutoObservable } from 'mobx';
-import { History } from 'history';
 import { IRootStore } from 'src/dal/interfaces';
 import { IPage } from 'src/dal/pages/interfaces';
 import { ITemplate } from 'src/dal/templates/interfaces';
 import API from 'src/api';
 import RootStore from 'src/dal/root-store';
+import { pageNotFoundPath } from 'src/router/routes/app-routes';
+import { isBrowser } from 'src/utils/detectEnvironment';
 
 class PageStore {
   rootStore!: IRootStore;
-  routerStore!: History;
 
   initialized = false;
   isLoading = false;
@@ -22,7 +22,6 @@ class PageStore {
     makeAutoObservable(this, {}, { autoBind: true });
 
     this.rootStore = RootStore;
-    this.routerStore = RootStore.routing;
   }
 
   initSsrAction = (ssrComponentData: any) => {
@@ -43,7 +42,9 @@ class PageStore {
     } catch (e) {
       console.log('getPageBySlugAction', e);
       if (e.response.status === 404) {
-        this.routerStore.replace(`/${username}/404/page_not_found`);
+        this.rootStore.navigate(pageNotFoundPath(isBrowser ? window.location?.pathname : ''), {
+          replace: true,
+        });
       }
       this.isLoading = false;
     }
