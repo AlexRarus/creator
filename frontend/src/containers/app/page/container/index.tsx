@@ -54,22 +54,24 @@ export const PageContainer = observer((props: IProps) => {
 
   useEffect(() => {
     // при монтировании страницы (в браузере) устанавливаем title и description страницы (если они есть)
-    const title = document.documentElement.querySelector('title');
-    const metaDescription = document.documentElement.querySelector('meta[name="description"]');
+    const isPage = !templateSlug;
+    const title: any = document.documentElement.querySelector('title');
+    const metaDescription: any = document.documentElement.querySelector('meta[name="description"]');
+    const pageData = data as IPage;
 
-    if (data.title && title) {
-      title.innerText = data.title;
+    if (isPage && pageData?.title && title) {
+      title.innerText = pageData?.title;
     }
-    if (data.description && metaDescription) {
-      metaDescription.content = data.description;
+    if (isPage && pageData?.description && metaDescription) {
+      metaDescription.content = pageData?.description;
     }
 
     return () => {
       // при размонтировании страницы (в браузере) устанавливаем дефолтные title и description
-      if (data.title && title) {
+      if (isPage && pageData?.title && title) {
         title.innerText = t('title');
       }
-      if (data.description && metaDescription) {
+      if (isPage && pageData?.description && metaDescription) {
         metaDescription.content = t('description');
       }
     };
