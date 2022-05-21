@@ -20,5 +20,5 @@ COPY ./frontend/ ./
 # Собираем приложение для серверного рендеринга
 RUN npm run build:ssr
 
-# Запускаем сервер
-CMD pm2 start ecosystem.config.js
+# Запускаем сервер из !!!! docker-compose !!!!
+#CMD pm2 start ecosystem.config.js

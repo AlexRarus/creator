@@ -35,6 +35,8 @@ services:
 #      context: ../ # нужно для того что-бы подцепить репозиторий .git
 #      dockerfile: ./frontend/Dockerfile.ssr
     container_name: frontend_ssr
+    restart: always
+    command: pm2 start ecosystem.config.js
     image: rarus/creator_frontend_ssr:latest
     env_file:
       - ./.env

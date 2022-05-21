@@ -1,6 +1,6 @@
 module.exports = {
   apps : [{
-    name: "ssr",
+    name: 'ssr',
     script: './build-ssr/ssr.js',
     watch: '.'
   }]
