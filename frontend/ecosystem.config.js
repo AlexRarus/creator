@@ -2,7 +2,7 @@ module.exports = {
   apps : [{
     name: 'ssr',
     script: './build-ssr/ssr.js',
-    watch: '.',
+    watch: false,
     autorestart: true,
     out_file: './ssr-logs/output.log', // логи
     error_file: './ssr-logs/error.log', // ошибки
