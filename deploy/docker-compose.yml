@@ -5,6 +5,7 @@ volumes:
   backend_static_volume:
   backend_media_volume:
   ssl_cert_volume:
+  ssr_logs_volume:
 
 services:
   django:
@@ -36,12 +37,13 @@ services:
 #      dockerfile: ./frontend/Dockerfile.ssr
     container_name: frontend_ssr
     restart: always
-    command: pm2 start ecosystem.config.js
+    command: pm2-runtime ecosystem.config.js
     image: rarus/creator_frontend_ssr:latest
     env_file:
       - ./.env
     volumes:
       - frontend_static_volume:/app/build/
+      - ssr_logs_volume:/app/ssr-logs/
     depends_on:
       - frontend
 
@@ -62,6 +64,7 @@ services:
       - frontend_static_volume:/usr/share/nginx/html/
       - backend_static_volume:/usr/share/nginx/html/backend/static/
       - backend_media_volume:/usr/share/nginx/html/backend/media/
+      - ssr_logs_volume:/usr/share/nginx/html/ssr-logs/
       - ../ssl:/etc/nginx/ssl/  # <- cert
     depends_on:
       - django
