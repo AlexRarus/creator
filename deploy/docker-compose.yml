@@ -4,7 +4,6 @@ volumes:
   frontend_static_volume:
   backend_static_volume:
   backend_media_volume:
-  ssl_cert_volume:
   ssr_logs_volume:
 
 services:

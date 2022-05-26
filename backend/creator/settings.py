@@ -17,7 +17,7 @@ env = environ.Env(
     POSTGRES_PASSWORD=(str, "postgres"),
     DB_HOST=(str, "db"),
     DB_PORT=(str, "5432"),
-    EMAIL_HOST_USER=(str, "someuser@gmail.com"),
+    EMAIL_HOST_USER=(str, "root@wallink.ru"),
     EMAIL_HOST_PASSWORD=(str, "password"),
     PUBLIC_URL=(str, "http://localhost/"),
     AWS_STORAGE_BUCKET_NAME=(str, "AWS_STORAGE_BUCKET_NAME"),
@@ -187,7 +187,7 @@ DJOSER = {
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_USE_TLS = True
-EMAIL_PORT = 587
+EMAIL_PORT = 25  # 587
 EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 
