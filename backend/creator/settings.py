@@ -185,7 +185,7 @@ DJOSER = {
 }
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST = "smtp.yandex.ru"
 EMAIL_USE_TLS = True
 EMAIL_PORT = 25  # 587
 EMAIL_HOST_USER = env("EMAIL_HOST_USER")
