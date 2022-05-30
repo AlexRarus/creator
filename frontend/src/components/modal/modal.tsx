@@ -37,13 +37,12 @@ export default function Modal(props: IPropsModal) {
   const [headerElement, headerRefCallback] = useState<HTMLDivElement | null>(null);
   const closeModal = (e?: MouseEvent) => {
     if (!e?.isDefaultPrevented()) {
-      console.log('!e?.isDefaultPrevented(): ', !e?.isDefaultPrevented());
       setAnimation('close');
       onClose();
     }
   };
 
-  addAnimationHook(modalContainerElement, modalElement, closeModal);
+  const { hasAnimation } = addAnimationHook(modalContainerElement, modalElement, closeModal);
 
   useEffect(() => {
     setMounted(true);
@@ -66,6 +65,12 @@ export default function Modal(props: IPropsModal) {
   }, [animation]);
 
   const handleOutside = isCloseOutside ? closeModal : () => null;
+
+  const handleClose = (e: any) => {
+    if (!hasAnimation) {
+      closeModal(e);
+    }
+  };
 
   return (
     <ModalBackPlate
@@ -95,7 +100,7 @@ export default function Modal(props: IPropsModal) {
           {hasCloseButton && (
             <CloseButton
               className={'cancel-modal'}
-              // onClick={closeModal}
+              onClick={handleClose}
               isMobile={isMobile}
               hasTitle={Boolean(title)}>
               <CloseIcon />

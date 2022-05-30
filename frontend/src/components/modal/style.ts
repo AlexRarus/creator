@@ -49,6 +49,7 @@ export const ModalPreWrapper = styled.div<Partial<IModalWrapperProps>>`
       return css`
         width: 100%;
         height: ${mobileSize};
+        bottom: 0;
       `;
     } else {
       // на десктопе size влияет на ширину модалки (не может быть больше экрана)

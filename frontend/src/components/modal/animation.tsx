@@ -22,9 +22,6 @@ export const addAnimationHook = (containerRef: any, modalRef: any, closeModal: a
       // Get bounding box of triggering element
       const triggerBBox = trigger.getBoundingClientRect();
 
-      console.log('modalContainerRenderer: ', modalContainerRenderer);
-      console.log('modalRenderer: ', modalRenderer);
-
       // Temporarily show modal container to measure modal
       modalContainerRenderer.set('display', 'flex').render();
       modalRenderer.set('opacity', 0).render();
@@ -34,7 +31,6 @@ export const addAnimationHook = (containerRef: any, modalRef: any, closeModal: a
 
       // Get a function to tween the modal from the trigger
       const modalTweener = generateModalTweener(triggerBBox, modalBBox);
-      console.log('modalTweener: ', modalTweener);
 
       animate({
         duration: 200,
@@ -128,50 +124,6 @@ export const addAnimationHook = (containerRef: any, modalRef: any, closeModal: a
     }
   }
 
-  // function submitModal(e: any) {
-  //   if (isClosing) return;
-  //   e.stopPropagation();
-  //
-  //   isClosing = true;
-  //
-  //   const toScaleXIn = interpolate(vRange, [1, 1.2]);
-  //   const toScaleYIn = interpolate(vRange, [1, 0.8]);
-  //
-  //   const toScaleXOut = interpolate(vRange, [1.2, 0.5]);
-  //   const toScaleYOut = interpolate(vRange, [0.8, 2]);
-  //
-  //   chain([
-  //     tween({
-  //       onStart: () => modalRenderer.set('transform-origin', '50% 100%'),
-  //       duration: 200,
-  //       onUpdate: (v: any) =>
-  //         modalRenderer.set({
-  //           scaleX: toScaleXIn(v),
-  //           scaleY: toScaleYIn(v),
-  //           y: v * 100,
-  //         }),
-  //     }),
-  //     parallel([
-  //       tween({
-  //         from: dimmerRenderer.get('opacity'),
-  //         to: 0,
-  //         onUpdate: (v: any) => dimmerRenderer.set('opacity', v),
-  //       }),
-  //       tween({
-  //         onUpdate: (v: any) =>
-  //           modalRenderer.set({
-  //             opacity: 1 - v,
-  //             scaleX: toScaleXOut(v),
-  //             scaleY: toScaleYOut(v),
-  //             y: -300 * easing.easeIn(v),
-  //           }),
-  //         duration: 200,
-  //         onComplete: closeComplete,
-  //       }),
-  //     ]),
-  //   ]).start();
-  // }
-
   useEffect(() => {
     document.addEventListener('click', openModal);
     document.addEventListener('click', cancelModal);
@@ -181,5 +133,6 @@ export const addAnimationHook = (containerRef: any, modalRef: any, closeModal: a
       document.removeEventListener('click', cancelModal);
     };
   }, []);
-  // document.querySelector('.submit')?.addEventListener('click', submitModal);
+
+  return { hasAnimation: !!trigger };
 };
