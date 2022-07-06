@@ -13,6 +13,9 @@ import { AppCommonProvider } from 'src/providers';
 import { StaticContextProvider } from 'src/providers/static-context-provider';
 import routes, { pageNotFoundPath } from 'src/router/routes/app-routes';
 import { getPathParams } from 'src/utils/getPathParams';
+import parser from 'ua-parser-js';
+import { match } from 'css-mediaquery';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 // создание express приложения
 const app = express();
@@ -45,6 +48,25 @@ app.use(cookieParser('secret'));
 
 // в ответ на любые другие запросы отправляем 'index.html'
 app.get('*', async (req: any, res: any) => {
+  const deviceType = parser(req.headers['user-agent']).device.type || 'desktop';
+  const ssrMatchMedia = (query) => ({
+    matches: match(query, {
+      // The estimated CSS width of the browser.
+      width: deviceType === 'mobile' ? '0px' : '1024px',
+    }),
+  });
+
+  const theme = createTheme({
+    components: {
+      // Change the default options of useMediaQuery
+      MuiUseMediaQuery: {
+        defaultProps: {
+          ssrMatchMedia,
+        },
+      },
+    },
+  });
+
   // получаем совпадающий роут
   let url = req.originalUrl;
   const matchRoute: any = routes.find((route) => matchPath(route as any, req.originalUrl as any));
@@ -93,15 +115,17 @@ app.get('*', async (req: any, res: any) => {
 
   // получаем HTML строку путем преобразования компонента 'App'
   const appHTML = renderToString(
-    <StaticRouter location={url}>
-      <StaticContextProvider context={SSR_INITIAL_STATE}>
-        <AppCommonProvider>
-          <StyleSheetManager sheet={sheet.instance}>
-            <Root />
-          </StyleSheetManager>
-        </AppCommonProvider>
-      </StaticContextProvider>
-    </StaticRouter>
+    <ThemeProvider theme={theme}>
+      <StaticRouter location={url}>
+        <StaticContextProvider context={SSR_INITIAL_STATE}>
+          <AppCommonProvider>
+            <StyleSheetManager sheet={sheet.instance}>
+              <Root />
+            </StyleSheetManager>
+          </AppCommonProvider>
+        </StaticContextProvider>
+      </StaticRouter>
+    </ThemeProvider>
   );
   // получаем стили
   const style = sheet.getStyleTags();

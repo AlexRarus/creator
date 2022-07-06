@@ -17,6 +17,7 @@ export interface IProps {
   maxHeight?: number; // высота Popup после которой начнется прокрутка контента, default 300
   autoAlign?: boolean; // менять выравнивание если компонент выходит за границы экрана
   floatPosition?: boolean; // менять позицию (top|right|bottom|left) если компонент выходит за границы экрана
+  floatPositionReflect?: boolean; // если popup не помещается снизу отобразить (зеркально) сверху и наоборот, если не вмещается слева - будет отображен справа от элемента
   fitOnScreen?: boolean; // менять высоту компонента так что бы он не выходил за границу экрана (компонент всегда будет видно полностью)
   horizontalShift?: number; // смещение позиции пупапа по горизонтале (после всех вычислений)
   verticalShift?: number; // смещение позиции пупапа по вертикали (после всех вычислений)
@@ -27,11 +28,17 @@ export interface IProps {
   color?: string;
   background?: string;
   className?: string;
+  isTransparent?: boolean; // прозрачный фон попапа
+  updatePositionHash?: any; // пересчет позиции попапа при изменении hash (нужно когда меняется контент внутри попапа)
+  onlyButtonClose?: boolean; // запрет закрытия попапа по любым кликам (вне области попапа) кроме кнопки закрыть
+  cssClass?: string; // class для попапа, если дефолтный не подходит
   borderRadius?: string;
   borderColor?: string;
   isFixed?: boolean; // position: fixed
   hasBorder?: boolean;
   hasShadow?: boolean;
+  preventCloseClassNames?: string[]; // предотвращать закрытие по клику на элементы с такими классами (могут находится где угодно на странице)
+  withLayout?: boolean; // пупап будет открываться с прозрачной подложкой на весь экран для перехвата события клика вне пупапа (нужно для случаев когда на странице есть области с отменой всплытия событий)
 }
 
 export interface IOpenerPosition {
@@ -95,6 +102,7 @@ export interface IPlateContentProps extends Partial<IProps> {
   isWin?: boolean;
   isScrolling?: boolean;
   scrollBarWidth?: number;
+  isTransparent?: boolean;
 }
 
 export type TPosition = 'left' | 'right' | 'top' | 'bottom';

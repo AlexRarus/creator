@@ -67,7 +67,10 @@ export const MobileMenu = (props: IProps) => {
             <>
               {!isProfile && (
                 <>
-                  <Button kind={'secondary'} onClick={onClickAuth}>
+                  <Button
+                    kind='secondary'
+                    onClick={onClickAuth}
+                    disabled={Boolean(user) && !selectedPage?.slug}>
                     {user ? 'В кабинет' : pathname === '/auth/login/' ? 'Регистрация' : 'Войти'}
                   </Button>
                 </>

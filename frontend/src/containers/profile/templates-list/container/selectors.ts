@@ -5,8 +5,10 @@ export function useMapStoreToProps() {
 
   return {
     isLoading: dalTemplatesStore.isLoading,
+    templateTypes: dalTemplatesStore.templateTypes,
     templates: dalTemplatesStore.templates,
-    getTemplatesListAction: dalTemplatesStore.getTemplatesListAction,
+    getTemplatesTypesAction: dalTemplatesStore.getTemplatesTypesAction,
+    getTemplatesListByTypeAction: dalTemplatesStore.getTemplatesListByTypeAction,
     deleteTemplateAction: dalTemplatesStore.deleteTemplateAction,
     createPageByTemplate: dalPagesStore.createPageByTemplate,
     user: dalAuthStore.user,

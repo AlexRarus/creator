@@ -5,6 +5,7 @@ import { ModalWrapper } from './style';
 
 interface IProps {
   children: any;
+  cssClass?: string;
 }
 
 export default class Modal extends Component<IProps> {
@@ -14,7 +15,7 @@ export default class Modal extends Component<IProps> {
     super(props);
 
     this.element = document.createElement('div');
-    this.element.classList.add('popup-component-wrapper');
+    this.element.classList.add(props?.cssClass || 'popup-component-wrapper');
     document.body.append(this.element);
   }
 

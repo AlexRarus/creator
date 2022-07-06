@@ -14,6 +14,7 @@ import { prepareDataForServer, templateTabs, getActions } from './utils';
 import { useMapStoreToProps } from './selectors';
 
 interface IProps {
+  templateType: string;
   onClose(): void;
   onSuccess(slug?: string): void;
   activeTabValue: TabValue;
@@ -23,7 +24,13 @@ interface IProps {
 export { TabValue } from './interfaces';
 
 export const TemplateSettingsModal = observer((props: IProps) => {
-  const { activeTabValue: initActiveTabValue, onClose, onSuccess, templateData } = props;
+  const {
+    templateType,
+    activeTabValue: initActiveTabValue,
+    onClose,
+    onSuccess,
+    templateData,
+  } = props;
   const [tabs, activeTab, onChangeTab] = useTabs(templateTabs, initActiveTabValue);
   const { myTemplates, deleteTemplateAction } = useMapStoreToProps();
   // todo хук useForm создает форму и возвращает методы и состояние формы
@@ -40,7 +47,7 @@ export const TemplateSettingsModal = observer((props: IProps) => {
   const submit = async (formInputs: FormInputs) => {
     const rawData: RawData = { id: templateData.id, ...formInputs };
 
-    await submitTemplateForm(prepareDataForServer(rawData));
+    await submitTemplateForm(prepareDataForServer(rawData, templateType));
   };
 
   // форма успешно (без ошибок) отправлена

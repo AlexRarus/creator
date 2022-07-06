@@ -23,6 +23,8 @@ import {
 } from './style';
 
 interface IProps {
+  username: string;
+  templateType: string;
   templateSlug: string;
 }
 
@@ -40,7 +42,7 @@ export const TemplateEditorContainer = observer((props: IProps) => {
     user,
   } = useMapStoreToProps();
   const { appType } = useAppTypeContext();
-  const { templateSlug } = props;
+  const { username, templateType, templateSlug } = props;
   const [templateSettingsModalTab, setTemplateSettingsModalTab] = useState<TabValue | null>(null);
   const navigate = useNavigate();
   const [initialized, setInitialized] = useState(false);
@@ -71,7 +73,7 @@ export const TemplateEditorContainer = observer((props: IProps) => {
   // todo передавать slug ТОЛЬКО если он изменился в настройках страницы
   const onUpdateTemplateForm = (slug?: string) => {
     if (slug) {
-      navigate(`/profile/templates/${slug}`, { replace: true });
+      navigate(`/profile/${username}/templates/${templateType}/${slug}`, { replace: true });
     } else {
       updateSelectedTemplateAction();
     }
@@ -83,6 +85,7 @@ export const TemplateEditorContainer = observer((props: IProps) => {
       label: data?.label,
       blocks: listIds, // id блоков в том порядке в котором они должны сохраниться
       slug: templateSlug,
+      type: templateType,
     };
     updateTemplateBlocksAction(reqData);
   };
@@ -143,6 +146,7 @@ export const TemplateEditorContainer = observer((props: IProps) => {
           </StyledMobileView>
           {templateSettingsModalTab && (
             <TemplateSettingsModal
+              templateType={templateType}
               onClose={closeTemplateSettingsModal}
               onSuccess={onUpdateTemplateForm}
               activeTabValue={templateSettingsModalTab as TabValue}

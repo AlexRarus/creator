@@ -1,5 +1,4 @@
 import { AxiosResponse } from 'axios';
-import { IThemeWrite } from 'src/dal/themes/interfaces';
 
 export interface IThemeAPI {
   getThemesByType(type: string): AxiosResponse<any>;

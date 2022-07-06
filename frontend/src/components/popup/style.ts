@@ -1,10 +1,44 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { COLORS } from 'src/components/theme';
 import { rgba } from 'polished';
 
 import { IPlateProps, IPlateContentProps, ICalcPositionProp } from './interfaces';
 
 export const ModalWrapper = styled.div``;
+
+export const WebkitScrollBarStyle = ({
+  isWin,
+  isScrolling,
+  scrollBarWidth = 10,
+}: {
+  isWin?: boolean;
+  isScrolling?: boolean;
+  scrollBarWidth?: number;
+}) =>
+  isWin
+    ? css`
+        ::-webkit-scrollbar {
+          width: ${scrollBarWidth}px;
+          height: ${scrollBarWidth}px;
+        }
+
+        ::-webkit-scrollbar-track {
+          background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+          border-radius: 4px;
+          background: ${isScrolling ? COLORS.grey[300] : 'transparent'};
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+          background: ${COLORS.grey[600]};
+        }
+        ::-webkit-scrollbar-thumb:hover {
+          background: ${COLORS.grey[300]};
+        }
+      `
+    : '';
 
 const horizontalAlign = ({
   openerPosition,
@@ -362,9 +396,12 @@ export const PlateWrapper = styled.div<IPlateProps>`
 
 export const PlateContent = styled.div<IPlateContentProps>`
   position: relative;
-  background: ${({ background }) => background || COLORS.white};
-  box-shadow: ${({ hasShadow }) => (hasShadow ? `0 0 6px 0 ${rgba(COLORS.black, 0.2)}` : 'none')};
-  border: ${({ hasBorder, borderColor }) => (hasBorder ? `1px solid ${borderColor}` : 'none')};
+  background: ${({ isTransparent, background }) =>
+    isTransparent ? 'transparent' : background || COLORS.white};
+  box-shadow: ${({ isTransparent, hasShadow }) =>
+    hasShadow && !isTransparent ? `0 0 6px 0 ${rgba(COLORS.black, 0.2)}` : 'none'};
+  border: ${({ isTransparent, hasBorder, borderColor }) =>
+    hasBorder && !isTransparent ? `1px solid ${borderColor}` : 'none'};
   border-radius: ${({ borderRadius }) => borderRadius};
   ${({ overflow }) => (overflow ? `overflow: ${overflow}` : 'overflow-y: auto;')};
   ${({ maxHeight }) => maxHeight && `max-height: ${maxHeight}px`};
@@ -372,9 +409,21 @@ export const PlateContent = styled.div<IPlateContentProps>`
   min-width: 10px;
   min-height: 10px;
   max-width: 100%;
+
+  ${WebkitScrollBarStyle}
 `;
 
 export const ChildrenWrapper = styled.div<IPlateContentProps>`
   position: relative;
   z-index: 2;
+`;
+
+export const Layout = styled.div<{ zIndex: number }>`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: transparent;
+  z-index: ${({ zIndex }) => zIndex};
 `;

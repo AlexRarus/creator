@@ -1,0 +1,8 @@
+{
+  "templateType": {
+    "default": "Base",
+    "base": "Base",
+    "advanced": "Advanced",
+    "animated": "Animated"
+  }
+}

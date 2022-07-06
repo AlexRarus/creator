@@ -15,6 +15,6 @@ export const menuItems: IMenuItem[] = [
   },
   {
     label: 'Шаблоны',
-    url: '/profile/templates/',
+    url: '/profile/{{username}}/templates/',
   },
 ];

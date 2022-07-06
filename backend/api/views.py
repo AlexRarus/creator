@@ -11,14 +11,19 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
-from .filters import ImageFilter, ImageSearchFilter, ThemeFilter
+from .filters import (
+    ImageFilter,
+    ImageSearchFilter,
+    TemplateFilter,
+    ThemeFilter,
+)
 from .models.avatar import Avatar
 from .models.block import Block
 from .models.block_type import BlockType
 from .models.image import Image
 from .models.page import Page
 from .models.relations import PageBlockRelation
-from .models.template import Template
+from .models.template import Template, TemplateType
 from .models.theme import Theme, ThemeType
 from .models.types.button import ButtonType
 from .models.types.collapsed_list import CollapsedListItemBlock
@@ -40,6 +45,7 @@ from .serializers.template import (
     TemplateReadSerializer,
     TemplateWriteSerializer,
 )
+from .serializers.template_type import TemplateTypeSerializer
 from .serializers.theme import ThemeSerializerRead, ThemeSerializerWrite
 from .serializers.theme_type import ThemeTypeSerializer
 from .serializers.types.avatar import block_avatar_clone
@@ -58,6 +64,9 @@ User = get_user_model()
 class TemplateViewSet(viewsets.ModelViewSet):
     pagination_class = CustomPagination
     lookup_field = "slug"
+    permission_classes = (IsTemplatePermission,)
+    filter_backends = (DjangoFilterBackend,)
+    filter_class = TemplateFilter
 
     def get_permissions(self):
         if self.action in ["retrieve"]:
@@ -117,11 +126,30 @@ class TemplateViewSet(viewsets.ModelViewSet):
             return TemplateReadSerializer
         return TemplateWriteSerializer
 
+    def create(self, request, *args, **kwargs):
+        # копируем данные запроса
+        data = dict(request.data)
+        # исключаем тип из данных
+        data.pop("type")
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(
+            serializer.data, status=status.HTTP_201_CREATED, headers=headers
+        )
+
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+        serializer.save(
+            author=self.request.user,
+            type=TemplateType.objects.get(slug=self.request.data["type"]),
+        )
 
     def perform_update(self, serializer):
-        serializer.save(author=self.request.user)
+        serializer.save(
+            author=self.request.user,
+            type=TemplateType.objects.get(slug=self.request.data["type"]),
+        )
 
 
 class PageViewSet(viewsets.ModelViewSet):
@@ -558,6 +586,18 @@ class ThemeTypesViewSet(mixins.ListModelMixin, GenericViewSet):
     queryset = ThemeType.objects.all()
     permission_classes = (AllowAny,)
     serializer_class = ThemeTypeSerializer
+
+    def list(self, request, *args, **kwargs):
+        """Ответ БЕЗ пагинации"""
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+class TemplateTypesViewSet(mixins.ListModelMixin, GenericViewSet):
+    queryset = TemplateType.objects.all()
+    permission_classes = (AllowAny,)
+    serializer_class = TemplateTypeSerializer
 
     def list(self, request, *args, **kwargs):
         """Ответ БЕЗ пагинации"""

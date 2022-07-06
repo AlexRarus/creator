@@ -8,3 +8,9 @@ export interface ITemplate {
   blocks: IBlock<any>[]; // шаблон состоит из разных блоков
   theme: ITheme | null;
 }
+
+export interface ITemplateType {
+  id: number;
+  slug: string;
+  pricingPlan: string;
+}

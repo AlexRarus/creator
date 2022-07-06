@@ -31,9 +31,10 @@ export const getActions = (templates: ITemplate[]): IAction[] => [
 ];
 
 // преобразовываем типы и меняем поля если надо
-export const prepareDataForServer = (rawData: RawData): DataForServer => ({
+export const prepareDataForServer = (rawData: RawData, themeType: string): DataForServer => ({
   ...rawData,
   id: rawData.id as any, // id может не быть поэтому any
+  type: themeType,
 });
 
 export const prepareDataToFormValues = (template: ITemplate | null): FormInputs => ({

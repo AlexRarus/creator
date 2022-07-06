@@ -41,6 +41,8 @@ class TemplateWriteSerializer(serializers.ModelSerializer):
 
         template.slug = validated_data.get("slug", template.slug)
         template.label = validated_data.get("label", template.label)
+        template.theme = validated_data.get("theme", template.theme)
+        template.type = validated_data.get("type", template.type)
         template.save()
 
         if blocks is not None:
@@ -90,6 +92,7 @@ class TemplateWriteSerializer(serializers.ModelSerializer):
             "blocks",
             "slug",
             "label",
+            "type",
         )
 
 
@@ -97,6 +100,7 @@ class TemplateReadSerializer(serializers.ModelSerializer):
     author = serializers.PrimaryKeyRelatedField(read_only=True)
     theme = ThemeSerializerRead(read_only=True)
     blocks = BlockSerializerRead(read_only=True, many=True)
+    type = serializers.CharField(read_only=True, source="type.slug")
 
     class Meta:
         model = Template
@@ -107,4 +111,5 @@ class TemplateReadSerializer(serializers.ModelSerializer):
             "blocks",
             "slug",
             "label",
+            "type",
         )

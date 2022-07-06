@@ -11,7 +11,14 @@ import { COLORS } from 'src/components/theme';
 import { isBrowser } from 'src/utils/detectEnvironment';
 
 import Modal from './modal';
-import { PlateWrapper, PlateContent, ChildrenWrapper, topPosition, leftPosition } from './style';
+import {
+  PlateWrapper,
+  PlateContent,
+  ChildrenWrapper,
+  topPosition,
+  leftPosition,
+  Layout,
+} from './style';
 import {
   IOpenerPosition,
   IPlatePosition,
@@ -59,6 +66,7 @@ export default function Popup(props: IProps) {
     maxHeight: initMaxHeight,
     autoAlign = true,
     floatPosition = false,
+    floatPositionReflect = false,
     fitOnScreen = false,
     isCloseOnClick = true,
     zIndex = 10,
@@ -69,11 +77,17 @@ export default function Popup(props: IProps) {
     color = COLORS.black,
     background = COLORS.white,
     className,
+    isTransparent,
     borderRadius = '2px',
     borderColor = COLORS.grey[300],
+    updatePositionHash,
+    onlyButtonClose,
+    cssClass,
     isFixed = false,
     hasBorder = true,
     hasShadow = true,
+    preventCloseClassNames = [],
+    withLayout = false,
   } = props;
   // todo ssr костыль
   const isWin = isBrowser ? navigator?.appVersion.toLowerCase().includes('win') : false;
@@ -176,11 +190,11 @@ export default function Popup(props: IProps) {
   // обработчик события 'closePopup'
   const onClosePopup = useCallback(
     (e: any) => {
-      if (isOpen && !e.detail.prevent && onClose) {
+      if (isOpen && !e.detail.prevent && !onlyButtonClose && onClose) {
         onClose();
       }
     },
-    [prevIsOpen, isOpen, onClose]
+    [prevIsOpen, isOpen, onClose, onlyButtonClose]
   );
 
   const onPopupClick = useCallback(
@@ -220,18 +234,23 @@ export default function Popup(props: IProps) {
 
   useEffect(() => {
     setPosition(); // пересчет позиции
-  }, [maxHeight]);
+  }, [maxHeight, updatePositionHash]);
 
   useLayoutEffectSsr(() => {
     const popupElement: HTMLDivElement | null = plateRef.current;
     const detail: any = detailRef.current;
+    const popupClass = cssClass || 'popup-component-wrapper';
 
     const preventClose = () => {
       detail.prevent = true;
     };
     const mouseDownHandler = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      detail.prevent = Boolean(target?.closest('.popup-component-wrapper')) && !isCloseOnClick;
+      // предотвращаем закрытие по клику внутри необходимых классов
+      const basePreventClass = isCloseOnClick ? [] : [popupClass];
+      detail.prevent = basePreventClass
+        .concat(preventCloseClassNames)
+        .some((className: string) => Boolean(target?.closest(`.${className}`)));
     };
     // todo поменял mouseUp на mouseDown
     // const mouseUpHandler = (e: MouseEvent) => {
@@ -260,7 +279,7 @@ export default function Popup(props: IProps) {
       document.body.removeEventListener('mousedown', mouseDownHandler);
       document.body.removeEventListener('click', clickHandler);
     };
-  }, [isOpen, isCloseOnClick, openerElement]);
+  }, [isOpen, isCloseOnClick, openerElement, cssClass]);
 
   // подписываем пупап на событие закрытия
   useEffect(() => {
@@ -325,6 +344,12 @@ export default function Popup(props: IProps) {
               verticalAlign: initVerticalAlign || innerPosition.verticalAlign,
               horizontalAlign: initHorizontalAlign || innerPosition.horizontalAlign,
             });
+          } else if (floatPositionReflect && fitBottom) {
+            setInnerPosition({
+              position: 'bottom',
+              verticalAlign: initVerticalAlign || innerPosition.verticalAlign,
+              horizontalAlign: initHorizontalAlign || innerPosition.horizontalAlign,
+            });
           } else if (fitRight) {
             setInnerPosition({
               position: 'right',
@@ -355,6 +380,12 @@ export default function Popup(props: IProps) {
           if (fitBottom) {
             setInnerPosition({
               position: initPosition || innerPosition.position,
+              verticalAlign: initVerticalAlign || innerPosition.verticalAlign,
+              horizontalAlign: initHorizontalAlign || innerPosition.horizontalAlign,
+            });
+          } else if (floatPositionReflect && fitTop) {
+            setInnerPosition({
+              position: 'top',
               verticalAlign: initVerticalAlign || innerPosition.verticalAlign,
               horizontalAlign: initHorizontalAlign || innerPosition.horizontalAlign,
             });
@@ -391,6 +422,12 @@ export default function Popup(props: IProps) {
               verticalAlign: initVerticalAlign || innerPosition.verticalAlign,
               horizontalAlign: initHorizontalAlign || innerPosition.horizontalAlign,
             });
+          } else if (floatPositionReflect && fitRight) {
+            setInnerPosition({
+              position: 'right',
+              verticalAlign: initVerticalAlign || innerPosition.verticalAlign,
+              horizontalAlign: initHorizontalAlign || innerPosition.horizontalAlign,
+            });
           } else if (fitBottom) {
             setInnerPosition({
               position: 'bottom',
@@ -421,6 +458,12 @@ export default function Popup(props: IProps) {
           if (fitRight) {
             setInnerPosition({
               position: initPosition || innerPosition.position,
+              verticalAlign: initVerticalAlign || innerPosition.verticalAlign,
+              horizontalAlign: initHorizontalAlign || innerPosition.horizontalAlign,
+            });
+          } else if (floatPositionReflect && fitLeft) {
+            setInnerPosition({
+              position: 'left',
               verticalAlign: initVerticalAlign || innerPosition.verticalAlign,
               horizontalAlign: initHorizontalAlign || innerPosition.horizontalAlign,
             });
@@ -481,7 +524,8 @@ export default function Popup(props: IProps) {
   };
 
   return isOpen ? (
-    <Modal>
+    <Modal cssClass={cssClass}>
+      {withLayout && <Layout zIndex={zIndex} />}
       <PlateWrapper
         data-test-id={dataTestId}
         ref={plateRef}
@@ -524,7 +568,8 @@ export default function Popup(props: IProps) {
           borderRadius={borderRadius}
           background={background}
           hasBorder={hasBorder}
-          hasShadow={hasShadow}>
+          hasShadow={hasShadow}
+          isTransparent={isTransparent}>
           <ChildrenWrapper>
             <PopupContext.Provider value={{ maxHeight }}>{children}</PopupContext.Provider>
           </ChildrenWrapper>

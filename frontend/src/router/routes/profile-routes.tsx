@@ -7,17 +7,24 @@ import { IRoute } from '../interfaces';
 
 const appRoutes: IRoute[] = [
   {
-    path: `/profile/templates/`,
-    Component: lazy(() =>
-      import(/* webpackChunkName: "page_templates_list" */ 'src/containers/profile/templates-list/')
-    ),
-  },
-  {
-    path: `/profile/templates/:templateSlug`,
+    path: `/profile/:username/templates/:templateType/:templateSlug`,
     Component: lazy(() =>
       import(
         /* webpackChunkName: "page_template_editor" */ 'src/containers/profile/template-editor/'
       )
+    ),
+  },
+  {
+    path: `/profile/:username/templates/:templateType`,
+    Component: lazy(() =>
+      import(/* webpackChunkName: "page_templates_list" */ 'src/containers/profile/templates-list/')
+    ),
+  },
+  // todo в react-router v6 для опциональных параметров нужно указывать ДВА роута (с параметром и без)
+  {
+    path: `/profile/:username/templates/`,
+    Component: lazy(() =>
+      import(/* webpackChunkName: "page_templates_list" */ 'src/containers/profile/templates-list/')
     ),
   },
   {

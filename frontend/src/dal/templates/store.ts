@@ -5,7 +5,7 @@ import { IWriteTemplate } from 'src/api/endpoints/templates';
 import { IRootStore } from '../interfaces';
 import { addNotificationItem } from '../../components/notification';
 
-import { ITemplate } from './interfaces';
+import { ITemplate, ITemplateType } from './interfaces';
 
 export default class DalTemplatesStore {
   rootStore!: IRootStore;
@@ -14,6 +14,7 @@ export default class DalTemplatesStore {
   isLoading = false;
   isUpdating = false;
   total = 0;
+  templateTypes: ITemplateType[] = [];
   templates: ITemplate[] = [];
   selectedTemplate: ITemplate | null = null;
 
@@ -28,10 +29,22 @@ export default class DalTemplatesStore {
     makeAutoObservable(this, {}, { autoBind: true });
   }
 
-  getTemplatesListAction = flow(function* (this: DalTemplatesStore) {
+  getTemplatesTypesAction = flow(function* (this: DalTemplatesStore) {
     try {
       this.isLoading = true;
-      const responseList = yield this.API.getTemplatesList();
+      const response = yield this.API.getTemplatesTypes();
+      this.isLoading = false;
+      this.templateTypes = response.data || [];
+    } catch (e) {
+      console.log('getTemplatesTypesAction', e);
+      this.isLoading = false;
+    }
+  });
+
+  getTemplatesListByTypeAction = flow(function* (this: DalTemplatesStore, type: string) {
+    try {
+      this.isLoading = true;
+      const responseList = yield this.API.getTemplatesByType(type);
       this.total = responseList.data?.total || 0;
       this.templates = responseList.data?.list || null;
       this.isLoading = false;

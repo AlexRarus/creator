@@ -5,6 +5,8 @@ import { ProfileLayout } from 'src/apps/profile-app/layout';
 import { TemplateEditorContainer } from './container';
 
 interface IParams {
+  username: string;
+  templateType: string;
   templateSlug: string;
   [key: string]: string | undefined;
 }

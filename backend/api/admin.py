@@ -12,7 +12,7 @@ from .models.relations import (
     SectionBlockRelation,
     TemplateBlockRelation,
 )
-from .models.template import Template
+from .models.template import Template, TemplateType
 from .models.theme import Theme, ThemeType
 from .models.types.avatar import AvatarBlock
 from .models.types.button import Button, ButtonType
@@ -102,6 +102,20 @@ class TemplateAdmin(admin.ModelAdmin):
     search_fields = (
         "id",
         "label",
+        "slug",
+    )
+    empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY
+
+
+@admin.register(TemplateType)
+class TemplateTypeAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "slug",
+        "pricingPlan",
+    )
+    search_fields = (
+        "id",
         "slug",
     )
     empty_value_display = settings.ADMIN_EMPTY_VALUE_DISPLAY

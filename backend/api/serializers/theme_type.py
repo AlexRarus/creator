@@ -1,4 +1,4 @@
-from api.models.block_type import BlockType
+from api.models.theme import ThemeType
 from rest_framework import serializers
 
 
@@ -8,7 +8,7 @@ class ThemeTypeSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
-        model = BlockType
+        model = ThemeType
         fields = (
             "id",
             "slug",

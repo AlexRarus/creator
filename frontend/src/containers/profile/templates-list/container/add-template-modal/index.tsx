@@ -9,12 +9,13 @@ import { prepareDataForServer } from './utils';
 import { AddTemplateFields } from './fields';
 
 interface IProps {
+  templateType: string;
   onClose(): void;
   onSuccess(data: any): void;
 }
 
 export const AddTemplateModal = (props: IProps) => {
-  const { onClose, onSuccess } = props;
+  const { templateType, onClose, onSuccess } = props;
   // todo хук useForm создает форму и возвращает методы и состояние формы
   // todo все поля зарегистрированные в форме управляются этой формой
   // todo поле можно зарегистрировать (например) при помощи обертки <ControlledField> и "methods.control"
@@ -29,7 +30,7 @@ export const AddTemplateModal = (props: IProps) => {
   const submit = async (data: FormInputs) => {
     const rawData: RawData = { ...data };
 
-    await submitTemplateForm(prepareDataForServer(rawData));
+    await submitTemplateForm(prepareDataForServer(rawData, templateType));
   };
 
   // форма успешно (без ошибок) отправлена

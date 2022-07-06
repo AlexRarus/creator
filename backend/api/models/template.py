@@ -1,3 +1,4 @@
+from api.models.pricing_plan import PricingPlan
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models.signals import pre_save
@@ -8,7 +9,46 @@ from unidecode import unidecode
 User = get_user_model()
 
 
+class TemplateType(models.Model):
+    slug = models.SlugField(
+        verbose_name="Слаг типа шаблона",
+        max_length=255,
+        blank=True,
+        unique=True,
+        default="default",
+    )
+    pricingPlan = models.ForeignKey(
+        PricingPlan,
+        on_delete=models.SET_NULL,
+        verbose_name="Тарифный план",
+        related_name="template_types",
+        null=True,
+    )
+    order = models.PositiveIntegerField(
+        verbose_name="Позиция в сортировке списка",
+        null=True,
+    )
+
+    def __str__(self):
+        return f"{self.slug or 'default'}"
+
+    class Meta:
+        verbose_name = "Тип шаблона"
+        verbose_name_plural = "Типы шаблонов"
+        ordering = (
+            "order",
+            "id",
+        )
+
+
 class Template(models.Model):
+    type = models.ForeignKey(
+        TemplateType,
+        verbose_name="Тип",
+        related_name="templates",
+        on_delete=models.CASCADE,
+        null=True,
+    )
     label = models.CharField(
         max_length=35,
         verbose_name="Наименование",
